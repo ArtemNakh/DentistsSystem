@@ -5,6 +5,7 @@ import { DentistryModule } from './dentistry/dentistry.module';
 import { ConfigModule } from '@nestjs/config';
 import config from '../config';
 import { SequelizeModule } from '@nestjs/sequelize';
+import { Dentistry } from './dentistry/entities/dentistry.entity';
 
 @Module({
   //підключає модуль конфігурації,
@@ -28,7 +29,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
       database: process.env.MYSQL_DB,
       autoLoadModels: false,
       synchronize: false,
-      models: [],
+      models: [Dentistry],
     }),
 
     DentistryModule,

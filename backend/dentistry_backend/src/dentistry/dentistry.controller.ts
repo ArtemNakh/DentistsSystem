@@ -2,33 +2,42 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { DentistryService } from './dentistry.service';
 import { CreateDentistryDto } from './dto/create-dentistry.dto';
 import { UpdateDentistryDto } from './dto/update-dentistry.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags("Dentistry")
 @Controller('dentistry')
 export class DentistryController {
   constructor(private readonly dentistryService: DentistryService) {}
 
-  @Post()
-  create(@Body() createDentistryDto: CreateDentistryDto) {
-    return this.dentistryService.create(createDentistryDto);
+  @Get("test/all")
+  GetAllValue(){
+    return this.dentistryService.testGetAll();
   }
 
-  @Get()
-  findAll() {
-    return this.dentistryService.findAll();
-  }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.dentistryService.findOne(+id);
-  }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDentistryDto: UpdateDentistryDto) {
-    return this.dentistryService.update(+id, updateDentistryDto);
-  }
+  // @Post()
+  // create(@Body() createDentistryDto: CreateDentistryDto) {
+  //   return this.dentistryService.create(createDentistryDto);
+  // }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.dentistryService.remove(+id);
-  }
+  // @Get()
+  // findAll() {
+  //   return this.dentistryService.findAll();
+  // }
+
+  // @Get(':id')
+  // findOne(@Param('id') id: string) {
+  //   return this.dentistryService.findOne(+id);
+  // }
+
+  // @Patch(':id')
+  // update(@Param('id') id: string, @Body() updateDentistryDto: UpdateDentistryDto) {
+  //   return this.dentistryService.update(+id, updateDentistryDto);
+  // }
+
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.dentistryService.remove(+id);
+  // }
 }
