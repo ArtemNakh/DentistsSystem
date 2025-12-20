@@ -8,7 +8,7 @@ export class CreateDentalClinics1766160645839 implements MigrationInterface {
         street VARCHAR(255) NOT NULL,
         city VARCHAR(100) NOT NULL,
         region VARCHAR(100) NOT NULL,
-        create_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
         updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
       );
     `);

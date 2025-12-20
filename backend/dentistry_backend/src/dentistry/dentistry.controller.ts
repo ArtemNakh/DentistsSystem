@@ -3,8 +3,8 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { ApiTags } from '@nestjs/swagger';
 import { DentistryService } from './dentistry.service';
 
-@ApiTags("Dentistry")
-@Controller('dentistry')
+@ApiTags("Dental_clinics")
+@Controller('dental_clinics')
 export class DentistryController {
   constructor(private readonly dentistryService: DentistryService) {}
 

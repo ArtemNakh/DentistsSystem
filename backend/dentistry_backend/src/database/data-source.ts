@@ -59,10 +59,11 @@ const AppDataSource = new DataSource({
 
   // Використовуємо __dirname, щоб правильно працювало і в src, і в dist
   entities: [__dirname + '/../**/*.entity.{js,ts}'],
-  migrations: [__dirname + '/../migrations/*.{js,ts}'],
+  migrations: [__dirname + '/../../migrations/*.{js,ts}'],
 
   synchronize: false,   // не використовуй у проді
   migrationsRun: false, // міграції запускай вручну через CLI
 });
+
 
 export default AppDataSource;

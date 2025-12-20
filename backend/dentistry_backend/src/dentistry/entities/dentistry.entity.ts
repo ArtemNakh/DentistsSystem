@@ -16,6 +16,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { IDentistry } from './dentistry.interface';
 
 // //field for creating new value
 // interface DentistryCreateAttr {
@@ -64,8 +65,9 @@ import {
 //   declare updated_at: Date;
 // }
 
+
 @Entity({ name: 'dental_clinics' })
-export class Dentistry {
+export class Dentistry  implements IDentistry{
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -78,8 +80,8 @@ export class Dentistry {
   @Column({ type: 'varchar', nullable: false })
   region: string;
 
-  @CreateDateColumn({ name: 'create_at' })
-  create_at: Date;
+  @CreateDateColumn({ name: 'created_at' })
+  created_at: Date;
 
   @UpdateDateColumn({ name: 'updated_at' })
   updated_at: Date;

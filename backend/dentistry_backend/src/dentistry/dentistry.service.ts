@@ -8,6 +8,7 @@ import { Inject, Injectable } from "@nestjs/common";
 import { Repository } from "typeorm";
 import { Dentistry } from "./entities/dentistry.entity";
 import { InjectRepository } from "@nestjs/typeorm";
+import { IDentistry } from "./entities/dentistry.interface";
 
 // @Injectable()
 // export class DentistryService {
@@ -47,7 +48,7 @@ export class DentistryService{
     private dentistryRepository:Repository<Dentistry>
   ){}
 
-  async findAll():Promise<Dentistry[]>{
+  async findAll():Promise<IDentistry[]>{
     return this.dentistryRepository.find();
   }
 
