@@ -4,33 +4,46 @@ import { AppService } from './app.service';
 import { DentistryModule } from './dentistry/dentistry.module';
 import { ConfigModule } from '@nestjs/config';
 import config from '../config';
-import { SequelizeModule } from '@nestjs/sequelize';
-import { Dentistry } from './dentistry/entities/dentistry.entity';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { DataSource } from 'typeorm';
+import AppDataSource from './database/data-source';
 
 @Module({
-  //підключає модуль конфігурації,
-  // робить його глобальним,
-  // завантажує кастомну конфігурацію з функції config.
   imports: [
+    //підключає модуль конфігурації,
+    // робить його глобальним,
+    // завантажує кастомну конфігурацію з функції config.
     ConfigModule.forRoot({
       isGlobal: true,
       load: [config],
     }),
 
-    // https://docs.nestjs.com/recipes/sql-sequelize
-    // i stoped on this words(Model injection#
-    // In Sequelize the Model defines a table in the database. Instances of this class represent a database row. Firstly, we need at least one entity:))
-    SequelizeModule.forRoot({
-      dialect: process.env.DIALECT as any,
-      host: process.env.MYSQL_HOST,
-      port: Number(process.env.MYSQL_PORT),
-      username: process.env.MYSQL_USER,
-      password: process.env.MYSQL_PASSWORD,
-      database: process.env.MYSQL_DB,
-      autoLoadModels: false,
-      synchronize: false,
-      models: [Dentistry],
-    }),
+    // TypeOrmModule.forRoot({
+    //   type: 'mysql',
+    //   host: process.env.MYSQL_HOST || 'localhost',
+    //   port: Number(process.env.MYSQL_PORT) || 3306,
+    //   username: process.env.MYSQL_USER || 'root',
+    //   password: process.env.MYSQL_PASSWORD || '',
+    //   database: process.env.MYSQL_DB || 'test',
+    //   autoLoadEntities: true,
+    //   synchronize: false,
+    // }),
+    
+ TypeOrmModule.forRoot(AppDataSource.options),
+    // TypeOrmModule.forRoot({
+    //   type: 'mysql',
+    //   host: process.env.MYSQL_HOST || 'localhost',
+    //   port: Number(process.env.MYSQL_PORT) || 3306,
+    //   username: process.env.MYSQL_USER || 'root',
+    //   password: process.env.MYSQL_PASSWORD || '',
+    //   database: process.env.MYSQL_DB || 'test',
+    //   autoLoadEntities: true,
+    //   synchronize: false,
+
+    //   migrations: [__dirname + '/migration/**/*{.js,.ts}'],
+    //   migrationsRun: false,//автоматично запускати міграції під час кожного запуску програми
+   
+    // }),
 
     DentistryModule,
   ],

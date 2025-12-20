@@ -1,8 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { DentistryService } from './dentistry.service';
-import { CreateDentistryDto } from './dto/create-dentistry.dto';
-import { UpdateDentistryDto } from './dto/update-dentistry.dto';
+
 import { ApiTags } from '@nestjs/swagger';
+import { DentistryService } from './dentistry.service';
 
 @ApiTags("Dentistry")
 @Controller('dentistry')
@@ -11,7 +10,7 @@ export class DentistryController {
 
   @Get("test/all")
   GetAllValue(){
-    return this.dentistryService.testGetAll();
+    return this.dentistryService.findAll();
   }
 
 

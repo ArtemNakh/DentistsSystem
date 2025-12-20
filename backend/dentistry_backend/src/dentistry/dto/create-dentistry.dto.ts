@@ -1,1 +1,1 @@
-export class CreateDentistryDto {}
+// export class CreateDentistryDto {}
