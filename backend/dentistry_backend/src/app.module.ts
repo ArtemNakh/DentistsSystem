@@ -4,6 +4,8 @@ import { ConfigModule } from '@nestjs/config';
 import config from '../config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SpecialtyModule } from './specialty/specialty.module';
+import { OperationListModule } from './operation-list/operation-list.module';
+import { ClientsModule } from './clients/clients.module';
 import AppDataSource from './database/data-source';
 
 @Module({
@@ -20,6 +22,8 @@ import AppDataSource from './database/data-source';
 
     DentistryModule,
     SpecialtyModule,
+    OperationListModule,
+    ClientsModule,
   ],
 
   controllers: [],

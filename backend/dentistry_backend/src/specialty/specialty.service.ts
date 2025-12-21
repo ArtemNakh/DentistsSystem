@@ -10,7 +10,6 @@ export class SpecialtyService {
     @InjectRepository(Specialty)
     private specialtyRepository: Repository<Specialty>,
   ) {}
-
   findAll(): Promise<ISpecialty[]> {
     return this.specialtyRepository.find();
   }
