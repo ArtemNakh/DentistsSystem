@@ -10,10 +10,12 @@ export interface IClient {
   middle_name: string;
   birthdate: Date;
   blood_resus: BloodSign;
+  blood_group: number;
   phone: string;
   allergic_diseases: string;
   email: string;
   password: string;
+  isVerified: boolean;
 
   created_at: Date;
   updated_at: Date;

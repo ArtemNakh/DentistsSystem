@@ -7,9 +7,6 @@ import {
 } from 'typeorm';
 import { BloodSign, IClient } from './client.interface';
 
-
-
-
 @Entity({ name: 'clients' })
 export class Client implements IClient {
   @PrimaryGeneratedColumn()
@@ -30,6 +27,9 @@ export class Client implements IClient {
   @Column({ type: 'enum', enum: BloodSign })
   blood_resus: BloodSign;
 
+  @Column({ type: 'int', nullable: false })
+  blood_group: number;
+
   @Column({ type: 'varchar', length: 30, nullable: false })
   phone: string;
 
@@ -44,8 +44,6 @@ export class Client implements IClient {
 
   @Column({ name: 'isverified', type: 'boolean', default: false })
   isVerified: boolean;
-
-  
 
   @CreateDateColumn({ name: 'created_at' })
   created_at: Date;

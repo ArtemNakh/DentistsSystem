@@ -8,7 +8,8 @@ import { ValidationPipe } from '@nestjs/common';
 import session from 'express-session';
 import { ms, StringValue } from './libs/common/ms.util';
 import { parseBoolean } from './libs/common/parse-boolean.util';
-import { RedisStore } from 'connect-redis';
+
+import connectRedis from 'connect-redis';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -16,13 +17,18 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
 
   // const redis = new IORedis(configService.getOrThrow('REDIS_URI'));
-  const redis = new IORedis({
-    host: configService.getOrThrow('REDIS_HOST'),
-    port: parseInt(configService.getOrThrow('REDIS_PORT'), 10),
-    password: configService.getOrThrow('REDIS_PASSWORD'),
-    maxRetriesPerRequest: null,
-    enableReadyCheck: false,
-  });
+  // const redis = new IORedis({
+  //   host: configService.getOrThrow('REDIS_HOST'),
+  //   port: parseInt(configService.getOrThrow('REDIS_PORT'), 10),
+  //   password: configService.getOrThrow('REDIS_PASSWORD'),
+  //   maxRetriesPerRequest: null,
+  //   enableReadyCheck: false,
+
+  // });
+
+  // const redis = new IORedis(configService.getOrThrow('REDIS_URI'))
+  const redis = new IORedis(configService.getOrThrow('REDIS_URI'));
+  const RedisStore = connectRedis(session);
 
   app.use(cookieParser(configService.getOrThrow<string>('COOKIES_SECRET')));
 
@@ -34,8 +40,12 @@ async function bootstrap() {
 
   app.use(
     session({
+      store: new RedisStore({
+        client: redis,
+        prefix: configService.getOrThrow<string>('SESSION_FOLDER') + ':',
+      }),
       secret: configService.getOrThrow<string>('SESSION_SECRET'),
-      name: configService.getOrThrow<string>('SESSION_SECRET'),
+      name: configService.getOrThrow<string>('SESSION_NAME'),
       resave: true,
       saveUninitialized: false,
       cookie: {
@@ -48,13 +58,32 @@ async function bootstrap() {
           configService.getOrThrow<string>('SESSION_SECURE'),
         ),
         sameSite: 'lax',
-      },
-      store: new RedisStore({
-        client: redis,
-        prefix: configService.getOrThrow<string>('SESSION_FOLDER'),
-      }),
+      }
     }),
   );
+  // app.use(
+  //   session({
+  //     secret: configService.getOrThrow<string>('SESSION_SECRET'),
+  //     name: configService.getOrThrow<string>('SESSION_NAME'),
+  //     resave: true,
+  //     saveUninitialized: false,
+  //     cookie: {
+  //       domain: configService.getOrThrow<string>('SESSION_DOMAIN'),
+  //       maxAge: ms(configService.getOrThrow<StringValue>('SESSION_MAX_AGE')),
+  //       httpOnly: parseBoolean(
+  //         configService.getOrThrow<string>('SESSION_HTTP_ONLY'),
+  //       ),
+  //       secure: parseBoolean(
+  //         configService.getOrThrow<string>('SESSION_SECURE'),
+  //       ),
+  //       sameSite: 'lax',
+  //     },
+  //     store: new RedisStore({
+  //       client: redis,
+  //       prefix: configService.getOrThrow<string>('SESSION_FOLDER') + ':',
+  //     }),
+  //   }),
+  // );
 
   app.enableCors({
     origin: configService.getOrThrow<string>('APPLICATION_ORIGIN'),
