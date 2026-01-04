@@ -7,6 +7,9 @@ import {
 } from 'typeorm';
 import { BloodSign, IClient } from './client.interface';
 
+
+
+
 @Entity({ name: 'clients' })
 export class Client implements IClient {
   @PrimaryGeneratedColumn()
@@ -33,11 +36,16 @@ export class Client implements IClient {
   @Column({ type: 'varchar', length: 255, nullable: false })
   allergic_diseases: string;
 
-  @Column({ type: 'varchar', length: 100, nullable: false })
+  @Column({ type: 'varchar', length: 100, nullable: false, unique: true })
   email: string;
 
   @Column({ type: 'varchar', length: 100, nullable: false })
   password: string;
+
+  @Column({ name: 'isverified', type: 'boolean', default: false })
+  isVerified: boolean;
+
+  
 
   @CreateDateColumn({ name: 'created_at' })
   created_at: Date;

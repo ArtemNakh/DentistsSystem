@@ -14,8 +14,9 @@ export class CreateClients1766316403013 implements MigrationInterface {
         blood_resus ENUM ('plus', 'minus') NOT NULL,
         phone varchar(30) NOT NULL,
         allergic_diseases varchar(255) NOT NULL,
-        email varchar(100) NOT NULL,
-        password varchar(100) NOT NULL
+        email varchar(100) NOT NULL Unique,
+        password varchar(100) NOT NULL,
+        isverified boolean Not Null default false
         );`);
   }
 

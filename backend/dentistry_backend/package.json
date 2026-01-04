@@ -22,8 +22,6 @@
     "migration:generate": "npm run typeorm migration:generate ./migrations/InitSchema -d src/data-source.ts",
     "migration:run": "npm run typeorm migration:run -d src/database/data-source.ts",
     "migration:revert": "npm run typeorm migration:revert -d src/data-source.ts"
-
-    
   },
   "dependencies": {
     "@faker-js/faker": "^8.0.2",
@@ -35,6 +33,7 @@
     "@nestjs/sequelize": "^11.0.1",
     "@nestjs/swagger": "^11.2.3",
     "@nestjs/typeorm": "^11.0.0",
+    "ioredis": "^5.8.2",
     "mysql2": "^3.16.0",
     "nestjs-seeder": "^0.3.2",
     "reflect-metadata": "^0.2.2",

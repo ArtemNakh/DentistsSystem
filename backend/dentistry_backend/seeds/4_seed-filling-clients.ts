@@ -27,6 +27,7 @@ async function runSeed() {
         allergic_diseases: faker.lorem.words(3), // випадкові "алергії"
         email: faker.internet.email(),
         password: faker.internet.password({ length: 10 }),
+        isVerified:false
       });
       clients.push(client);
     }

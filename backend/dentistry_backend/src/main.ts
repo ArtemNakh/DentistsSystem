@@ -6,6 +6,8 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  
+
   const configSwagger = new DocumentBuilder()
     .setTitle(
       'Інформаційна система керування взаємодією з клієнтами (CPM) стоматологічної клініки',

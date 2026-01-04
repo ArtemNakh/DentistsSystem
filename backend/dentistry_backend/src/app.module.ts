@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { SpecialtyModule } from './specialty/specialty.module';
 import { OperationListModule } from './operation-list/operation-list.module';
 import { ClientsModule } from './clients/clients.module';
+import { AuthModule } from './auth/auth.module';
 import AppDataSource from './database/data-source';
 
 @Module({
@@ -24,6 +25,7 @@ import AppDataSource from './database/data-source';
     SpecialtyModule,
     OperationListModule,
     ClientsModule,
+    AuthModule,
   ],
 
   controllers: [],
