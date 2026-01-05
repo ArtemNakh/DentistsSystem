@@ -36,7 +36,7 @@ export class AuthController {
           surname: 'Doe',
           middle_name: 'Michael',
           birthdate: '1990-05-15',
-          blood_resus: 'POSITIVE',
+          blood_resus: 'plus',
           blood_group: 2,
           phone: '+1234567890',
           allergic_diseases: 'Pollen',
