@@ -1,7 +1,12 @@
-import { IsEmail, IsNotEmpty } from 'class-validator'
+import { ApiProperty } from '@nestjs/swagger';
+import { IsEmail, IsNotEmpty } from 'class-validator';
 
 export class ResetPasswordDto {
-	@IsEmail({}, { message: 'введіть коректний адрес електронний пошти' })
-	@IsNotEmpty({ message: 'Поле email не може бути пустим' })
-	email: string
+  @ApiProperty({
+    description: 'Email client for recovery password',
+    example: 'user@example.com',
+  })
+  @IsEmail({}, { message: 'Enter correct email' })
+  @IsNotEmpty({ message: 'Field email can not be empty' })
+  email: string;
 }

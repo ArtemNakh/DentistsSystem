@@ -1,8 +1,13 @@
-import { IsNotEmpty, IsString, MinLength } from 'class-validator'
+import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsString, MinLength } from 'class-validator';
 
 export class NewPasswordDto {
-	@IsString({ message: 'Пароль повинен бути строкою' })
-	@MinLength(6, { message: 'Пароль повинен содержати не меньше 6 символів' })
-	@IsNotEmpty({ message: 'Поле новий пароль не може бути пустим' })
-	password: string
+  @ApiProperty({
+    description: 'New client`s password. Minimal 6 symbol',
+    example: 'TestPass123',
+  })
+  @IsString({ message: 'Password must be string' })
+  @MinLength(6, { message: 'Password must contain not less 6 symbol' })
+  @IsNotEmpty({ message: 'Field new password can not be empty' })
+  password: string;
 }
