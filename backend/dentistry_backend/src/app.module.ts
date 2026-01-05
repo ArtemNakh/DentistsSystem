@@ -12,6 +12,7 @@ import { TokensModule } from './tokens/tokens.module';
 import AppDataSource from './database/data-source';
 import { EmailConfirmationModule } from './auth/email-confirmation/email-confirmation.module';
 import { EmailModule } from './libs/email/email.module';
+import { PasswordRecoveryModule } from './auth/password-recovery/password-recovery.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { EmailModule } from './libs/email/email.module';
     EmailConfirmationModule,
     TokensModule,
     EmailModule,
+    PasswordRecoveryModule,
   ],
 
   controllers: [],

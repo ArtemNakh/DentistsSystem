@@ -1,9 +1,7 @@
 export enum TokenType {
-  VERIFICATION,
-  PASSWORD_RESET,
+  VERIFICATION = 'VERIFICATION',
+  PASSWORD_RESET = 'PASSWORD_RESET',
 }
-
-
 
 export interface IToken {
   id: number;
