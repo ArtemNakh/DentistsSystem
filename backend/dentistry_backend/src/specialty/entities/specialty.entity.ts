@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { ISpecialty } from './specialty.interface';
+import { ISpecialty, SpecialtyType } from './specialty.interface';
 import { Worker } from '../../workers/entities/workers.entity';
 
 @Entity({ name: 'specialties' })
@@ -19,6 +19,9 @@ export class Specialty implements ISpecialty {
 
   @Column({ type: 'varchar', nullable: true })
   description: string;
+
+  @Column({ type: 'enum', enum: SpecialtyType, nullable: false })
+  type: SpecialtyType;
 
   @CreateDateColumn({ name: 'created_at' })
   created_at: Date;

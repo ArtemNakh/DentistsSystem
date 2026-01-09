@@ -7,7 +7,8 @@ export class CreateSpecialty1766268547720 implements MigrationInterface {
         created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
         updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         name varchar(150) NOT NULL,
-        description varchar(255)
+        description varchar(255),
+         type ENUM('doctor','admin') NOT NULL
         );`);
   }
 
