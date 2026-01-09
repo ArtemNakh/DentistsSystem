@@ -13,6 +13,7 @@ import AppDataSource from './database/data-source';
 import { EmailConfirmationModule } from './auth/email-confirmation/email-confirmation.module';
 import { EmailModule } from './libs/email/email.module';
 import { PasswordRecoveryModule } from './auth/password-recovery/password-recovery.module';
+import { WorkersModule } from './workers/workers.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { PasswordRecoveryModule } from './auth/password-recovery/password-recove
     TokensModule,
     EmailModule,
     PasswordRecoveryModule,
+    WorkersModule,
   ],
 
   controllers: [],

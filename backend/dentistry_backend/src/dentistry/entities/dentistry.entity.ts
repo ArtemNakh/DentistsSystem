@@ -13,11 +13,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { IDentistry } from './dentistry.interface';
-
+import {Worker} from '../../workers/entities/workers.entity';
 // //field for creating new value
 // interface DentistryCreateAttr {
 //   street: string;
@@ -65,9 +66,8 @@ import { IDentistry } from './dentistry.interface';
 //   declare updated_at: Date;
 // }
 
-
 @Entity({ name: 'dental_clinics' })
-export class Dentistry  implements IDentistry{
+export class Dentistry implements IDentistry {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -79,6 +79,9 @@ export class Dentistry  implements IDentistry{
 
   @Column({ type: 'varchar', nullable: false })
   region: string;
+
+  @OneToMany(() => Worker, (worker) => worker.dentistry)
+  workers: Worker[];
 
   @CreateDateColumn({ name: 'created_at' })
   created_at: Date;

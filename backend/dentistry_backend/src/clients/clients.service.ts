@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Client } from './entities/client.entity';
 import { Repository } from 'typeorm';
-import { BloodSign, IClient } from './entities/client.interface';
+import {  IClient } from './entities/client.interface';
 import { CreateClientInput } from './dto/CreateClientInput.dto';
 import * as argon2 from 'argon2';
 

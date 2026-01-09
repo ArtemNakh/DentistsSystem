@@ -1,35 +1,23 @@
-import { OperationList } from "../src/operation-list/entities/operation-list.entity";
-import AppDataSource from "../src/database/data-source";
 import { faker } from "@faker-js/faker";
+import { OperationList } from "../src/operation-list/entities/operation-list.entity";
 
-async function runSeed() {
-  try {
-    // 1. Ініціалізація DataSource
-    await AppDataSource.initialize();
+import { DataSource } from "typeorm";
 
-    const repo = AppDataSource.getRepository(OperationList);
+export async function seedOperationList(dataSource: DataSource) {
+  const repo = dataSource.getRepository(OperationList);
 
-    // 2. Кількість записів (можна задати через ENV або змінну)
-    const count = Number(process.env.SEED_COUNT) || 20;
+  const count = Number(process.env.SEED_COUNT_OPERATIONS) || 20;
+  const operations: OperationList[] = [];
 
-    const operations: OperationList[] = [];
-
-    for (let i = 0; i < count; i++) {
-      const operation = repo.create({
-        name: faker.commerce.productName(),          // випадкова назва
-        description: faker.commerce.productDescription(), // випадковий опис
-        price: parseFloat(faker.commerce.price({ min: 50, max: 500 })), // випадкова ціна
-      });
-      operations.push(operation);
-    }
-
-    await repo.save(operations);
-    console.log(`✅ Згенеровано ${count} випадкових операцій`);
-
-    await AppDataSource.destroy();
-  } catch (error) {
-    console.error("❌ Помилка при сидінгу:", error);
+  for (let i = 0; i < count; i++) {
+    const operation = repo.create({
+      name: faker.commerce.productName(),
+      description: faker.commerce.productDescription(),
+      price: parseFloat(faker.commerce.price({ min: 50, max: 500 })),
+    });
+    operations.push(operation);
   }
-}
 
-runSeed();
+  await repo.save(operations);
+  console.log(`✅ Згенеровано ${count} типів операцій`);
+}
