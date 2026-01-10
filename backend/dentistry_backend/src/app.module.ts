@@ -14,6 +14,7 @@ import { EmailConfirmationModule } from './auth/email-confirmation/email-confirm
 import { EmailModule } from './libs/email/email.module';
 import { PasswordRecoveryModule } from './auth/password-recovery/password-recovery.module';
 import { WorkersModule } from './workers/workers.module';
+import { LicenseModule } from './license/license.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { WorkersModule } from './workers/workers.module';
     EmailModule,
     PasswordRecoveryModule,
     WorkersModule,
+    LicenseModule,
   ],
 
   controllers: [],

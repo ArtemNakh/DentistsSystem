@@ -5,6 +5,7 @@ import { seedSpecialties } from './2_seed-filling-specialties';
 import { seedClients } from './4_seed-filling-clients';
 import { seedWorkers } from './5_seed-filling-worker';
 import { seedOperationList } from './3_seed-filling-operation-list';
+import { seedLicenses } from './6_seed-filling-license';
 
 async function runAllSeeds() {
   try {
@@ -18,6 +19,7 @@ async function runAllSeeds() {
     await seedClients(AppDataSource);
     await seedOperationList(AppDataSource);
     await seedWorkers(AppDataSource);
+    await seedLicenses(AppDataSource);
 
     console.log('✅ Усі сидери відпрацювали успішно');
 

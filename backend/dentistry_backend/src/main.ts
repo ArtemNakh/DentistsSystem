@@ -11,7 +11,6 @@ import { parseBoolean } from './libs/common/parse-boolean.util';
 
 import connectRedis from 'connect-redis';
 
-
 //покроковий запуск
 // docker-compose up -d      ( docker-compose down-v)
 // npx ts-node ./node_modules/typeorm/cli.js migration:run -d ./src/database/data-source.ts
@@ -22,17 +21,6 @@ async function bootstrap() {
 
   const configService = app.get(ConfigService);
 
-  // const redis = new IORedis(configService.getOrThrow('REDIS_URI'));
-  // const redis = new IORedis({
-  //   host: configService.getOrThrow('REDIS_HOST'),
-  //   port: parseInt(configService.getOrThrow('REDIS_PORT'), 10),
-  //   password: configService.getOrThrow('REDIS_PASSWORD'),
-  //   maxRetriesPerRequest: null,
-  //   enableReadyCheck: false,
-
-  // });
-
-  // const redis = new IORedis(configService.getOrThrow('REDIS_URI'))
   const redis = new IORedis(configService.getOrThrow('REDIS_URI'));
   const RedisStore = connectRedis(session);
 
@@ -64,32 +52,9 @@ async function bootstrap() {
           configService.getOrThrow<string>('SESSION_SECURE'),
         ),
         sameSite: 'lax',
-      }
+      },
     }),
   );
-  // app.use(
-  //   session({
-  //     secret: configService.getOrThrow<string>('SESSION_SECRET'),
-  //     name: configService.getOrThrow<string>('SESSION_NAME'),
-  //     resave: true,
-  //     saveUninitialized: false,
-  //     cookie: {
-  //       domain: configService.getOrThrow<string>('SESSION_DOMAIN'),
-  //       maxAge: ms(configService.getOrThrow<StringValue>('SESSION_MAX_AGE')),
-  //       httpOnly: parseBoolean(
-  //         configService.getOrThrow<string>('SESSION_HTTP_ONLY'),
-  //       ),
-  //       secure: parseBoolean(
-  //         configService.getOrThrow<string>('SESSION_SECURE'),
-  //       ),
-  //       sameSite: 'lax',
-  //     },
-  //     store: new RedisStore({
-  //       client: redis,
-  //       prefix: configService.getOrThrow<string>('SESSION_FOLDER') + ':',
-  //     }),
-  //   }),
-  // );
 
   app.enableCors({
     origin: configService.getOrThrow<string>('APPLICATION_ORIGIN'),

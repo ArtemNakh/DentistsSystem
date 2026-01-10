@@ -4,6 +4,7 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -11,6 +12,7 @@ import { IWorker } from './workers.interface';
 import { Specialty } from '../../specialty/entities/specialty.entity';
 
 import { Dentistry } from '../../dentistry/entities/dentistry.entity';
+import { License } from '../../license/entities/license.entity';
 
 @Entity({ name: 'workers' })
 export class Worker implements IWorker {
@@ -39,6 +41,9 @@ export class Worker implements IWorker {
   @ManyToOne(() => Dentistry, (dentistry) => dentistry.workers)
   @JoinColumn({ name: 'dentistry_id' })
   dentistry: Dentistry;
+
+  @OneToMany(() => License, (license) => license.worker)
+  licenses: License[];
 
   @Column({ type: 'varchar', length: 100, nullable: false, unique: true })
   login: string;
