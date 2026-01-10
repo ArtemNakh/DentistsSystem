@@ -13,6 +13,7 @@ import { Specialty } from '../../specialty/entities/specialty.entity';
 
 import { Dentistry } from '../../dentistry/entities/dentistry.entity';
 import { License } from '../../license/entities/license.entity';
+import { WorkerShifts } from '../../worker-shifts/entities/worker-shifts.entity';
 
 @Entity({ name: 'workers' })
 export class Worker implements IWorker {
@@ -44,6 +45,9 @@ export class Worker implements IWorker {
 
   @OneToMany(() => License, (license) => license.worker)
   licenses: License[];
+
+  @OneToMany(() => WorkerShifts, (shift) => shift.worker)
+  shifts: WorkerShifts[];
 
   @Column({ type: 'varchar', length: 100, nullable: false, unique: true })
   login: string;

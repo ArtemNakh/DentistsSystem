@@ -77,7 +77,10 @@ async function bootstrap() {
   
   SwaggerModule.setup(endDocsApi, app, documentFactory);
   await app.listen(port);
-  console.log(`🚀 Server is running on http://localhost:${port}`);
-  console.log(`Docs api: http://localhost:${port}${endDocsApi}`);
+  console.log(`🚀 Server is running on http://localhost:${port} 
+    \n Docs api: http://localhost:${port}${endDocsApi}
+    \n Login client page:
+    \n Login worker page:
+    \n Main site page:`);
 }
 bootstrap();
