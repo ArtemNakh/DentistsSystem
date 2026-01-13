@@ -1,4 +1,4 @@
-import AppDataSource from '../src/database/data-source';
+import AppDataSource from '../../src/database/data-source';
 
 import { seedDentistries } from './1_seed-filling-dental-clinics';
 import { seedSpecialties } from './2_seed-filling-specialties';

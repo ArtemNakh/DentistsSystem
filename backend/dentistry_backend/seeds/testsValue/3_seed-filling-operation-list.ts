@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { OperationList } from "../src/operation-list/entities/operation-list.entity";
+import { OperationList } from "../../src/operation-list/entities/operation-list.entity";
 
 import { DataSource } from "typeorm";
 

@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { DataSource } from 'typeorm';
-import { License } from '../src/license/entities/license.entity';
-import { Worker } from '../src/workers/entities/workers.entity';
+import { License } from '../../src/license/entities/license.entity';
+import { Worker } from '../../src/workers/entities/workers.entity';
 
 export async function seedLicenses(dataSource: DataSource) {
   const licenseRepo = dataSource.getRepository(License);

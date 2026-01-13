@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
-import { Dentistry } from '../src/dentistry/entities/dentistry.entity';
-import { Specialty } from '../src/specialty/entities/specialty.entity';
-import { Worker } from '../src/workers/entities/workers.entity';
+import { Dentistry } from '../../src/dentistry/entities/dentistry.entity';
+import { Specialty } from '../../src/specialty/entities/specialty.entity';
+import { Worker } from '../../src/workers/entities/workers.entity';
 
 import { DataSource } from 'typeorm';
 

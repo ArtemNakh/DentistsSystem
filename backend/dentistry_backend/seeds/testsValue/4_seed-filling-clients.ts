@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
-import { Client } from '../src/clients/entities/client.entity';
-import { BloodSign } from '../src/clients/entities/client.interface';
+import { Client } from '../../src/clients/entities/client.entity';
+import { BloodSign } from '../../src/clients/entities/client.interface';
 
 import { DataSource } from 'typeorm';
 

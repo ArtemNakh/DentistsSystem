@@ -1,8 +1,8 @@
 import { faker } from "@faker-js/faker";
-import { Specialty } from "../src/specialty/entities/specialty.entity";
+import { Specialty } from "../../src/specialty/entities/specialty.entity";
 
 import { DataSource } from "typeorm";
-import { SpecialtyType } from "../src/specialty/entities/specialty.interface";
+import { SpecialtyType } from "../../src/specialty/entities/specialty.interface";
 
 export async function seedSpecialties(dataSource: DataSource) {
   const repo = dataSource.getRepository(Specialty);

@@ -1,9 +1,9 @@
 import { faker } from '@faker-js/faker';
 import { DataSource } from 'typeorm';
-import { Appointment } from '../src/appointment/entity/appointment.entity';
-import { Client } from '../src/clients/entities/client.entity';
-import { Worker } from '../src/workers/entities/workers.entity';
-import { StatusAppointment } from '../src/appointment/entity/appointment.interface';
+import { Appointment } from '../../src/appointment/entity/appointment.entity';
+import { Client } from '../../src/clients/entities/client.entity';
+import { Worker } from '../../src/workers/entities/workers.entity';
+import { StatusAppointment } from '../../src/appointment/entity/appointment.interface';
 
 export async function seedAppointments(
   dataSource: DataSource,

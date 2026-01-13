@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { Dentistry } from '../src/dentistry/entities/dentistry.entity';
+import { Dentistry } from '../../src/dentistry/entities/dentistry.entity';
 
 import { DataSource } from 'typeorm';
 

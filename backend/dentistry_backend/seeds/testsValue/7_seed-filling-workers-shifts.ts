@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { DataSource } from 'typeorm';
-import { WorkerShifts } from '../src/worker-shifts/entities/worker-shifts.entity';
-import { Worker } from '../src/workers/entities/workers.entity';
+import { WorkerShifts } from '../../src/worker-shifts/entities/worker-shifts.entity';
+import { Worker } from '../../src/workers/entities/workers.entity';
 
 export async function seedWorkerShifts(
   dataSource: DataSource,
