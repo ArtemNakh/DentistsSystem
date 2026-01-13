@@ -1,3 +1,4 @@
+import { IAppointment } from 'src/appointment/entity/appointment.interface';
 import { IDentistry } from 'src/dentistry/entities/dentistry.interface';
 import { ILicense } from 'src/license/entities/license.interface';
 import { ISpecialty } from 'src/specialty/entities/specialty.interface';
@@ -12,11 +13,14 @@ export interface IWorker {
   phone: string;
   specialty: ISpecialty;
   dentistry: IDentistry;
-  shifts?: IWorkerShifts[];
   login: string;
   password: string;
-  licenses?: ILicense[];
 
   created_at: Date;
   updated_at: Date;
+  
+  //foreign connections
+  licenses?: ILicense[];
+  appointments?: IAppointment[];
+  shifts?: IWorkerShifts[];
 }

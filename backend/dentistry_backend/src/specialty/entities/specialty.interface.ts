@@ -10,7 +10,9 @@ export interface ISpecialty {
   name: string;
   description?: string;
   type: SpecialtyType;
-  worker?: IWorker[];
   created_at: Date;
   updated_at: Date;
+
+  //foreign connections
+  worker?: IWorker[];
 }

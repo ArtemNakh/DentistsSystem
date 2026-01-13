@@ -1,3 +1,5 @@
+import { IAppointment } from "src/appointment/entity/appointment.interface";
+
 export enum BloodSign {
   plus = 'plus',
   minus = 'minus',
@@ -16,7 +18,11 @@ export interface IClient {
   email: string;
   password: string;
   isVerified: boolean;
-
+  
   created_at: Date;
   updated_at: Date;
+
+  //foreign connections
+  appointments?:IAppointment[];
+
 }

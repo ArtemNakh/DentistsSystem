@@ -2,10 +2,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { BloodSign, IClient } from './client.interface';
+
+import { Appointment } from '../../appointment/entity/appointment.entity';
 
 @Entity({ name: 'clients' })
 export class Client implements IClient {
@@ -50,4 +53,8 @@ export class Client implements IClient {
 
   @UpdateDateColumn({ name: 'updated_at' })
   updated_at: Date;
+
+  //foreign connection
+  @OneToMany(() => Appointment, (appointment) => appointment.client)
+  appointments: Appointment[];
 }

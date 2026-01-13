@@ -16,6 +16,7 @@ import { PasswordRecoveryModule } from './auth/password-recovery/password-recove
 import { WorkersModule } from './workers/workers.module';
 import { LicenseModule } from './license/license.module';
 import { WorkerShiftsModule } from './worker-shifts/worker-shifts.module';
+import { AppointmentModule } from './appointment/appointment.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { WorkerShiftsModule } from './worker-shifts/worker-shifts.module';
     WorkersModule,
     LicenseModule,
     WorkerShiftsModule,
+    AppointmentModule,
   ],
 
   controllers: [],

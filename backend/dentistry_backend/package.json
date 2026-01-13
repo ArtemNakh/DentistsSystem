@@ -21,7 +21,10 @@
     "typeorm": "typeorm-ts-node-commonjs",
     "migration:generate": "npm run typeorm migration:generate ./migrations/InitSchema -d src/data-source.ts",
     "migration:run": "npm run typeorm migration:run -d src/database/data-source.ts",
-    "migration:revert": "npm run typeorm migration:revert -d src/data-source.ts"
+    "migration:revert": "npm run typeorm migration:revert -d src/data-source.ts",
+
+    "migr:run": "ts-node ./node_modules/typeorm/cli.js migration:run -d ./src/database/data-source.ts",
+    "seed": "ts-node ./seeds/runAllSeeds.ts"
   },
   "dependencies": {
     "@faker-js/faker": "^8.0.2",
