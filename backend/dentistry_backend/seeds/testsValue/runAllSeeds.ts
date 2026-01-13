@@ -8,6 +8,7 @@ import { seedOperationList } from './3_seed-filling-operation-list';
 import { seedLicenses } from './6_seed-filling-license';
 import { seedWorkerShifts } from './7_seed-filling-workers-shifts';
 import { seedAppointments } from './8_seed-filling-appointments';
+import { seedAppointmentActions } from './9_seed-filling-appointments-actions';
 
 async function runAllSeeds() {
   try {
@@ -23,7 +24,8 @@ async function runAllSeeds() {
     await seedWorkers(AppDataSource);
     await seedLicenses(AppDataSource);
     await seedWorkerShifts(AppDataSource, 0, 50);
-    await seedAppointments(AppDataSource,1,30)
+    await seedAppointments(AppDataSource, 1, 30);
+    await seedAppointmentActions(AppDataSource, 1, 10);
 
     console.log('✅ Усі сидери відпрацювали успішно');
 

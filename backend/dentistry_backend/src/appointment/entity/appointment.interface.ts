@@ -1,3 +1,4 @@
+import { IAppointmentActions } from "src/appointment-action/entity/appointment-action.interface";
 import { IClient } from "src/clients/entities/client.interface";
 import { IWorker } from "src/workers/entities/workers.interface";
 
@@ -21,4 +22,5 @@ export interface IAppointment{
 
 
  //foreign connection
+ appointment_actions?:IAppointmentActions[];
 }

@@ -5,11 +5,14 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Client } from '../../clients/entities/client.entity';
 import { Worker } from '../../workers/entities/workers.entity';
+import { AppointmentActions } from '../../appointment-action/entity/appointment-action.entity';
+
 
 @Entity({ name: 'appointments' })
 export class Appointment implements IAppointment {
@@ -38,4 +41,11 @@ export class Appointment implements IAppointment {
 
   @UpdateDateColumn({ name: 'updated_at' })
   updated_at: Date;
+
+  //Foreign connection
+  @OneToMany(
+    () => AppointmentActions,
+    (appointment_action) => appointment_action.appointment,
+  )
+  appointment_actions: AppointmentActions[];
 }

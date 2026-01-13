@@ -2,10 +2,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { IOperationList } from './operation-list.interface';
+import { AppointmentActions } from '../../appointment-action/entity/appointment-action.entity';
 
 @Entity({ name: 'operation_list' })
 export class OperationList implements IOperationList {
@@ -26,4 +28,11 @@ export class OperationList implements IOperationList {
 
   @UpdateDateColumn({ name: 'updated_at' })
   updated_at: Date;
+
+  //foreign connection
+  @OneToMany(
+    () => AppointmentActions,
+    (appointment_action) => appointment_action.operation,
+  )
+  appointment_actions: AppointmentActions[];
 }

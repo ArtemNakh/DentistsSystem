@@ -62,6 +62,6 @@ export class Worker implements IWorker {
   @OneToMany(() => WorkerShifts, (shift) => shift.worker)
   shifts: WorkerShifts[];
 
-  @OneToMany(() => Appointment, (appointmen) => appointmen.dentist)
+  @OneToMany(() => Appointment, (appointment) => appointment.dentist)
   appointments: Appointment[];
 }

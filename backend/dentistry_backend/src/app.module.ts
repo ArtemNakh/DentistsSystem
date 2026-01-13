@@ -17,6 +17,7 @@ import { WorkersModule } from './workers/workers.module';
 import { LicenseModule } from './license/license.module';
 import { WorkerShiftsModule } from './worker-shifts/worker-shifts.module';
 import { AppointmentModule } from './appointment/appointment.module';
+import { AppointmentActionModule } from './appointment-action/appointment-action.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { AppointmentModule } from './appointment/appointment.module';
     LicenseModule,
     WorkerShiftsModule,
     AppointmentModule,
+    AppointmentActionModule,
   ],
 
   controllers: [],
