@@ -19,6 +19,7 @@ import { WorkerShiftsModule } from './worker-shifts/worker-shifts.module';
 import { AppointmentModule } from './appointment/appointment.module';
 import { AppointmentActionModule } from './appointment-action/appointment-action.module';
 import { NotificationModule } from './notification/notification.module';
+import { PaymentModule } from './payment/payment.module';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { NotificationModule } from './notification/notification.module';
     AppointmentModule,
     AppointmentActionModule,
     NotificationModule,
+    PaymentModule,
   ],
 
   controllers: [],

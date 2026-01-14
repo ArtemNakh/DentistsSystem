@@ -6,6 +6,7 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -13,6 +14,7 @@ import { Client } from '../../clients/entities/client.entity';
 import { Worker } from '../../workers/entities/workers.entity';
 import { AppointmentActions } from '../../appointment-action/entity/appointment-action.entity';
 import { Notification } from '../../notification/entity/notification.entity';
+import { Payment } from '../../payment/entity/payment.entity';
 
 @Entity({ name: 'appointments' })
 export class Appointment implements IAppointment {
@@ -51,4 +53,7 @@ export class Appointment implements IAppointment {
 
   @OneToMany(() => Notification, (notification) => notification.appointment)
   notifications: Notification[];
+
+  @OneToOne(()=>Payment,(payment)=>payment.appointment)
+  payment:Payment
 }
