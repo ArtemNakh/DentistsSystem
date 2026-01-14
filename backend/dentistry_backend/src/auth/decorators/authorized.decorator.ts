@@ -8,14 +8,6 @@ import { Worker } from '../../workers/entities/workers.entity';
  * - Якщо передати data (наприклад, Authorized('login')), то повернеться конкретне поле працівника.
  * - Якщо data не передано (Authorized()), то повертається весь об’єкт Worker.
  */
-// export const Authorized = createParamDecorator(
-//   (data: keyof Worker, ctx: ExecutionContext) => {
-//     const request = ctx.switchToHttp().getRequest();
-//     const worker = request.user as Worker;
-
-//     return data ? worker[data] : worker;
-//   },
-// );
 
 
 import { Client } from 'src/clients/entities/client.entity';

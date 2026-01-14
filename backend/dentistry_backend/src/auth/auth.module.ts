@@ -11,7 +11,7 @@ import { ClientsModule } from 'src/clients/clients.module';
 @Module({
   imports: [ClientsModule, WorkersModule,TypeOrmModule.forFeature([Client]),forwardRef(() => EmailConfirmationModule)],
   controllers: [AuthController],
-  providers: [AuthService, ClientService],
+  providers: [AuthService],
   exports: [AuthService],
 })
 export class AuthModule {}
