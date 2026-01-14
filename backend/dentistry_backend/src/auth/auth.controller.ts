@@ -13,6 +13,8 @@ import { AuthService } from './auth.service';
 import { RegisterClientDto } from './dto/registerClient.dto';
 import { LoginClientDto } from './dto/loginClient.dto';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { LoginWorkerDto } from './dto/loginWorker.dto';
+import { RegisterWorkerDto } from './dto/registerWorker.dto';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -96,5 +98,38 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
   ) {
     return this.authService.logoutClient(req, res);
+  }
+
+  // ================= WORKER =================
+  // @Post('registerWorker')
+  // @HttpCode(HttpStatus.OK)
+  // @ApiOperation({ summary: 'Register a new worker' })
+  // @ApiBody({ type: RegisterWorkerDto })
+  // @ApiResponse({ status: 200, description: 'Worker successfully registered.' })
+  // public async registerWorker(
+  //   @Req() req: Request,
+  //   @Body() dto: RegisterWorkerDto,
+  // ) {
+  //   return this.authService.registerWorker(req, dto);
+  // }
+
+  
+  @Post('loginWorker')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Login worker' })
+  @ApiBody({ type: LoginWorkerDto })
+  @ApiResponse({ status: 200, description: 'Worker successfully logged in.' })
+  public async loginWorker(@Req() req: Request, @Body() dto: LoginWorkerDto) {
+    return await this.authService.loginWorker(req, dto);
+  }
+  @Post('logoutWorker')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Logout worker' })
+  @ApiResponse({ status: 200, description: 'Worker successfully logged out.' })
+  public async logoutWorker(
+    @Req() req: Request,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    return this.authService.logoutWorker(req, res);
   }
 }

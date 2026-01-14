@@ -69,7 +69,8 @@ export class EmailConfirmationService {
     const updatedClient = await this.clientRepo.findOneBy({
       id: existingUser.id,
     });
-    return this.authService.saveSession(req,updatedClient!);
+     return this.authService.saveClientSession(req,updatedClient!);
+    // return this.authService.saveSession(req,updatedClient!);
   }
 
   public async sendVerificationToken(email: string) {
