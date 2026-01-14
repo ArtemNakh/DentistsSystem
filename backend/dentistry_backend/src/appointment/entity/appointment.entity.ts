@@ -12,7 +12,7 @@ import {
 import { Client } from '../../clients/entities/client.entity';
 import { Worker } from '../../workers/entities/workers.entity';
 import { AppointmentActions } from '../../appointment-action/entity/appointment-action.entity';
-
+import { Notification } from '../../notification/entity/notification.entity';
 
 @Entity({ name: 'appointments' })
 export class Appointment implements IAppointment {
@@ -48,4 +48,7 @@ export class Appointment implements IAppointment {
     (appointment_action) => appointment_action.appointment,
   )
   appointment_actions: AppointmentActions[];
+
+  @OneToMany(() => Notification, (notification) => notification.appointment)
+  notifications: Notification[];
 }
