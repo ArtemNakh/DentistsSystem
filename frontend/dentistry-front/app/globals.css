@@ -12,6 +12,13 @@
   --font-mono: var(--font-geist-mono);
 }
 
+@theme {
+  --color-soft-purple-7: #684B99;
+  --color-soft-purple-5: #7e5bba;
+  --color-light-gray-2:#9FA0A3;
+  --color-light-gray-0:#E5E7EB;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;

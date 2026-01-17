@@ -24,7 +24,7 @@ export class PasswordRecoveryController {
     private readonly passwordRecoveryService: PasswordRecoveryService,
   ) {}
 
-  @Post('reset')
+  @Post('reset-password')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
     summary: 'Request password reset',

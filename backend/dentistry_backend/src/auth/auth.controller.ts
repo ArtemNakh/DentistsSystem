@@ -194,6 +194,7 @@ export class AuthController {
   public async loginWorker(@Req() req: Request, @Body() dto: LoginWorkerDto) {
     return await this.authService.loginWorker(req, dto);
   }
+  
   @Post('logoutWorker')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
