@@ -13,8 +13,8 @@ import connectRedis from 'connect-redis';
 
 //покроковий запуск
 // docker-compose up -d      ( docker-compose down-v)
-// npx ts-node ./node_modules/typeorm/cli.js migration:run -d ./src/database/data-source.ts
-//npx ts-node ./seeds/runAllSeeds.ts
+//npm run migr:run      npx ts-node ./node_modules/typeorm/cli.js migration:run -d ./src/database/data-source.ts
+//npm run seed:test     npx ts-node ./seeds/runAllSeeds.ts
 //npm run start           npm run start:dev
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

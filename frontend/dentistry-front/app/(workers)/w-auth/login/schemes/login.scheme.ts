@@ -2,9 +2,8 @@
 import * as Yup from "yup";
 
 const loginValidationSchema = Yup.object().shape({
-  email: Yup.string()
-    .required("Requere email")
-    .email("must be email")
+  login: Yup.string()
+    .required("Require login")
     .min(5, "minimal 5 values")
     .max(100, "max 100"),
 

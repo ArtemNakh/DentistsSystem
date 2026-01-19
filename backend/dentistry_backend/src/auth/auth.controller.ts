@@ -22,6 +22,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { LoginWorkerDto } from './dto/loginWorker.dto';
+import { RegisterWorkerDto } from './dto/registerWorker.dto';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -158,7 +159,7 @@ export class AuthController {
     description: 'Worker successfully logged in.',
     schema: {
       example: {
-        access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
+        authToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
         worker: {
           id: 1,
           name: 'Іван',
@@ -218,5 +219,20 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
   ) {
     return this.authService.logoutWorker(req, res);
+  }
+
+
+  //temporary
+    @Post('registerWorker')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Register a new worker' })
+  @ApiBody({ type: RegisterWorkerDto })
+  @ApiResponse({ status: 200, description: 'Worker successfully registered.' })
+  public async registerWorker(
+    @Req() req: Request,
+    @Body() dto: RegisterWorkerDto,
+  ) {
+    console.log(dto)
+    return this.authService.registerWorker(req, dto);
   }
 }

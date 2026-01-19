@@ -1,56 +1,29 @@
 "use client";
 import { Form, Formik } from "formik";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import loginValidationSchema from "./schemes/login.scheme";
-import EmailField from "./components/EmailField";
+import LoginField from "./components/LoginField";
 import PasswordField from "./components/PasswordField";
 import SubmitButton from "./components/SubmitButton";
-import ResetPasswordLink from "./components/ResetPasswordLink";
+import { loginWorker } from "./services/loginService";
 
 export default function WorkerLogin() {
   const loginValidation = useMemo(() => loginValidationSchema, []);
 
-  // const onSubmit = async (values: { email: string; password: string }) => {
-  //   // console.log("Submitted values:", values);
-  //   // console.log("⏳ Застосунок заснув на 3 секунди...");
-  //   // const sleep = (ms: number) =>
-  //   //   new Promise((resolve) => setTimeout(resolve, ms));
-  //   // await sleep(3000);
-  //   // // пауза 3 секунди
-  //   // console.log("✅ Submitted values:", values);
-  // };
   const [error, setError] = useState<string | null>(null);
-  const [worker, setWorker] = useState<any>(null);
-  const onSubmit = async (values: { email: string; password: string }) => {
-    try {
-      setError(null);
-      setWorker(null);
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-      // ⚠️ Тут вказати реальну адресу бекенду
-      const response = await fetch(`${apiUrl}/auth/loginWorker`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        // бекенд очікує { login, password }
-        body: JSON.stringify({
-          login: values.email,
-          password: values.password,
-        }),
-      });
-      if (!response.ok) {
-        const errData = await response.json();
-        setError(errData.message || "Помилка авторизації");
-        return;
+
+  const onSubmit = useCallback(
+    async (values: { login: string; password: string }) => {
+      try {
+        setError(null);
+        const data = await loginWorker(values);
+        localStorage.setItem("authToken", data.authToken);
+      } catch (e: any) {
+        setError(e.message);
       }
-      const data = await response.json();
-      // зберегти токен у localStorage
-      localStorage.setItem("access_token", data.access_token);
-      // зберегти дані працівника у стан
-      setWorker(data.worker);
-      console.log("✅ Успішний логін:", data);
-    } catch (e: any) {
-      setError("Сталася помилка при запиті: " + e.message);
-    }
-  };
+    },
+    [],
+  );
 
   return (
     <>
@@ -58,17 +31,17 @@ export default function WorkerLogin() {
 
       <Formik
         initialValues={{
-          email: "",
+          login: "",
           password: "",
         }}
         validationSchema={loginValidation}
         onSubmit={onSubmit}
       >
         <Form className="flex flex-col gap-4 ">
-          <EmailField />
+          <LoginField />
           <PasswordField />
           <SubmitButton />
-          <ResetPasswordLink />
+          {error && <div className="text-red-500 text-center">{error}</div>}
         </Form>
       </Formik>
     </>

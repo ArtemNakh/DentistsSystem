@@ -13,7 +13,9 @@ const nextConfig: NextConfig = {
   },
 };
 console.log(
-  `\n📱 Frontend will start on http://localhost:${process.env.APPLICATION_PORT}\n`
+  `\n📱 Frontend will start on http://localhost:${process.env.APPLICATION_PORT}\n`+
+  `Auth worker  http://localhost:${process.env.APPLICATION_PORT}/w-auth/login  `
+
 );
 
 export default nextConfig;

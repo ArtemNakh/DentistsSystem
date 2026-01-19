@@ -1,18 +1,18 @@
 import { ErrorMessage, Field } from "formik";
 
-export default function EmailField() {
+export default function LoginField() {
   return (
     <div className=" text-gray-300 ">
-      <label className="block mb-1 ">Email</label>
+      <label className="block mb-1 ">Login</label>
       <Field
-        id="email"
-        name="email"
-        type="email"
+        id="login"
+        name="login"
+        type="login"
         className="w-full p-2 border rounded focus:outline-none hover:border-gray-100 "
-        placeholder="Введіть email"
+        placeholder="Введіть login"
       />
       <ErrorMessage
-        name="email"
+        name="login"
         component="div"
         className=" text-red-500  text-lg"
       />
