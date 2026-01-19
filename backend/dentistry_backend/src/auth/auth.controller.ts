@@ -22,7 +22,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { LoginWorkerDto } from './dto/loginWorker.dto';
-import { RegisterWorkerDto } from './dto/registerWorker.dto';
+
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -222,17 +222,5 @@ export class AuthController {
   }
 
 
-  //temporary
-    @Post('registerWorker')
-  @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Register a new worker' })
-  @ApiBody({ type: RegisterWorkerDto })
-  @ApiResponse({ status: 200, description: 'Worker successfully registered.' })
-  public async registerWorker(
-    @Req() req: Request,
-    @Body() dto: RegisterWorkerDto,
-  ) {
-    console.log(dto)
-    return this.authService.registerWorker(req, dto);
-  }
+  
 }

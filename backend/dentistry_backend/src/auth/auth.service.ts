@@ -16,7 +16,7 @@ import { ConfigService } from '@nestjs/config';
 import { WorkersService } from 'src/workers/workers.service';
 import { Worker } from '../workers/entities/workers.entity';
 import { LoginWorkerDto } from './dto/loginWorker.dto';
-import { RegisterWorkerDto } from './dto/registerWorker.dto';
+
 
 @Injectable()
 export class AuthService {
@@ -141,16 +141,5 @@ export class AuthService {
     });
   }
 
-  //temporary
-  public async registerWorker(req: Request, dto: RegisterWorkerDto) {
-    const isExists = await this.workerService.findByLoginTemp(dto.login);
-    if (isExists) {
-      throw new ConflictException(
-        'Registration failed. A worker with the same login already exists.',
-      );
-    }
-    console.log('2' + dto);
-    const newWorker = await this.workerService.createWorker(dto);
-    return { message: 'Worker successfully registered.' };
-  }
+  
 }
