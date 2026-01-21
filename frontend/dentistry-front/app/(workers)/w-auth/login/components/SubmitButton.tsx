@@ -2,7 +2,7 @@ import { useFormikContext } from "formik";
 
 export default function SubmitButton() {
   const { isSubmitting } = useFormikContext<{
-    email: string;
+    login: string;
     password: string;
   }>();
   return (

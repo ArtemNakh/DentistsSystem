@@ -17,6 +17,7 @@
   --color-soft-purple-5: #7e5bba;
   --color-light-gray-2:#9FA0A3;
   --color-light-gray-0:#E5E7EB;
+  --color-gray-450: #9198A3;
 }
 
 @media (prefers-color-scheme: dark) {
