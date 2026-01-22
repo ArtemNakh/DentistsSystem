@@ -1,0 +1,24 @@
+import { ErrorMessage, Field } from "formik";
+
+export default function PhoneRegistrationClientField() {
+  return (
+    <>
+      <div className="mx-5  text-gray-500">
+        <label className="block mb-1 text-lg text-gray-700">Phone</label>
+        <Field
+          id="phone"
+          name="phone"
+          type="text"
+          maxLength={30}
+          className="w-full p-2 border border-gray-400 rounded focus:outline-none hover:border-gray-950"
+          placeholder="Enter phone number"
+        />
+        <ErrorMessage
+          name="phone"
+          component="div"
+          className="text-red-500 text-lg"
+        />
+      </div>
+    </>
+  );
+}

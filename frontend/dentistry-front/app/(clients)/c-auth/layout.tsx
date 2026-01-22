@@ -5,10 +5,17 @@ export default function AuthClientLayout({
 }) {
   return (
     <>
-      <div className="relative min-h-screen bg-white ">
-        <div className="absolute  top-0 right-0 w-2/3 h-full rounded-b-[1000px] rounded-br-none bg-yellow-500 z-10" />
-        <div className="  absolute top-1/2 left-1/2 w-80 h-auto bg-gray-200 z-20  transform -translate-x-1/2 -translate-y-1/2 rounded-lg">
-          {children}
+      <div className="relative bg-white min-h-dvh">
+        {/* Yellow background */}
+        <div className="absolute inset-0 flex justify-end pointer-events-none z-10">
+          <div className="w-2/3 h-full bg-yellow-500 rounded-b-[1000px] rounded-br-none" />
+        </div>
+
+        {/* Content */}
+        <div className="relative z-20 flex justify-center py-20">
+          <div className="w-full max-w-md bg-gray-200 rounded-lg p-6">
+            {children}
+          </div>
         </div>
       </div>
     </>
