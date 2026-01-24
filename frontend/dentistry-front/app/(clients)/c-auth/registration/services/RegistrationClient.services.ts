@@ -3,7 +3,7 @@ import { IRegisterClient } from "../interfaces/RegisterClient.interface";
 export async function RegistrationClient(values: IRegisterClient) {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-  const response = await fetch(`${apiUrl}/auth/registration`, {
+  const response = await fetch(`${apiUrl}/auth/registrationClient`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(values),
@@ -14,5 +14,6 @@ export async function RegistrationClient(values: IRegisterClient) {
     throw new Error(errData.message || "Помилка авторизації");
   }
 
+  
   return response.json();
 }

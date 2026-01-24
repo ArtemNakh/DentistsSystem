@@ -1,5 +1,6 @@
 export async function LoginClient (values: { email: string; password: string }){
 
+  console.log("email/pass",values.email+values.password)
  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   const response = await fetch(`${apiUrl}/auth/login`, {
     method: "POST",

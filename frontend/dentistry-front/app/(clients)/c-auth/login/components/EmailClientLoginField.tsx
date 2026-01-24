@@ -4,7 +4,7 @@ export default function EmailClientLoginField() {
   return (
     <>
       <div className="mx-5   text-gray-700 mb-3 ">
-        <label className="block mb-1 text-lg ">Login</label>
+        <label className="block mb-1 text-lg ">Email</label>
         <Field
           id="email"
           name="email"

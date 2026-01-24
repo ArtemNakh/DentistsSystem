@@ -17,7 +17,6 @@ import { WorkersService } from 'src/workers/workers.service';
 import { Worker } from '../workers/entities/workers.entity';
 import { LoginWorkerDto } from './dto/loginWorker.dto';
 
-
 @Injectable()
 export class AuthService {
   public constructor(
@@ -37,7 +36,12 @@ export class AuthService {
       );
     }
     const newClient = await this.clientService.createClient(dto);
-    await this.emailConfirmationService.sendVerificationToken(newClient.email);
+    this.emailConfirmationService
+      .sendVerificationToken(newClient.email)
+      .catch((err) => console.error('Email error:', err));
+
+    // await this.emailConfirmationService.sendVerificationToken(newClient.email);
+    console.log('registr client success met');
     return {
       message:
         'You are successfully registered. Please confirm your email. A mail was sent to your email.',
@@ -125,8 +129,6 @@ export class AuthService {
 
   private async saveWorkerSession(req: Request, worker: Worker) {
     return new Promise((resolve, reject) => {
-    
-      
       req.session.clientId = undefined;
       req.session.workerId = worker.id.toString();
       req.session.save((err) => {
@@ -140,6 +142,4 @@ export class AuthService {
       });
     });
   }
-
-  
 }

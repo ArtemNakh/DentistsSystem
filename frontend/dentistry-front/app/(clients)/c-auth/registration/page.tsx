@@ -21,6 +21,14 @@ import PasswordRegistrationClientField from "./components/PasswordRegistrationCl
 import PasswordRepeatRegistrationClientField from "./components/PasswordRepeatRegistrationClientField";
 import SubmitClientRegistrationButton from "./components/SubmitRegistrationClientButton";
 
+import dynamic from "next/dynamic";
+
+// динамічний імпорт модального вікна (не вантажиться одразу)
+const ModalInfoRegistrationClientField = dynamic(
+  () => import("./components/ModalInfoRegistrationClientField"),
+  { ssr: false },
+);
+
 export default function ClientRegistration() {
   const registrationClientValidation = useMemo(
     () => RegistrationClientValidationSchema,
@@ -28,12 +36,15 @@ export default function ClientRegistration() {
   );
 
   const [error, setError] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const onSubmit = useCallback(async (values: IRegisterClient) => {
     try {
       setError(null);
       const data = await RegistrationClient(values);
       localStorage.setItem("authToken", data.authToken);
+      // відкриваємо модальне вікно після успішної реєстрації
+      setIsModalOpen(true);
     } catch (e: any) {
       setError(e.message);
     }
@@ -66,7 +77,6 @@ export default function ClientRegistration() {
           onSubmit={onSubmit}
         >
           <Form className="flex flex-col  gap-4 min-h-screen">
-            
             <NameRegistrationClientField />
             <SurnameRegistrationClientField />
             <MiddleNameRegistrationClientField />
@@ -86,6 +96,11 @@ export default function ClientRegistration() {
           </Form>
         </Formik>
       </div>
+      {/* Модальне вікно підтвердження */}
+      <ModalInfoRegistrationClientField
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </>
   );
 }

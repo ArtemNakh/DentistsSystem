@@ -22,7 +22,11 @@ export default function PasswordRegistrationClientField() {
             onClick={() => setShowPassword((prev) => !prev)}
             className="absolute right-2 top-2 text-sm text-gray-600 hover:text-gray-900"
           >
-            {showPassword ? "Hide" : "Show"}
+           {showPassword ? (
+            <img src="/eye-open.svg" alt="Show password" className="h-5 w-5" />
+          ) : (
+            <img src="/eye-closed.svg" alt="Hide password" className="h-5 w-5" />
+          )}
           </button>
         </div>
 

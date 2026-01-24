@@ -29,7 +29,7 @@ import { LoginWorkerDto } from './dto/loginWorker.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post('registerClient')
+  @Post('registrationClient')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
     summary: 'Register a new client',
@@ -72,6 +72,7 @@ export class AuthController {
     @Req() req: Request,
     @Body() dto: RegisterClientDto,
   ) {
+    
     return this.authService.registerClient(req, dto);
   }
 
