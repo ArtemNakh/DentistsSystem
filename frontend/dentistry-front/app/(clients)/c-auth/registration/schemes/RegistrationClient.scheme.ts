@@ -34,9 +34,8 @@ const RegistrationClientValidationSchema = Yup.object().shape({
     .required("Група крові є обов'язковою"),
 
   phone: Yup.string()
-    .matches(/^\+?[0-9]{10,15}$/, "Некоректний номер телефону")
+    .matches(/^\+?[0-9]{10,20}$/, "Некоректний номер телефону")
     .required("Телефон є обов'язковим"),
-
   allergic_diseases: Yup.string()
     .max(255, "Опис алергій не може перевищувати 255 символів")
     .nullable(),
@@ -50,7 +49,6 @@ const RegistrationClientValidationSchema = Yup.object().shape({
     .matches(/[A-Z]/, "Пароль має містити хоча б одну велику літеру")
     .matches(/[a-z]/, "Пароль має містити хоча б одну малу літеру")
     .matches(/[0-9]/, "Пароль має містити хоча б одну цифру")
-    // .matches(/[@$!%*?&]/, "Пароль має містити хоча б один спецсимвол")
     .required("Пароль є обов'язковим"),
 
   passwordRepeat: Yup.string()

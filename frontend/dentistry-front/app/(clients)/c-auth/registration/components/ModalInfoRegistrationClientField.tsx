@@ -1,13 +1,20 @@
-import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-export default function ModalInfoRegistrationClientField({ isOpen, onClose }: ModalProps) {
- 
-    
+export default function ModalInfoRegistrationClientField({
+  isOpen,
+  onClose,
+}: ModalProps) {
+
+  const router = useRouter();
+  const handleClose = () => {
+    onClose();
+    router.push("/c-auth/login");
+  };
   return (
     <>
       <div>
@@ -22,7 +29,7 @@ export default function ModalInfoRegistrationClientField({ isOpen, onClose }: Mo
                 акаунт.
               </p>
               <button
-                onClick={() => onClose()}
+                onClick={() => handleClose()}
                 className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-400"
               >
                 Закрити

@@ -1,7 +1,8 @@
 // validationSchemas.ts
 import * as Yup from "yup";
+import { ILoginClient } from "../interfaces/LoginClient.interface";
 
-const loginClientValidationSchema = Yup.object().shape({
+const loginClientValidationSchema: Yup.ObjectSchema<ILoginClient> = Yup.object().shape({
   email: Yup.string()
     .required("Require login")
     .min(5, "minimal 5 values")

@@ -7,6 +7,7 @@ import EmailClientLoginField from "./components/EmailClientLoginField";
 import PasswordClientLoginField from "./components/PasswordClientLoginField";
 import NoAccountLink from "./components/NoAccountLink";
 import { LoginClient } from "./services/LoginClient.services";
+import { ILoginClient } from "./interfaces/LoginClient.interface";
 
 export default function ClientLogin() {
   const loginClientValidation = useMemo(() => loginClientValidationSchema, []);
@@ -14,7 +15,7 @@ export default function ClientLogin() {
   const [error, setError] = useState<string | null>(null);
 
   const onSubmit = useCallback(
-    async (values: { email: string; password: string }) => {
+    async (values: ILoginClient) => {
       try {
         setError(null);
         const data = await LoginClient(values);

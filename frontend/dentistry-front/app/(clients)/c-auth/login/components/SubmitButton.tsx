@@ -1,10 +1,8 @@
 import { useFormikContext } from "formik";
+import { ILoginClient } from "../interfaces/LoginClient.interface";
 
 export default function SubmitClientLoginButton() {
-  const { isSubmitting } = useFormikContext<{
-    email: string;
-    password: string;
-  }>();
+  const { isSubmitting } = useFormikContext<ILoginClient>();
   return (
     <>
       <div className="mx-5 mb-2">
