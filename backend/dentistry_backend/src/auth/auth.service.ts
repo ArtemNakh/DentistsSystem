@@ -40,8 +40,6 @@ export class AuthService {
       .sendVerificationToken(newClient.email)
       .catch((err) => console.error('Email error:', err));
 
-    // await this.emailConfirmationService.sendVerificationToken(newClient.email);
-    console.log('registr client success met');
     return {
       message:
         'You are successfully registered. Please confirm your email. A mail was sent to your email.',
