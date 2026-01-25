@@ -16,6 +16,6 @@ export const getMailerConfig = async (
 		}
 	},
 	defaults: {
-		from: `TeCoder Team${configService.getOrThrow<string>('MAIL_LOGIN')}`
+		from: `Dentists system ${configService.getOrThrow<string>('MAIL_LOGIN')}`
 	}
 })
