@@ -1,32 +1,30 @@
-
 "use client";
-import { ClientActionSaga } from "@/lib/redux/clientSaga";
-import { createSelector } from "@reduxjs/toolkit";
-import  { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+
+import { RootState, useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
+import {
+  ClientActionSaga,
+  ClientsState,
+} from "@/lib/redux/modules/clients/ClientEntity";
+import { useEffect } from "react";
+import { shallowEqual } from "react-redux";
 
 function AdminsMain() {
-  const dispatch = useDispatch();
-  // const clients = useSelector((state: any) => Object.values(state.Clients));
-  const selectClients = createSelector(
-    (state: any) => state.Clients,
-    (clients) => Object.values(clients),
+  const dispatch = useAppDispatch();
+  const clients = useAppSelector(
+    (state: RootState) => Object.values(state.Clients as ClientsState),
+    shallowEqual,
   );
-  const clients = useSelector(selectClients);
 
   useEffect(() => {
     dispatch({ type: ClientActionSaga.GetClients });
   }, [dispatch]);
-
   return (
-    <>
-      <h1>Clients</h1>
-      <ul>
-        {clients.map((client: any) => (
-          <li key={client.id}>{client.name}</li>
-        ))}
-      </ul>
-    </>
+    <ul>
+      {" "}
+      {clients.map((client: any) => (
+        <li key={client.id}>{client.name}</li>
+      ))}{" "}
+    </ul>
   );
 }
 
