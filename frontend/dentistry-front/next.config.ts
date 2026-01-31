@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+
 //Launch
 //npm run dev   or npm run build    npm start
 
@@ -17,7 +18,7 @@ console.log(
     `Auth worker  http://localhost:${process.env.APPLICATION_PORT}/w-auth/login  ` +
     `\nAuth login client   http://localhost:${process.env.APPLICATION_PORT}/c-auth/login  `,
   `\nAuth Registration client   http://localhost:${process.env.APPLICATION_PORT}/c-auth/registration  `,
-  `\nAdmin main   http://localhost:${process.env.APPLICATION_PORT}/admins  `
+  `\nAdmin main   http://localhost:${process.env.APPLICATION_PORT}/admins  `,
 );
 
 export default nextConfig;

@@ -1,0 +1,38 @@
+{
+  "loginClient": {
+    "title": "Login",
+    "email": {
+      "label": "Email",
+      "placeholder": "Enter your email"
+    },
+    "password": {
+      "label": "Password",
+      "placeholder": "Enter your password",
+      "show": "Show password",
+      "hide": "Hide password"
+    },
+    "submit": { "default": "Sign in", "loading": "Wait..." },
+    "noAccount": "No account?",
+    "registerLink": "Register here"
+  },
+  "error": {
+    "email": {
+      "required": "Email must be",
+      "min": "Minimal symbol",
+      "max": "Maximum символів",
+      "invalid": "Must be correct email"
+    },
+    "password": {
+      "required": "Password must be",
+      "min": "Minimal symbol ",
+      "max": "Maximum symbol"
+    },
+    "login": {
+      "failed": "Uncorrect email or password",
+      "userNotFound": "User not found",
+      "notVerified": "Email is not verified",
+      "default": "Authorization error"
+    },
+    "server": "Server`s error,repeat later"
+  }
+}

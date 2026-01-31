@@ -1,8 +1,9 @@
 import { ILoginClient } from "../interfaces/LoginClient.interface";
+import i18n from "i18next";
 
 export async function LoginClient(values: ILoginClient) {
   const mainApiUrl = process.env.NEXT_PUBLIC_API_URL;
-  const endApiUrl= '/auth/login'
+  const endApiUrl = "/auth/login";
   const response = await fetch(`${mainApiUrl}${endApiUrl}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -10,7 +11,10 @@ export async function LoginClient(values: ILoginClient) {
   });
   if (!response.ok) {
     const errData = await response.json();
-    throw new Error(errData.message || "Помилка авторизації");
+    // errData.message може бути "Invalid email or password", "User not found" тощо
+    const translatedError =
+      i18n.t(`error.login.${errData.message}`) || i18n.t("error.login.default");
+    throw new Error(translatedError);
   }
   return response.json();
 }
