@@ -1,4 +1,5 @@
 import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 
 interface ModalProps {
   isOpen: boolean;
@@ -9,6 +10,7 @@ export default function ModalInfoRegistrationClientField({
   isOpen,
   onClose,
 }: ModalProps) {
+  const { t } = useTranslation();
 
   const router = useRouter();
   const handleClose = () => {
@@ -22,17 +24,16 @@ export default function ModalInfoRegistrationClientField({
           <div className="  fixed inset-0 flex items-center justify-center ">
             <div className="border-2 border-gray-400 bg-gray-200 rounded-lg shadow-lg p-6 max-w-prose w-full">
               <h2 className="text-xl font-bold mb-4 text-gray-700">
-                Реєстрація успішна 🎉
+                {t("registrationClient.modalInfo.success")}
               </h2>
               <p className="text-gray-700 mb-6">
-                Будь ласка, перевірте вашу електронну пошту та верифікуйте
-                акаунт.
+                {t("registrationClient.modalInfo.nextStep")}
               </p>
               <button
                 onClick={() => handleClose()}
                 className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-400"
               >
-                Закрити
+                {t("registrationClient.modalInfo.close")}
               </button>
             </div>
           </div>

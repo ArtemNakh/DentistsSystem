@@ -12,10 +12,119 @@
       "hide": "Hide password"
     },
     "submit": { "default": "Sign in", "loading": "Wait..." },
-    "noAccount": "No account?",
-    "registerLink": "Register here"
+    "noAccount": "No account?"
+  },
+  "registrationClient": {
+    "title": "Registraiton",
+    "allergicDiseases": {
+      "title": "Allergic Diseases",
+      "placeholder": "Enter allergic diseases"
+    },
+    "birthday": {
+      "title": "Birthday",
+      "placeholder": "Enter birthdate"
+    },
+    "bloodGroup": {
+      "title": "Blood Group",
+      "placeholder": "Enter blood group (1–4)"
+    },
+    "email": {
+      "title": "Email",
+      "placeholder": "Enter email"
+    },
+    "middleName": {
+      "title": "Middle name",
+      "placeholder": "Enter middle name"
+    },
+    "modalInfo": {
+      "success": "Registration successful",
+      "nextStep": "Please, check your email and verify your account",
+      "close": "Close"
+    },
+    "name": {
+      "title": "Name",
+      "placeholder": "Enter name"
+    },
+    "password": {
+      "title": "Password",
+      "placeholder": "Enter password",
+      "show": "Show password",
+      "hide": "Hide password"
+    },
+    "passwordRepeat": {
+      "title": "Repeat password ",
+      "placeholder": "Enter password",
+      "show": "Show password",
+      "hide": "Hide password"
+    },
+    "phone": {
+      "title": "Phone",
+      "placeholder": "Enter phone number"
+    },
+    "surname": {
+      "title": "Surname",
+      "placeholder": "Enter surname"
+    },
+    "submit": { "default": "Sign in", "loading": "Wait..." },
+
+    "haveAccout": "Already have account?"
+  },
+  "loginWorking": {
+"title":"Login"
+
   },
   "error": {
+    "registration_client": {
+      "name": {
+        "required": "Name is required",
+        "min": "Name must be at least 3 characters",
+        "max": "Name cannot exceed 50 characters"
+      },
+      "surname": {
+        "required": "Surname is required",
+        "min": "Surname must be at least 2 characters",
+        "max": "Surname cannot exceed 50 characters"
+      },
+      "middleName": {
+        "required": "Middle name is required",
+        "min": "Middle name must be at least 2 characters",
+        "max": "Middle name cannot exceed 50 characters"
+      },
+      "birthdate": {
+        "required": "Birthdate is required",
+        "max": "Birthdate cannot be in the future"
+      },
+      "bloodResus": {
+        "required": "Rh factor is required",
+        "invalid": "Invalid Rh factor"
+      },
+      "bloodGroup": {
+        "required": "Blood group is required",
+        "invalid": "Invalid blood group"
+      },
+      "phone": {
+        "required": "Phone number is required",
+        "invalid": "Invalid phone number"
+      },
+      "allergicDiseases": {
+        "max": "Allergic diseases description cannot exceed 255 characters"
+      },
+      "email": {
+        "required": "Email is required",
+        "invalid": "Invalid email address"
+      },
+      "password": {
+        "required": "Password is required",
+        "min": "Password must be at least 8 characters",
+        "uppercase": "Password must contain at least one uppercase letter",
+        "lowercase": "Password must contain at least one lowercase letter",
+        "number": "Password must contain at least one number"
+      },
+      "passwordRepeat": {
+        "required": "Password repeat is required",
+        "match": "Passwords must match"
+      }
+    },
     "email": {
       "required": "Email must be",
       "min": "Minimal symbol",
@@ -32,6 +141,12 @@
       "userNotFound": "User not found",
       "notVerified": "Email is not verified",
       "default": "Authorization error"
+    },
+    "registration": {
+      "alreadyExists": "User with this email already exists",
+      "weakPassword": "Password does not meet security requirements",
+      "invalidData": "Invalid registration data",
+      "default": "Registration error"
     },
     "server": "Server`s error,repeat later"
   }

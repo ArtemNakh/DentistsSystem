@@ -1,6 +1,8 @@
 import { useFormikContext } from "formik";
+import { useTranslation } from "react-i18next";
 
 export default function SubmitClientRegistrationButton() {
+  const { t } = useTranslation();
   const { isSubmitting } = useFormikContext<{
     email: string;
     password: string;
@@ -13,7 +15,9 @@ export default function SubmitClientRegistrationButton() {
           disabled={isSubmitting}
           className="border w-full border-gray-400 rounded p-2  text-gray-700 hover:bg-gray-300"
         >
-          {isSubmitting ? "Зачекайте..." : "Увійти"}
+          {isSubmitting
+            ? t("registrationClient.submit.loading")
+            : t("registrationClient.submit.default")}
         </button>
       </div>
     </>

@@ -1,4 +1,5 @@
 import { IRegisterClient } from "../interfaces/RegisterClient.interface";
+import i18n from "i18next";
 
 export async function RegistrationClient(values: IRegisterClient) {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -11,9 +12,11 @@ export async function RegistrationClient(values: IRegisterClient) {
 
   if (!response.ok) {
     const errData = await response.json();
-    throw new Error(errData.message || "Помилка авторизації");
+    const translatedError =
+      i18n.t(`error.login.${errData.message}`) ||
+      i18n.t("error.registration.default");
+    throw new Error(translatedError);
   }
 
-  
   return response.json();
 }

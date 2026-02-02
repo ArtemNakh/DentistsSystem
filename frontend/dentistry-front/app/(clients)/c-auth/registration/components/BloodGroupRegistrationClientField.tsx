@@ -1,10 +1,14 @@
 import { ErrorMessage, Field } from "formik";
+import { useTranslation } from "react-i18next";
 
 export default function BloodGroupRegistrationClientField() {
+  const { t } = useTranslation();
   return (
     <>
       <div className="mx-5  text-gray-500">
-        <label className="block mb-1 text-lg text-gray-700">Blood Group</label>
+        <label className="block mb-1 text-lg text-gray-700">
+          {t("registrationClient.bloodGroup.title")}
+        </label>
         <Field
           id="blood_group"
           name="blood_group"
@@ -13,7 +17,7 @@ export default function BloodGroupRegistrationClientField() {
           max={4}
           step={1}
           className="w-full p-2 border border-gray-400 rounded focus:outline-none hover:border-gray-950"
-          placeholder="Enter blood group (1–4)"
+          placeholder={t("registrationClient.bloodGroup.placeholder")}
         />
         <ErrorMessage
           name="blood_group"

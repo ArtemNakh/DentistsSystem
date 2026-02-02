@@ -6,8 +6,10 @@ import LoginField from "./components/LoginField";
 import PasswordField from "./components/PasswordField";
 import SubmitButton from "./components/SubmitButton";
 import { loginWorker } from "./services/loginService";
+import { useTranslation } from "react-i18next";
 
 export default function WorkerLogin() {
+  const { t } = useTranslation();
   const loginValidation = useMemo(() => loginValidationSchema, []);
 
   const [error, setError] = useState<string | null>(null);
@@ -27,7 +29,9 @@ export default function WorkerLogin() {
 
   return (
     <>
-      <label className="pb-4 flex justify-center text-2xl ">Login</label>
+      <label className="pb-4 flex justify-center text-2xl ">
+        {t("loginWorking.title")}
+      </label>
 
       <Formik
         initialValues={{

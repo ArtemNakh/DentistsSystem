@@ -22,6 +22,7 @@ import PasswordRepeatRegistrationClientField from "./components/PasswordRepeatRe
 import SubmitClientRegistrationButton from "./components/SubmitRegistrationClientButton";
 
 import dynamic from "next/dynamic";
+import { useTranslation } from "react-i18next";
 
 // динамічний імпорт модального вікна (не вантажиться одразу)
 const ModalInfoRegistrationClientField = dynamic(
@@ -30,6 +31,7 @@ const ModalInfoRegistrationClientField = dynamic(
 );
 
 export default function ClientRegistration() {
+  const { t } = useTranslation();
   const registrationClientValidation = useMemo(
     () => RegistrationClientValidationSchema,
     [],
@@ -68,7 +70,7 @@ export default function ClientRegistration() {
     <>
       <div className="">
         <label className="flex text-2xl  text-gray-700 w-full mt-5 mb-3 justify-center">
-          Registration
+          {t("Registraiton")}
         </label>
 
         <Formik
