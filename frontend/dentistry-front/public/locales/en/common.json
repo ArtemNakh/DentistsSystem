@@ -69,16 +69,44 @@
 
     "haveAccout": "Already have account?"
   },
-  "loginWorking": {
-"title":"Login"
-
+  "loginWorker": {
+    "title": "Login",
+    "login": {
+      "title": "Login",
+      "placeholder": "Enter login"
+    },
+    "password": {
+      "title": "Password",
+      "placeholder": "Enter password"
+    },
+    "resetPassword": "Reset password",
+    "submit": { "default": "Sign in", "loading": "Wait..." }
   },
   "error": {
+    "loginClient": {
+      "login": {
+        "failed": "Uncorrect email or password",
+        "userNotFound": "User not found",
+        "notVerified": "Email is not verified",
+        "default": "Authorization error"
+      },
+      "email": {
+        "required": "Email must be",
+        "min": "Minimal symbol",
+        "max": "Maximum символів",
+        "invalid": "Must be correct email"
+      },
+      "password": {
+        "required": "Password must be",
+        "min": "Minimal symbol ",
+        "max": "Maximum symbol"
+      }
+    },
     "registration_client": {
       "name": {
         "required": "Name is required",
-        "min": "Name must be at least 3 characters",
-        "max": "Name cannot exceed 50 characters"
+        "min": "Name must be at least characters",
+        "max": "Name cannot exceed characters"
       },
       "surname": {
         "required": "Surname is required",
@@ -123,30 +151,30 @@
       "passwordRepeat": {
         "required": "Password repeat is required",
         "match": "Passwords must match"
+      },
+      "registration": {
+        "alreadyExists": "User with this email already exists",
+        "weakPassword": "Password does not meet security requirements",
+        "invalidData": "Invalid registration data",
+        "default": "Registration error"
       }
     },
-    "email": {
-      "required": "Email must be",
-      "min": "Minimal symbol",
-      "max": "Maximum символів",
-      "invalid": "Must be correct email"
-    },
-    "password": {
-      "required": "Password must be",
-      "min": "Minimal symbol ",
-      "max": "Maximum symbol"
-    },
-    "login": {
-      "failed": "Uncorrect email or password",
-      "userNotFound": "User not found",
-      "notVerified": "Email is not verified",
-      "default": "Authorization error"
-    },
-    "registration": {
-      "alreadyExists": "User with this email already exists",
-      "weakPassword": "Password does not meet security requirements",
-      "invalidData": "Invalid registration data",
-      "default": "Registration error"
+    "loginWorker": {
+      "login": {
+        "failed": "Uncorrect login or password",
+        "userNotFound": "Worker not found",
+        "default": "Authorization error"
+      },
+      "loginfield": {
+        "required": "Require login",
+        "min": "Minimal symbol",
+        "max": "Maximal symbol"
+      },
+      "password": {
+        "required": "Require password",
+        "min": "Minimal symbol",
+        "max": "Maximum symbol"
+      }
     },
     "server": "Server`s error,repeat later"
   }

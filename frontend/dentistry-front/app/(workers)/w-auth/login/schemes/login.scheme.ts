@@ -3,14 +3,14 @@ import * as Yup from "yup";
 
 const loginValidationSchema = Yup.object().shape({
   login: Yup.string()
-    .required("Require login")
-    .min(5, "minimal 5 values")
-    .max(100, "max 100"),
+    .required("error.loginWorker.loginfield.required")
+    .min(5, "error.loginWorker.loginfield.min" + " 5")
+    .max(100, "error.loginWorker.loginfield.max" + " 100"),
 
   password: Yup.string()
-    .required("require password")
-    .min(5, "minimal 5 symbol")
-    .max(100, "max 100 s"),
+    .required("error.loginWorker.password.required")
+    .min(5, "error.loginWorker.password.min" + " 5")
+    .max(100, "error.loginWorker.password.max" + " 100"),
 });
 
 export default loginValidationSchema;

@@ -35,9 +35,9 @@ export default function ClientLogin() {
         </label>
         <LanguageSwitch
           buttonClassName="mx-5 my-2 rounded p-1 text-gray-700 hover:bg-gray-300 border border-gray-400"
-          dropdownClassName="absolute mt-2 w-32 rounded-md shadow-lg bg-gray-800 text-white"
-          itemClassName="w-full px-3 py-2 text-sm hover:bg-gray-700"
-          activeItemClassName="bg-blue-700 font-bold"
+          dropdownClassName="absolute left-1/2 -translate-x-1/2 mt-2  w-auto rounded-md shadow-lg border border-gray-600 bg-gray-300 text-gray-900"
+          itemClassName="w-full px-4 py-2 text-sm hover:bg-gray-400"
+          activeItemClassName="bg-gray-400 font-bold"
         />
 
         <Formik
