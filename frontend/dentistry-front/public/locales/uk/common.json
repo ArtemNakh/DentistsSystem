@@ -66,7 +66,7 @@
       "placeholder": "Введіть прізвище"
     },
     "submit": { "default": "Зареєструватися", "loading": "Зачекайте..." },
-    "haveAccout": "Вже маєте акаунт?"
+    "haveAccount": "Вже маєте акаунт?"
   },
   "loginWorker": {
     "title": "Вхід",

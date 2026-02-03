@@ -67,7 +67,7 @@
     },
     "submit": { "default": "Sign in", "loading": "Wait..." },
 
-    "haveAccout": "Already have account?"
+    "haveAccount": "Already have account?"
   },
   "loginWorker": {
     "title": "Login",
