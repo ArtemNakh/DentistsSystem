@@ -18,6 +18,9 @@
   --color-light-gray-2:#9FA0A3;
   --color-light-gray-0:#E5E7EB;
   --color-gray-450: #9198A3;
+  --color-amethyst:#7555AD;
+  --color-slate-blue:#7C5AB8;
+  --color-royal-purple:#694C9C;
 }
 
 @media (prefers-color-scheme: dark) {

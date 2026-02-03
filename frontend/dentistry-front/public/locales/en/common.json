@@ -165,7 +165,7 @@
         "userNotFound": "Worker not found",
         "default": "Authorization error"
       },
-      "loginfield": {
+      "loginField": {
         "required": "Require login",
         "min": "Minimal symbol",
         "max": "Maximal symbol"
