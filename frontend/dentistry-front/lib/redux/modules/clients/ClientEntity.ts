@@ -114,3 +114,4 @@ export class ClientEntity {
     yield takeLatest(ClientActionSaga.AddClient, this.addClientSaga.bind(this));
   }
 }
+export const clientReducer = new ClientEntity().reducer;

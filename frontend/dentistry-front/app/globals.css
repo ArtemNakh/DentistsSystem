@@ -13,15 +13,15 @@
 }
 
 @theme {
-  --color-soft-purple-7: #684B99;
+  --color-soft-purple-7: #684b99;
   --color-soft-purple-5: #7e5bba;
-    --color-purple-850: #5A378A;
-  --color-light-gray-2:#9FA0A3;
-  --color-light-gray-0:#E5E7EB;
-  --color-gray-450: #9198A3;
-  --color-amethyst:#7555AD;
-  --color-slate-blue:#7C5AB8;
-  --color-royal-purple:#694C9C;
+  --color-purple-850: #5a378a;
+  --color-light-gray-2: #9fa0a3;
+  --color-light-gray-0: #e5e7eb;
+  --color-gray-450: #9198a3;
+  --color-amethyst: #7555ad;
+  --color-slate-blue: #7c5ab8;
+  --color-royal-purple: #694c9c;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -36,3 +36,51 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* календаря адміна */
+/* дизайн для днів тижнів для  */
+.calendar-admin .react-calendar__month-view__weekdays__weekday {
+  @apply border border-gray-400  bg-linear-to-r from-[#7F59BD] to-[#795EAF] text-lg font-bold text-center;
+}
+/*Дизайн року  */
+.react-calendar__navigation__label {
+  @apply bg-linear-to-r from-[#7F59BD] to-[#795EAF] text-gray-200 border border-gray-300 text-xl mx-2 px-2  py-1 rounded-md text-center;
+}
+
+/* Вимикання кнопок які перемотують на рік */
+.react-calendar__navigation__prev2-button,
+.react-calendar__navigation__next2-button {
+  display: none;
+}
+
+/* Кнопки які перемотують на місяць */
+.react-calendar__navigation {
+  @apply flex items-center justify-between my-1;
+}
+
+/* Ховер */
+.react-calendar__navigation button:hover {
+ @apply bg-[#6C4CA1]
+}
+
+/* Стрілки */
+.react-calendar__navigation__arrow {
+@apply  h-full border border-gray-400 text-2xl px-3 py-0.5 bg-[#7B5DB4]
+}
+/* Ліва кнопка (prev) */
+.react-calendar__navigation__prev-button {
+  @apply ml-2; /* додає відступ зліва */
+}
+
+/* Права кнопка (next) */
+.react-calendar__navigation__next-button {
+  @apply mr-2; /* додає відступ справа */
+}
+
+/* Дні сусідніх місяців */
+.react-calendar__month-view__days__day--neighboringMonth {
+  @apply  bg-linear-to-r from-[#624491] to-[#6A5299]  text-gray-300;
+}
+
+
+.react-calendar__tile abbr { display: none; }
