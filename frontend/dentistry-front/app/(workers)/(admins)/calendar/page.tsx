@@ -9,12 +9,12 @@ import { ClientActionSaga } from "@/lib/redux/modules/clients/ClientEntity";
 // Виправити помилку redux
 // Додати модальне вікно як у каледнарі тимса (у обраного об'єкта після натискання додажться можадьне вікно)
 export default function CalendarAdmin() {
-  const dispatch = useAppDispatch(); // отримуємо дані зі стору
-  const clients = useAppSelector((state) => state.Clients);
-  useEffect(() => {
-    // при монтуванні сторінки завантажуємо клієнтів
-    dispatch({ type: ClientActionSaga.GetClients });
-  }, [dispatch]);
+  // const dispatch = useAppDispatch(); // отримуємо дані зі стору
+  // const clients = useAppSelector((state) => state.Clients);
+  // useEffect(() => {
+  //   // при монтуванні сторінки завантажуємо клієнтів
+  //   dispatch({ type: ClientActionSaga.GetClients });
+  // }, [dispatch]);
 
   const [value, setValue] = useState(new Date());
   const [events, setEvents] = useState<Event[]>([
@@ -34,22 +34,6 @@ export default function CalendarAdmin() {
       );
       return (
         <div className="flex flex-col h-full hover:bg-[#7051A6] active:bg-[#6B4D9E]">
-          {/* test */}
-          <div>
-            {" "}
-            <h2>Список клієнтів</h2>{" "}
-            <ul>
-              {" "}
-              {Object.values(clients).map((client) => (
-                <li key={client.id}>
-                  {" "}
-                  {client.surname} {client.name} ({client.phone}){" "}
-                </li>
-              ))}{" "}
-            </ul>{" "}
-          </div>
-
-          {/* test end */}
           {/* Верхній блок з датою */}
           <div className="w-full flex justify-end items-center border border-gray-400  text-white px-1 text-sm">
             {date.getDate()}
@@ -139,6 +123,22 @@ export default function CalendarAdmin() {
   return (
     <>
       <HeaderAdmin />
+      {/* test */}
+      {/* <div>
+            {" "}
+            <h2>Список клієнтів</h2>{" "}
+            <ul>
+              {" "}
+              {Object.values(clients).map((client) => (
+                <li key={client.id}>
+                  {" "}
+                  {client.surname} {client.name} ({client.phone}){" "}
+                </li>
+              ))}{" "}
+            </ul>{" "}
+          </div> */}
+
+      {/* test end */}
       <div className=" flex  h-screen ">
         {/* lefft side */}
         {/* calendar */}
