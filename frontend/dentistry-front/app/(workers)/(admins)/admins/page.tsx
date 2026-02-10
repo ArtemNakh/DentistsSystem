@@ -1,10 +1,7 @@
 "use client";
 
-import { RootState, useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
-import {
-  ClientActionSaga,
-  ClientsState,
-} from "@/lib/redux/modules/clients/ClientEntity";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
+import { ClientActionSaga } from "@/lib/redux/modules/clients/ClientEntity";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { shallowEqual } from "react-redux";
@@ -16,15 +13,17 @@ import TableUpcomingEntries from "./components/TableUpcominsEntries";
 
 function AdminsMain() {
   const { t } = useTranslation();
+  const clients = Object.values(useAppSelector((state) => state.videos) || {});
+ const dispatch = useAppDispatch();
 
-  const dispatch = useAppDispatch();
-  const clients = useAppSelector(
-    (state: RootState) => Object.values(state.Clients as ClientsState),
-    shallowEqual,
-  );
+  // const dispatch = useAppDispatch();
+  // const clients = useAppSelector(
+  //   (state: RootState) => Object.values(state.Clients as ClientsState),
+  //   shallowEqual,
+  // );
 
   useEffect(() => {
-    dispatch({ type: ClientActionSaga.GetClients });
+    dispatch({ type: ClientActionSaga.GetClient});
   }, [dispatch]);
 
   // тестові дані
@@ -52,13 +51,13 @@ function AdminsMain() {
             <div className="w-1/2">
               <div className=" mx-5 h-auto">
                 <div className="h-1/2 ">
-                {/* Таблиця пацієнтів без оплати */}
-                <TablePationWithoutPay /></div>
+                  {/* Таблиця пацієнтів без оплати */}
+                  <TablePationWithoutPay />
+                </div>
                 <div className="h-1/2">
-                {/* Таблиця лікарів, які зараз оперують */}
-                <TableBusyDoctors /></div>
-                
-
+                  {/* Таблиця лікарів, які зараз оперують */}
+                  <TableBusyDoctors />
+                </div>
               </div>
             </div>
           </div>

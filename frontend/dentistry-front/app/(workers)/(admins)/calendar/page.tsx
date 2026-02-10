@@ -6,15 +6,34 @@ import HeaderAdmin from "../components/Header";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { ClientActionSaga } from "@/lib/redux/modules/clients/ClientEntity";
 
+
+import { WorkerActionSaga } from "@/lib/redux/modules/Workers/Workers.Entity";
+import { SpecialtyActionSaga } from "@/lib/redux/modules/Specialties/Specialties.Entity";
+import { DentistryActionSaga } from "@/lib/redux/modules/Dentistries/Dentistry.Entity";
+
 // Виправити помилку redux
 // Додати модальне вікно як у каледнарі тимса (у обраного об'єкта після натискання додажться можадьне вікно)
 export default function CalendarAdmin() {
-  // const dispatch = useAppDispatch(); // отримуємо дані зі стору
-  // const clients = useAppSelector((state) => state.Clients);
-  // useEffect(() => {
-  //   // при монтуванні сторінки завантажуємо клієнтів
-  //   dispatch({ type: ClientActionSaga.GetClients });
-  // }, [dispatch]);
+  const dispatch = useAppDispatch(); // отримуємо дані зі стору
+  // const appointments = useAppSelector((state) => state.Appointments as IAppointment);
+  //  const clients= useAppSelector((state) => state.Clients as IClient);
+  const clients = Object.values(useAppSelector((state) => state.clients) || {});
+//  const worekrs = Object.values(useAppSelector((state) => state.workers )|| {});
+//  const specialties = Object.values(useAppSelector((state) => state.specialties) || {});
+//  const dentistries= Object.values(useAppSelector((state) => state.dentistries) || {});
+
+  useEffect(() => {
+    // при монтуванні сторінки завантажуємо клієнтів
+    // dispatch({ type: AppointmentActionSaga.getAppointment });
+    // dispatch({ type: ClientActionSaga.GetClients });
+     dispatch({ type: ClientActionSaga.GetClient});
+     
+     dispatch({ type: WorkerActionSaga.GetWorker});
+     
+    //  dispatch({ type:SpecialtyActionSaga.GetSpecialty});
+     
+    //  dispatch({ type: DentistryActionSaga.GetDentistry});
+  }, [dispatch]);
 
   const [value, setValue] = useState(new Date());
   const [events, setEvents] = useState<Event[]>([
@@ -125,18 +144,18 @@ export default function CalendarAdmin() {
       <HeaderAdmin />
       {/* test */}
       {/* <div>
-            {" "}
-            <h2>Список клієнтів</h2>{" "}
-            <ul>
+        {" "}
+        <h2>Список клієнтів</h2>{" "}
+        <ul>
+          {" "}
+          {Object.values(appointments).map((appointments) => (
+            <li key={appointments.id}>
               {" "}
-              {Object.values(clients).map((client) => (
-                <li key={client.id}>
-                  {" "}
-                  {client.surname} {client.name} ({client.phone}){" "}
-                </li>
-              ))}{" "}
-            </ul>{" "}
-          </div> */}
+              {appointments.client.name}
+            </li>
+          ))}{" "}
+        </ul>{" "}
+      </div> */}
 
       {/* test end */}
       <div className=" flex  h-screen ">
