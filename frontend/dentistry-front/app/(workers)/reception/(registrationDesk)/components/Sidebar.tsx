@@ -15,7 +15,14 @@ export default function SideBarAdmins({ items, onClose }: SideBarAdminsProps) {
     <>
       <div className="fixed top-0 left-0 w-64 h-full bg-linear-to-b from-[#64359A] to-[#534A79] text-gray-300 shadow-lg z-50">
         <div className="p-4 flex justify-between items-center border-b border-gray-700">
-          <h2 className="text-lg font-bold">Меню</h2>
+          <div className="w-full h-full  mr-5">
+            <Link
+              className="block w-full h-full text-lg font-bold"
+              href="/reception/main"
+            >
+              Меню
+            </Link>
+          </div>
           <button onClick={onClose} className="text-red-400">
             ✕
           </button>
@@ -27,7 +34,9 @@ export default function SideBarAdmins({ items, onClose }: SideBarAdminsProps) {
               key={idx}
               className="hover:bg-purple-850 border border-gray-500 hover:border-gray-400 p-2 rounded cursor-pointer"
             >
-              <Link className="block w-full h-full" href={item.path}>{item.label}</Link>
+              <Link className="block w-full h-full" href={item.path}>
+                {item.label}
+              </Link>
             </li>
           ))}
         </ul>

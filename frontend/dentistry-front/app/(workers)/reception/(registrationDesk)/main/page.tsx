@@ -30,12 +30,13 @@ function AdminsMain() {
 
   return (
     <>
-      {/* HEader */}
-      <HeaderAdmin />
+      {/* HEader
+      <HeaderAdmin /> */}
 
       {/* Body */}
       <div>
-        <div className="w-full h-fit bg-linear-to-l from-[#874FD1] to-[#6F6697] ">
+        <div  >
+          {/* className="w-full h-fit bg-linear-to-l from-[#874FD1] to-[#6F6697] " */}
           <div className=" flex ">
             {/* left part */}
             {/* показування найближчих операцій

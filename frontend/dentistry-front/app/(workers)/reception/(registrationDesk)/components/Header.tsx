@@ -1,3 +1,4 @@
+"use client"
 import LanguageSwitch from "@/app/components/LanguageSwitch";
 import { useState } from "react";
 import SideBarAdmins from "./Sidebar";

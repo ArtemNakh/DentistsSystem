@@ -138,7 +138,7 @@ export default function TableUpcomingEntries() {
   return (
     <>
       <div className="w-auto h-fit mx-5 my-5 rounded-lg shadow-lg border border-gray-300">
-        <h1 className="text-center text-2xl font-bold bg-linear-to-r from-[#874FD1] to-[#6F6697] text-white py-3">
+        <h1 className="text-center text-2xl    bg-linear-to-r from-[#874FD1] to-[#6F6697] text-white py-3">
           Найближчі записи
         </h1>
 
