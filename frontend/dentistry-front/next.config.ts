@@ -18,7 +18,7 @@ console.log(
     `Auth worker  http://localhost:${process.env.APPLICATION_PORT}/w-auth/login  ` +
     `\nAuth login client   http://localhost:${process.env.APPLICATION_PORT}/c-auth/login  `,
   `\nAuth Registration client   http://localhost:${process.env.APPLICATION_PORT}/c-auth/registration  `,
-  `\nAdmin main   http://localhost:${process.env.APPLICATION_PORT}/admins  `,
+  `\n Reception main   http://localhost:${process.env.APPLICATION_PORT}/reception/main  `,
 );
 
 export default nextConfig;

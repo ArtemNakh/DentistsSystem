@@ -27,7 +27,7 @@ export default function SideBarAdmins({ items, onClose }: SideBarAdminsProps) {
               key={idx}
               className="hover:bg-purple-850 border border-gray-500 hover:border-gray-400 p-2 rounded cursor-pointer"
             >
-              <Link href={item.path}>{item.label}</Link>
+              <Link className="block w-full h-full" href={item.path}>{item.label}</Link>
             </li>
           ))}
         </ul>

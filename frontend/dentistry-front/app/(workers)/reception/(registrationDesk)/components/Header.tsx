@@ -7,11 +7,10 @@ export default function HeaderAdmin() {
   const [leftSideBar, setLeftSideBar] = useState(false);
   // список кнопок для сайдбару
   const sidebarItems = [
-    { label: "Календар", path: "/calendar" },
-    { label: "Режим роботи", path: "/schedule" },
-    { label: "Оплата", path: "/payments" },
-    { label: "Працівники", path: "/workers" },
-    { label: "Історія операцій", path: "/history" },
+    { label: "Календар", path: "/reception/calendar" },
+    { label: "Оплата", path: "/reception/payments" },
+    { label: "Працівники", path: "/reception/workers" },
+    { label: "Історія операцій", path: "/reception/historyOperations" },
   ];
   return (
     <>
