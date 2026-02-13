@@ -10,10 +10,11 @@ import i18n from "i18next";
 // import { CodePurpose } from "@/server/Exceptions/utils/CodePurpose";
 import { call, put } from "redux-saga/effects";
 // import ClientContextDI from "@/client/di/ClientContextDI";
-import ClientContextDI from "@/lib/di/ContextDt";
+import ClientContextDI from "@/lib/di/ContextDi";
 import { normalize, schema } from "normalizr";
 // import { VideoEntity } from "../Entities/VideoEntity";
 import { ClientEntity } from "./clients/ClientEntity";
+import { AppointmentEntity } from "./Appointments/AppointmentEntity";
 // import { ReviewEntity } from "../Entities/ReviewEntity";
 // import { UserEntity } from "../Entities/UserEntity";
 // import { AuthEntity } from "../Entities/AuthEntity";
@@ -29,16 +30,11 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 // Enum для імен сутностей у Redux.
 // Використовується як ключ у редʼюсерах.
 export const enum EntitiesRedux {
-  //   Users = "users",
-  //   Actors = "actors",
-  //   Videos = "videos",
-  //   Reviews = "reviews",
-  //   ActorRole = "actorsRole",
-  //   AuthUser = "authUser",
   Clients = "clients",
-  Dentistries="dentistries",
-  Workers='workers',
-  Specialties="specialties"
+  Dentistries = "dentistries",
+  Workers = "workers",
+  Specialties = "specialties",
+  Appointments = "appointments",
 }
 
 // export type Entities =
@@ -50,7 +46,9 @@ export const enum EntitiesRedux {
 //   | ActorRoleEntity;
 
 // Entities — тип для сутностей
-export type Entities = ClientEntity;
+export type Entities = ClientEntity | AppointmentEntity;
+
+
 
 // IQueryResult<T> — тип відповіді від API: масив даних + повідомлення.
 interface IQueryResult<T> {
@@ -119,12 +117,12 @@ export default class BaseEntity extends ClientContextDI {
 
     console.log("tes", result);
     if (!res.ok) {
-      console.log("check")
+      console.log("check");
       throw Object.assign(new Error(result.message), {
         code: result.code,
       });
     }
-console.log('cor')
+    console.log("cor");
     return result;
   }
 

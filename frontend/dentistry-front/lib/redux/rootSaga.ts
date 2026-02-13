@@ -23,11 +23,14 @@ export function* rootSaga() {
   const dentistryEntitySaga = clientContainer.resolve("DentistryEntity");
   const workerEntitySaga = clientContainer.resolve("WorkerEntity");
   const specialtyEntitySaga = clientContainer.resolve("SpecialtyEntity");
+  const appointmentEntitySaga=clientContainer.resolve("AppointmentEntity")
   yield all([
     clientEntitySaga.watch(),
     dentistryEntitySaga.watch(),
     workerEntitySaga.watch(),
     specialtyEntitySaga.watch(),
+    appointmentEntitySaga.watch(),
+    
     // videoEntitySaga.watch(),
     // authEntitySaga.watch(),
     // reviewEntitySaga.watch(),

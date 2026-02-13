@@ -29,7 +29,7 @@ export class Appointment implements IAppointment {
   @JoinColumn({ name: 'worker_id' })
   dentist: Worker;
 
-  @Column({ type: 'date', nullable: false })
+  @Column({ type: 'datetime', nullable: false })
   appointment_date: Date;
 
   @Column({ type: 'varchar', length: 255, nullable: false })

@@ -4,6 +4,12 @@
 // import { AnyAction, PayloadAction } from "@reduxjs/toolkit";
 // import { call, CallEffect, put, PutEffect, takeLatest } from "redux-saga/effects";
 
+import { schema } from "normalizr";
+import BaseEntity, { EntitiesRedux } from "../BaseEntity";
+import { EntityReducer } from "../EntityReducer";
+import { call, takeLatest } from "redux-saga/effects";
+import { ActionReducer } from "../../rootReducer";
+
 // export enum AppointmentActionSaga {
 //   addAppointment = "appointment/add",
 //   getAppointment = "appointment/get",
@@ -73,8 +79,8 @@
 //     } catch (error) {
 //       console.error("Get clients error:", error);
 //     }
-//   } 
-  
+//   }
+
 //   /** Watcher */
 //   public *watch() {
 //     yield takeLatest(
@@ -84,3 +90,46 @@
 //     // yield takeLatest(ClientActionSaga.AddClient, this.addClientSaga.bind(this));
 //   }
 // }
+import { format } from "date-fns";
+export enum AppointmentActionSaga {
+  GetAppointment = "Appointment/Getall",
+  GetNearestToday = "Appointment/GetNearestToday",
+}
+
+@EntityReducer(EntitiesRedux.Appointments)
+export class AppointmentEntity extends BaseEntity {
+  constructor(ctx: any) {
+    super(ctx, EntitiesRedux.Appointments, {
+      // client: new schema.Entity(EntitiesRedux.Clients),
+      // dentist: new schema.Entity(EntitiesRedux.Workers),
+    });
+  }
+
+  *getAppointmentSaga() {
+    yield call(
+      this.xRead.bind(this),
+      `/appointment/test/all`,
+      ActionReducer.Get,
+    );
+  }
+  *getNearestTodaySaga() {
+    const today = format(new Date(), "yyyy-MM-dd"); // 2026-02-13
+    console.log("date", today);
+    yield call(
+      this.xRead.bind(this),
+      // `/appointment/nearest?date=${today}`, where appointment_date=2026-03-01
+      `/appointment/nearest?date=2026-03-01`,
+      ActionReducer.Get,
+    );
+  }
+  *watch() {
+    yield takeLatest(
+      AppointmentActionSaga.GetAppointment,
+      this.getAppointmentSaga.bind(this),
+    );
+    yield takeLatest(
+      AppointmentActionSaga.GetNearestToday,
+      this.getNearestTodaySaga.bind(this),
+    );
+  }
+}

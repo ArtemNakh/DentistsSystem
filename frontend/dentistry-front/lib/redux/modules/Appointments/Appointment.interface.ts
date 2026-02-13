@@ -1,22 +1,25 @@
-// export enum StatusAppointment {
-//   SCHEDULE = "schedule",
-//   COMPLETED = "completed",
-//   WAIT_PAID = "wait_paid",
-//   CANCELLED = "cancelled",
-// }
+import { IClient } from "../clients/clients.interface";
+import { IWorker } from "../Workers/Workers.interface";
 
-// export interface IAppointment {
-//   id: number;
-//   clientId: number;
-//   dentistId: number;
-//   appointment_date: Date;
-//   notes: string;
-//   status: StatusAppointment;
+export enum StatusAppointment {
+  SCHEDULE = "schedule",
+  COMPLETED = "completed",
+  WAIT_PAID = "wait_paid",
+  CANCELLED = "cancelled",
+}
 
-//   created_at: Date;
-//   updated_at: Date;
+export interface IAppointment {
+  id: number;
+  client: IClient;
+  dentist: IWorker;
+  appointment_date: Date;
+  notes: string;
+  status: StatusAppointment;
 
-//   //foreign connection
-//   appointment_actionsIds?: number[];
-//   paymentId?: number;
-// }
+  created_at: Date;
+  updated_at: Date;
+}
+
+
+// Експортуйте також для Redux типізування
+export type AppointmentState = Record<string, IAppointment>;

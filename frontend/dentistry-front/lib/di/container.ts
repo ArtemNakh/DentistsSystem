@@ -11,6 +11,7 @@ import { asClass, createContainer } from "awilix";
 import { WorkerEntity } from "../redux/modules/Workers/Workers.Entity";
 import { SpecialtyEntity } from "../redux/modules/Specialties/Specialties.Entity";
 import { DentistryEntity } from "../redux/modules/Dentistries/Dentistry.Entity";
+import { AppointmentEntity } from "../redux/modules/Appointments/AppointmentEntity";
 
 const clientContainer = createContainer({
   injectionMode: "PROXY",
@@ -26,6 +27,7 @@ const expansion = {
   DentistryEntity: asClass(DentistryEntity).singleton(),
   WorkerEntity: asClass(WorkerEntity).singleton(),
   SpecialtyEntity: asClass(SpecialtyEntity).singleton(),
+  AppointmentEntity: asClass(AppointmentEntity).singleton(),
 
   // redux: asClass(ReduxStore).singleton(),
 };

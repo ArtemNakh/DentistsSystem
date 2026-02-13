@@ -12,6 +12,7 @@
     "@next/swc-win32-x64-msvc": "^16.1.4",
     "@reduxjs/toolkit": "^2.11.2",
     "awilix": "^12.1.0",
+    "date-fns": "^4.1.0",
     "formik": "^2.4.9",
     "http-method-enum": "^1.0.0",
     "i18next": "^25.8.0",
