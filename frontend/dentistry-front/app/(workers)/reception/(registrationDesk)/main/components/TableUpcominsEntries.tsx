@@ -9,9 +9,12 @@ export default function TableUpcomingEntries() {
     index: number;
   } | null>(null);
 
-  const appointments: IAppointment[] = useAppSelector((state) =>
-    Object.values(state.appointments ?? {}),
-  );
+  // const appointments: IAppointment[] = Object.values(useAppSelector((state) =>
+  //   Object.values(state.appointments ?? {}))
+  // );
+const appointmentsObj = useAppSelector((state) => state.appointments ?? {});
+const appointments: IAppointment[] = Object.values(appointmentsObj);
+
 
   return (
     <>
