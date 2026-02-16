@@ -1,7 +1,7 @@
 "use client";
 
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
-import { ClientActionSaga } from "@/lib/redux/modules/clients/ClientEntity";
+import { ClientActionSaga } from "@/lib/redux/modules/Clients/ClientEntity";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { shallowEqual } from "react-redux";
@@ -11,9 +11,15 @@ import TablePationWithoutPay from "./components/TablePationWithoutPay";
 import TableBusyDoctors from "./components/TableBusyDoctors";
 import TableUpcomingEntries from "./components/TableUpcominsEntries";
 import { WorkerActionSaga } from "@/lib/redux/modules/Workers/Workers.Entity";
-import { AppointmentActionSaga } from "@/lib/redux/modules/Appointments/AppointmentEntity";
+import { AppointmentActionSaga } from "@/lib/redux/modules/Appointments/Appointment.Entity";
+import { PaymentActionSaga } from "@/lib/redux/modules/Payments/Payments.Entity";
+import { createSelector } from "@reduxjs/toolkit";
+import { IPayment } from "@/lib/redux/modules/Payments/Payments.interface";
+import { IAppointment } from "@/lib/redux/modules/Appointments/Appointment.interface";
+import { IClient } from "@/lib/redux/modules/Clients/clients.interface";
 
-function AdminsMain() {
+
+export function AdminsMain() {
   const { t } = useTranslation();
   // const clients = Object.values(useAppSelector((state) => state.videos) || {});
   // const appointments = useAppSelector((state) =>
@@ -43,6 +49,10 @@ function AdminsMain() {
     dispatch({
       type: AppointmentActionSaga.GetNearestToday,
       // payload: { date },
+    });
+    dispatch({
+      type: PaymentActionSaga.GetPaiments,
+      payload: { id: 2 },
     });
     // dispatch({ type: ClientActionSaga.GetClient });
   }, [dispatch]);

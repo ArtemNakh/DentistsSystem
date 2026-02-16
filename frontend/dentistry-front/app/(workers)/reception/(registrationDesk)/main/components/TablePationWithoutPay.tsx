@@ -1,72 +1,41 @@
+import { useAppSelector } from "@/lib/redux/hooks";
+import { IAppointment } from "@/lib/redux/modules/Appointments/Appointment.interface";
+import { IClient } from "@/lib/redux/modules/Clients/clients.interface";
+import { IPayment } from "@/lib/redux/modules/Payments/Payments.interface";
+import { createSelector } from "@reduxjs/toolkit";
+import { format } from "date-fns";
+
+const selectPaymentsWithDetails = createSelector(
+  [
+    (state) => state.payments,
+    (state) => state.appointments,
+    (state) => state.clients,
+  ],
+  (paymentsObj, appointmentsObj, clientsObj) => {
+    const payments: IPayment[] = Object.values(paymentsObj ?? {});
+    const appointments: IAppointment[] = Object.values(appointmentsObj ?? {});
+    const clients: IClient[] = Object.values(clientsObj ?? {});
+
+    return payments.map((payment) => {
+      const appt = appointments.find(
+        (a) => a.id === (payment.appointment as unknown as number),
+      );
+      const client = appt
+        ? clients.find((c) => c.id === (appt.client as unknown as number))
+        : null;
+
+      return {
+        ...payment,
+        appointment: appt ? { ...appt, client } : null,
+      };
+    });
+  },
+);
+
 export default function TablePationWithoutPay() {
-  const unpaidPatients = [
-    { name: "Іван Петренко", operation: "Апендектомія", date: "01.02.2026" },
-    {
-      name: "Олена Коваль",
-      operation: "Гінекологічна операція",
-      date: "03.02.2026",
-    },
-    {
-      name: "Микола Сидоренко",
-      operation: "Ортопедична операція",
-      date: "05.02.2026",
-    },
-    { name: "Іван Петренко", operation: "Апендектомія", date: "01.02.2026" },
-    {
-      name: "Олена Коваль",
-      operation: "Гінекологічна операція",
-      date: "03.02.2026",
-    },
-    {
-      name: "Микола Сидоренко",
-      operation: "Ортопедична операція",
-      date: "05.02.2026",
-    },
-    { name: "Іван Петренко", operation: "Апендектомія", date: "01.02.2026" },
-    {
-      name: "Олена Коваль",
-      operation: "Гінекологічна операція",
-      date: "03.02.2026",
-    },
-    {
-      name: "Микола Сидоренко",
-      operation: "Ортопедична операція",
-      date: "05.02.2026",
-    },
-    { name: "Іван Петренко", operation: "Апендектомія", date: "01.02.2026" },
-    {
-      name: "Олена Коваль",
-      operation: "Гінекологічна операція",
-      date: "03.02.2026",
-    },
-    {
-      name: "Микола Сидоренко",
-      operation: "Ортопедична операція",
-      date: "05.02.2026",
-    },
-    { name: "Іван Петренко", operation: "Апендектомія", date: "01.02.2026" },
-    {
-      name: "Олена Коваль",
-      operation: "Гінекологічна операція",
-      date: "03.02.2026",
-    },
-    {
-      name: "Микола Сидоренко",
-      operation: "Ортопедична операція",
-      date: "05.02.2026",
-    },
-    { name: "Іван Петренко", operation: "Апендектомія", date: "01.02.2026" },
-    {
-      name: "Олена Коваль",
-      operation: "Гінекологічна операція",
-      date: "03.02.2026",
-    },
-    {
-      name: "Микола Сидоренко",
-      operation: "Ортопедична операція",
-      date: "05.02.2026",
-    },
-  ];
+  // const paymentsObj = useAppSelector((state) => state.payments ?? {});
+  const payments = useAppSelector(selectPaymentsWithDetails);
+
   return (
     <>
       <div className="mt-5  border-2  border-gray-450">
@@ -83,25 +52,42 @@ export default function TablePationWithoutPay() {
             <thead className="bg-linear-to-r from-[#6F6697] to-[#874FD1] text-white">
               <tr>
                 <th className="px-4 py-2 text-left font-semibold">Пацієнт</th>
-                <th className="px-4 py-2 text-left font-semibold">Операція</th>
+                <th className="px-4 py-2 text-left font-semibold">сумма</th>
+                <th className="px-4 py-2 text-left font-semibold">Статус</th>
+
                 <th className="px-4 py-2 text-left font-semibold">Дата</th>
               </tr>
             </thead>
             <tbody>
-              {unpaidPatients.slice(0, 50).map((p, i) => (
-                <tr
-                  key={i}
-                  className="odd:bg-white even:bg-gray-100 hover:bg-purple-100 transition-colors"
-                >
-                  <td className="px-4 py-2 text-gray-800">{p.name}</td>
-                  <td className="px-4 py-2 text-gray-800">{p.operation}</td>
-                  <td className="px-4 py-2 text-gray-800">{p.date}</td>
+              {payments.length === 0 ? (
+                <tr>
+                  <td colSpan={4} className="text-center text-gray-200">
+                    На сьогодні немає неоплачених операцій{" "}
+                  </td>
                 </tr>
-              ))}
+              ) : (
+                payments.map((p, i) => (
+                  <tr
+                    key={i}
+                    className="odd:bg-white even:bg-gray-100 hover:bg-purple-100 transition-colors"
+                  >
+                    <td className="px-4 py-2 text-gray-800">
+                      {p.appointment?.client?.name}{" "}
+                      {p.appointment?.client?.surname}
+                    </td>
+                    <td className="px-4 py-2 text-gray-800">{p.amount}</td>
+                    <td className="px-4 py-2 text-gray-800">{p.status_paid}</td>
+                    <td>
+                      {/* {format(
+                        new Date(p.appointment.appointment_date),
+                        "dd.MM.yyyy HH:mm",
+                      )} */}
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
-
-
         </div>
       </div>
     </>

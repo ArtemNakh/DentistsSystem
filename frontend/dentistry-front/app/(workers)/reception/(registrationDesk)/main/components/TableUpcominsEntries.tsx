@@ -1,7 +1,33 @@
 import { useAppSelector } from "@/lib/redux/hooks";
 import { IAppointment } from "@/lib/redux/modules/Appointments/Appointment.interface";
+import { IClient } from "@/lib/redux/modules/Clients/clients.interface";
+import { IWorker } from "@/lib/redux/modules/Workers/Workers.interface";
+import { createSelector } from "@reduxjs/toolkit";
 
 import { useState } from "react";
+
+export const selectAppointmentsWithDetails = createSelector(
+  [
+    (state) => state.appointments,
+    (state) => state.clients,
+    (state) => state.workers,
+  ],
+  (appointmentsObj, clientsObj, dentistsObj) => {
+    const appointments: IAppointment[] = Object.values(appointmentsObj ?? {});
+    const clients: IClient[] = Object.values(clientsObj ?? {});
+    const dentists: IWorker[] = Object.values(dentistsObj ?? {});
+    return appointments.map((appt) => {
+      const client = clients.find(
+        (c) => c.id === (appt.client as unknown as number),
+      );
+      const dentist = dentists.find(
+        (d) => d.id === (appt.dentist as unknown as number),
+      );
+      console.log("app", appointments);
+      return { ...appt, client: client ?? null, dentist: dentist ?? null };
+    });
+  },
+);
 
 export default function TableUpcomingEntries() {
   const [selectedTask, setSelectedTask] = useState<{
@@ -11,11 +37,13 @@ export default function TableUpcomingEntries() {
 
   // const appointments: IAppointment[] = Object.values(useAppSelector((state) =>
   //   Object.values(state.appointments ?? {}))
-  // );
-const appointmentsObj = useAppSelector((state) => state.appointments ?? {});
-const appointments: IAppointment[] = Object.values(appointmentsObj);
+  // // );
+  // const appointmentsObj = useAppSelector((state) => state.appointments ?? {});
+  // const appointments: IAppointment[] = Object.values(appointmentsObj);
+  const appointments = useAppSelector(selectAppointmentsWithDetails);
 
-
+  // ЗРОБИТИ ПОКАЗ ІМЕН КОРИСТУВАЧА ТА ДАНИХ ЧЕРЕЗ ДЕНОРМАЛІЗАЦІЮ ЯКА РЕАЛІЗОВАНА У PAGE ТА ПЕРЕМІСТИТИ ЙОГО У КОРЕКТНЕ МІСЦЕ(А САМЕ ЩОБ ДЕНОРМАЛІЗАЦІЯ БУЛА У КОЖНОГО ОБ'ЄКТА СВОЯ)
+  console.log("testas", appointments);
   return (
     <>
       <div className="w-auto h-fit mx-5 my-5 rounded-lg shadow-lg border border-gray-300">

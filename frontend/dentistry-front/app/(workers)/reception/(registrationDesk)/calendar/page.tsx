@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import HeaderAdmin from "../components/Header";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
-import { ClientActionSaga } from "@/lib/redux/modules/clients/ClientEntity";
+import { ClientActionSaga } from "@/lib/redux/modules/Clients/ClientEntity";
 
 
 import { WorkerActionSaga } from "@/lib/redux/modules/Workers/Workers.Entity";

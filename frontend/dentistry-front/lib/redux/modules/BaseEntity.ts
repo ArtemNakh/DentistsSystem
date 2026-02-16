@@ -13,8 +13,9 @@ import { call, put } from "redux-saga/effects";
 import ClientContextDI from "@/lib/di/ContextDi";
 import { normalize, schema } from "normalizr";
 // import { VideoEntity } from "../Entities/VideoEntity";
-import { ClientEntity } from "./clients/ClientEntity";
-import { AppointmentEntity } from "./Appointments/AppointmentEntity";
+import { ClientEntity } from "./Clients/ClientEntity";
+import { AppointmentEntity } from "./Appointments/Appointment.Entity";
+import { PaymentEntity } from "./Payments/Payments.Entity";
 // import { ReviewEntity } from "../Entities/ReviewEntity";
 // import { UserEntity } from "../Entities/UserEntity";
 // import { AuthEntity } from "../Entities/AuthEntity";
@@ -35,6 +36,7 @@ export const enum EntitiesRedux {
   Workers = "workers",
   Specialties = "specialties",
   Appointments = "appointments",
+  Payments = "payments",
 }
 
 // export type Entities =
@@ -46,9 +48,7 @@ export const enum EntitiesRedux {
 //   | ActorRoleEntity;
 
 // Entities — тип для сутностей
-export type Entities = ClientEntity | AppointmentEntity;
-
-
+export type Entities = ClientEntity | AppointmentEntity | PaymentEntity;
 
 // IQueryResult<T> — тип відповіді від API: масив даних + повідомлення.
 interface IQueryResult<T> {

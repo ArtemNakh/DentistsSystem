@@ -100,8 +100,8 @@ export enum AppointmentActionSaga {
 export class AppointmentEntity extends BaseEntity {
   constructor(ctx: any) {
     super(ctx, EntitiesRedux.Appointments, {
-      // client: new schema.Entity(EntitiesRedux.Clients),
-      // dentist: new schema.Entity(EntitiesRedux.Workers),
+      client: new schema.Entity(EntitiesRedux.Clients),
+      dentist: new schema.Entity(EntitiesRedux.Workers),
     });
   }
 
