@@ -42,4 +42,10 @@ export class AppointmentController {
     const parsedDate = new Date(date);
     return this.appointmentService.findNearest(parsedDate);
   }
+
+  @Get('today') async getTodayAppointments(
+    @Query('worker') workerId: number,
+  ): Promise<IAppointment[]> {
+    return this.appointmentService.getTodayAppointmentsByWorker(workerId);
+  }
 }

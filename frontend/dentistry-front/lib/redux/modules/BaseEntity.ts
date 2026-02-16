@@ -16,6 +16,9 @@ import { normalize, schema } from "normalizr";
 import { ClientEntity } from "./Clients/ClientEntity";
 import { AppointmentEntity } from "./Appointments/Appointment.Entity";
 import { PaymentEntity } from "./Payments/Payments.Entity";
+import { SpecialtyEntity } from "./Specialties/Specialties.Entity";
+import { DentistryEntity } from "./Dentistries/Dentistry.Entity";
+import { WorkerEntity } from "./Workers/Workers.Entity";
 // import { ReviewEntity } from "../Entities/ReviewEntity";
 // import { UserEntity } from "../Entities/UserEntity";
 // import { AuthEntity } from "../Entities/AuthEntity";
@@ -48,7 +51,13 @@ export const enum EntitiesRedux {
 //   | ActorRoleEntity;
 
 // Entities — тип для сутностей
-export type Entities = ClientEntity | AppointmentEntity | PaymentEntity;
+export type Entities =
+  | ClientEntity
+  | AppointmentEntity
+  | DentistryEntity
+  | WorkerEntity
+  | PaymentEntity
+  | SpecialtyEntity;
 
 // IQueryResult<T> — тип відповіді від API: масив даних + повідомлення.
 interface IQueryResult<T> {

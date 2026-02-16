@@ -1,34 +1,41 @@
 import { useAppSelector } from "@/lib/redux/hooks";
 import { IAppointment } from "@/lib/redux/modules/Appointments/Appointment.interface";
 import { IClient } from "@/lib/redux/modules/Clients/clients.interface";
-import { IPayment } from "@/lib/redux/modules/Payments/Payments.interface";
+import { IPayment, StatusPayment } from "@/lib/redux/modules/Payments/Payments.interface";
 import { createSelector } from "@reduxjs/toolkit";
 import { format } from "date-fns";
-
 const selectPaymentsWithDetails = createSelector(
   [
-    (state) => state.payments,
-    (state) => state.appointments,
-    (state) => state.clients,
+    (state) => state.payments, // 1. беремо всі платежі
+    (state) => state.appointments, // 2. беремо всі записи (прийоми)
+    (state) => state.clients, // 3. беремо всіх клієнтів
   ],
   (paymentsObj, appointmentsObj, clientsObj) => {
+    // перетворюємо об’єкти у масиви
     const payments: IPayment[] = Object.values(paymentsObj ?? {});
     const appointments: IAppointment[] = Object.values(appointmentsObj ?? {});
     const clients: IClient[] = Object.values(clientsObj ?? {});
 
-    return payments.map((payment) => {
-      const appt = appointments.find(
-        (a) => a.id === (payment.appointment as unknown as number),
-      );
-      const client = appt
-        ? clients.find((c) => c.id === (appt.client as unknown as number))
-        : null;
+    // для кожного платежу шукаємо його appointment і клієнта
+    return payments // фільтруємо лише ті, що не оплачені
+      .filter((payment) => payment.status_paid !== StatusPayment.PAID)
+      .map((payment) => {
+        // знаходимо appointment, який відповідає цьому платежу
+        const appt = appointments.find(
+          (a) => a.id === (payment.appointment as unknown as number),
+        );
 
-      return {
-        ...payment,
-        appointment: appt ? { ...appt, client } : null,
-      };
-    });
+        // якщо appointment знайдено, то шукаємо клієнта цього appointment
+        const client = appt
+          ? clients.find((c) => c.id === (appt.client as unknown as number))
+          : null;
+
+        // повертаємо новий об’єкт платежу з вкладеним appointment і клієнтом
+        return {
+          ...payment,
+          appointment: appt ? { ...appt, client } : null,
+        };
+      });
   },
 );
 
@@ -62,7 +69,7 @@ export default function TablePationWithoutPay() {
               {payments.length === 0 ? (
                 <tr>
                   <td colSpan={4} className="text-center text-gray-200">
-                    На сьогодні немає неоплачених операцій{" "}
+                    На сьогодні немає неоплачених операцій
                   </td>
                 </tr>
               ) : (
@@ -72,16 +79,18 @@ export default function TablePationWithoutPay() {
                     className="odd:bg-white even:bg-gray-100 hover:bg-purple-100 transition-colors"
                   >
                     <td className="px-4 py-2 text-gray-800">
-                      {p.appointment?.client?.name}{" "}
+                      {p.appointment?.client?.name}
                       {p.appointment?.client?.surname}
                     </td>
                     <td className="px-4 py-2 text-gray-800">{p.amount}</td>
                     <td className="px-4 py-2 text-gray-800">{p.status_paid}</td>
-                    <td>
-                      {/* {format(
-                        new Date(p.appointment.appointment_date),
-                        "dd.MM.yyyy HH:mm",
-                      )} */}
+                    <td className="text-gray-800">
+                      {p.appointment?.appointment_date
+                        ? format(
+                            new Date(p.appointment.appointment_date),
+                            "dd.MM.yyyy HH:mm",
+                          )
+                        : "—"}
                     </td>
                   </tr>
                 ))

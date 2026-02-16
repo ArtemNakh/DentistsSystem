@@ -18,41 +18,29 @@ import { IPayment } from "@/lib/redux/modules/Payments/Payments.interface";
 import { IAppointment } from "@/lib/redux/modules/Appointments/Appointment.interface";
 import { IClient } from "@/lib/redux/modules/Clients/clients.interface";
 
-
 export function AdminsMain() {
   const { t } = useTranslation();
-  // const clients = Object.values(useAppSelector((state) => state.videos) || {});
-  // const appointments = useAppSelector((state) =>
-  //   Object.values(state.Appointments),
-  // );
-  // const unpaidPatients = useAppSelector((state) =>
-  //   Object.values(state.Clients).filter((c:any) => !c.paid),
-  // );
-  // const busyDoctors = useAppSelector((state) =>
-  //   Object.values(state.Workers).filter((w:any) => w.isOperating),
-  // );
-
+ 
+  
+// const workers = useAppSelector((state) => state.workers);
   const dispatch = useAppDispatch();
-
-  // const dispatch = useAppDispatch();
-  // const clients = useAppSelector(
-  //   (state: RootState) => Object.values(state.Clients as ClientsState),
-  //   shallowEqual,
-  // );
-
-  // useEffect(() => {
-  //   dispatch({ type: ClientActionSaga.GetClient});
-  // }, [dispatch]);
+// console.log("worers",workers)
+  
   useEffect(() => {
     // dispatch({ type: WorkerActionSaga.GetWorker });
     // зробити щоб йшов запит із датою у параметрах
     dispatch({
       type: AppointmentActionSaga.GetNearestToday,
-      // payload: { date },
+      //  payload: { date },
     });
     dispatch({
       type: PaymentActionSaga.GetPaiments,
       payload: { id: 2 },
+    });
+
+    dispatch({
+      type: AppointmentActionSaga.GetTodayOperation,
+      payload: { workerId: 2 }, // тут передаємо id працівника
     });
     // dispatch({ type: ClientActionSaga.GetClient });
   }, [dispatch]);

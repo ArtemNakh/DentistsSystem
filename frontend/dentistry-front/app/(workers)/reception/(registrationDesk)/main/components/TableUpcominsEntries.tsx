@@ -16,16 +16,30 @@ export const selectAppointmentsWithDetails = createSelector(
     const appointments: IAppointment[] = Object.values(appointmentsObj ?? {});
     const clients: IClient[] = Object.values(clientsObj ?? {});
     const dentists: IWorker[] = Object.values(dentistsObj ?? {});
-    return appointments.map((appt) => {
-      const client = clients.find(
-        (c) => c.id === (appt.client as unknown as number),
-      );
-      const dentist = dentists.find(
-        (d) => d.id === (appt.dentist as unknown as number),
-      );
-      console.log("app", appointments);
-      return { ...appt, client: client ?? null, dentist: dentist ?? null };
-    });
+    // межі сьогоднішнього дня
+    const today = new Date();
+    const startOfDay = new Date(today.setHours(0, 0, 0, 0));
+    const endOfDay = new Date(today.setHours(23, 59, 59, 999));
+    return appointments // фільтруємо лише ті, що сьогодні
+      .filter((appt) => {
+        const apptDate = new Date(appt.appointment_date);
+        return apptDate >= startOfDay && apptDate <= endOfDay;
+      }) // сортуємо від ранку до вечора
+      .sort(
+        (a, b) =>
+          new Date(a.appointment_date).getTime() -
+          new Date(b.appointment_date).getTime(),
+      )
+      .map((appt) => {
+        const client = clients.find(
+          (c) => c.id === (appt.client as unknown as number),
+        );
+        const dentist = dentists.find(
+          (d) => d.id === (appt.dentist as unknown as number),
+        );
+        console.log("app", appointments);
+        return { ...appt, client: client ?? null, dentist: dentist ?? null };
+      });
   },
 );
 
@@ -43,7 +57,7 @@ export default function TableUpcomingEntries() {
   const appointments = useAppSelector(selectAppointmentsWithDetails);
 
   // ЗРОБИТИ ПОКАЗ ІМЕН КОРИСТУВАЧА ТА ДАНИХ ЧЕРЕЗ ДЕНОРМАЛІЗАЦІЮ ЯКА РЕАЛІЗОВАНА У PAGE ТА ПЕРЕМІСТИТИ ЙОГО У КОРЕКТНЕ МІСЦЕ(А САМЕ ЩОБ ДЕНОРМАЛІЗАЦІЯ БУЛА У КОЖНОГО ОБ'ЄКТА СВОЯ)
-  console.log("testas", appointments);
+
   return (
     <>
       <div className="w-auto h-fit mx-5 my-5 rounded-lg shadow-lg border border-gray-300">

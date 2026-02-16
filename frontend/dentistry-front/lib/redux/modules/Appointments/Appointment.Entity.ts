@@ -91,9 +91,11 @@ import { ActionReducer } from "../../rootReducer";
 //   }
 // }
 import { format } from "date-fns";
+import { PayloadAction } from "@reduxjs/toolkit";
 export enum AppointmentActionSaga {
   GetAppointment = "Appointment/Getall",
   GetNearestToday = "Appointment/GetNearestToday",
+  GetTodayOperation = "Appointment/GetToday",
 }
 
 @EntityReducer(EntitiesRedux.Appointments)
@@ -101,7 +103,10 @@ export class AppointmentEntity extends BaseEntity {
   constructor(ctx: any) {
     super(ctx, EntitiesRedux.Appointments, {
       client: new schema.Entity(EntitiesRedux.Clients),
-      dentist: new schema.Entity(EntitiesRedux.Workers),
+      dentist: new schema.Entity(EntitiesRedux.Workers, {
+        specialty: new schema.Entity(EntitiesRedux.Specialties),
+        dentistry:new schema.Entity(EntitiesRedux.Dentistries)
+      }),
     });
   }
 
@@ -112,16 +117,27 @@ export class AppointmentEntity extends BaseEntity {
       ActionReducer.Get,
     );
   }
+
   *getNearestTodaySaga() {
     const today = format(new Date(), "yyyy-MM-dd"); // 2026-02-13
-    console.log("date", today);
+    
     yield call(
       this.xRead.bind(this),
       // `/appointment/nearest?date=${today}`, where appointment_date=2026-03-01
-      `/appointment/nearest?date=2026-03-01`,
+      `/appointment/nearest?date=${today}`,
       ActionReducer.Get,
     );
   }
+
+  *getTodayAppoinemntSaga(action: PayloadAction<{ workerId: number }>) {
+    const { workerId } = action.payload;
+    yield call(
+      this.xRead.bind(this),
+      `/appointment/today?worker=${workerId}`,
+      ActionReducer.Get,
+    );
+  }
+
   *watch() {
     yield takeLatest(
       AppointmentActionSaga.GetAppointment,
@@ -130,6 +146,11 @@ export class AppointmentEntity extends BaseEntity {
     yield takeLatest(
       AppointmentActionSaga.GetNearestToday,
       this.getNearestTodaySaga.bind(this),
+    );
+
+    yield takeLatest(
+      AppointmentActionSaga.GetTodayOperation, // це рядок "Appointment/GetCurrent"
+      this.getTodayAppoinemntSaga.bind(this),
     );
   }
 }

@@ -14,10 +14,17 @@ export class SpecialtyEntity extends BaseEntity {
   }
 
   *getSpecialtySaga() {
-    yield call(this.xRead.bind(this), `/specialties/test/all`, ActionReducer.Get);
+    yield call(
+      this.xRead.bind(this),
+      `/specialties/test/all`,
+      ActionReducer.Get,
+    );
   }
 
   *watch() {
-      yield takeLatest(SpecialtyActionSaga.GetSpecialty, this.getSpecialtySaga.bind(this));
-      }
+    yield takeLatest(
+      SpecialtyActionSaga.GetSpecialty,
+      this.getSpecialtySaga.bind(this),
+    );
+  }
 }

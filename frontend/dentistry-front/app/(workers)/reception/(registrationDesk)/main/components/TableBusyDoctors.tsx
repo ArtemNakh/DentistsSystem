@@ -1,100 +1,69 @@
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
+import { AppointmentActionSaga } from "@/lib/redux/modules/Appointments/Appointment.Entity";
+import { IAppointment } from "@/lib/redux/modules/Appointments/Appointment.interface";
+import { IClient } from "@/lib/redux/modules/Clients/clients.interface";
+import { IDentistry } from "@/lib/redux/modules/Dentistries/Dentistry.interface";
+import { ISpecialty } from "@/lib/redux/modules/Specialties/Specialties.interface";
+import { IWorker } from "@/lib/redux/modules/Workers/Workers.interface";
+import { RootState } from "@/lib/redux/store";
+import { createSelector } from "@reduxjs/toolkit";
+import { useEffect } from "react";
+
+export const selectBusyDoctors = createSelector(
+  [
+    (state: RootState) => state.appointments, // всі прийоми
+    (state: RootState) => state.clients, // всі клієнти
+    (state: RootState) => state.workers, // всі лікарі
+    (state: RootState) => state.specialties, // всі спеціалізації
+    (state: RootState) => state.dentistries, // всі стоматології
+  ],
+  (appointmentsObj, clientsObj, workersObj, specialtiesObj, dentistriesObj) => {
+    const now = new Date();
+    const appointments: IAppointment[] = Object.values(appointmentsObj ?? {});
+    const clients: IClient[] = Object.values(clientsObj ?? {});
+    const workers: IWorker[] = Object.values(workersObj ?? {});
+    const specialties: ISpecialty[] = Object.values(specialtiesObj ?? {});
+
+    const dentistries: IDentistry[] = Object.values(dentistriesObj ?? {});
+    return appointments // фільтруємо лише ті прийоми, які йдуть прямо зараз
+      .filter((appt) => {
+        const apptDate = new Date(appt.appointment_date); // приклад: якщо прийом триває 1 годину
+        const apptEnd = new Date(apptDate.getTime() + 60 * 60 * 1000);
+        return apptDate <= now && now <= apptEnd;
+      })
+      .map((appt) => {
+        // знаходимо клієнта
+        const client = clients.find(
+          (c) => c.id === (appt.client as unknown as number),
+        ); // знаходимо лікаря
+        const doctor = workers.find(
+          (w) => w.id === (appt.dentist as unknown as number),
+        ); // знаходимо спеціалізацію лікаря
+        const specialty = doctor
+          ? specialties.find(
+              (s) => s.id === (doctor.specialty as unknown as number),
+            )
+          : null; // знаходимо стоматологію лікаря
+        const dentistry = doctor
+          ? dentistries.find(
+              (d) => d.id === (doctor.dentistry as unknown as number),
+            )
+          : null;
+        return {
+          ...appt,
+          client: client ?? null,
+          dentist: doctor ? { ...doctor, specialty, dentistry } : null,
+        };
+      });
+  },
+);
+
 export default function TableBusyDoctors() {
-  // Дані для лікарів, які зараз оперують
-  const operatingDoctors = [
-    {
-      doctor: "Дмитренко М.І.",
-      specialization: "Хірург",
-      patient: "Сидоренко Андрій",
-    },
-    {
-      doctor: "Ковальчук О.П.",
-      specialization: "Кардіохірург",
-      patient: "Мельник Ігор",
-    },
-    {
-      doctor: "Шевченко Л.В.",
-      specialization: "Нейрохірург",
-      patient: "Кравченко Олексій",
-    },
-    {
-      doctor: "Дмитренко М.І.",
-      specialization: "Хірург",
-      patient: "Сидоренко Андрій",
-    },
-    {
-      doctor: "Ковальчук О.П.",
-      specialization: "Кардіохірург",
-      patient: "Мельник Ігор",
-    },
-    {
-      doctor: "Шевченко Л.В.",
-      specialization: "Нейрохірург",
-      patient: "Кравченко Олексій",
-    },
-    {
-      doctor: "Дмитренко М.І.",
-      specialization: "Хірург",
-      patient: "Сидоренко Андрій",
-    },
-    {
-      doctor: "Ковальчук О.П.",
-      specialization: "Кардіохірург",
-      patient: "Мельник Ігор",
-    },
-    {
-      doctor: "Шевченко Л.В.",
-      specialization: "Нейрохірург",
-      patient: "Кравченко Олексій",
-    },
-    {
-      doctor: "Дмитренко М.І.",
-      specialization: "Хірург",
-      patient: "Сидоренко Андрій",
-    },
-    {
-      doctor: "Ковальчук О.П.",
-      specialization: "Кардіохірург",
-      patient: "Мельник Ігор",
-    },
-    {
-      doctor: "Шевченко Л.В.",
-      specialization: "Нейрохірург",
-      patient: "Кравченко Олексій",
-    },
-    {
-      doctor: "Дмитренко М.І.",
-      specialization: "Хірург",
-      patient: "Сидоренко Андрій",
-    },
-    {
-      doctor: "Ковальчук О.П.",
-      specialization: "Кардіохірург",
-      patient: "Мельник Ігор",
-    },
-    {
-      doctor: "Шевченко Л.В.",
-      specialization: "Нейрохірург",
-      patient: "Кравченко Олексій",
-    },
-    {
-      doctor: "Дмитренко М.І.",
-      specialization: "Хірург",
-      patient: "Сидоренко Андрій",
-    },
-    {
-      doctor: "Ковальчук О.П.",
-      specialization: "Кардіохірург",
-      patient: "Мельник Ігор",
-    },
-    {
-      doctor: "Шевченко Л.В.",
-      specialization: "Нейрохірург",
-      patient: "Кравченко Олексій",
-    },
-  ];
+  
+  const operatingDoctors = useAppSelector(selectBusyDoctors);
+
   return (
     <>
-    
       <div className="mt-8  border-2  border-gray-450 ">
         <div className="flex items-center justify-center my-3">
           <h2 className="text-xl text-center  font-bold ">
@@ -113,21 +82,34 @@ export default function TableBusyDoctors() {
               </tr>
             </thead>
             <tbody>
-              {operatingDoctors.map((d, i) => (
-                <tr
-                  key={i}
-                  className="odd:bg-gray-50 even:bg-gray-100 hover:bg-purple-200 transition-colors"
-                >
-                  <td className="px-4 py-2 text-gray-900">{d.doctor}</td>
-                  <td className="px-4 py-2 text-gray-900">
-                    {d.specialization}
+              {operatingDoctors.length === 0 ? (
+                <tr>
+                  <td colSpan={4} className="text-center text-gray-200">
+                    На сьогодні немає неоплачених операцій
                   </td>
-                  <td className="px-4 py-2 text-gray-900">{d.patient}</td>
                 </tr>
-              ))}
+              ) : (
+                operatingDoctors.map((d, i) => (
+                  <tr
+                    key={i}
+                    className="odd:bg-gray-50 even:bg-gray-100 hover:bg-purple-200 transition-colors"
+                  >
+                    <td className="px-4 py-2 text-gray-900">
+                      {d.dentist?.name}
+                      {d.dentist?.surname}
+                    </td>
+                    <td className="px-4 py-2 text-gray-900">
+                      {d.dentist?.specialty?.name}
+                    </td>
+                    <td className="px-4 py-2 text-gray-900">
+                      {d.client?.name}
+                      {d.client?.surname}
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
-         
         </div>
       </div>
     </>

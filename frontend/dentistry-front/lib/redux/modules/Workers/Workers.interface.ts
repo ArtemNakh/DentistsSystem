@@ -1,3 +1,6 @@
+import { IDentistry } from "../Dentistries/Dentistry.interface";
+import { ISpecialty } from "../Specialties/Specialties.interface";
+
 export interface IWorker {
   id: number;
   name: string;
@@ -5,8 +8,8 @@ export interface IWorker {
   middle_name: string;
   birthday: Date;
   phone: string;
-  specialty: any; //   specialty: ISpecialty;
-  dentistry: any; //   dentistry: IDentistry;
+  specialty: ISpecialty; //   specialty: ISpecialty;
+  dentistry: IDentistry; //   dentistry: IDentistry;
   login: string;
   password: string;
 
