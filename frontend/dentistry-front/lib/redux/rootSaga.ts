@@ -32,11 +32,6 @@ export function* rootSaga() {
     specialtyEntitySaga.watch(),
     appointmentEntitySaga.watch(),
     paymentEntitySaga.watch(),
-    // videoEntitySaga.watch(),
-    // authEntitySaga.watch(),
-    // reviewEntitySaga.watch(),
-    // actorEntitySaga.watch(),
-    // actorRoleEntitySaga.watch(),
-    // userEntitySaga.watch(),
+    
   ]);
 }

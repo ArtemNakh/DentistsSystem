@@ -42,13 +42,7 @@ export const enum EntitiesRedux {
   Payments = "payments",
 }
 
-// export type Entities =
-//   | VideoEntity
-//   | ReviewEntity
-//   | UserEntity
-//   | AuthEntity
-//   | ActorEntity
-//   | ActorRoleEntity;
+
 
 // Entities — тип для сутностей
 export type Entities =
@@ -109,7 +103,7 @@ export default class BaseEntity extends ClientContextDI {
     method: HTTPMethod,
     data?: any,
   ): Promise<any> {
-    console.log("request");
+    
 
     const methodsCheck = [HTTPMethod.PUT, HTTPMethod.POST, HTTPMethod.PATCH];
 
@@ -121,17 +115,16 @@ export default class BaseEntity extends ClientContextDI {
           body: JSON.stringify(data),
         }),
     });
-    console.log("1", res);
+    
     const result = await res.json();
 
-    console.log("tes", result);
+    console.log("request api:",`${apiUrl}${endpoint}` ,"// result before transform:",res," // result after transform:", result);
     if (!res.ok) {
-      console.log("check");
+      console.log("Error request");
       throw Object.assign(new Error(result.message), {
         code: result.code,
       });
     }
-    console.log("cor");
     return result;
   }
 
@@ -144,7 +137,7 @@ export default class BaseEntity extends ClientContextDI {
     method: HTTPMethod = HTTPMethod.GET,
     data?: any,
   ) {
-    console.log("xfetch");
+    
     try {
       const result = (yield call(
         this.RequestToDB.bind(this),
@@ -156,10 +149,10 @@ export default class BaseEntity extends ClientContextDI {
       //   if (result.message.code === CodePurpose.toast)
       //     toast.success(i18n.t(result.message.text));
 
-      console.log("resultdata", result);
+      
       return result;
     } catch (error: any) {
-      console.log("erras", error);
+      console.log("error xFetch", error);
 
       //   if (error.code === CodePurpose.toast) toast.error(i18n.t(error.message));
     }
@@ -177,7 +170,7 @@ export default class BaseEntity extends ClientContextDI {
     method: HTTPMethod = HTTPMethod.GET,
   ): Generator<any, void, unknown> {
     const nonNormData = yield this.xFetch(endpoint, method, data);
-    console.log("NonNormalData", nonNormData);
+    
     yield this.ActionRedux(nonNormData, typeAction);
     // yield this.SaveReduxData(nonNormData, typeAction);
   }
@@ -213,9 +206,7 @@ export default class BaseEntity extends ClientContextDI {
   //   Викликає SaveReduxData.
   // Диспатчить action у Redux через put.
   public *ActionRedux(nonNormData: any, typeAction: any) {
-    console.log("NonNormalData", nonNormData);
     const action = this.SaveReduxData(nonNormData, typeAction);
-    console.log("Action", action);
     yield put(action);
   }
 
@@ -239,9 +230,8 @@ export default class BaseEntity extends ClientContextDI {
     data?: any,
     method: HTTPMethod = HTTPMethod.GET,
   ) {
-    console.log("xread");
     yield this.actionRequest(endpoint, typeAction, data, method);
-    console.log("xread end");
+
   }
 
   /**
@@ -262,8 +252,7 @@ export default class BaseEntity extends ClientContextDI {
     typeAction?: string,
     method: HTTPMethod = HTTPMethod.POST,
   ) {
-    console.log("xsave");
     yield this.actionRequest(endpoint, typeAction, data, method);
-    console.log("xsave end");
+
   }
 }

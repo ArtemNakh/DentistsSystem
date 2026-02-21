@@ -1,35 +1,4 @@
-// // rootReducer.ts
-// import { combineReducers } from "redux";
-// import { entitiesRegistry, reducersRegistry } from "./registry";
-
-// // // створюємо дефолтні редʼюсери для всіх сутностей
-// const defaultReducers = entitiesRegistry.reduce(
-//   (acc, name) => {
-//     acc[name] = (state = {}) => state;
-//     return acc;
-//   },
-//   {} as Record<string, any>,
-// );
-
-// const safeReducers =
-//   Object.keys(reducersRegistry).length > 0
-//     ? { ...defaultReducers, ...reducersRegistry }
-//     : { __empty: (state = {}) => state };
-// export const rootReducer = combineReducers(safeReducers);
-
-//new
-/*
-...state
-const state = { a: 1, b: 2 };
-const newState = { ...state, b: 3, c: 4 };
-
-// newState = { a: 1, b: 3, c: 4 }
-
-state напряму об'єкт
-*/
-
 import { HYDRATE } from "next-redux-wrapper";
-// import { EntityReduxNames } from "../utilsFront/EntityReducer";
 import { EntityReduxNames } from "./modules/EntityReducer";
 import { combineReducers } from "redux";
 

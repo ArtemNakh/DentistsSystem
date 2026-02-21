@@ -1,6 +1,7 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { WorkersService } from './workers.service';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { IWorker } from './entities/workers.interface';
 
 @ApiTags('Worker')
 @Controller('workers')
@@ -12,7 +13,31 @@ export class WorkersController {
     return this.workersService.findAll();
   }
 
-  
+  @Get('all/doctors')
+  @ApiOperation({
+    summary:'Отримання усіх докторів стоматології',
+    description:'Використовувати для отримання усіх працівників(докторів) у певній стоматології'
+  })
+  @ApiQuery({ name: 'idDentistry', type: Number, required: true, description: 'Ідентифікатор стоматології' })
+  @ApiResponse({ status: 200, description: 'Список лікарів стоматології', schema: { type: 'array', items: { type: 'object', properties: { id: { type: 'number', example: 9 }, name: { type: 'string', example: 'Monte' }, surname: { type: 'string', example: 'Leuschke' }, middle_name: { type: 'string', example: 'Gray' }, birthday: { type: 'string', format: 'date', example: '1973-05-23' }, phone: { type: 'string', example: '263-154-6799' }, specialty: { type: 'object', properties: { id: { type: 'number', example: 11 }, name: { type: 'string', example: 'Dynamic Factors Strategist' }, description: { type: 'string', example: 'Rem pariatur reiciendis nostrum qui totam eaque repellat autem nulla.' }, type: { type: 'string', example: 'doctor' }, created_at: { type: 'string', format: 'date-time', example: '2026-02-21T17:08:02.000Z' }, updated_at: { type: 'string', format: 'date-time', example: '2026-02-21T17:08:02.000Z' } } }, login: { type: 'string', example: 'Collin.Rodriguez25' }, password: { type: 'string', example: '7UZbXJfMOX' }, created_at: { type: 'string', format: 'date-time', example: '2026-02-21T17:08:02.000Z' }, updated_at: { type: 'string', format: 'date-time', example: '2026-02-21T17:08:02.000Z' } } } } })
+  async GetDoctorsByDentistry(
+    @Query('idDentistry') dentistryId: number,
+  ): Promise<IWorker[]> {
+    const workersByDentistry =
+      this.workersService.GetDoctorsDentistry(dentistryId);
+    return workersByDentistry;
+  }
+
+
+
+
+
+
+
+
+
+
+
 
   //   // Check autorization
   // // доступ для всіх авторизованих працівників

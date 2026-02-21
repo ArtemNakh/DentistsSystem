@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Worker } from './entities/workers.entity';
 import { IWorker } from './entities/workers.interface';
+import { SpecialtyType } from 'src/specialty/entities/specialty.interface';
 
 @Injectable()
 export class WorkersService {
@@ -52,5 +53,18 @@ export class WorkersService {
     }
 
     return worker;
+  }
+
+  public async GetDoctorsDentistry(dentistryId: number) {
+   
+    const doctors= this.workerRepo.find({
+      where: {
+        dentistry: { id: dentistryId },
+        specialty: { type: SpecialtyType.DOCTOR },
+      },
+      relations:['specialty','dentistry']
+    });
+
+return doctors;
   }
 }
