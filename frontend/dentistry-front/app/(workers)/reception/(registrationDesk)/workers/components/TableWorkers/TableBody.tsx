@@ -17,7 +17,8 @@ export default function TableBodyWorker({ workers }: { workers: IWorker[] }) {
               </div>
             </td>
             <td className="border border-gray-400 w-auto px-2 py-1">
-              {worker.specialty.name}
+              {/* {console.log("testqwe",worker.specialty.name)} */}
+              {worker.specialty?.name}
             </td>
             <td className="border border-gray-400 w-32 px-2 py-1">
               {/* {worker.birthday} */}

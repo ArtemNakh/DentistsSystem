@@ -7,26 +7,16 @@
 // Має готові методи для CRUD (xRead, xSave).
 import { HTTPMethod } from "http-method-enum";
 import i18n from "i18next";
-// import { CodePurpose } from "@/server/Exceptions/utils/CodePurpose";
 import { call, put } from "redux-saga/effects";
-// import ClientContextDI from "@/client/di/ClientContextDI";
 import ClientContextDI from "@/lib/di/ContextDi";
 import { normalize, schema } from "normalizr";
-// import { VideoEntity } from "../Entities/VideoEntity";
+
 import { ClientEntity } from "./Clients/ClientEntity";
 import { AppointmentEntity } from "./Appointments/Appointment.Entity";
 import { PaymentEntity } from "./Payments/Payments.Entity";
 import { SpecialtyEntity } from "./Specialties/Specialties.Entity";
 import { DentistryEntity } from "./Dentistries/Dentistry.Entity";
 import { WorkerEntity } from "./Workers/Workers.Entity";
-// import { ReviewEntity } from "../Entities/ReviewEntity";
-// import { UserEntity } from "../Entities/UserEntity";
-// import { AuthEntity } from "../Entities/AuthEntity";
-// import { ActorEntity } from "../Entities/ActorEntity";
-// import { ActorRoleEntity } from "../Entities/ActorRoleEntity";
-// const {
-//   publicRuntimeConfig: { NEXT_PUBLIC_API_URL },
-// } = getConfig();
 
 // Це буде базовий endpoint для всіх запитів.
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;

@@ -1,4 +1,4 @@
-import { useAppSelector } from "@/lib/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { IDentistry } from "@/lib/redux/modules/Dentistries/Dentistry.interface";
 import { ISpecialty } from "@/lib/redux/modules/Specialties/Specialties.interface";
 import { IWorker } from "@/lib/redux/modules/Workers/Workers.interface";
@@ -7,6 +7,8 @@ import { createSelector } from "@reduxjs/toolkit";
 import TableWorkers from "./TableWorkers/TableWorkers";
 import { format } from "date-fns";
 import { WorkerFilters } from "./FilterPanel";
+import { useEffect } from "react";
+import { WorkerActionSaga } from "@/lib/redux/modules/Workers/Workers.Entity";
 
 export const DenormalizeWorkers = createSelector(
   [
@@ -28,8 +30,18 @@ export const DenormalizeWorkers = createSelector(
     });
   },
 );
-export default function ListWorkersWorker({ filters }: { filters: WorkerFilters }) {
+export default function ListWorkersWorker({
+  filters,
+}: {
+  filters: WorkerFilters;
+}) {
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch({ type: WorkerActionSaga.GetWorker });
+  }, [dispatch]);
+
   const workers = useAppSelector(DenormalizeWorkers);
+
   const filteredWorkers = workers.filter((w) => {
     const fioMatch =
       !filters.fio ||
@@ -49,7 +61,9 @@ export default function ListWorkersWorker({ filters }: { filters: WorkerFilters 
     <>
       <div className="w-full  ">
         <div className="mx-4">
-          {workers.length > 0 ? (
+          {!workers ? (
+            <span className="text-gray-900">Loading...</span>
+          ) : workers.length > 0 ? (
             <TableWorkers workers={filteredWorkers} />
           ) : (
             <span className="text-gray-900">Немає працівників</span>
