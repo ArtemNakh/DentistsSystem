@@ -93,7 +93,8 @@ export class AuthService {
             ),
           );
         }
-        resolve({ client });
+          const authToken = req.sessionID;
+        resolve({ client,authToken });
       });
     });
   }
@@ -101,6 +102,7 @@ export class AuthService {
   // ========================= WORKER =========================
 
   public async loginWorker(req: Request, dto: LoginWorkerDto) {
+  
     const worker = await this.workerService.findByLogin(dto.login);
     if (!worker || !worker.password) {
       throw new NotFoundException('Worker not found. Please check your input.');
@@ -113,6 +115,8 @@ export class AuthService {
   }
 
   public async logoutWorker(req: Request, res: Response): Promise<void> {
+      console.log("a",req.session)
+      console.log("b",req.sessionID)
     return new Promise((resolve, reject) => {
       req.session.destroy((err) => {
         if (err) {

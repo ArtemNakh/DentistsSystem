@@ -1,8 +1,15 @@
-import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Query,
+  Req,
+  UnauthorizedException,
+  UseGuards,
+} from '@nestjs/common';
 import { WorkersService } from './workers.service';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { IWorker } from './entities/workers.interface';
-
+import { Request } from 'express';
 @ApiTags('Worker')
 @Controller('workers')
 export class WorkersController {
@@ -15,11 +22,69 @@ export class WorkersController {
 
   @Get('all/doctors')
   @ApiOperation({
-    summary:'Отримання усіх докторів стоматології',
-    description:'Використовувати для отримання усіх працівників(докторів) у певній стоматології'
+    summary: 'Отримання усіх докторів стоматології',
+    description:
+      'Використовувати для отримання усіх працівників(докторів) у певній стоматології',
   })
-  @ApiQuery({ name: 'idDentistry', type: Number, required: true, description: 'Ідентифікатор стоматології' })
-  @ApiResponse({ status: 200, description: 'Список лікарів стоматології', schema: { type: 'array', items: { type: 'object', properties: { id: { type: 'number', example: 9 }, name: { type: 'string', example: 'Monte' }, surname: { type: 'string', example: 'Leuschke' }, middle_name: { type: 'string', example: 'Gray' }, birthday: { type: 'string', format: 'date', example: '1973-05-23' }, phone: { type: 'string', example: '263-154-6799' }, specialty: { type: 'object', properties: { id: { type: 'number', example: 11 }, name: { type: 'string', example: 'Dynamic Factors Strategist' }, description: { type: 'string', example: 'Rem pariatur reiciendis nostrum qui totam eaque repellat autem nulla.' }, type: { type: 'string', example: 'doctor' }, created_at: { type: 'string', format: 'date-time', example: '2026-02-21T17:08:02.000Z' }, updated_at: { type: 'string', format: 'date-time', example: '2026-02-21T17:08:02.000Z' } } }, login: { type: 'string', example: 'Collin.Rodriguez25' }, password: { type: 'string', example: '7UZbXJfMOX' }, created_at: { type: 'string', format: 'date-time', example: '2026-02-21T17:08:02.000Z' }, updated_at: { type: 'string', format: 'date-time', example: '2026-02-21T17:08:02.000Z' } } } } })
+  @ApiQuery({
+    name: 'idDentistry',
+    type: Number,
+    required: true,
+    description: 'Ідентифікатор стоматології',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Список лікарів стоматології',
+    schema: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          id: { type: 'number', example: 9 },
+          name: { type: 'string', example: 'Monte' },
+          surname: { type: 'string', example: 'Leuschke' },
+          middle_name: { type: 'string', example: 'Gray' },
+          birthday: { type: 'string', format: 'date', example: '1973-05-23' },
+          phone: { type: 'string', example: '263-154-6799' },
+          specialty: {
+            type: 'object',
+            properties: {
+              id: { type: 'number', example: 11 },
+              name: { type: 'string', example: 'Dynamic Factors Strategist' },
+              description: {
+                type: 'string',
+                example:
+                  'Rem pariatur reiciendis nostrum qui totam eaque repellat autem nulla.',
+              },
+              type: { type: 'string', example: 'doctor' },
+              created_at: {
+                type: 'string',
+                format: 'date-time',
+                example: '2026-02-21T17:08:02.000Z',
+              },
+              updated_at: {
+                type: 'string',
+                format: 'date-time',
+                example: '2026-02-21T17:08:02.000Z',
+              },
+            },
+          },
+          login: { type: 'string', example: 'Collin.Rodriguez25' },
+          password: { type: 'string', example: '7UZbXJfMOX' },
+          created_at: {
+            type: 'string',
+            format: 'date-time',
+            example: '2026-02-21T17:08:02.000Z',
+          },
+          updated_at: {
+            type: 'string',
+            format: 'date-time',
+            example: '2026-02-21T17:08:02.000Z',
+          },
+        },
+      },
+    },
+  })
   async GetDoctorsByDentistry(
     @Query('idDentistry') dentistryId: number,
   ): Promise<IWorker[]> {
@@ -28,16 +93,16 @@ export class WorkersController {
     return workersByDentistry;
   }
 
-
-
-
-
-
-
-
-
-
-
+  @Get('me')
+  async getCurrentWorker(@Req() req: Request) {
+    if (!req.session.workerId) {
+      throw new UnauthorizedException('No worker session');
+    }
+    const worker = await this.workersService.findById(
+      Number(req.session.workerId),
+    );
+    return { workerId: req.session.workerId, worker };
+  }
 
   //   // Check autorization
   // // доступ для всіх авторизованих працівників

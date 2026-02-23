@@ -20,12 +20,26 @@ import { IClient } from "@/lib/redux/modules/Clients/clients.interface";
 
 export function AdminsMain() {
   const { t } = useTranslation();
- 
-  
-// const workers = useAppSelector((state) => state.workers);
+
+  // const workers = useAppSelector((state) => state.workers);
   const dispatch = useAppDispatch();
-// console.log("worers",workers)
-  
+  // console.log("worers",workers)
+ useEffect(() => {
+  fetch("http://localhost:4000/workers/me", {
+    method: "GET",
+    credentials: "include", // важливо!
+  })
+    .then((res) => {
+      if (!res.ok) throw new Error("Unauthorized");
+      return res.json();
+    })
+    .then((data) => {
+      console.log("Worker ID:", data.workerId);
+    })
+    .catch((err) => console.error(err));
+}, []);
+
+
   useEffect(() => {
     // dispatch({ type: WorkerActionSaga.GetWorker });
     // зробити щоб йшов запит із датою у параметрах
