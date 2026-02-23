@@ -1,4 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Appointment } from './entity/appointment.entity';
 import { IAppointment } from './entity/appointment.interface';
@@ -55,9 +61,41 @@ export class AppointmentService {
         'dentist.specialty',
         'dentist.dentistry',
         'payment',
-        
+
         'appointment_actions',
-      ], 
+      ],
     });
+  }
+
+  async getAppointmentsByDentistry(
+    dentistryId: number,
+  ): Promise<IAppointment[]> {
+    if (!dentistryId || isNaN(dentistryId)) {
+      throw new BadRequestException('Invalid dentistryId provided');
+    }
+
+    try {
+      const appointments = this.appointmentRepo.find({
+        where: { dentist: { dentistry: { id: dentistryId } } },
+        relations: ['dentist', 'dentist.dentistry', 'client'], // якщо потрібні зв’язки
+      });
+
+      if (!appointments || (await appointments).length === 0) {
+        throw new NotFoundException(
+          `No appointments found for dentistry with id ${dentistryId}`,
+        );
+      }
+
+      return appointments;
+    } catch (error) {
+      // Логування для дебагу
+      console.error('Error fetching appointments by dentistry:', error); // Якщо це вже NestJS exception — пробросимо далі
+      if (error instanceof HttpException) {
+        throw error;
+      } // Інакше — внутрішня помилка
+      throw new InternalServerErrorException(
+        'Unexpected error while fetching appointments',
+      );
+    }
   }
 }

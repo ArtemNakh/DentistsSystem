@@ -11,8 +11,8 @@ export enum StatusAppointment {
 
 export interface IAppointment {
   id: number;
-  client: IClient;
-  dentist: IWorker;
+  client: IClient |null;
+  dentist: IWorker|null;
   appointment_date: Date;
   notes: string;
   status: StatusAppointment;

@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { BadRequestException, Controller, Get, Query } from '@nestjs/common';
 import { AppointmentService } from './appointment.service';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { IAppointment } from './entity/appointment.interface';
@@ -47,5 +47,16 @@ export class AppointmentController {
     @Query('worker') workerId: number,
   ): Promise<IAppointment[]> {
     return this.appointmentService.getTodayAppointmentsByWorker(workerId);
+  }
+
+  @Get('all') async getAppointmentsDentistry(
+    @Query('dentistry') dentistryId: number,
+  ): Promise<IAppointment[]> {
+    if (!dentistryId || isNaN(dentistryId)) {
+      throw new BadRequestException(
+        'Query parameter "dentistry" must be a valid number',
+      );
+    }
+    return this.appointmentService.getAppointmentsByDentistry(dentistryId);
   }
 }
