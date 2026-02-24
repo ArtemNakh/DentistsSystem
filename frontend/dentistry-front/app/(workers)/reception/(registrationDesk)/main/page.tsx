@@ -17,31 +17,45 @@ import { createSelector } from "@reduxjs/toolkit";
 import { IPayment } from "@/lib/redux/modules/Payments/Payments.interface";
 import { IAppointment } from "@/lib/redux/modules/Appointments/Appointment.interface";
 import { IClient } from "@/lib/redux/modules/Clients/clients.interface";
+import { AuthActionSaga } from "@/lib/redux/modules/AuthUser/AuthUser.Entity";
+import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
 
 export function AdminsMain() {
   const { t } = useTranslation();
+  const auth = useAppSelector((state: { auth: AuthState }) => state.auth);
 
-  // const workers = useAppSelector((state) => state.workers);
+  //  const workers = useAppSelector((state) => state.workers);
   const dispatch = useAppDispatch();
   // console.log("worers",workers)
- useEffect(() => {
-  fetch("http://localhost:4000/workers/me", {
-    method: "GET",
-    credentials: "include", // важливо!
-  })
-    .then((res) => {
-      if (!res.ok) throw new Error("Unauthorized");
-      return res.json();
-    })
-    .then((data) => {
-      console.log("Worker ID:", data.workerId);
-    })
-    .catch((err) => console.error(err));
-}, []);
-
+  //  useEffect(() => {
+  //   fetch("http://localhost:4000/workers/me", {
+  //     method: "GET",
+  //     credentials: "include", // важливо!
+  //   })
+  //     .then((res) => {
+  //       if (!res.ok) throw new Error("Unauthorized");
+  //       return res.json();
+  //     })
+  //     .then((data) => {
+  //       console.log("Worker ID:", data.workerId);
+  //     })
+  //     .catch((err) => console.error(err));
+  // }, []);
 
   useEffect(() => {
-    // dispatch({ type: WorkerActionSaga.GetWorker });
+    dispatch({ type: AuthActionSaga.GetAuthWorker });
+    //Перевірка підтягування даних
+//  if ("specialty" in auth.user!) {
+//       // це Worker
+//       console.log("Specialty:", auth.user.specialty.name);
+//     } else {
+//       // це Client
+//       console.log("Blood group:", auth.user!.blood_group);
+//     }
+
+
+
+
     // зробити щоб йшов запит із датою у параметрах
     dispatch({
       type: AppointmentActionSaga.GetNearestToday,
@@ -60,6 +74,8 @@ export function AdminsMain() {
   }, [dispatch]);
   // тестові дані
 
+   
+  
   return (
     <>
       {/* HEader
@@ -70,6 +86,7 @@ export function AdminsMain() {
         <div>
           {/* className="w-full h-fit bg-linear-to-l from-[#874FD1] to-[#6F6697] " */}
           <div className=" flex ">
+            <p> {auth.user?.name}</p>
             {/* left part */}
             {/* показування найближчих операцій
              додати показ актуального по часу записів(якщо час 12 то показувати записі до 12) , додати фільри по часу,доктору, пошук пацієкнта */}

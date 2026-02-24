@@ -135,6 +135,7 @@ export class AuthService {
       req.session.clientId = undefined;
       req.session.workerId = worker.id.toString();
       req.session.save((err) => {
+        console.log("Saved session:", req.session);
         if (err) {
           return reject(
             new InternalServerErrorException('Failed to save worker session.'),

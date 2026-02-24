@@ -6,6 +6,7 @@ export async function loginWorker(values: { login: string; password: string }) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(values),
+    credentials: "include",
   });
   if (!response.ok) {
     const errData = await response.json();

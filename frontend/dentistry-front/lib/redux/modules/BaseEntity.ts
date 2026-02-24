@@ -17,6 +17,7 @@ import { PaymentEntity } from "./Payments/Payments.Entity";
 import { SpecialtyEntity } from "./Specialties/Specialties.Entity";
 import { DentistryEntity } from "./Dentistries/Dentistry.Entity";
 import { WorkerEntity } from "./Workers/Workers.Entity";
+import { AuthEntity } from "./AuthUser/AuthUser.Entity";
 
 // Це буде базовий endpoint для всіх запитів.
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -30,9 +31,8 @@ export const enum EntitiesRedux {
   Specialties = "specialties",
   Appointments = "appointments",
   Payments = "payments",
+  Auth = "auth",
 }
-
-
 
 // Entities — тип для сутностей
 export type Entities =
@@ -41,7 +41,8 @@ export type Entities =
   | DentistryEntity
   | WorkerEntity
   | PaymentEntity
-  | SpecialtyEntity;
+  | SpecialtyEntity
+  | AuthEntity;
 
 // IQueryResult<T> — тип відповіді від API: масив даних + повідомлення.
 interface IQueryResult<T> {
@@ -93,22 +94,28 @@ export default class BaseEntity extends ClientContextDI {
     method: HTTPMethod,
     data?: any,
   ): Promise<any> {
-    
-
     const methodsCheck = [HTTPMethod.PUT, HTTPMethod.POST, HTTPMethod.PATCH];
 
     const res = await fetch(`${apiUrl}${endpoint}`, {
       method,
+      credentials: "include",
       ...(methodsCheck.includes(method) &&
         data !== undefined && {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data),
         }),
     });
-    
+
     const result = await res.json();
 
-    console.log("request api:",`${apiUrl}${endpoint}` ,"// result before transform:",res," // result after transform:", result);
+    console.log(
+      "request api:",
+      `${apiUrl}${endpoint}`,
+      "// result before transform:",
+      res,
+      " // result after transform:",
+      result,
+    );
     if (!res.ok) {
       console.log("Error request");
       throw Object.assign(new Error(result.message), {
@@ -127,7 +134,6 @@ export default class BaseEntity extends ClientContextDI {
     method: HTTPMethod = HTTPMethod.GET,
     data?: any,
   ) {
-    
     try {
       const result = (yield call(
         this.RequestToDB.bind(this),
@@ -139,7 +145,6 @@ export default class BaseEntity extends ClientContextDI {
       //   if (result.message.code === CodePurpose.toast)
       //     toast.success(i18n.t(result.message.text));
 
-      
       return result;
     } catch (error: any) {
       console.log("error xFetch", error);
@@ -160,7 +165,7 @@ export default class BaseEntity extends ClientContextDI {
     method: HTTPMethod = HTTPMethod.GET,
   ): Generator<any, void, unknown> {
     const nonNormData = yield this.xFetch(endpoint, method, data);
-    
+
     yield this.ActionRedux(nonNormData, typeAction);
     // yield this.SaveReduxData(nonNormData, typeAction);
   }
@@ -221,7 +226,6 @@ export default class BaseEntity extends ClientContextDI {
     method: HTTPMethod = HTTPMethod.GET,
   ) {
     yield this.actionRequest(endpoint, typeAction, data, method);
-
   }
 
   /**
@@ -243,6 +247,5 @@ export default class BaseEntity extends ClientContextDI {
     method: HTTPMethod = HTTPMethod.POST,
   ) {
     yield this.actionRequest(endpoint, typeAction, data, method);
-
   }
 }

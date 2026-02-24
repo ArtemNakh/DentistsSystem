@@ -24,7 +24,7 @@ async function bootstrap() {
   const redis = new IORedis(configService.getOrThrow('REDIS_URI'));
   const RedisStore = connectRedis(session);
 
-  app.use(cookieParser(configService.getOrThrow<string>('COOKIES_SECRET')));
+  // app.use(cookieParser(configService.getOrThrow<string>('COOKIES_SECRET')));
 
   app.useGlobalPipes(
     new ValidationPipe({

@@ -4,6 +4,7 @@ import { WorkerEntity } from "../redux/modules/Workers/Workers.Entity";
 import { SpecialtyEntity } from "../redux/modules/Specialties/Specialties.Entity";
 import { AppointmentEntity } from "../redux/modules/Appointments/Appointment.Entity";
 import { PaymentEntity } from "../redux/modules/Payments/Payments.Entity";
+import { AuthEntity } from "../redux/modules/AuthUser/AuthUser.Entity";
 
 export interface IContexContainer {
   ClientEntity: ClientEntity;
@@ -12,4 +13,5 @@ export interface IContexContainer {
   SpecialtyEntity: SpecialtyEntity;
   AppointmentEntity: AppointmentEntity;
   PaymentEntity: PaymentEntity;
+  AuthEntity: AuthEntity;
 }
