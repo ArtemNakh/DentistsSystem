@@ -1,11 +1,18 @@
-"use client"
+"use client";
 import LanguageSwitch from "@/app/components/LanguageSwitch";
 import { useState } from "react";
 import SideBarAdmins from "./Sidebar";
+import { RootState } from "@/lib/redux/store";
+import { useSelector } from "react-redux";
+import { useAppSelector } from "@/lib/redux/hooks";
+import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
 
 export default function HeaderAdmin() {
   const [profileModule, setProfileModule] = useState(false);
   const [leftSideBar, setLeftSideBar] = useState(false);
+  // const authUser = useSelector((state: RootState) => state.auth.user);
+  const auth = useAppSelector((state: { auth: AuthState }) => state.auth);
+
   // список кнопок для сайдбару
   const sidebarItems = [
     { label: "Календар", path: "/reception/calendar" },
@@ -15,7 +22,6 @@ export default function HeaderAdmin() {
   ];
   return (
     <>
-    
       <div className="bg-[#7E5BBA] border border-gray-600 ">
         <div className="w-full h-12  ">
           <div className="flex">
@@ -83,7 +89,9 @@ export default function HeaderAdmin() {
                   onClick={() => setProfileModule(!profileModule)}
                   className="flex items-center mr-4"
                 >
-                  ім'я фамілія по бптькові працівника
+                  {auth.user?.surname} {auth.user?.name}{" "}
+                  {auth.user?.middle_name}
+                  
                 </div>
 
                 {profileModule && (

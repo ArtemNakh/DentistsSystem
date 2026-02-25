@@ -73,6 +73,7 @@ export const BaseReducer = (entityName: string) => {
   return (state = initialState, action: any) => {
     switch (action.type) {
       case ActionReducer.Get:
+
       case ActionReducer.Post:
       case ActionReducer.Update: {
         const newEntities = action.payload.entities?.[entityName];
@@ -87,6 +88,12 @@ export const BaseReducer = (entityName: string) => {
             ...state[id],
             ...rawData!,
           };
+        }
+        
+        if (entityName === "auth" && action.payload.result) {
+          const currentId = action.payload.result;
+          const currentUser = updatedState[currentId]; // залишаємо тільки user
+          return { user: currentUser };
         }
 
         return updatedState;
