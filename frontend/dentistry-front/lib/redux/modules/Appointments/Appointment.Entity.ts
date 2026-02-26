@@ -3,25 +3,16 @@ import BaseEntity, { EntitiesRedux } from "../BaseEntity";
 import { EntityReducer } from "../EntityReducer";
 import { call, takeLatest } from "redux-saga/effects";
 import { ActionReducer } from "../../rootReducer";
-
 import { format } from "date-fns";
-import { PayloadAction } from "@reduxjs/toolkit";
+import { getAppointmentNearestTodayDentistryAction } from "./actions/GetNearestTodayByDentistry/GetNearestTodayByDentistry";
+import { getAppointmentTodayDentistryAction } from "./actions/GetTodayOperationByDentistry/GetTodayOperationByDentistry";
+import { getAppointmentsDentistryAction } from "./actions/GetAppointmentsDentistry/GetAppointmentsDentistry";
 
 export enum AppointmentActionSaga {
-  GetAppointment = "Appointment/Getall",
   GetNearestTodayByDentistry = "Appointment/GetNearestToday",
   GetTodayOperationByDentistry = "Appointment/GetTodayByDentistry",
   GetAppointmentsDentistry = "Appointment/GetToDentistry",
 }
-
-interface GetAppointmentsDentistryPayload {
-  dentistryId: number;
-}
-
-export type AppointmentsActions = {
-  type: AppointmentActionSaga.GetAppointmentsDentistry;
-  payload: GetAppointmentsDentistryPayload;
-};
 
 @EntityReducer(EntitiesRedux.Appointments)
 export class AppointmentEntity extends BaseEntity {
@@ -35,26 +26,17 @@ export class AppointmentEntity extends BaseEntity {
     });
   }
 
-  *getAppointmentSaga() {
-    yield call(
-      this.xRead.bind(this),
-      `/appointment/test/all`,
-      ActionReducer.Get,
-    );
-  }
-
-  *getNearestTodaySaga(action: PayloadAction<{ dentistryId: number }>) {
+  *getNearestTodaySaga(action: getAppointmentNearestTodayDentistryAction) {
     const today = format(new Date(), "yyyy-MM-dd");
 
     yield call(
       this.xRead.bind(this),
-
       `/appointment/nearest?date=${today}&dentistryId=${action.payload.dentistryId}`,
       ActionReducer.Get,
     );
   }
 
-  *getTodayAppoinemntSaga(action: PayloadAction<{ dentistryId: number }>) {
+  *getTodayAppoinemntSaga(action: getAppointmentTodayDentistryAction) {
     const { dentistryId } = action.payload;
 
     yield call(
@@ -64,12 +46,7 @@ export class AppointmentEntity extends BaseEntity {
     );
   }
 
-  *getAppointmentsDentistrySaga(
-    action: Extract<
-      AppointmentsActions,
-      { type: AppointmentActionSaga.GetAppointmentsDentistry }
-    >,
-  ) {
+  *getAppointmentsDentistrySaga(action: getAppointmentsDentistryAction) {
     const { dentistryId } = action.payload;
     yield call(
       this.xRead.bind(this),
@@ -79,10 +56,6 @@ export class AppointmentEntity extends BaseEntity {
   }
 
   *watch() {
-    yield takeLatest(
-      AppointmentActionSaga.GetAppointment,
-      this.getAppointmentSaga.bind(this),
-    );
     yield takeLatest(
       AppointmentActionSaga.GetNearestTodayByDentistry,
       this.getNearestTodaySaga.bind(this),

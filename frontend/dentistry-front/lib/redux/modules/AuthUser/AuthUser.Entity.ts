@@ -2,23 +2,25 @@ import { call, takeLatest } from "redux-saga/effects";
 import BaseEntity, { EntitiesRedux } from "../BaseEntity";
 import { EntityReducer } from "../EntityReducer";
 import { ActionReducer } from "../../rootReducer";
+import { GetAuthClientAction } from "./actions/GetAuthClient/GetAuthClient";
+import { GetAuthWorkerAction } from "./actions/GetAuthWorker/GetAuthWorker";
 
 export enum AuthActionSaga {
   GetAuthClient = "Auth/getAuthClient",
   GetAuthWorker = "Auth/getAuthWorker",
 }
 
-interface GetAuthUserPayload {}
+// interface GetAuthUserPayload {}
 
-export type AuthUserActions =
-  | {
-      type: AuthActionSaga.GetAuthClient;
-      payload: GetAuthUserPayload;
-    }
-  | {
-      type: AuthActionSaga.GetAuthWorker;
-      payload: GetAuthUserPayload;
-    };
+// export type AuthUserActions =
+//   | {
+//       type: AuthActionSaga.GetAuthClient;
+//       payload: GetAuthUserPayload;
+//     }
+//   | {
+//       type: AuthActionSaga.GetAuthWorker;
+//       payload: GetAuthUserPayload;
+//     };
 
 @EntityReducer(EntitiesRedux.Auth)
 export class AuthEntity extends BaseEntity {
@@ -26,11 +28,11 @@ export class AuthEntity extends BaseEntity {
     super(ctx, EntitiesRedux.Auth, undefined);
   }
 
-  *getAuthClientSaga() {
+  *getAuthClientSaga(action: GetAuthClientAction) {
     yield call(this.xRead.bind(this), `/clients/me`, ActionReducer.Get);
   }
 
-  *getAuthWorkerSaga() {
+  *getAuthWorkerSaga(action: GetAuthWorkerAction) {
     yield call(this.xRead.bind(this), `/workers/me`, ActionReducer.Get);
   }
 
