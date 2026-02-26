@@ -21,7 +21,7 @@ export class AppointmentService {
     return this.appointmentRepo.find({ relations: ['client', 'dentist'] });
   }
 
-  findNearest(date: Date): Promise<IAppointment[]> {
+  findNearest(date: Date, dentistryId: number): Promise<IAppointment[]> {
     const formatted = date.toISOString().split('T')[0]; // "2026-04-14"
     return this.appointmentRepo.find({
       relations: ['client', 'dentist'],
@@ -29,19 +29,12 @@ export class AppointmentService {
         appointment_date: Raw((alias) => `DATE(${alias}) = :date`, {
           date: formatted,
         }),
+        dentist: {
+          dentistry: { id: dentistryId },
+        },
       },
       order: { appointment_date: 'ASC' },
     });
-
-    // const formatted = date.toISOString().split('T')[0]; // "2026-04-14"
-    // return this.appointmentRepo.find({
-    //   relations: ['client', 'dentist'],
-    //   where: {
-    //     appointment_date: Raw((alias) => `DATE(${alias}) = :date`, {
-    //       date: formatted,
-    //     }),
-    //   },
-    // });
   }
 
   async getTodayAppointmentsByWorker(

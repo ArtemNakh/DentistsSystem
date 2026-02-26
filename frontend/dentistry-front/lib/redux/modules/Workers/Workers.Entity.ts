@@ -24,13 +24,13 @@ interface SaveWorkersPayload {
   workers: IWorker[]; // тут можна уточнити тип, наприклад IWorker[]
 }
 
-export type WorkerActions =
-  | {
-      type: WorkerActionSaga.GetWorkersDentistry;
-      payload: GetWorkerDentistryPayload;
-    }
-  | { type: WorkerActionSaga.GetWorker; payload: GetWorkerClientPayload }
-  | { type: WorkerActionSaga.SaveWorkers; payload: SaveWorkersPayload };
+// export type WorkerActions =
+//   | {
+//       type: WorkerActionSaga.GetWorkersDentistry;
+//       payload: GetWorkerDentistryPayload;
+//     }
+//   | { type: WorkerActionSaga.GetWorker; payload: GetWorkerClientPayload }
+//   | { type: WorkerActionSaga.SaveWorkers; payload: SaveWorkersPayload };
 
 @EntityReducer(EntitiesRedux.Workers)
 export class WorkerEntity extends BaseEntity {
@@ -41,16 +41,17 @@ export class WorkerEntity extends BaseEntity {
     });
   }
 
-  *getWorkerSaga() {
+  *getWorkerSaga(action: {
+    type: WorkerActionSaga.GetWorker;
+    payload: GetWorkerClientPayload;
+  }) {
     yield call(this.xRead.bind(this), `/workers/test/all`, ActionReducer.Get);
   }
 
-  *getDoctorsDentistSaga(
-    action: Extract<
-      WorkerActions,
-      { type: WorkerActionSaga.GetWorkersDentistry }
-    >,
-  ) {
+  *getDoctorsDentistSaga(action: {
+    type: WorkerActionSaga.GetWorkersDentistry;
+    payload: GetWorkerDentistryPayload;
+  }) {
     const { idDentistry } = action.payload;
     yield call(
       this.xRead.bind(this),
@@ -59,13 +60,10 @@ export class WorkerEntity extends BaseEntity {
     );
   }
 
-  *saveWorkersSaga(
-    action: Extract<
-      { type: WorkerActionSaga.SaveWorkers; payload: IWorker[] },
-      { type: WorkerActionSaga.SaveWorkers }
-    >,
-  ) {
-    
+  *saveWorkersSaga(action: {
+    type: WorkerActionSaga.SaveWorkers;
+    payload: SaveWorkersPayload;
+  }) {
     const { payload } = action; // Викликаємо ActionRedux напряму, щоб задиспатчити дані у Redux
     yield call(this.ActionRedux.bind(this), payload, ActionReducer.Get);
   }
@@ -78,6 +76,9 @@ export class WorkerEntity extends BaseEntity {
       WorkerActionSaga.GetWorkersDentistry,
       this.getDoctorsDentistSaga.bind(this),
     );
-    yield takeLatest(WorkerActionSaga.SaveWorkers, this.saveWorkersSaga.bind(this));
+    yield takeLatest(
+      WorkerActionSaga.SaveWorkers,
+      this.saveWorkersSaga.bind(this),
+    );
   }
 }

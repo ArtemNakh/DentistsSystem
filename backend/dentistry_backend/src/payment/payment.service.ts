@@ -21,4 +21,11 @@ export class PaymentService {
       relations: ['appointment', 'appointment.client', 'appointment.dentist'],
     });
   }
+
+  getPaymentsByDentistry(dentistryId: number): Promise<Payment[]> {
+    return this.paymentRepo.find({
+      where: { appointment: { dentist: { dentistry: { id: dentistryId } } } },
+      relations: ['appointment', 'appointment.client', 'appointment.dentist','appointment.dentist.dentistry'],
+    });
+  }
 }

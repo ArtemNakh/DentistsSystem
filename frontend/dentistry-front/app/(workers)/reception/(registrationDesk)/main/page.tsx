@@ -1,92 +1,90 @@
 "use client";
 
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
-import { ClientActionSaga } from "@/lib/redux/modules/Clients/ClientEntity";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { shallowEqual } from "react-redux";
-
-import HeaderAdmin from "../components/Header";
 import TablePationWithoutPay from "./components/TablePationWithoutPay";
 import TableBusyDoctors from "./components/TableBusyDoctors";
 import TableUpcomingEntries from "./components/TableUpcominsEntries";
-import { WorkerActionSaga } from "@/lib/redux/modules/Workers/Workers.Entity";
 import { AppointmentActionSaga } from "@/lib/redux/modules/Appointments/Appointment.Entity";
-import { PaymentActionSaga } from "@/lib/redux/modules/Payments/Payments.Entity";
-import { createSelector } from "@reduxjs/toolkit";
-import { IPayment } from "@/lib/redux/modules/Payments/Payments.interface";
-import { IAppointment } from "@/lib/redux/modules/Appointments/Appointment.interface";
-import { IClient } from "@/lib/redux/modules/Clients/clients.interface";
-import { AuthActionSaga } from "@/lib/redux/modules/AuthUser/AuthUser.Entity";
+
 import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
+import { getPaymentsDentistry } from "@/lib/redux/modules/Payments/actions/getAllPaymentsByDentisty/getAllPaymentsByDentistry";
+import { AuthActionSaga } from "@/lib/redux/modules/AuthUser/AuthUser.Entity";
 
 export function AdminsMain() {
   const { t } = useTranslation();
-  const auth = useAppSelector((state: { auth: AuthState }) => state.auth);
+  const authUser = useAppSelector((state: { auth: AuthState }) => state.auth);
 
-  //  const workers = useAppSelector((state) => state.workers);
   const dispatch = useAppDispatch();
-  // console.log("worers",workers)
-  //  useEffect(() => {
-  //   fetch("http://localhost:4000/workers/me", {
-  //     method: "GET",
-  //     credentials: "include", // важливо!
-  //   })
-  //     .then((res) => {
-  //       if (!res.ok) throw new Error("Unauthorized");
-  //       return res.json();
-  //     })
-  //     .then((data) => {
-  //       console.log("Worker ID:", data.workerId);
-  //     })
-  //     .catch((err) => console.error(err));
-  // }, []);
+
+  // useEffect(() => {
+  //   dispatch({ type: AuthActionSaga.GetAuthWorker });
+  //   // зробити щоб йшов запит із датою у параметрах
+  //   // Додати id Dentistry
+
+  //   console.log("testauth", authUser.user);
+  //   dispatch({
+  //     type: AppointmentActionSaga.GetNearestToday,
+  //     //  payload: { date },
+  //   });
+  //   //Переробити щоб торимати усі payment для стоматлогії
+  //   if (authUser.user?.dentistry?.id !== undefined) {
+  //     dispatch(
+  //       getPaymentsDentistry({ dentistryId: authUser.user.dentistry.id }),
+  //     );
+  //   }
+  //   else{
+  //     console.log("getPaymentsDentistry is not work")
+  //   }
+
+  //   if (authUser.user?.id !== undefined) {
+  //   dispatch({
+  //     type: AppointmentActionSaga.GetTodayOperation,
+  //     payload: { workerId: authUser.user?.id }, // тут передаємо id працівника
+  //   });}
+  //   else
+  //   {
+  //     console.log("AppointmentActionSaga")
+  //   }
+  // }, [dispatch]);
+  useEffect(() => {
+    if (authUser.user) {
+      console.log("work");
+      return
+    }
+    dispatch({ type: AuthActionSaga.GetAuthWorker });
+  }, [dispatch]);
 
   useEffect(() => {
-    dispatch({ type: AuthActionSaga.GetAuthWorker });
-    //Перевірка підтягування даних
-//  if ("specialty" in auth.user!) {
-//       // це Worker
-//       console.log("Specialty:", auth.user.specialty.name);
-//     } else {
-//       // це Client
-//       console.log("Blood group:", auth.user!.blood_group);
-//     }
+    if (!authUser.user) return;
 
-
-
-
-    // зробити щоб йшов запит із датою у параметрах
+    // тепер user гарантовано є
     dispatch({
       type: AppointmentActionSaga.GetNearestToday,
-      //  payload: { date },
-    });
-    dispatch({
-      type: PaymentActionSaga.GetPaiments,
-      payload: { id: 2 },
+      payload: { dentistryId: authUser.user.dentistry.id },
     });
 
-    dispatch({
-      type: AppointmentActionSaga.GetTodayOperation,
-      payload: { workerId: 2 }, // тут передаємо id працівника
-    });
-    // dispatch({ type: ClientActionSaga.GetClient });
-  }, [dispatch]);
-  // тестові дані
+    if (authUser.user.dentistry?.id) {
+      dispatch(
+        getPaymentsDentistry({ dentistryId: authUser.user.dentistry.id }),
+      );
+    }
 
-   
-  
+    if (authUser.user.id) {
+      dispatch({
+        type: AppointmentActionSaga.GetTodayOperation,
+        payload: { workerId: authUser.user.id },
+      });
+    }
+  }, [authUser.user, dispatch]);
+
   return (
     <>
-      {/* HEader
-      <HeaderAdmin /> */}
-
       {/* Body */}
       <div>
         <div>
-          {/* className="w-full h-fit bg-linear-to-l from-[#874FD1] to-[#6F6697] " */}
           <div className=" flex ">
-            <p> {auth.user?.name}</p>
             {/* left part */}
             {/* показування найближчих операцій
              додати показ актуального по часу записів(якщо час 12 то показувати записі до 12) , додати фільри по часу,доктору, пошук пацієкнта */}
@@ -113,8 +111,6 @@ export function AdminsMain() {
           </div>
         </div>
       </div>
-
-      {/* footer */}
     </>
   );
 }

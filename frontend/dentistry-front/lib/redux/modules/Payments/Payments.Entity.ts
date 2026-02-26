@@ -3,13 +3,14 @@ import { ActionReducer } from "../../rootReducer";
 import BaseEntity, { EntitiesRedux } from "../BaseEntity";
 import { EntityReducer } from "../EntityReducer";
 import { schema } from "normalizr";
+import { AllPaymentsDentistAction } from "./actions/getAllPaymentsDentist/getAllPaymentsByDoctor";
+import { PaymentsDentistryAction } from "./actions/getAllPaymentsByDentisty/getAllPaymentsByDentistry";
 
 export enum PaymentActionSaga {
-  GetPaiments = "Payment/Get",
+  GetAllPaimentsDentist = "Payment/Get",
+  GetPaymentsDentistry = "Payment/GetByDentistry",
 }
-interface GetPaymentsPayload {
-  id: number;
-}
+
 @EntityReducer(EntitiesRedux.Payments)
 export class PaymentEntity extends BaseEntity {
   constructor(ctx: any) {
@@ -21,19 +22,32 @@ export class PaymentEntity extends BaseEntity {
     });
   }
 
-  *getPaymentsSaga(action: { type: string; payload: GetPaymentsPayload }) {
-    const { id } = action.payload;
+  *getAllPaymentsDentistSaga(action: AllPaymentsDentistAction) {
+    const { dentistId } = action.payload;
     yield call(
       this.xRead.bind(this),
-      `/payment/all?dentist=${id}`,
+      `/payment/all?dentist=${dentistId}`,
+      ActionReducer.Get,
+    );
+  }
+
+  *getPaymentsDentistrySaga(action: PaymentsDentistryAction) {
+    const { dentistryId } = action.payload;
+    yield call(
+      this.xRead.bind(this),
+      `/payment/allByDentistry?dentistry=${dentistryId}`,
       ActionReducer.Get,
     );
   }
 
   *watch() {
     yield takeLatest(
-      PaymentActionSaga.GetPaiments,
-      this.getPaymentsSaga.bind(this),
+      PaymentActionSaga.GetAllPaimentsDentist,
+      this.getAllPaymentsDentistSaga.bind(this),
+    );
+    yield takeLatest(
+      PaymentActionSaga.GetPaymentsDentistry,
+      this.getPaymentsDentistrySaga.bind(this),
     );
   }
 }

@@ -38,9 +38,12 @@ export class AppointmentController {
   })
   @ApiResponse({ status: 400, description: 'Некоректний формат дати' })
   @ApiResponse({ status: 500, description: 'Внутрішня помилка сервера' })
-  async getNearest(@Query('date') date: string): Promise<IAppointment[]> {
+  async getNearest(
+    @Query('date') date: string,
+    @Query('dentistryId') dentistryId: number,
+  ): Promise<IAppointment[]> {
     const parsedDate = new Date(date);
-    return this.appointmentService.findNearest(parsedDate);
+    return this.appointmentService.findNearest(parsedDate,dentistryId);
   }
 
   @Get('today') async getTodayAppointments(

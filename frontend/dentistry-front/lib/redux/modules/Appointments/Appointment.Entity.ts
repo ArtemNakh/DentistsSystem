@@ -43,19 +43,20 @@ export class AppointmentEntity extends BaseEntity {
     );
   }
 
-  *getNearestTodaySaga() {
-    const today = format(new Date(), "yyyy-MM-dd"); // 2026-02-13
+  *getNearestTodaySaga(action: PayloadAction<{ dentistryId: number }>) {
+    const today = format(new Date(), "yyyy-MM-dd");
 
     yield call(
       this.xRead.bind(this),
-      // `/appointment/nearest?date=${today}`, where appointment_date=2026-03-01
-      `/appointment/nearest?date=${today}`,
+
+      `/appointment/nearest?date=${today}&dentistryId=${action.payload.dentistryId}`,
       ActionReducer.Get,
     );
   }
 
   *getTodayAppoinemntSaga(action: PayloadAction<{ workerId: number }>) {
     const { workerId } = action.payload;
+    console.log("test123", workerId);
     yield call(
       this.xRead.bind(this),
       `/appointment/today?worker=${workerId}`,
@@ -88,7 +89,7 @@ export class AppointmentEntity extends BaseEntity {
     );
 
     yield takeLatest(
-      AppointmentActionSaga.GetTodayOperation, 
+      AppointmentActionSaga.GetTodayOperation,
       this.getTodayAppoinemntSaga.bind(this),
     );
 

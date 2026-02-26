@@ -13,8 +13,17 @@ export class PaymentController {
     return this.paymentService.findAll();
   }
 
-  @Get('all')
-  async getPaymentsByDentist(@Query('dentist') dentistId: number): Promise<Payment[]> {
+  @Get('allByWorker')
+  async getPaymentsByDentist(
+    @Query('dentist') dentistId: number,
+  ): Promise<Payment[]> {
     return this.paymentService.getPaymentsByDentist(dentistId);
+  }
+
+  @Get('allByDentistry')
+  async getPaymentsByDentistry(
+    @Query('dentistry') dentistryId: number,
+  ): Promise<Payment[]> {
+    return this.paymentService.getPaymentsByDentistry(dentistryId);
   }
 }

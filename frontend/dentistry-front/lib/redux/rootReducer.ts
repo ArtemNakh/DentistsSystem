@@ -90,6 +90,7 @@ export const BaseReducer = (entityName: string) => {
           };
         }
         
+        
         //Прибрати(переробити щоб автоматичесаки було)
         if (entityName === "auth" && action.payload.result) {
           const currentId = action.payload.result;
