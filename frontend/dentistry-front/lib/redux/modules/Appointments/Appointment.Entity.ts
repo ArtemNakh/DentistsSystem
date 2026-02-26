@@ -9,8 +9,8 @@ import { PayloadAction } from "@reduxjs/toolkit";
 
 export enum AppointmentActionSaga {
   GetAppointment = "Appointment/Getall",
-  GetNearestToday = "Appointment/GetNearestToday",
-  GetTodayOperation = "Appointment/GetToday",
+  GetNearestTodayByDentistry = "Appointment/GetNearestToday",
+  GetTodayOperationByDentistry = "Appointment/GetTodayByDentistry",
   GetAppointmentsDentistry = "Appointment/GetToDentistry",
 }
 
@@ -54,12 +54,12 @@ export class AppointmentEntity extends BaseEntity {
     );
   }
 
-  *getTodayAppoinemntSaga(action: PayloadAction<{ workerId: number }>) {
-    const { workerId } = action.payload;
-    console.log("test123", workerId);
+  *getTodayAppoinemntSaga(action: PayloadAction<{ dentistryId: number }>) {
+    const { dentistryId } = action.payload;
+
     yield call(
       this.xRead.bind(this),
-      `/appointment/today?worker=${workerId}`,
+      `/appointment/today?dentistry=${dentistryId}`,
       ActionReducer.Get,
     );
   }
@@ -84,12 +84,12 @@ export class AppointmentEntity extends BaseEntity {
       this.getAppointmentSaga.bind(this),
     );
     yield takeLatest(
-      AppointmentActionSaga.GetNearestToday,
+      AppointmentActionSaga.GetNearestTodayByDentistry,
       this.getNearestTodaySaga.bind(this),
     );
 
     yield takeLatest(
-      AppointmentActionSaga.GetTodayOperation,
+      AppointmentActionSaga.GetTodayOperationByDentistry,
       this.getTodayAppoinemntSaga.bind(this),
     );
 

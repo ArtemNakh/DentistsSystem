@@ -51,7 +51,7 @@ export function AdminsMain() {
   useEffect(() => {
     if (authUser.user) {
       console.log("work");
-      return
+      return;
     }
     dispatch({ type: AuthActionSaga.GetAuthWorker });
   }, [dispatch]);
@@ -61,7 +61,7 @@ export function AdminsMain() {
 
     // тепер user гарантовано є
     dispatch({
-      type: AppointmentActionSaga.GetNearestToday,
+      type: AppointmentActionSaga.GetNearestTodayByDentistry,
       payload: { dentistryId: authUser.user.dentistry.id },
     });
 
@@ -73,8 +73,8 @@ export function AdminsMain() {
 
     if (authUser.user.id) {
       dispatch({
-        type: AppointmentActionSaga.GetTodayOperation,
-        payload: { workerId: authUser.user.id },
+        type: AppointmentActionSaga.GetTodayOperationByDentistry,
+        payload: { dentistryId: authUser.user.dentistry.id },
       });
     }
   }, [authUser.user, dispatch]);

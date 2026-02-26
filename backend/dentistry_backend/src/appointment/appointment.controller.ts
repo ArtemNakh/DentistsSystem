@@ -47,9 +47,9 @@ export class AppointmentController {
   }
 
   @Get('today') async getTodayAppointments(
-    @Query('worker') workerId: number,
+    @Query('dentistry') dentistryId: number,
   ): Promise<IAppointment[]> {
-    return this.appointmentService.getTodayAppointmentsByWorker(workerId);
+    return this.appointmentService.getTodayAppointmentsByDentistry(dentistryId);
   }
 
   @Get('all') async getAppointmentsDentistry(

@@ -37,15 +37,15 @@ export class AppointmentService {
     });
   }
 
-  async getTodayAppointmentsByWorker(
-    workerId: number,
+  async getTodayAppointmentsByDentistry(
+    dentistryId: number,
   ): Promise<IAppointment[]> {
     const today = new Date();
     const startOfDay = new Date(today.setHours(0, 0, 0, 0));
     const endOfDay = new Date(today.setHours(23, 59, 59, 999));
     return this.appointmentRepo.find({
       where: {
-        dentist: { id: workerId },
+        dentist: { dentistry: { id: dentistryId } },
         appointment_date: Between(startOfDay, endOfDay),
       },
       relations: [
