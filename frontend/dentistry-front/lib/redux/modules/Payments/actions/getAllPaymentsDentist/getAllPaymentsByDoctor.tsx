@@ -1,7 +1,5 @@
 import { PaymentActionSaga } from "../../Payments.Entity";
 
-
-
 interface GetAllPaymentsDentistPayload {
   dentistId: number;
 }

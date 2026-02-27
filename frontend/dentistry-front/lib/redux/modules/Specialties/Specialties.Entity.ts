@@ -1,11 +1,7 @@
-import { call, takeLatest } from "redux-saga/effects";
 import BaseEntity, { EntitiesRedux } from "../BaseEntity";
 import { EntityReducer } from "../EntityReducer";
-import { ActionReducer } from "../../rootReducer";
 
-export enum SpecialtyActionSaga {
-  GetSpecialty = "Specialty/getSaga",
-}
+export enum SpecialtyActionSaga {}
 
 @EntityReducer(EntitiesRedux.Specialties)
 export class SpecialtyEntity extends BaseEntity {
@@ -13,18 +9,5 @@ export class SpecialtyEntity extends BaseEntity {
     super(ctx, EntitiesRedux.Specialties, {});
   }
 
-  *getSpecialtySaga() {
-    yield call(
-      this.xRead.bind(this),
-      `/specialties/test/all`,
-      ActionReducer.Get,
-    );
-  }
-
-  *watch() {
-    yield takeLatest(
-      SpecialtyActionSaga.GetSpecialty,
-      this.getSpecialtySaga.bind(this),
-    );
-  }
+  *watch() {}
 }
