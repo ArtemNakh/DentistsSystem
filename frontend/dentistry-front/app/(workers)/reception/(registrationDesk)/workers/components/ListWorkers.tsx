@@ -9,6 +9,10 @@ import { format } from "date-fns";
 import { WorkerFilters } from "./FilterPanel";
 import { useEffect } from "react";
 import { WorkerActionSaga } from "@/lib/redux/modules/Workers/Workers.Entity";
+import { getWorkersDentistry } from "@/lib/redux/modules/Workers/actions/GetWorkersDentistry/GetWorkersDentistry";
+import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
+import { AuthActionSaga } from "@/lib/redux/modules/AuthUser/AuthUser.Entity";
+import { getAuthWorker } from "@/lib/redux/modules/AuthUser/actions/GetAuthWorker/GetAuthWorker";
 
 export const DenormalizeWorkers = createSelector(
   [
@@ -35,11 +39,24 @@ export default function ListWorkersWorker({
 }: {
   filters: WorkerFilters;
 }) {
+  const authUser = useAppSelector((state: { auth: AuthState }) => state.auth);
+
   const dispatch = useAppDispatch();
+  // useEffect(() => {
+  //   dispatch(getWorkersDentistry({idDentistry:authUser.user?.dentistry.id}));
+  // }, [dispatch]);
   useEffect(() => {
-    dispatch({ type: WorkerActionSaga.GetWorker });
+    if (authUser.user) {
+      console.log("work");
+      return;
+    }
+    dispatch(getAuthWorker({}));
   }, [dispatch]);
 
+  useEffect(() => {
+    if (!authUser.user) return;
+     dispatch(getWorkersDentistry({idDentistry:authUser.user?.dentistry.id}));
+  },[authUser]);
   const workers = useAppSelector(DenormalizeWorkers);
 
   const filteredWorkers = workers.filter((w) => {

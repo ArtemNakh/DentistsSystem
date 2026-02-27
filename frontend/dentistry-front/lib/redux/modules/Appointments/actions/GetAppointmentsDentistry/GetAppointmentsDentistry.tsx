@@ -4,11 +4,11 @@ interface GetAppointmentsDentistryPayload {
  dentistryId: number
 }
 
-export const getAppointmentNearestTodayDentistry = (
+export const getAppointmentDentistry = (
   payload: GetAppointmentsDentistryPayload,
 ) => ({
   type: AppointmentActionSaga.GetAppointmentsDentistry as const,
   payload,
 });
 
-export type getAppointmentsDentistryAction = ReturnType<typeof getAppointmentNearestTodayDentistry>;
+export type getAppointmentsDentistryAction = ReturnType<typeof getAppointmentDentistry>;

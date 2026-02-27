@@ -13,6 +13,10 @@ import { IDentistry } from "@/lib/redux/modules/Dentistries/Dentistry.interface"
 import { ISpecialty } from "@/lib/redux/modules/Specialties/Specialties.interface";
 import RenderCalendarTile from "./components/renderCalendarTile";
 import AllDayRecords from "./components/AllDayRecords";
+import { getAppointmentDentistry } from "@/lib/redux/modules/Appointments/actions/GetAppointmentsDentistry/GetAppointmentsDentistry";
+import { AuthActionSaga } from "@/lib/redux/modules/AuthUser/AuthUser.Entity";
+import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
+import { getAuthWorker } from "@/lib/redux/modules/AuthUser/actions/GetAuthWorker/GetAuthWorker";
 
 export const DenormalizeAppointments = createSelector(
   [
@@ -42,14 +46,23 @@ export const DenormalizeAppointments = createSelector(
 
 export default function CalendarAdmin() {
   const dispatch = useAppDispatch();
+  const authUser = useAppSelector((state: { auth: AuthState }) => state.auth);
 
   const appointments = useAppSelector(DenormalizeAppointments);
+  useEffect(() => {
+    if (authUser.user) {
+      console.log("work");
+      return;
+    }
+    dispatch(getAuthWorker({}));
+  }, [dispatch]);
 
   useEffect(() => {
-    dispatch({
-      type: AppointmentActionSaga.GetAppointmentsDentistry,
-      payload: { dentistryId: 2 },
-    });
+    if (!authUser.user) return;
+
+    dispatch(
+      getAppointmentDentistry({ dentistryId: authUser.user.dentistry.id }),
+    );
   }, [dispatch]);
 
   const [value, setValue] = useState<Date>(new Date());

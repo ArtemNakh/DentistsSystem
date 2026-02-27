@@ -27,7 +27,7 @@ export class WorkersController {
       'Використовувати для отримання усіх працівників(докторів) у певній стоматології',
   })
   @ApiQuery({
-    name: 'idDentistry',
+    name: 'dentistry',
     type: Number,
     required: true,
     description: 'Ідентифікатор стоматології',
@@ -86,7 +86,7 @@ export class WorkersController {
     },
   })
   async GetDoctorsByDentistry(
-    @Query('idDentistry') dentistryId: number,
+    @Query('dentistry') dentistryId: number,
   ): Promise<IWorker[]> {
     const workersByDentistry =
       this.workersService.GetDoctorsDentistry(dentistryId);

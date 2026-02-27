@@ -11,6 +11,9 @@ import { AppointmentActionSaga } from "@/lib/redux/modules/Appointments/Appointm
 import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
 import { getPaymentsDentistry } from "@/lib/redux/modules/Payments/actions/getAllPaymentsByDentisty/getAllPaymentsByDentistry";
 import { AuthActionSaga } from "@/lib/redux/modules/AuthUser/AuthUser.Entity";
+import { getAuthWorker } from "@/lib/redux/modules/AuthUser/actions/GetAuthWorker/GetAuthWorker";
+import { getAppointmentNearestTodayDentistry } from "@/lib/redux/modules/Appointments/actions/GetNearestTodayByDentistry/GetNearestTodayByDentistry";
+import { getAppointmentTodayDentistry } from "@/lib/redux/modules/Appointments/actions/GetTodayOperationByDentistry/GetTodayOperationByDentistry";
 
 export function AdminsMain() {
   const { t } = useTranslation();
@@ -18,52 +21,24 @@ export function AdminsMain() {
 
   const dispatch = useAppDispatch();
 
-  // useEffect(() => {
-  //   dispatch({ type: AuthActionSaga.GetAuthWorker });
-  //   // зробити щоб йшов запит із датою у параметрах
-  //   // Додати id Dentistry
-
-  //   console.log("testauth", authUser.user);
-  //   dispatch({
-  //     type: AppointmentActionSaga.GetNearestToday,
-  //     //  payload: { date },
-  //   });
-  //   //Переробити щоб торимати усі payment для стоматлогії
-  //   if (authUser.user?.dentistry?.id !== undefined) {
-  //     dispatch(
-  //       getPaymentsDentistry({ dentistryId: authUser.user.dentistry.id }),
-  //     );
-  //   }
-  //   else{
-  //     console.log("getPaymentsDentistry is not work")
-  //   }
-
-  //   if (authUser.user?.id !== undefined) {
-  //   dispatch({
-  //     type: AppointmentActionSaga.GetTodayOperation,
-  //     payload: { workerId: authUser.user?.id }, // тут передаємо id працівника
-  //   });}
-  //   else
-  //   {
-  //     console.log("AppointmentActionSaga")
-  //   }
-  // }, [dispatch]);
+  
   useEffect(() => {
     if (authUser.user) {
       console.log("work");
       return;
     }
-    dispatch({ type: AuthActionSaga.GetAuthWorker });
+    dispatch(getAuthWorker({}));
   }, [dispatch]);
 
   useEffect(() => {
     if (!authUser.user) return;
 
     // тепер user гарантовано є
-    dispatch({
-      type: AppointmentActionSaga.GetNearestTodayByDentistry,
-      payload: { dentistryId: authUser.user.dentistry.id },
-    });
+    dispatch(
+      getAppointmentNearestTodayDentistry({
+        dentistryId: authUser.user.dentistry.id,
+      }),
+    );
 
     if (authUser.user.dentistry?.id) {
       dispatch(
@@ -72,10 +47,11 @@ export function AdminsMain() {
     }
 
     if (authUser.user.id) {
-      dispatch({
-        type: AppointmentActionSaga.GetTodayOperationByDentistry,
-        payload: { dentistryId: authUser.user.dentistry.id },
-      });
+      dispatch(
+        getAppointmentTodayDentistry({
+          dentistryId: authUser.user.dentistry.id,
+        }),
+      );
     }
   }, [authUser.user, dispatch]);
 

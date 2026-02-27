@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
 import { AuthActionSaga } from "@/lib/redux/modules/AuthUser/AuthUser.Entity";
+import { getAuthWorker } from "@/lib/redux/modules/AuthUser/actions/GetAuthWorker/GetAuthWorker";
 
 export default function HeaderAdmin() {
 
@@ -22,7 +23,7 @@ export default function HeaderAdmin() {
       console.log("work");
       return
     }
-    dispatch({ type: AuthActionSaga.GetAuthWorker });
+    dispatch(getAuthWorker({}));
   }, [dispatch]);
   // список кнопок для сайдбару
   const sidebarItems = [
