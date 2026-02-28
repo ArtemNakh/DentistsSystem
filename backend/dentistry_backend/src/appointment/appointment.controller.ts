@@ -3,6 +3,7 @@ import { AppointmentService } from './appointment.service';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { IAppointment } from './entity/appointment.interface';
 import { AppointmentDto } from './dto/gettingNearectAppointment.dto';
+import { Dentistry } from 'src/dentistry/entities/dentistry.entity';
 
 @ApiTags('Appointment')
 @Controller('appointment')
@@ -43,7 +44,7 @@ export class AppointmentController {
     @Query('dentistryId') dentistryId: number,
   ): Promise<IAppointment[]> {
     const parsedDate = new Date(date);
-    return this.appointmentService.findNearest(parsedDate,dentistryId);
+    return this.appointmentService.findNearest(parsedDate, dentistryId);
   }
 
   @Get('today') async getTodayAppointments(
@@ -61,5 +62,18 @@ export class AppointmentController {
       );
     }
     return this.appointmentService.getAppointmentsByDentistry(dentistryId);
+  }
+
+  @Get('history')
+  async getHistoryByDentistry(
+    @Query('dentistry') dentistryId: number,
+  ): Promise<IAppointment[]> {
+    if (!dentistryId || isNaN(dentistryId)) {
+      throw new BadRequestException(
+        'Query parameter "dentistry" must be a valid number',
+      );
+    }
+
+    return this.appointmentService.getHistoryByDentistry(dentistryId);
   }
 }

@@ -93,8 +93,8 @@ export class AuthService {
             ),
           );
         }
-          const authToken = req.sessionID;
-        resolve({ client,authToken });
+        const authToken = req.sessionID;
+        resolve({ client, authToken });
       });
     });
   }
@@ -102,7 +102,6 @@ export class AuthService {
   // ========================= WORKER =========================
 
   public async loginWorker(req: Request, dto: LoginWorkerDto) {
-  
     const worker = await this.workerService.findByLogin(dto.login);
     if (!worker || !worker.password) {
       throw new NotFoundException('Worker not found. Please check your input.');
@@ -115,8 +114,8 @@ export class AuthService {
   }
 
   public async logoutWorker(req: Request, res: Response): Promise<void> {
-      console.log("a",req.session)
-      console.log("b",req.sessionID)
+    console.log('a', req.session);
+    console.log('b', req.sessionID);
     return new Promise((resolve, reject) => {
       req.session.destroy((err) => {
         if (err) {
@@ -135,7 +134,6 @@ export class AuthService {
       req.session.clientId = undefined;
       req.session.workerId = worker.id.toString();
       req.session.save((err) => {
-        console.log("Saved session:", req.session);
         if (err) {
           return reject(
             new InternalServerErrorException('Failed to save worker session.'),
@@ -147,15 +145,7 @@ export class AuthService {
     });
   }
 
-
-
-
-
-
-
-
-
-   //temporary
+  //temporary
   public async registerWorker(req: Request, dto: RegisterWorkerDto) {
     const isExists = await this.workerService.findByLoginTemp(dto.login);
     if (isExists) {

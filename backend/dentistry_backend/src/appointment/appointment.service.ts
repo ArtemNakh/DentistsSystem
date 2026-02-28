@@ -8,7 +8,13 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Appointment } from './entity/appointment.entity';
 import { IAppointment } from './entity/appointment.interface';
-import { Between, MoreThanOrEqual, Raw, Repository } from 'typeorm';
+import {
+  Between,
+  LessThanOrEqual,
+  MoreThanOrEqual,
+  Raw,
+  Repository,
+} from 'typeorm';
 
 @Injectable()
 export class AppointmentService {
@@ -71,6 +77,48 @@ export class AppointmentService {
       const appointments = this.appointmentRepo.find({
         where: { dentist: { dentistry: { id: dentistryId } } },
         relations: ['dentist', 'dentist.dentistry', 'client'], // якщо потрібні зв’язки
+      });
+
+      if (!appointments || (await appointments).length === 0) {
+        throw new NotFoundException(
+          `No appointments found for dentistry with id ${dentistryId}`,
+        );
+      }
+
+      return appointments;
+    } catch (error) {
+      // Логування для дебагу
+      console.error('Error fetching appointments by dentistry:', error); // Якщо це вже NestJS exception — пробросимо далі
+      if (error instanceof HttpException) {
+        throw error;
+      } // Інакше — внутрішня помилка
+      throw new InternalServerErrorException(
+        'Unexpected error while fetching appointments',
+      );
+    }
+  }
+
+  async getHistoryByDentistry(dentistryId: number): Promise<IAppointment[]> {
+    if (!dentistryId || isNaN(dentistryId)) {
+      throw new BadRequestException('Invalid dentistryId provided');
+    }
+
+    try {
+      const now = new Date();
+      const appointments = this.appointmentRepo.find({
+        where: {
+          dentist: { dentistry: { id: dentistryId } },
+          appointment_date: LessThanOrEqual(now),
+        },
+        relations: [
+          'dentist',
+          'dentist.dentistry',
+          'client',
+          'appointment_actions',
+          // ось тут додаєш
+          'appointment_actions.operation', // якщо треба підтягнути операцію
+          'payment', // якщо потрібна оплата
+        ], // якщо потрібні зв’язки
       });
 
       if (!appointments || (await appointments).length === 0) {

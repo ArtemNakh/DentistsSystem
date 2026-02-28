@@ -95,7 +95,7 @@ export class WorkersController {
 
   @Get('me')
   async getCurrentWorker(@Req() req: Request) {
-    console.log("Cookies:", req.cookies); console.log("Session:", req.session);
+   
     if (!req.session.workerId) {
       throw new UnauthorizedException('No worker session');
     }

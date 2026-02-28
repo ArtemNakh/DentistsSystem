@@ -7,11 +7,13 @@ import { format } from "date-fns";
 import { getAppointmentNearestTodayDentistryAction } from "./actions/GetNearestTodayByDentistry/GetNearestTodayByDentistry";
 import { getAppointmentTodayDentistryAction } from "./actions/GetTodayOperationByDentistry/GetTodayOperationByDentistry";
 import { getAppointmentsDentistryAction } from "./actions/GetAppointmentsDentistry/GetAppointmentsDentistry";
+import { getHistoryAppointmentByDentistryAction } from "./actions/GetHistoryAppointmentDentistry/GetHistoryAppointmentDentistry";
 
 export enum AppointmentActionSaga {
   GetNearestTodayByDentistry = "Appointment/GetNearestToday",
   GetTodayOperationByDentistry = "Appointment/GetTodayByDentistry",
   GetAppointmentsDentistry = "Appointment/GetToDentistry",
+  GetHistoryByDentistry = "Appointment/GetHistoryByDentistry",
 }
 
 @EntityReducer(EntitiesRedux.Appointments)
@@ -55,6 +57,15 @@ export class AppointmentEntity extends BaseEntity {
     );
   }
 
+*getHistoryByDentistrySaga(action:getHistoryAppointmentByDentistryAction){
+  const {dentistryId}=action.payload
+   yield call(
+      this.xRead.bind(this),
+      `/appointment/history?dentistry=${dentistryId}`,
+      ActionReducer.Get,
+    );
+}
+
   *watch() {
     yield takeLatest(
       AppointmentActionSaga.GetNearestTodayByDentistry,
@@ -69,6 +80,11 @@ export class AppointmentEntity extends BaseEntity {
     yield takeLatest(
       AppointmentActionSaga.GetAppointmentsDentistry,
       this.getAppointmentsDentistrySaga.bind(this),
+    );
+
+      yield takeLatest(
+      AppointmentActionSaga.GetHistoryByDentistry,
+      this.getHistoryByDentistrySaga.bind(this),
     );
   }
 }
