@@ -24,7 +24,7 @@
     "migration:revert": "npm run typeorm migration:revert -d src/data-source.ts",
     "migr:run": "ts-node ./node_modules/typeorm/cli.js migration:run -d ./src/database/data-source.ts",
     "seed:test": "ts-node ./seeds/testsValue/runAllSeeds.ts",
-    "seed:prodTest": "ts-node ./seeds/ProdTestValue/runAllSeeds.ts"
+    "seed:prod": "ts-node ./seeds/ProdTestValue/runAllSeedsProd.ts"
   },
   "dependencies": {
     "@faker-js/faker": "^8.0.2",

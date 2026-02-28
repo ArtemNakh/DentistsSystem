@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
-import { Dentistry } from 'src/dentistry/entities/dentistry.entity';
-import { OperationList } from 'src/operation-list/entities/operation-list.entity';
+import { Dentistry } from '../../../src/dentistry/entities/dentistry.entity';
+import { OperationList } from '../../../src/operation-list/entities/operation-list.entity';
 
 import { DataSource } from 'typeorm';
 export async function seedOperationList(
