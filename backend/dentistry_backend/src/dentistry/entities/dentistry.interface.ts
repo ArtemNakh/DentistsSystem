@@ -1,3 +1,4 @@
+import { IOperationList } from 'src/operation-list/entities/operation-list.interface';
 import { IWorker } from 'src/workers/entities/workers.interface';
 
 export interface IDentistry {
@@ -7,6 +8,7 @@ export interface IDentistry {
   region: string;
 
   worker?: IWorker[];
+  operation_lists?: IOperationList[];
   created_at: Date;
   updated_at: Date;
 }

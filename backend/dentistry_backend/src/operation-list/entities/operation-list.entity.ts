@@ -2,12 +2,14 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { IOperationList } from './operation-list.interface';
 import { AppointmentActions } from '../../appointment-action/entity/appointment-action.entity';
+import { Dentistry } from '../../dentistry/entities/dentistry.entity';
 
 @Entity({ name: 'operation_list' })
 export class OperationList implements IOperationList {
@@ -35,4 +37,10 @@ export class OperationList implements IOperationList {
     (appointment_action) => appointment_action.operation,
   )
   appointment_actions: AppointmentActions[];
+
+  @ManyToOne(() => Dentistry, (dentistry) => dentistry.operation_lists, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  dental_clinic: Dentistry;
 }
