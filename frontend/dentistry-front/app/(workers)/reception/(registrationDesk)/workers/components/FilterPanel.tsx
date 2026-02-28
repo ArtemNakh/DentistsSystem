@@ -11,7 +11,10 @@ interface FilterPanelProps {
   setFilters: React.Dispatch<React.SetStateAction<WorkerFilters>>;
 }
 
-export default function FilterPanelWorkers({ filters, setFilters }: FilterPanelProps) {
+export default function FilterPanelWorkers({
+  filters,
+  setFilters,
+}: FilterPanelProps) {
   return (
     <>
       <div className=" w-full">
@@ -42,17 +45,14 @@ export default function FilterPanelWorkers({ filters, setFilters }: FilterPanelP
               <input
                 type="text"
                 placeholder="dd.mm.yyyy"
-               value={filters.birthday} onChange={(e) => setFilters({ ...filters, birthday: e.target.value })}
-           
+                value={filters.birthday}
+                onChange={(e) =>
+                  setFilters({ ...filters, birthday: e.target.value })
+                }
                 className="h-10 w-40 text-lg border border-gray-600 rounded px-2 focus:outline-none"
                 pattern="\d{2}\.\d{2}\.\d{4}"
               />
-              {/* <button
-                onClick={() => setAppliedFilter(dateFilter)}
-                className="h-10 px-4 text-lg rounded border border-gray-600 hover: text-gray-200"
-              >
-                Застосувати
-              </button> */}
+              
             </div>
           </div>
         </div>

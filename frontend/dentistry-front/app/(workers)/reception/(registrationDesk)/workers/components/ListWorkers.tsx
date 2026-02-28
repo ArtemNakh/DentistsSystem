@@ -34,6 +34,7 @@ export const DenormalizeWorkers = createSelector(
     });
   },
 );
+
 export default function ListWorkersWorker({
   filters,
 }: {
@@ -42,9 +43,8 @@ export default function ListWorkersWorker({
   const authUser = useAppSelector((state: { auth: AuthState }) => state.auth);
 
   const dispatch = useAppDispatch();
-  // useEffect(() => {
-  //   dispatch(getWorkersDentistry({idDentistry:authUser.user?.dentistry.id}));
-  // }, [dispatch]);
+
+  
   useEffect(() => {
     if (authUser.user) {
       console.log("work");

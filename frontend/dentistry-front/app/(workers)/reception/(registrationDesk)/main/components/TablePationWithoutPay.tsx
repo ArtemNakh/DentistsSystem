@@ -79,7 +79,7 @@ export default function TablePationWithoutPay() {
                     className="odd:bg-white even:bg-gray-100 hover:bg-purple-100 transition-colors"
                   >
                     <td className="px-4 py-2 text-gray-800">
-                      {p.appointment?.client?.name}
+                      {p.appointment?.client?.name}{" "}
                       {p.appointment?.client?.surname}
                     </td>
                     <td className="px-4 py-2 text-gray-800">{p.amount}</td>

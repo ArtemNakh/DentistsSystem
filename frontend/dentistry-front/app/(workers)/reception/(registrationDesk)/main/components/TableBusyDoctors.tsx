@@ -95,14 +95,14 @@ export default function TableBusyDoctors() {
                     className="odd:bg-gray-50 even:bg-gray-100 hover:bg-purple-200 transition-colors"
                   >
                     <td className="px-4 py-2 text-gray-900">
-                      {d.dentist?.name}
+                      {d.dentist?.name}{" "}
                       {d.dentist?.surname}
                     </td>
                     <td className="px-4 py-2 text-gray-900">
                       {d.dentist?.specialty?.name}
                     </td>
                     <td className="px-4 py-2 text-gray-900">
-                      {d.client?.name}
+                      {d.client?.name}{" "} 
                       {d.client?.surname}
                     </td>
                   </tr>
