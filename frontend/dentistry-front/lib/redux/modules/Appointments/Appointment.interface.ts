@@ -1,3 +1,4 @@
+import { IAppointmentActions } from "../AppointmentsActions/AppointmentActions.interface";
 import { IClient } from "../Clients/clients.interface";
 import { IPayment } from "../Payments/Payments.interface";
 import { IWorker } from "../Workers/Workers.interface";
@@ -20,7 +21,7 @@ export interface IAppointment {
   created_at: Date;
   updated_at: Date;
 
-  //  appointment_actions?: IAppointmentActions[];
+  appointment_actions?: IAppointmentActions[];
   payment?: IPayment;
 }
 

@@ -65,8 +65,8 @@ export default function TableBusyDoctors() {
   return (
     <>
       <div className="mt-8  border-2  border-gray-450 ">
-        <div className="flex items-center justify-center my-3">
-          <h2 className="text-xl text-center  font-bold ">
+        <div className="flex items-center justify-center my-2">
+          <h2 className="text-base text-center  font-bold ">
             Лікарі, які зараз оперують
           </h2>
         </div>

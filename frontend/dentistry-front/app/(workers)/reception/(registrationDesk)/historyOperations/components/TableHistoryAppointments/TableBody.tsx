@@ -6,19 +6,19 @@ import { useState } from "react";
 export default function TableBodyHistoryAppointment({
   appointments,
   setSelectedAppointment,
-  setSelectedPayment,
 }: {
   appointments: IAppointment[];
   setSelectedAppointment: (appointment: IAppointment | null) => void;
-  setSelectedPayment: (payment: IPayment | null) => void;
 }) {
+  const [selectedPayment, setSelectedPayment] = useState<IPayment | null>(null);
+
   return (
     <>
       <tbody>
         {appointments.map((text) => (
           <tr
             key={text.id}
-            className="bg-gray-100  text-gray-700 hover:bg-gray-100"
+            className="bg-gray-100 text-base  text-gray-700 hover:bg-gray-100"
           >
             <td className="border border-gray-400 px-2 py-1">
               <div className="flex h-full items-center">
@@ -31,7 +31,8 @@ export default function TableBodyHistoryAppointment({
               {text.dentist?.surname} {text.dentist?.name}
             </td>
             <td className="border border-gray-400 px-2 py-1">
-              {/* {text.appointment_date} */}
+            
+            
               {text.appointment_date
                 ? format(new Date(text.appointment_date), "dd.MM.yyyy HH:mm")
                 : "—"}
@@ -41,21 +42,48 @@ export default function TableBodyHistoryAppointment({
               {text.notes}
               <button
                 onClick={() => setSelectedAppointment(text)}
-                className=" text-xl text-gray-500 hover:underline"
+                className="  text-gray-500 hover:underline"
               >
                 +
               </button>
             </td>
 
-            <td className="border border-gray-400 px-2 py-1">
+            <td className="relative cursor-pointer border border-gray-400 px-2 py-1">
               {text.payment ? text.payment.amount : "—"}
               <button
-                onClick={() => setSelectedPayment(text.payment ?? null)}
-                className="text-xl text-gray-500 hover:underline"
+                onClick={() =>
+                  setSelectedPayment(
+                    selectedPayment?.id === text.payment?.id
+                      ? null
+                      : text.payment || null,
+                  )
+                }
+                className=" text-gray-500 hover:underline"
               >
                 +
               </button>
+
+              {selectedPayment?.id === text.payment?.id && (
+                <div
+                  className="absolute right-full top-1/2 -translate-y-1/2 mr-2 
+                    bg-white shadow-lg rounded-md p-4 border w-64"
+                >
+                  <p>Amount: {selectedPayment?.amount}</p>
+                  <p>Method pay: {selectedPayment?.method_pay}</p>
+                  <p>
+                    Payment day:
+                    {selectedPayment?.payment_date
+                      ? format(
+                          new Date(selectedPayment.payment_date),
+                          "dd.MM.yyyy HH:mm",
+                        )
+                      : "—"}
+                  </p>
+                  <p>Status pay: {selectedPayment?.status_paid}</p>
+                </div>
+              )}
             </td>
+
             <td className="border border-gray-600 px-2 py-2 text-center">
               <button className=" text-gray-900 px-3 py-2 rounded hover:bg-[#795FAE] transition flex items-center justify-center">
                 {/* SVG іконка календаря */}

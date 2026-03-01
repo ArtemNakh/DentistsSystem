@@ -23,7 +23,7 @@ export default function AllDayRecords({
 
   return (
     <>
-      <div className="w-80 border border-gray-400 bg-linear-to-r from-[#874FD1] to-[#7562A5] flex flex-col h-full">
+      <div className="w-60 border border-gray-400 bg-linear-to-r from-[#874FD1] to-[#7562A5] flex flex-col h-full">
         <div className="">
           <button
             onClick={() => setShowModal(true)}
@@ -39,7 +39,7 @@ export default function AllDayRecords({
           className="flex-1 p-4   overflow-auto scrollbar-thin
                 scrollbar-thumb-[#7D4DBF] scrollbar-track-[#6F6697]"
         >
-          <h2 className="text-lg font-bold mb-2">
+          <h2 className="text-base font-bold mb-2">
             Записи на {selectedDate.toLocaleDateString()}
           </h2>
           {dayAppointments.length > 0 ? (

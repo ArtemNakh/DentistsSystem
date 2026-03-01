@@ -58,21 +58,25 @@ export default function CalendarAdmin() {
   }, [dispatch]);
 
   useEffect(() => {
-    if (!authUser.user) return;
+    if (!authUser.user) {
+      console.log("check user ");
+      return;
+    }
 
     dispatch(
       getAppointmentDentistry({ dentistryId: authUser.user.dentistry.id }),
     );
-  }, [dispatch]);
+  }, [dispatch, authUser.user]);
 
   const [value, setValue] = useState<Date>(new Date());
 
   return (
     <>
-      <div className=" flex  h-screen ">
+      <div className=" flex  min-h-screen ">
         {/* lefft side */}
         {/* calendar */}
-        <div className=" relative flex-1  overflow-visible w-max h-screen flex flex-col items-center justify-center">
+        {/* <div className="flex-1 h-full flex flex-col"> */} {/* календар */}
+        <div className="flex-1 min-h-full flex flex-col items-center justify-center text-base">
           <Calendar
             value={value}
             onChange={(val) => setValue(val as Date)}
@@ -85,16 +89,17 @@ export default function CalendarAdmin() {
             )}
             tileClassName={({ date, view }) => {
               const isToday = date.toDateString() === new Date().toDateString();
-              return `relative h-30 border ${isToday ? "border-yellow-500" : "border-gray-300"} bg-linear-to-r from-[#7F59BD] to-[#795EAF]`;
+              return `relative h-30 border ${isToday ? "border-yellow-500" : "border-gray-300"} bg-linear-to-r from-[#7F59BD] to-[#795EAF] text-base`;
             }}
-            className="calendar-admin bg-linear-to-l from-[#874FD1] to-[#6F6697] w-full h-full  "
+            className="calendar-admin bg-linear-to-l from-[#874FD1] to-[#6F6697] w-full h-full text-base  "
             minDetail="month"
             maxDetail="month"
           />
         </div>
-
         {/* Right part */}
-        <AllDayRecords appointments={appointments} selectedDate={value} />
+        <div className="h-full">
+          <AllDayRecords appointments={appointments} selectedDate={value} />
+        </div>
       </div>
     </>
   );

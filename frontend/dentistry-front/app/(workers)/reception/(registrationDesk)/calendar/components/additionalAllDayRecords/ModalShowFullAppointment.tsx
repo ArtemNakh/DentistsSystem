@@ -16,8 +16,8 @@ export default function AppointmentModal({
   if (!appointment) return null;
 
   return (
-    <div className="text-lg absolute top-20 right-80  bg-linear-to-r from-[#874FD1] to-[#7562A5] p-4 rounded shadow-lg w-80 z-50 border border-gray-300">
-      <h3 className="text-xl font-bold mb-2">Деталі запису</h3>
+    <div className="text-base absolute top-20 right-80  bg-linear-to-r from-[#874FD1] to-[#7562A5] p-4 rounded shadow-lg w-80 z-50 border border-gray-300">
+      <h3 className="text-base font-bold mb-2">Деталі запису</h3>
       <p className="mb-2">
         <strong>Пацієнт:</strong> {appointment.client?.surname} {appointment.client?.name} {appointment.client?.middle_name}
       </p>

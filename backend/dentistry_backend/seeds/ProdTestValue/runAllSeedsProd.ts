@@ -18,7 +18,7 @@ async function runAllSeeds() {
 
     await AppDataSource.initialize();
 
-    await seedDentistries(AppDataSource);
+    await seedDentistries(AppDataSource,5);
     await seedSpecialties(AppDataSource, 50);
     await seedOperationList(AppDataSource, 3, 15, 10, 1000);
     await seedClients(AppDataSource, 50);

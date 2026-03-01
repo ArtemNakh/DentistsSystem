@@ -9,7 +9,7 @@ export default function ModalAddingNewAppointment({
     <>
       <div className="fixed inset-0  backdrop-brightness-30 flex items-center justify-center z-50">
         <div className="bg-white p-6 rounded shadow-lg w-2/3 h-2/3 overflow-auto">
-          <h2 className="text-xl font-bold mb-4">Нове призначення</h2>
+          <h2 className="text-base font-bold mb-4">Нове призначення</h2>
           <p>Тут можна показати форму або деталі appointment.</p>
 
           <button

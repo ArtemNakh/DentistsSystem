@@ -51,14 +51,14 @@ export default function HistoryAppointmentsWorker({
   return (
     <>
       <div className="w-full  ">
-        <div className="mx-4">
+        <div className="mx-4 text-base">
           {!appointments ? (
-            <span className="text-gray-900">Loading...</span>
+            <span className="text-gray-900 ">Loading...</span>
           ) : appointments.length > 0 ? (
             <TableHistoryAppointments appointments={filteredAppointments} />
             
           ) : (
-            <span className="text-gray-900">Немає працівників</span>
+            <span className="text-gray-900 ">Немає працівників</span>
           )}
         </div>
       </div>

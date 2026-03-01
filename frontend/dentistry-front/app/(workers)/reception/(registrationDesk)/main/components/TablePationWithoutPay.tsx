@@ -45,9 +45,9 @@ export default function TablePationWithoutPay() {
 
   return (
     <>
-      <div className="mt-5  border-2  border-gray-450">
-        <div className="flex items-center justify-center my-3">
-          <h2 className="text-xl text-center  font-bold ">
+      <div className="mt-5 text-base  border-2  border-gray-450">
+        <div className="flex items-center justify-center my-2">
+          <h2 className="text-base text-center  font-bold ">
             Пацієнти без оплати
           </h2>
         </div>

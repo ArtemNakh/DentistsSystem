@@ -61,7 +61,7 @@ export default function TableUpcomingEntries() {
   return (
     <>
       <div className="w-auto h-fit mx-5 my-5 rounded-lg shadow-lg border border-gray-300">
-        <h1 className="text-center text-2xl    bg-linear-to-r from-[#874FD1] to-[#6F6697] text-white py-3">
+        <h1 className="text-center text-base    bg-linear-to-r from-[#874FD1] to-[#6F6697] text-white py-3">
           Найближчі записи
         </h1>
 
@@ -102,7 +102,7 @@ export default function TableUpcomingEntries() {
 
                 {/* маленьке модальне вікно напроти вибраного рядка */}
                 {selectedTask && selectedTask.index === index && (
-                  <div className="absolute top-0  left-full overflow-visible w-36 ml-2 border-2 border-gray-500 bg-gray-100 text-gray-900 rounded-md shadow-lg px-3 py-2 text-sm ">
+                  <div className="absolute top-0  left-full overflow-visible w-36 ml-2 border-2 border-gray-500 bg-gray-100 text-gray-900 rounded-md shadow-lg px-3 py-2 text-base ">
                     {selectedTask.action}
                   </div>
                 )}
