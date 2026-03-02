@@ -1,31 +1,21 @@
-// // rootSaga.ts
-// import { all } from "redux-saga/effects";
-// import { sagasRegistry } from "./registry";
-
-// export function* rootSaga() {
-//   yield all(sagasRegistry.map((entity) => entity.watch()));
-// }
-
-// //new
-// import clientContainer from "@/client/di/container";
 import clientContainer from "../di/container";
 import { all } from "redux-saga/effects";
 
 export function* rootSaga() {
-  // const videoEntitySaga = clientContainer.resolve("VideoEntity");
-  // const reviewEntitySaga = clientContainer.resolve("ReviewEntity");
-  // const authEntitySaga = clientContainer.resolve("AuthEntity");
-
-  // const actorEntitySaga = clientContainer.resolve("ActorEntity");
-  // const actorRoleEntitySaga = clientContainer.resolve("ActorRoleEntity");
-  // const userEntitySaga = clientContainer.resolve("UserEntity");
   const clientEntitySaga = clientContainer.resolve("ClientEntity");
   const dentistryEntitySaga = clientContainer.resolve("DentistryEntity");
   const workerEntitySaga = clientContainer.resolve("WorkerEntity");
   const specialtyEntitySaga = clientContainer.resolve("SpecialtyEntity");
   const appointmentEntitySaga = clientContainer.resolve("AppointmentEntity");
   const paymentEntitySaga = clientContainer.resolve("PaymentEntity");
-  const authEntitySaga=clientContainer.resolve("AuthEntity")
+  const authEntitySaga = clientContainer.resolve("AuthEntity");
+  const appointmentActionsEntitySaga = clientContainer.resolve(
+    "AppointmentActionsEntity",
+  );
+
+  const operationListEntitySaga = clientContainer.resolve(
+    "OperationListEntity",
+  );
   yield all([
     clientEntitySaga.watch(),
     dentistryEntitySaga.watch(),
@@ -33,6 +23,8 @@ export function* rootSaga() {
     specialtyEntitySaga.watch(),
     appointmentEntitySaga.watch(),
     paymentEntitySaga.watch(),
-    authEntitySaga.watch()
+    authEntitySaga.watch(),
+    appointmentActionsEntitySaga.watch(),
+    operationListEntitySaga.watch(),
   ]);
 }

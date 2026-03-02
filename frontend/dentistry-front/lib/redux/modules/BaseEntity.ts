@@ -18,6 +18,8 @@ import { SpecialtyEntity } from "./Specialties/Specialties.Entity";
 import { DentistryEntity } from "./Dentistries/Dentistry.Entity";
 import { WorkerEntity } from "./Workers/Workers.Entity";
 import { AuthEntity } from "./AuthUser/AuthUser.Entity";
+import { AppointmentActionsActionSaga } from "./AppointmentsActions/AppointmentActions.Entity";
+import { OperationListEntity } from "./OperationList/OperationList.Entity";
 
 // Це буде базовий endpoint для всіх запитів.
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -32,6 +34,8 @@ export const enum EntitiesRedux {
   Appointments = "appointments",
   Payments = "payments",
   Auth = "auth",
+  AppointmentActions = "appointmentActions",
+  OperationList = "operationList",
 }
 
 // Entities — тип для сутностей
@@ -42,6 +46,8 @@ export type Entities =
   | WorkerEntity
   | PaymentEntity
   | SpecialtyEntity
+  | AppointmentActionsActionSaga
+  | OperationListEntity
   | AuthEntity;
 
 // IQueryResult<T> — тип відповіді від API: масив даних + повідомлення.
