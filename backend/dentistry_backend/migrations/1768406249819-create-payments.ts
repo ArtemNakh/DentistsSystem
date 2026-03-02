@@ -6,7 +6,7 @@ export class CreatePayments1768406249819 implements MigrationInterface {
             id integer PRIMARY KEY AUTO_INCREMENT,
             appointment_id integer UNIQUE NOT NULL,
             amount double NOT NULL,
-            status_paid ENUM ('paid', 'pending', 'not_paid') DEFAULT 'not_paid',
+            status_paid ENUM ('paid', 'not_paid') DEFAULT 'not_paid',
             method_pay ENUM ('card', 'cash', 'transfer') NOT NULL,
             payment_date datetime NOT NULL,
               created_at DATETIME NOT NULL  DEFAULT CURRENT_TIMESTAMP,

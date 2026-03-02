@@ -2,7 +2,7 @@ import { IAppointment } from 'src/appointment/entity/appointment.interface';
 
 export enum StatusPayment {
   PAID = 'paid',
-  PENDING = 'pending',
+  
   NOT_PAID = 'not_paid',
 }
 

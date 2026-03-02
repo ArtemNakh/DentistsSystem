@@ -47,7 +47,7 @@ export async function seedPayments(dataSource: DataSource) {
       status_paid: faker.helpers.arrayElement([
         StatusPayment.PAID,
         StatusPayment.NOT_PAID,
-        StatusPayment.PENDING,
+        
       ]),
       method_pay: faker.helpers.arrayElement(Object.values(MethodPayment)),
       payment_date: faker.date.past({ years: 1 }),
