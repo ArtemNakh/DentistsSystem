@@ -6,6 +6,7 @@ export default function TableWorkers({ workers }: { workers: IWorker[] }) {
     <>
       <table className="w-full   border-collapse border border-gray-600 text-base">
         <TableHeaderWorker />
+
         <TableBodyWorker workers={workers} />
       </table>
     </>

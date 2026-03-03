@@ -3,7 +3,6 @@ import { IAppointment } from "@/lib/redux/modules/Appointments/Appointment.inter
 import { IClient } from "@/lib/redux/modules/Clients/clients.interface";
 import { IWorker } from "@/lib/redux/modules/Workers/Workers.interface";
 import { createSelector } from "@reduxjs/toolkit";
-
 import { useState } from "react";
 
 export const selectAppointmentsWithDetails = createSelector(
@@ -49,14 +48,7 @@ export default function TableUpcomingEntries() {
     index: number;
   } | null>(null);
 
-  // const appointments: IAppointment[] = Object.values(useAppSelector((state) =>
-  //   Object.values(state.appointments ?? {}))
-  // // );
-  // const appointmentsObj = useAppSelector((state) => state.appointments ?? {});
-  // const appointments: IAppointment[] = Object.values(appointmentsObj);
   const appointments = useAppSelector(selectAppointmentsWithDetails);
-
-  // ЗРОБИТИ ПОКАЗ ІМЕН КОРИСТУВАЧА ТА ДАНИХ ЧЕРЕЗ ДЕНОРМАЛІЗАЦІЮ ЯКА РЕАЛІЗОВАНА У PAGE ТА ПЕРЕМІСТИТИ ЙОГО У КОРЕКТНЕ МІСЦЕ(А САМЕ ЩОБ ДЕНОРМАЛІЗАЦІЯ БУЛА У КОЖНОГО ОБ'ЄКТА СВОЯ)
 
   return (
     <>

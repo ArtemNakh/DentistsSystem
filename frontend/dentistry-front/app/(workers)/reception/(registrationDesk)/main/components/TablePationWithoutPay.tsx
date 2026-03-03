@@ -1,7 +1,10 @@
 import { useAppSelector } from "@/lib/redux/hooks";
 import { IAppointment } from "@/lib/redux/modules/Appointments/Appointment.interface";
 import { IClient } from "@/lib/redux/modules/Clients/clients.interface";
-import { IPayment, StatusPayment } from "@/lib/redux/modules/Payments/Payments.interface";
+import {
+  IPayment,
+  StatusPayment,
+} from "@/lib/redux/modules/Payments/Payments.interface";
 import { createSelector } from "@reduxjs/toolkit";
 import { format } from "date-fns";
 const selectPaymentsWithDetails = createSelector(
@@ -40,7 +43,6 @@ const selectPaymentsWithDetails = createSelector(
 );
 
 export default function TablePationWithoutPay() {
-  // const paymentsObj = useAppSelector((state) => state.payments ?? {});
   const payments = useAppSelector(selectPaymentsWithDetails);
 
   return (

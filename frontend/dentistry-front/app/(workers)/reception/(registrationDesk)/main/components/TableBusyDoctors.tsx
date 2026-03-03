@@ -1,5 +1,4 @@
-import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
-import { AppointmentActionSaga } from "@/lib/redux/modules/Appointments/Appointment.Entity";
+import { useAppSelector } from "@/lib/redux/hooks";
 import { IAppointment } from "@/lib/redux/modules/Appointments/Appointment.interface";
 import { IClient } from "@/lib/redux/modules/Clients/clients.interface";
 import { IDentistry } from "@/lib/redux/modules/Dentistries/Dentistry.interface";
@@ -7,7 +6,6 @@ import { ISpecialty } from "@/lib/redux/modules/Specialties/Specialties.interfac
 import { IWorker } from "@/lib/redux/modules/Workers/Workers.interface";
 import { RootState } from "@/lib/redux/store";
 import { createSelector } from "@reduxjs/toolkit";
-import { useEffect } from "react";
 
 export const selectBusyDoctors = createSelector(
   [
@@ -59,7 +57,6 @@ export const selectBusyDoctors = createSelector(
 );
 
 export default function TableBusyDoctors() {
-  
   const operatingDoctors = useAppSelector(selectBusyDoctors);
 
   return (
@@ -95,15 +92,13 @@ export default function TableBusyDoctors() {
                     className="odd:bg-gray-50 even:bg-gray-100 hover:bg-purple-200 transition-colors"
                   >
                     <td className="px-4 py-2 text-gray-900">
-                      {d.dentist?.name}{" "}
-                      {d.dentist?.surname}
+                      {d.dentist?.name} {d.dentist?.surname}
                     </td>
                     <td className="px-4 py-2 text-gray-900">
                       {d.dentist?.specialty?.name}
                     </td>
                     <td className="px-4 py-2 text-gray-900">
-                      {d.client?.name}{" "} 
-                      {d.client?.surname}
+                      {d.client?.name} {d.client?.surname}
                     </td>
                   </tr>
                 ))

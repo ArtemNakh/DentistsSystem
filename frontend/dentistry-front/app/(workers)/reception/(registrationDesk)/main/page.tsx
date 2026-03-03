@@ -6,14 +6,13 @@ import { useTranslation } from "react-i18next";
 import TablePationWithoutPay from "./components/TablePationWithoutPay";
 import TableBusyDoctors from "./components/TableBusyDoctors";
 import TableUpcomingEntries from "./components/TableUpcominsEntries";
-import { AppointmentActionSaga } from "@/lib/redux/modules/Appointments/Appointment.Entity";
-
 import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
 import { getPaymentsDentistry } from "@/lib/redux/modules/Payments/actions/getAllPaymentsByDentisty/getAllPaymentsByDentistry";
-import { AuthActionSaga } from "@/lib/redux/modules/AuthUser/AuthUser.Entity";
 import { getAuthWorker } from "@/lib/redux/modules/AuthUser/actions/GetAuthWorker/GetAuthWorker";
 import { getAppointmentNearestTodayDentistry } from "@/lib/redux/modules/Appointments/actions/GetNearestTodayByDentistry/GetNearestTodayByDentistry";
 import { getAppointmentTodayDentistry } from "@/lib/redux/modules/Appointments/actions/GetTodayOperationByDentistry/GetTodayOperationByDentistry";
+
+
 
 export function AdminsMain() {
   const { t } = useTranslation();

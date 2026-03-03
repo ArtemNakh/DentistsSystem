@@ -6,12 +6,10 @@ import { getAuthWorker } from "@/lib/redux/modules/AuthUser/actions/GetAuthWorke
 import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
 import { IClient } from "@/lib/redux/modules/Clients/clients.interface";
 import { IDentistry } from "@/lib/redux/modules/Dentistries/Dentistry.interface";
-import { IPayment } from "@/lib/redux/modules/Payments/Payments.interface";
 import { ISpecialty } from "@/lib/redux/modules/Specialties/Specialties.interface";
 import { IWorker } from "@/lib/redux/modules/Workers/Workers.interface";
 import { RootState } from "@/lib/redux/store";
 import { createSelector } from "@reduxjs/toolkit";
-import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import FilterPanelHistory from "./components/FilterPanel";
 import HistoryAppointmentsWorker from "./components/HistoryAppointments";
@@ -54,8 +52,7 @@ export const DenormalizeAppointments = createSelector(
 export default function HistoryOperationReception() {
   const dispatch = useAppDispatch();
   const appointments = useAppSelector(DenormalizeAppointments);
- 
-  
+
   const authUser = useAppSelector((state: { auth: AuthState }) => state.auth);
 
   const [filters, setFilters] = useState({
@@ -85,7 +82,7 @@ export default function HistoryOperationReception() {
     );
   }, [authUser]);
 
-   return (
+  return (
     <>
       <div className="font-bold ">
         {/* Фільтр */}

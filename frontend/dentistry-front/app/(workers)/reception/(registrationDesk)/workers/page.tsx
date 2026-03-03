@@ -1,18 +1,32 @@
-import { cookies } from "next/headers";
-import WorkerReception from "./Workers";
+"use client";
 
-export default async function WorkerReceptionSSR() {
-  // // читаємо cookie із sessionId
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import FilterPanelWorkers from "./components/FilterPanel";
+import ListWorkersWorker from "./components/ListWorkers";
 
-  
-  // const idDentistry = 2; //додати id стоматології від працівника
-  // const res = await fetch(
-  //   `${process.env.NEXT_PUBLIC_API_URL}/workers/all/doctors?dentistry=${idDentistry}`,
-  //   { cache: "no-store" },
-  // );
-  // const workersDoctors= await res.json();
-  
-  // return <WorkerReception workersDoctors={[...workersDoctors]} />;
-   return <WorkerReception  />;
+interface WorkerReceptionProps{
 
+}
+
+export default function WorkerReception({}: WorkerReceptionProps) {
+  const { t } = useTranslation();
+
+  const [filters, setFilters] = useState({
+    fio: "",
+    specialty: "",
+    birthday: "",
+  });
+
+  return (
+    <>
+      <div className="font-bold ">
+        {/* Фільтр */}
+        <FilterPanelWorkers filters={filters} setFilters={setFilters} />
+
+        {/* Список працівників */}
+        <ListWorkersWorker filters={filters} />
+      </div>
+    </>
+  );
 }

@@ -24,7 +24,6 @@ import {
 import { LoginWorkerDto } from './dto/loginWorker.dto';
 import { RegisterWorkerDto } from 'src/workers/registerWorker.dto';
 
-
 @ApiTags('Authentication')
 @Controller('auth')
 export class AuthController {
@@ -73,7 +72,6 @@ export class AuthController {
     @Req() req: Request,
     @Body() dto: RegisterClientDto,
   ) {
-    
     return this.authService.registerClient(req, dto);
   }
 
@@ -148,7 +146,7 @@ export class AuthController {
     examples: {
       valid: {
         summary: 'Приклад валідного запиту',
-        value: { login: 'ivan.petrenko', password: 'securePass123' },
+        value: { login: 'ivan.petrenko', password: 'SecurePass123!' },
       },
       invalid: {
         summary: 'Приклад невалідного запиту',
@@ -197,7 +195,7 @@ export class AuthController {
   public async loginWorker(@Req() req: Request, @Body() dto: LoginWorkerDto) {
     return await this.authService.loginWorker(req, dto);
   }
-  
+
   @Post('logoutWorker')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
@@ -223,19 +221,6 @@ export class AuthController {
     return this.authService.logoutWorker(req, res);
   }
 
-
-  
-
-
-
-
-
-
-
-
-
-
-
   //temporary
   /*
   
@@ -252,16 +237,35 @@ export class AuthController {
 }
   
 */
-    @Post('registerWorker')
+  @Post('registerWorker')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Register a new worker' })
   @ApiBody({ type: RegisterWorkerDto })
+  @ApiBody({
+    type: RegisterWorkerDto,
+    examples: {
+      example: {
+        summary: 'Приклад даних для реєстрації працівника',
+        value: {
+          name: 'Іван',
+          surname: 'Петренко',
+          middle_name: 'Олегович',
+          birthday: '1990-05-15',
+          phone: '+380671234567',
+          login: 'ivan.petrenko',
+          password: 'SecurePass123!',
+          specialtyId: 1,
+          dentistryId: 1,
+        },
+      },
+    },
+  })
   @ApiResponse({ status: 200, description: 'Worker successfully registered.' })
   public async registerWorker(
     @Req() req: Request,
     @Body() dto: RegisterWorkerDto,
   ) {
-    console.log(dto)
+    console.log(dto);
     return this.authService.registerWorker(req, dto);
   }
 }

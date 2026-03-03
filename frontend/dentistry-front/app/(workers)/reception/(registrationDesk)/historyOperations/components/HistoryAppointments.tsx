@@ -1,17 +1,16 @@
-import { useState } from "react";
 import { HistoryFilters } from "./FilterPanel";
-import { IAppointment } from "@/lib/redux/modules/Appointments/Appointment.interface";
-import { IPayment } from "@/lib/redux/modules/Payments/Payments.interface";
 import { useAppSelector } from "@/lib/redux/hooks";
 import { DenormalizeAppointments } from "../page";
 import { format } from "date-fns";
 import TableHistoryAppointments from "./TableHistoryAppointments/TableHistoryAppointments";
 
+interface HistoryAppointmentsWorkerProps {
+  filters: HistoryFilters;
+}
+
 export default function HistoryAppointmentsWorker({
   filters,
-}: {
-  filters: HistoryFilters;
-}) {
+}: HistoryAppointmentsWorkerProps) {
   const appointments = useAppSelector(DenormalizeAppointments);
 
   const filteredAppointments = appointments.filter((ap) => {
@@ -52,14 +51,7 @@ export default function HistoryAppointmentsWorker({
     <>
       <div className="w-full  ">
         <div className="mx-4 text-base">
-          {!appointments ? (
-            <span className="text-gray-900 ">Loading...</span>
-          ) : appointments.length > 0 ? (
-            <TableHistoryAppointments appointments={filteredAppointments} />
-            
-          ) : (
-            <span className="text-gray-900 ">Немає працівників</span>
-          )}
+          <TableHistoryAppointments appointments={filteredAppointments} />
         </div>
       </div>
     </>

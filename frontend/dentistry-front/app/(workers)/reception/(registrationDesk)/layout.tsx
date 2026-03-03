@@ -1,10 +1,10 @@
 import HeaderAdmin from "./components/Header";
 
-export default function RegesterLayout({
-  children,
-}: {
+interface RegesterLayoutProps {
   children: React.ReactNode;
-}) {
+}
+
+export default function RegesterLayout({ children }: RegesterLayoutProps) {
   return (
     <div className="w-full min-h-screen flex flex-col">
       {/* HEader */}
