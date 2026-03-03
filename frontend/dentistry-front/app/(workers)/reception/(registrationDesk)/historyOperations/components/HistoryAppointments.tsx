@@ -3,6 +3,7 @@ import { useAppSelector } from "@/lib/redux/hooks";
 import { DenormalizeAppointments } from "../page";
 import { format } from "date-fns";
 import TableHistoryAppointments from "./TableHistoryAppointments/TableHistoryAppointments";
+import { useTranslation } from "react-i18next";
 
 interface HistoryAppointmentsWorkerProps {
   filters: HistoryFilters;
@@ -11,6 +12,7 @@ interface HistoryAppointmentsWorkerProps {
 export default function HistoryAppointmentsWorker({
   filters,
 }: HistoryAppointmentsWorkerProps) {
+  const { t } = useTranslation();
   const appointments = useAppSelector(DenormalizeAppointments);
 
   const filteredAppointments = appointments.filter((ap) => {

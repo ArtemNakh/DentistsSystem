@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 interface SidebarItem {
   label: string;
   path: string;
@@ -11,6 +12,7 @@ interface SideBarAdminsProps {
 }
 
 export default function SideBarAdmins({ items, onClose }: SideBarAdminsProps) {
+  const { t } = useTranslation();
   return (
     <>
       <div className="fixed top-0 left-0 w-64 h-full bg-linear-to-b from-[#64359A] to-[#534A79] text-gray-300 shadow-lg z-50">
@@ -20,7 +22,7 @@ export default function SideBarAdmins({ items, onClose }: SideBarAdminsProps) {
               className="block w-full h-full text-base font-bold"
               href="/reception/main"
             >
-              Меню
+              {t("reception.header_side.pages.menu")}
             </Link>
           </div>
           <button onClick={onClose} className="text-red-400">
@@ -50,4 +52,3 @@ export default function SideBarAdmins({ items, onClose }: SideBarAdminsProps) {
     </>
   );
 }
-

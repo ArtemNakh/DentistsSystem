@@ -7,6 +7,7 @@ import {
 } from "@/lib/redux/modules/Payments/Payments.interface";
 import { createSelector } from "@reduxjs/toolkit";
 import { format } from "date-fns";
+import { useTranslation } from "react-i18next";
 const selectPaymentsWithDetails = createSelector(
   [
     (state) => state.payments, // 1. беремо всі платежі
@@ -43,6 +44,7 @@ const selectPaymentsWithDetails = createSelector(
 );
 
 export default function TablePationWithoutPay() {
+  const { t } = useTranslation();
   const payments = useAppSelector(selectPaymentsWithDetails);
 
   return (
@@ -50,7 +52,7 @@ export default function TablePationWithoutPay() {
       <div className="mt-5 text-base  border-2  border-gray-450">
         <div className="flex items-center justify-center my-2">
           <h2 className="text-base text-center  font-bold ">
-            Пацієнти без оплати
+            {t("reception.main.patient_without_paid.patient_without_paid_info")}
           </h2>
         </div>
         {/* Лічильник */}
@@ -60,18 +62,29 @@ export default function TablePationWithoutPay() {
           <table className="min-w-full border-collapse rounded-lg shadow-lg overflow-hidden">
             <thead className="bg-linear-to-r from-[#6F6697] to-[#874FD1] text-white">
               <tr>
-                <th className="px-4 py-2 text-left font-semibold">Пацієнт</th>
-                <th className="px-4 py-2 text-left font-semibold">сумма</th>
-                <th className="px-4 py-2 text-left font-semibold">Статус</th>
+                <th className="px-4 py-2 text-left font-semibold">
+                  {" "}
+                  {t("reception.main.patient_without_paid.table.patient")}
+                </th>
+                <th className="px-4 py-2 text-left font-semibold">
+                  {t("reception.main.patient_without_paid.table.amount")}
+                </th>
+                <th className="px-4 py-2 text-left font-semibold">
+                  {t("reception.main.patient_without_paid.table.status")}
+                </th>
 
-                <th className="px-4 py-2 text-left font-semibold">Дата</th>
+                <th className="px-4 py-2 text-left font-semibold">
+                  {t("reception.main.patient_without_paid.table.date")}
+                </th>
               </tr>
             </thead>
             <tbody>
               {payments.length === 0 ? (
                 <tr>
                   <td colSpan={4} className="text-center text-gray-200">
-                    На сьогодні немає неоплачених операцій
+                    {t(
+                      "reception.main.patient_without_paid.today_without_unpaid",
+                    )}
                   </td>
                 </tr>
               ) : (

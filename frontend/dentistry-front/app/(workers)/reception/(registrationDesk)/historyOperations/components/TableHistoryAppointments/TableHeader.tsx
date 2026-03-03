@@ -1,15 +1,19 @@
-export default function TableHeaderHistoryAppoinemtn() {
+import { useTranslation } from "react-i18next";
+
+export default function TableHeaderHistoryAppointment() {
+  
+    const { t } = useTranslation();
   return (
     <>
       <thead className="">
         <tr>
-          <th className="border border-gray-400 px-2 py-1 text-base">Client</th>
-          <th className="border border-gray-400 px-1 py-1 text-base">Worker</th>
-          <th className="border border-gray-400 px-2 py-1 text-base">Дата operation</th>
-          <th className="border border-gray-400 px-2 py-1 text-base">Status operaiton</th>
-          <th className="border border-gray-400 px-2 py-1 text-base">Notes</th>
-          <th className="border border-gray-400 px-2 py-1 text-base">Payment</th>
-          <th className="border border-gray-400 px-2 py-1 text-base">Actions</th>
+          <th className="border border-gray-400 px-2 py-1 text-base"> {t("reception.history_operation.table.header.client")}</th>
+          <th className="border border-gray-400 px-1 py-1 text-base">{t("reception.history_operation.table.header.worker")}</th>
+          <th className="border border-gray-400 px-2 py-1 text-base">{t("reception.history_operation.table.header.operation_date")}</th>
+          <th className="border border-gray-400 px-2 py-1 text-base">{t("reception.history_operation.table.header.status_operation")}</th>
+          <th className="border border-gray-400 px-2 py-1 text-base">{t("reception.history_operation.table.header.notes")}</th>
+          <th className="border border-gray-400 px-2 py-1 text-base">{t("reception.history_operation.table.header.payment")}</th>
+          <th className="border border-gray-400 px-2 py-1 text-base">{t("reception.history_operation.table.header.actions")}</th>
         </tr>
       </thead>
     </>

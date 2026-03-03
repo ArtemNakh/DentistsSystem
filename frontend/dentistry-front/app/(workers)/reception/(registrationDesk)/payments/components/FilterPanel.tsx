@@ -3,6 +3,7 @@ import {
   MethodPayment,
   StatusPayment,
 } from "@/lib/redux/modules/Payments/Payments.interface";
+import { useTranslation } from "react-i18next";
 
 export interface PaymentFilters {
   amount: number;
@@ -23,13 +24,16 @@ export default function FilterPanelPayments({
   filters,
   setFilters,
 }: FilterPanelProps) {
+  const { t } = useTranslation();
   return (
     <>
       <div className=" w-full">
         <div className="mx-4 text-base   border border-gray-600  flex items-center gap-4 p-2  ">
           {/* ФІО */}
           <div className="flex flex-col">
-            <label className="text-gray-200">ФІО працівника</label>
+            <label className="text-gray-200">
+              {t("reception.payments.filters.fio_worker")}
+            </label>
             <input
               value={filters.fio_worker}
               onChange={(e) =>
@@ -41,7 +45,9 @@ export default function FilterPanelPayments({
 
           {/* Сума */}
           <div className="flex flex-col">
-            <label className="text-gray-200">Сума</label>
+            <label className="text-gray-200">
+              {t("reception.payments.filters.amount")}
+            </label>
             <input
               type="number"
               value={filters.amount}
@@ -54,7 +60,9 @@ export default function FilterPanelPayments({
 
           {/* Статус оплати */}
           <div className="flex flex-col">
-            <label className="text-gray-200">Статус оплати</label>
+            <label className="text-gray-200">
+              {t("reception.payments.filters.status_paid.name")}
+            </label>
             <select
               value={filters.status_paid ?? ""}
               onChange={(e) =>
@@ -69,14 +77,20 @@ export default function FilterPanelPayments({
               className="h-10 border border-gray-600 bg-[#7660A8] rounded px-2 focus:outline-none"
             >
               <option value="">—</option>
-              <option value={StatusPayment.PAID}>Оплачено</option>
-              <option value={StatusPayment.NOT_PAID}>Не оплачено</option>
+              <option value={StatusPayment.PAID}>
+                {t("reception.payments.filters.status_paid.status.paid")}
+              </option>
+              <option value={StatusPayment.NOT_PAID}>
+                {t("reception.payments.filters.status_paid.status.not_paid")}
+              </option>
             </select>
           </div>
 
           {/* Метод оплати */}
           <div className="flex flex-col">
-            <label className="text-gray-200">Метод оплати</label>
+            <label className="text-gray-200">
+              {t("reception.payments.filters.method_paid.name")}
+            </label>
             <select
               value={filters.method_pay ?? ""}
               onChange={(e) =>
@@ -91,15 +105,23 @@ export default function FilterPanelPayments({
               className="h-10 border border-gray-600 bg-[#7660A8]  rounded px-2 focus:outline-none"
             >
               <option value="">—</option>
-              <option value={MethodPayment.CARD}>Карта</option>
-              <option value={MethodPayment.CASH}>Готівка</option>
-              <option value={MethodPayment.TRANSFER}>Переказ</option>
+              <option value={MethodPayment.CARD}>
+                {t("reception.payments.filters.method_paid.method.cart")}
+              </option>
+              <option value={MethodPayment.CASH}>
+                {t("reception.payments.filters.method_paid.method.cash")}
+              </option>
+              <option value={MethodPayment.TRANSFER}>
+                {t("reception.payments.filters.method_paid.method.transfer")}
+              </option>
             </select>
           </div>
 
           {/* Статус прийому */}
           <div className="flex flex-col">
-            <label className="text-gray-200">Статус прийому</label>
+            <label className="text-gray-200">
+              {t("reception.payments.filters.status_appointment.name")}
+            </label>
             <select
               value={filters.status_appointment ?? ""}
               onChange={(e) =>
@@ -114,16 +136,34 @@ export default function FilterPanelPayments({
               className="h-10 border border-gray-600 bg-[#7660A8]  rounded px-2 focus:outline-none"
             >
               <option value="">—</option>
-              <option value={StatusAppointment.SCHEDULE}>Заплановано</option>
-              <option value={StatusAppointment.COMPLETED}>Завершено</option>
-              <option value={StatusAppointment.WAIT_PAID}>Очікує оплату</option>
-              <option value={StatusAppointment.CANCELLED}>Скасовано</option>
+              <option value={StatusAppointment.SCHEDULE}>
+                {t(
+                  "reception.payments.filters.status_appointment.status.schedule",
+                )}
+              </option>
+              <option value={StatusAppointment.COMPLETED}>
+                {t(
+                  "reception.payments.filters.status_appointment.status.complete",
+                )}
+              </option>
+              <option value={StatusAppointment.WAIT_PAID}>
+                {t(
+                  "reception.payments.filters.status_appointment.status.wait_paid",
+                )}
+              </option>
+              <option value={StatusAppointment.CANCELLED}>
+                {t(
+                  "reception.payments.filters.status_appointment.status.cancelled",
+                )}
+              </option>
             </select>
           </div>
 
           {/* Дата початку */}
           <div className="flex flex-col">
-            <label className="text-gray-200">Дата початку</label>
+            <label className="text-gray-200">
+              {t("reception.payments.filters.date_begin")}
+            </label>
             <input
               type="date"
               value={filters.date_begin}
@@ -136,7 +176,9 @@ export default function FilterPanelPayments({
 
           {/* Дата завершення */}
           <div className="flex flex-col">
-            <label className="text-gray-200">Дата завершення</label>
+            <label className="text-gray-200">
+              {t("reception.payments.filters.date_end")}
+            </label>
             <input
               type="date"
               value={filters.date_end}

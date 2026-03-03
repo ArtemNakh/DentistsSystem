@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
-import { AppointmentActionSaga } from "@/lib/redux/modules/Appointments/Appointment.Entity";
 import { createSelector } from "@reduxjs/toolkit";
 import { RootState } from "@/lib/redux/store";
 import { IWorker } from "@/lib/redux/modules/Workers/Workers.interface";
@@ -14,7 +13,6 @@ import { ISpecialty } from "@/lib/redux/modules/Specialties/Specialties.interfac
 import RenderCalendarTile from "./components/renderCalendarTile";
 import AllDayRecords from "./components/AllDayRecords";
 import { getAppointmentDentistry } from "@/lib/redux/modules/Appointments/actions/GetAppointmentsDentistry/GetAppointmentsDentistry";
-import { AuthActionSaga } from "@/lib/redux/modules/AuthUser/AuthUser.Entity";
 import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
 import { getAuthWorker } from "@/lib/redux/modules/AuthUser/actions/GetAuthWorker/GetAuthWorker";
 

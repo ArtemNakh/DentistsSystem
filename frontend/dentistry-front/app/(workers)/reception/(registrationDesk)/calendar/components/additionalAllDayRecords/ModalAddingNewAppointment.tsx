@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 interface ModalAddingNewAppointmentProps {
   onClose: () => void;
 }
@@ -5,6 +7,7 @@ interface ModalAddingNewAppointmentProps {
 export default function ModalAddingNewAppointment({
   onClose,
 }: ModalAddingNewAppointmentProps) {
+  const { t } = useTranslation();
   return (
     <>
       <div className="fixed inset-0  backdrop-brightness-30 flex items-center justify-center z-50">

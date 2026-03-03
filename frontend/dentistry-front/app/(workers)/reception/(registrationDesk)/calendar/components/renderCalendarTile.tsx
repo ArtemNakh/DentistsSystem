@@ -1,4 +1,5 @@
 import { IAppointment } from "@/lib/redux/modules/Appointments/Appointment.interface";
+import { useTranslation } from "react-i18next";
 
 interface RenderCalendarTileProps {
   date: Date;
@@ -11,6 +12,7 @@ export default function RenderCalendarTile({
   view,
   appointments,
 }: RenderCalendarTileProps) {
+  const { t } = useTranslation();
   if (view !== "month") return null;
 
   // Вибираємо записи саме для цього дня
@@ -42,7 +44,8 @@ export default function RenderCalendarTile({
             })}
             {dayAppointments.length > 3 && (
               <div className="text-gray-400 text-sm">
-                + ще {dayAppointments.length - 3}
+                + {t("reception.calendar.more_record")} 
+                {dayAppointments.length - 3}
               </div>
             )}
           </>

@@ -10,7 +10,7 @@ interface WorkerReceptionProps{
 }
 
 export default function WorkerReception({}: WorkerReceptionProps) {
-  const { t } = useTranslation();
+
 
   const [filters, setFilters] = useState({
     fio: "",

@@ -2,6 +2,7 @@ import { IAppointment } from "@/lib/redux/modules/Appointments/Appointment.inter
 import { useState } from "react";
 import AppointmentModal from "./additionalAllDayRecords/ModalShowFullAppointment";
 import ModalAddingNewAppointment from "./additionalAllDayRecords/ModalAddingNewAppointment";
+import { useTranslation } from "react-i18next";
 
 interface AllDayRecordsProps {
   appointments: IAppointment[];
@@ -12,6 +13,7 @@ export default function AllDayRecords({
   appointments,
   selectedDate,
 }: AllDayRecordsProps) {
+  const { t } = useTranslation();
   const dayAppointments = appointments.filter(
     (a) =>
       new Date(a.appointment_date).toDateString() ===
@@ -29,7 +31,7 @@ export default function AllDayRecords({
             onClick={() => setShowModal(true)}
             className="border border-gray-400 m-2 px-2 py-1 hover:bg-[#7D4DBF] active:bg-[#6C43A6]"
           >
-            Add
+            {t("reception.calendar.add")}
           </button>
         </div>
         {showModal && (
@@ -40,7 +42,8 @@ export default function AllDayRecords({
                 scrollbar-thumb-[#7D4DBF] scrollbar-track-[#6F6697]"
         >
           <h2 className="text-base font-bold mb-2">
-            Записи на {selectedDate.toLocaleDateString()}
+            {t("reception.calendar.records_on")}{" "}
+            {selectedDate.toLocaleDateString()}
           </h2>
           {dayAppointments.length > 0 ? (
             <ul className="list-disc pl-5">
@@ -64,7 +67,7 @@ export default function AllDayRecords({
               })}
             </ul>
           ) : (
-            <p>Немає записів для цього дня</p>
+            <p>{t("reception.calendar.no_records_day")}</p>
           )}
         </div>
         {/* Модальне вікно із усіма данними appointment*/}

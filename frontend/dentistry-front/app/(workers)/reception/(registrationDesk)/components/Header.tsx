@@ -8,8 +8,10 @@ import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
 import { AuthActionSaga } from "@/lib/redux/modules/AuthUser/AuthUser.Entity";
 import { getAuthWorker } from "@/lib/redux/modules/AuthUser/actions/GetAuthWorker/GetAuthWorker";
+import { useTranslation } from "react-i18next";
 
 export default function HeaderAdmin() {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
 
   const [profileModule, setProfileModule] = useState(false);
@@ -26,10 +28,22 @@ export default function HeaderAdmin() {
   }, [dispatch]);
   // список кнопок для сайдбару
   const sidebarItems = [
-    { label: "Календар", path: "/reception/calendar" },
-    { label: "Оплата", path: "/reception/payments" },
-    { label: "Працівники", path: "/reception/workers" },
-    { label: "Історія операцій", path: "/reception/historyOperations" },
+    {
+      label: t("reception.header_side.pages.calendar"),
+      path: "/reception/calendar",
+    },
+    {
+      label: t("reception.header_side.pages.payment"),
+      path: "/reception/payments",
+    },
+    {
+      label: t("reception.header_side.pages.workers"),
+      path: "/reception/workers",
+    },
+    {
+      label: t("reception.header_side.pages.history_operation"),
+      path: "/reception/historyOperations",
+    },
   ];
   return (
     <>
@@ -74,7 +88,7 @@ export default function HeaderAdmin() {
 
           {/* right */}
           {/* button */}
-          <div className="mx-auto">center</div>
+          
           {/* розклад із переглядок текущих та додаваня нових та видалення записів,сповіщення що було зроблено для цієї стоматології */}
           <div className=" ml-auto flex  space-x-2 ">
             <div className="flex items-center space-x-2">

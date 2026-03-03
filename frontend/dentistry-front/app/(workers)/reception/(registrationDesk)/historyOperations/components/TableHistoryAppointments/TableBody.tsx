@@ -3,6 +3,7 @@ import { IPayment } from "@/lib/redux/modules/Payments/Payments.interface";
 import { format } from "date-fns";
 import { useState } from "react";
 import ShowPaymentModal from "../ModalView/ShowPaymentModal";
+import { useTranslation } from "react-i18next";
 
 interface TableBodyHistoryAppointmentProps {
   appointments: IAppointment[];
@@ -13,6 +14,8 @@ export default function TableBodyHistoryAppointment({
   appointments,
   setSelectedAppointment,
 }: TableBodyHistoryAppointmentProps) {
+  const { t } = useTranslation();
+  // {t("reception.history_operation.table.header.client")}
   const [selectedPayment, setSelectedPayment] = useState<IPayment | null>(null);
 
   return (
@@ -107,7 +110,9 @@ export default function TableBodyHistoryAppointment({
           </>
         ) : (
           <tr>
-            <td className="text-gray-900">Немає історій операції</td>
+            <td className="text-gray-900">
+              {t("reception.history_operation.table.body.noValue")}
+            </td>
           </tr>
         )}
       </tbody>

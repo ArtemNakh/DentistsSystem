@@ -6,6 +6,7 @@ import { ISpecialty } from "@/lib/redux/modules/Specialties/Specialties.interfac
 import { IWorker } from "@/lib/redux/modules/Workers/Workers.interface";
 import { RootState } from "@/lib/redux/store";
 import { createSelector } from "@reduxjs/toolkit";
+import { useTranslation } from "react-i18next";
 
 export const selectBusyDoctors = createSelector(
   [
@@ -57,6 +58,7 @@ export const selectBusyDoctors = createSelector(
 );
 
 export default function TableBusyDoctors() {
+  const { t } = useTranslation();
   const operatingDoctors = useAppSelector(selectBusyDoctors);
 
   return (
@@ -64,25 +66,29 @@ export default function TableBusyDoctors() {
       <div className="mt-8  border-2  border-gray-450 ">
         <div className="flex items-center justify-center my-2">
           <h2 className="text-base text-center  font-bold ">
-            Лікарі, які зараз оперують
+            {t("reception.main.busy_doctors.name")}
           </h2>
         </div>
         <div className="max-h-96 border-2 border-gray-400 overflow-y-auto">
           <table className="min-w-full border-collapse rounded-lg shadow-lg overflow-hidden">
             <thead className="bg-linear-to-r from-[#874FD1] to-[#6F6697] text-white">
               <tr>
-                <th className="px-4 py-2 text-left font-semibold">Доктор</th>
                 <th className="px-4 py-2 text-left font-semibold">
-                  Спеціалізація
+                  {t("reception.main.busy_doctors.table.doctor")}
                 </th>
-                <th className="px-4 py-2 text-left font-semibold">Пацієнт</th>
+                <th className="px-4 py-2 text-left font-semibold">
+                  {t("reception.main.busy_doctors.table.specialization")}
+                </th>
+                <th className="px-4 py-2 text-left font-semibold">
+                  {t("reception.main.busy_doctors.table.patient")}
+                </th>
               </tr>
             </thead>
             <tbody>
               {operatingDoctors.length === 0 ? (
                 <tr>
                   <td colSpan={4} className="text-center text-gray-200">
-                    На сьогодні немає неоплачених операцій
+                    {t("reception.main.busy_doctors.today_wthout_busy_doctor")}
                   </td>
                 </tr>
               ) : (

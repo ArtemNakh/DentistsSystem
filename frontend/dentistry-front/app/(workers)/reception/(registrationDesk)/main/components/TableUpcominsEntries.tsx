@@ -4,6 +4,7 @@ import { IClient } from "@/lib/redux/modules/Clients/clients.interface";
 import { IWorker } from "@/lib/redux/modules/Workers/Workers.interface";
 import { createSelector } from "@reduxjs/toolkit";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export const selectAppointmentsWithDetails = createSelector(
   [
@@ -43,6 +44,7 @@ export const selectAppointmentsWithDetails = createSelector(
 );
 
 export default function TableUpcomingEntries() {
+  const { t } = useTranslation();
   const [selectedTask, setSelectedTask] = useState<{
     action: string;
     index: number;
@@ -54,14 +56,14 @@ export default function TableUpcomingEntries() {
     <>
       <div className="w-auto h-fit mx-5 my-5 rounded-lg shadow-lg border border-gray-300">
         <h1 className="text-center text-base    bg-linear-to-r from-[#874FD1] to-[#6F6697] text-white py-3">
-          Найближчі записи
+          {t("reception.main.upcomins_entires.nearest_record")}
         </h1>
 
         {/* показ Списку записів */}
         <ul className="divide-y divide-gray-200">
           {appointments.length === 0 ? (
             <li className="px-3 py-2 text-center text-gray-200">
-              На сьогодні немає найближчих операцій{" "}
+              {t("reception.main.upcomins_entires.no_upcoming_entries")}
             </li>
           ) : (
             appointments.map((task, index) => (

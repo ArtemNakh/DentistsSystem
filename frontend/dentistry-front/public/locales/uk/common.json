@@ -176,5 +176,152 @@
       }
     },
     "server": "Помилка сервера, спробуйте пізніше"
+  },
+  "reception": {
+    "workers": {
+      "filters": {
+        "fio": "ФІО",
+        "placeholder_fio": "Іван Іванович Іванов",
+        "specialty": "Спеціальність",
+        "placeholder_specialty": "Хірург",
+        "birthday": "День народження"
+      },
+      "table_header": {
+        "fio": "ФІО",
+        "specialty": "Спеціальність",
+        "birthday": "День народження",
+        "phone": "Телефон",
+        "actions": "Дія"
+      }
+    },
+
+    "payments": {
+      "filters": {
+        "amount": "Сума",
+        "status_paid": {
+          "name": "Статус оплати",
+          "status": {
+            "paid": "Оплачено",
+            "not_paid": "Не оплачено"
+          }
+        },
+        "method_paid": {
+          "name": "Метод оплати",
+          "method": {
+            "cart": "Карта",
+            "cash": "Готівка",
+            "transfer": "Перевод"
+          }
+        },
+        "status_appointment": {
+          "name": "Статус записі ",
+          "status": {
+            "schedule": "Заплановано",
+            "complete": "Завершено",
+            "wait_paid": "Очікує оплати",
+            "cancelled": "Скасовано"
+          }
+        },
+        "fio_worker": "ФІО працівника",
+        "date_begin": "Початкова дата",
+        "date_end": "Кінцева дата"
+      },
+      "table_header": {
+        "client": "Клієнт",
+        "worker": "Працівник",
+        "amount": "Сума",
+        "status": "Статус оплати",
+        "method": "Метод оплати",
+        "payment_date": "Дата оплати",
+        "actions": "Діїі"
+      },
+      "full_info_appointment": {
+        "apponnt_actions": "Дії операції",
+        "appointment_actions": {
+          "actions": "Дія"
+        },
+        "close": "Зачинити"
+      }
+    },
+
+    "main": {
+      "upcomins_entires": {
+        "nearest_record": " Найближчі записи",
+        "no_upcoming_entries": "На сьогодні немає найближчих операцій"
+      },
+      "patient_without_paid": {
+        "patient_without_paid_info": "Пацієнти без оплати",
+        "today_without_unpaid": "  На сьогодні немає неоплачених операцій",
+        "table": {
+          "patient": "Пацієнт",
+          "amount": "сумма",
+          "status": "Статус",
+          "date": "Дата"
+        }
+      },
+      "busy_doctors": {
+        "name": " Лікарі, які зараз оперують",
+        "table": {
+          "doctor": "Доктор",
+          "specialization": "Спеціалізація",
+          "patient": "Пацієнт"
+        },
+        "today_wthout_busy_doctor": "Наразі немає працівників які зайнятті роботою"
+      }
+    },
+
+    "history_operation": {
+      "filters": {
+        "fio_client": " ФІО Клієнта",
+        "fio_worker": "ФІО Працівника",
+        "specialty": "Спеціалізація",
+        "status_paid": "Статус оплати",
+        "appointment_date": "Дата записи"
+      },
+      "table": {
+        "header": {
+          "client": "Клієнт",
+          "worker": "Працівник",
+          "operation_date": "Дата операції",
+          "status_operation": "Статус операції",
+          "notes": "Заметки",
+          "payment": "Оплата",
+          "actions": "Дія"
+        },
+        "body": {
+          "noValue": "Немає історій операції",
+          "payment_modal": {
+            "amount": "",
+            "method_pay": "",
+            "payment_day": "",
+            "status_pay": ""
+          }
+        }
+      }
+    },
+    "calendar": {
+      "more_record": "ще",
+      "add": "Додати",
+      "records_on": "Записи на",
+      "no_records_day": "Немає записів на цей день",
+      "appointment": {
+        "patient": "Пацієнт",
+        "doctor": "Лікар",
+        "date": "Дата",
+        "status": "Статус",
+        "notes": "Нотатки",
+        "close": "Закрити"
+      }
+    },
+
+    "header_side": {
+      "pages": {
+        "menu": "Меню",
+        "calendar": "Календар",
+        "payment": "Оплата",
+        "workers": "Працівники",
+        "history_operation": "Історія операцій"
+      }
+    }
   }
 }

@@ -2,7 +2,6 @@
 
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { useEffect } from "react";
-import { useTranslation } from "react-i18next";
 import TablePationWithoutPay from "./components/TablePationWithoutPay";
 import TableBusyDoctors from "./components/TableBusyDoctors";
 import TableUpcomingEntries from "./components/TableUpcominsEntries";
@@ -15,7 +14,6 @@ import { getAppointmentTodayDentistry } from "@/lib/redux/modules/Appointments/a
 
 
 export function AdminsMain() {
-  const { t } = useTranslation();
   const authUser = useAppSelector((state: { auth: AuthState }) => state.auth);
 
   const dispatch = useAppDispatch();
