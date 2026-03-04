@@ -25,7 +25,12 @@ export class ClientEntity extends BaseEntity {
 
   /**Add and save video */
   *addClientSaga(action: AddClientAction) {
-    yield call(this.xSave.bind(this), `clients/test/all`, ActionReducer.Post);
+    yield call(
+      this.xSave.bind(this),
+      `/auth/registrationClient`, 
+      action.payload, 
+      ActionReducer.Post, 
+    );
   }
 
   /**Listener saga actions */

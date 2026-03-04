@@ -299,9 +299,11 @@
         }
       }
     },
+
     "calendar": {
       "more_record": "ще",
-      "add": "Додати",
+      "add_new_appointment": "Add appointment",
+      "add_new_client": "Add client",
       "records_on": "Записи на",
       "no_records_day": "Немає записів на цей день",
       "appointment": {
@@ -311,6 +313,11 @@
         "status": "Статус",
         "notes": "Нотатки",
         "close": "Закрити"
+      },
+      "modal": {
+        "RegistrationClient": {
+          "close": "Закрити"
+        }
       }
     },
 

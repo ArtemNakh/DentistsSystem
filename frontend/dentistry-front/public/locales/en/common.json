@@ -304,8 +304,9 @@
 
     "calendar": {
       "more_record": "more",
-      "add": "Add",
-      "records_on": "Records on",
+      "add_new_appointment": "Add appointment",
+      "add_new_client": "Add client",
+   "records_on": "Records on",
       "no_records_day": "No records for this day",
       "appointment": {
         "patient": "Patient",
@@ -314,6 +315,11 @@
         "status": "Status",
         "notes": "Notes",
         "close": "Close"
+      },
+      "modal": {
+        "registration_client": {
+          "close": "Закрити"
+        }
       }
     },
 
