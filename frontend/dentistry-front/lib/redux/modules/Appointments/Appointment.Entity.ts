@@ -8,8 +8,10 @@ import { getAppointmentNearestTodayDentistryAction } from "./actions/GetNearestT
 import { getAppointmentTodayDentistryAction } from "./actions/GetTodayOperationByDentistry/GetTodayOperationByDentistry";
 import { getAppointmentsDentistryAction } from "./actions/GetAppointmentsDentistry/GetAppointmentsDentistry";
 import { getHistoryAppointmentByDentistryAction } from "./actions/GetHistoryAppointmentDentistry/GetHistoryAppointmentDentistry";
+import { addNewAppointmentAction } from "./actions/AddNewAppointment/AddNewAppointment";
 
 export enum AppointmentActionSaga {
+  CreateAppointment = "Appointment/AddNew",
   GetNearestTodayByDentistry = "Appointment/GetNearestToday",
   GetTodayOperationByDentistry = "Appointment/GetTodayByDentistry",
   GetAppointmentsDentistry = "Appointment/GetToDentistry",
@@ -57,14 +59,23 @@ export class AppointmentEntity extends BaseEntity {
     );
   }
 
-*getHistoryByDentistrySaga(action:getHistoryAppointmentByDentistryAction){
-  const {dentistryId}=action.payload
-   yield call(
+  *getHistoryByDentistrySaga(action: getHistoryAppointmentByDentistryAction) {
+    const { dentistryId } = action.payload;
+    yield call(
       this.xRead.bind(this),
       `/appointment/history?dentistry=${dentistryId}`,
       ActionReducer.Get,
     );
-}
+  }
+
+  *addNewAppointmentSaga(action: addNewAppointmentAction) {
+    yield call(
+      this.xSave.bind(this),
+      `/appointment/add_new`,
+      action.payload,
+      ActionReducer.Post,
+    );
+  }
 
   *watch() {
     yield takeLatest(
@@ -82,9 +93,14 @@ export class AppointmentEntity extends BaseEntity {
       this.getAppointmentsDentistrySaga.bind(this),
     );
 
-      yield takeLatest(
+    yield takeLatest(
       AppointmentActionSaga.GetHistoryByDentistry,
       this.getHistoryByDentistrySaga.bind(this),
+    );
+
+    yield takeLatest(
+      AppointmentActionSaga.CreateAppointment,
+      this.addNewAppointmentSaga.bind(this),
     );
   }
 }

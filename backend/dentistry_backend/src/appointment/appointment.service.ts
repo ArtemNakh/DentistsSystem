@@ -7,7 +7,10 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Appointment } from './entity/appointment.entity';
-import { IAppointment } from './entity/appointment.interface';
+import {
+  IAppointment,
+  StatusAppointment,
+} from './entity/appointment.interface';
 import {
   Between,
   LessThanOrEqual,
@@ -15,6 +18,7 @@ import {
   Raw,
   Repository,
 } from 'typeorm';
+import { CreateAppointmentDto } from './dto/createAppointment.dto';
 
 @Injectable()
 export class AppointmentService {
@@ -134,6 +138,30 @@ export class AppointmentService {
       if (error instanceof HttpException) {
         throw error;
       } // Інакше — внутрішня помилка
+      throw new InternalServerErrorException(
+        'Unexpected error while fetching appointments',
+      );
+    }
+  }
+
+  async createAppointment(
+    createAppointmentDto: CreateAppointmentDto,
+  ): Promise<IAppointment> {
+    try {
+      if (!createAppointmentDto) {
+        throw new Error('Dto without values');
+      }
+
+      const newAppointment = this.appointmentRepo.create({
+        client: { id: createAppointmentDto.clientId },
+        dentist: { id: createAppointmentDto.dentistId },
+        appointment_date: createAppointmentDto.appointment_date,
+        notes: createAppointmentDto.notes,
+        status: StatusAppointment.SCHEDULE,
+      });
+      const result = await this.appointmentRepo.save(newAppointment);
+      return result;
+    } catch (err) {
       throw new InternalServerErrorException(
         'Unexpected error while fetching appointments',
       );

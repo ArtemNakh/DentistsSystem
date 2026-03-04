@@ -1,9 +1,17 @@
-import { BadRequestException, Controller, Get, Query } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { AppointmentService } from './appointment.service';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { IAppointment } from './entity/appointment.interface';
 import { AppointmentDto } from './dto/gettingNearectAppointment.dto';
 import { Dentistry } from 'src/dentistry/entities/dentistry.entity';
+import { CreateAppointmentDto } from './dto/createAppointment.dto';
 
 @ApiTags('Appointment')
 @Controller('appointment')
@@ -14,8 +22,6 @@ export class AppointmentController {
   findAll() {
     return this.appointmentService.findAll();
   }
-
-  // GET /appointments/nearest?date=2026-03-01
 
   @Get('nearest')
   @ApiOperation({
@@ -75,5 +81,37 @@ export class AppointmentController {
     }
 
     return this.appointmentService.getHistoryByDentistry(dentistryId);
+  }
+
+  @Post('add_new')
+  @ApiOperation({
+    summary: 'Створити новий запис',
+    description:
+      'Додає новий запис (appointment) для пацієнта у вказаній стоматології. ' +
+      'Необхідно передати дані клієнта, лікаря, дату прийому та додаткові нотатки.',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Запис успішно створено',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Некоректні дані або відсутні обов’язкові параметри',
+  })
+  @ApiResponse({ status: 500, description: 'Внутрішня помилка сервера' })
+  async createAppointment(
+    @Body() createAppointmentDto: CreateAppointmentDto,
+  ): Promise<IAppointment> {
+    try {
+      // базова перевірка (можна винести у DTO через class-validator)
+      // if (!createAppointmentDto.date || !createAppointmentDto.dentistryId) {
+      //   throw new BadRequestException('Потрібно вказати дату та dentistryId');
+      // }
+      const newAppointment =
+        await this.appointmentService.createAppointment(createAppointmentDto);
+      return newAppointment;
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
   }
 }

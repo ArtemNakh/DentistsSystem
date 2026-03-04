@@ -15,6 +15,8 @@
 @theme {
   --color-soft-purple-7: #684b99;
   --color-soft-purple-5: #7e5bba;
+  --color-purple-870: #574080;
+  --color-purple-700: #6f52a3;
   --color-purple-850: #5a378a;
   --color-light-gray-2: #9fa0a3;
   --color-light-gray-0: #e5e7eb;
@@ -60,12 +62,12 @@ body {
 
 /* Ховер */
 .react-calendar__navigation button:hover {
- @apply bg-[#6C4CA1]
+  @apply bg-[#6C4CA1];
 }
 
 /* Стрілки */
 .react-calendar__navigation__arrow {
-@apply  h-full border border-gray-400 text-2xl px-3 py-0.5 bg-[#7B5DB4]
+  @apply h-full border border-gray-400 text-2xl px-3 py-0.5 bg-[#7B5DB4];
 }
 /* Ліва кнопка (prev) */
 .react-calendar__navigation__prev-button {
@@ -79,8 +81,9 @@ body {
 
 /* Дні сусідніх місяців */
 .react-calendar__month-view__days__day--neighboringMonth {
-  @apply  bg-linear-to-r from-[#624491] to-[#6A5299]  text-gray-300;
+  @apply bg-linear-to-r from-[#624491] to-[#6A5299]  text-gray-300;
 }
 
-
-.react-calendar__tile abbr { display: none; }
+.react-calendar__tile abbr {
+  display: none;
+}

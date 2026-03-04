@@ -1,10 +1,8 @@
 import { IAppointment } from "@/lib/redux/modules/Appointments/Appointment.interface";
 import { useState } from "react";
-import AppointmentModal from "./additionalAllDayRecords/ModalShowFullAppointment";
-import ModalAddingNewAppointment from "./additionalAllDayRecords/ModalAddingNewAppointment";
+import AppointmentModal from "./ModalView/ModalShowFullAppointment/ModalShowFullAppointment";
+import ModalAddingNewAppointment from "./ModalView/ModalAddingNewAppointment/ModalAddingNewAppointment";
 import { useTranslation } from "react-i18next";
-import { AddClient } from "@/lib/redux/modules/Clients/actions/AddClient.ts/AddClient";
-import { useDispatch } from "react-redux";
 import RegistrationClientView from "./ModalView/RegistrationClient/RegistrationClient";
 
 interface AllDayRecordsProps {
