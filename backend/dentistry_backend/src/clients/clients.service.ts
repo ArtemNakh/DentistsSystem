@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Client } from './entities/client.entity';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 import { IClient } from './entities/client.interface';
 import { CreateClientInput } from './dto/CreateClientInput.dto';
 import * as argon2 from 'argon2';
@@ -42,7 +42,7 @@ export class ClientService {
   }
 
   public async findById(id: number): Promise<IClient> {
-    const client= await this.clientRepo.findOne({
+    const client = await this.clientRepo.findOne({
       where: { id },
       relations: ['appointments'],
     });
@@ -53,5 +53,30 @@ export class ClientService {
       );
     }
     return client;
+  }
+
+  
+  async findByFullName(search: string): Promise<Client[]> {
+    if (!search) {
+      return this.clientRepo.find();
+    }
+
+    const parts = search.trim().split(/\s+/);
+
+    let qb = this.clientRepo.createQueryBuilder('client');
+
+    // Для кожного слова додаємо умову AND:
+    parts.forEach((part, index) => {
+      const param = `part${index}`;
+      qb = qb.andWhere(
+        `(LOWER(client.surname) LIKE LOWER(:${param}) 
+        OR LOWER(client.name) LIKE LOWER(:${param}) 
+        OR LOWER(client.middle_name) LIKE LOWER(:${param}) 
+        OR LOWER(CONCAT(client.surname, ' ', client.name, ' ', IFNULL(client.middle_name, ''))) LIKE LOWER(:${param}))`,
+        { [param]: `%${part}%` },
+      );
+    });
+
+    return qb.getMany();
   }
 }

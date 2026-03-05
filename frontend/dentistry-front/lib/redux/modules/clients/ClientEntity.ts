@@ -4,12 +4,15 @@ import { ActionReducer } from "../../rootReducer";
 import { call, takeLatest } from "redux-saga/effects";
 import { GetClientAction } from "./actions/GetClients/GetClients";
 import { AddClientAction } from "./actions/AddClient.ts/AddClient";
+import { GetClientsByFullName } from "./actions/GetClientsByFullName/GetClientsByFullName";
 
 export enum ClientActionSaga {
   /**Додавання та зберігання нового відео */
   AddClient = "client/addClientSaga",
   /**Отримання та зберігання відео */
   GetClient = "client/fetchClientSaga",
+
+  GetClientsByFullName = "client/getAllByFullName",
 }
 
 @EntityReducer(EntitiesRedux.Clients)
@@ -27,15 +30,26 @@ export class ClientEntity extends BaseEntity {
   *addClientSaga(action: AddClientAction) {
     yield call(
       this.xSave.bind(this),
-      `/auth/registrationClient`, 
-      action.payload, 
-      ActionReducer.Post, 
+      `/auth/registrationClient`,
+      action.payload,
+      ActionReducer.Post,
     );
   }
+
+ *GetClientsByFullNameSaga(action: GetClientsByFullName) {
+  yield call(
+    this.xRead.bind(this), // для GET краще xRead
+    `/clients/search?search=${action.payload.fullName}`,
+    ActionReducer.Get
+  );
+}
+
 
   /**Listener saga actions */
   *watch() {
     yield takeLatest(ClientActionSaga.GetClient, this.getClientSaga.bind(this));
     yield takeLatest(ClientActionSaga.AddClient, this.addClientSaga.bind(this));
+      yield takeLatest(ClientActionSaga.GetClientsByFullName, this.GetClientsByFullNameSaga.bind(this));
+    
   }
 }

@@ -18,6 +18,7 @@ const initialValues: AddNewAppointmentPayload = {
   dentistId: 0,
   appointment_date: new Date(),
   notes: "",
+  
 };
 
 export default function ModalAddingNewAppointment({
