@@ -122,7 +122,7 @@ useEffect(() => {
                   <li
                     key={worker.id}
                     onClick={() => {
-                      setFieldValue("workerId", worker.id); // у Formik зберігається ID
+                      setFieldValue("dentistId", worker.id); // у Formik зберігається ID
                       setSelectedWorkerName(
                         `${worker.surname} ${worker.name} ${worker.middle_name ?? ""} — ${worker.specialty?.name ?? ""} (${new Date(worker.birthday).getFullYear()})`,
                       ); // у полі показується ПІБ + рік

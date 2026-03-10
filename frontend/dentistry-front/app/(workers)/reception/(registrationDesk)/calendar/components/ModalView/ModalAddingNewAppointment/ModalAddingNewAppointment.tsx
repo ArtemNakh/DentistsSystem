@@ -9,6 +9,7 @@ import AppointmentDateField from "./components/AppointmentDateField";
 import NotesField from "./components/NotesField";
 import ClientField from "./components/ClientField";
 import WorkerField from "./components/WorkerField";
+import SubmitAddingAppointment from "./components/SubmitRegistrationClientButton";
 
 interface ModalAddingNewAppointmentProps {
   onClose: () => void;
@@ -30,24 +31,23 @@ export default function ModalAddingNewAppointment({
   const [error, setError] = useState<string | null>(null);
 
   const onSubmit = useCallback(
-    async (values: any, { setSubmitting }: any) => {
+    async (values: AddNewAppointmentPayload, { setSubmitting }: any) => {
       try {
-        console.log("Adding appointment");
+        console.log("Adding appointment", values);
 
-        onClose();
+        // тут викликаєш екшен для додавання
+        // await dispatch(AddNewAppointmentPayload(values));
+
+        // закриваєш модалку після успішного додавання
+        // onClose();
       } catch (err) {
-        setError("Помилка при додаванні appointment" + err);
+        setError("Помилка при додаванні appointment: " + err);
       } finally {
         setSubmitting(false);
       }
     },
-    [dispatch, onclose],
+    [dispatch, onClose],
   );
-
-  // const { setFieldValue } = useFormikContext<AddNewAppointmentPayload>(); // тепер можна викликати setFieldValue
-  // const handleSelectClient = (client: IClient) => {
-  //   setFieldValue("clientId", client.id);
-  // };
 
   return (
     <>
@@ -63,7 +63,7 @@ export default function ModalAddingNewAppointment({
             <Form>
               {/* Client full name */}
               <ClientField />
-              
+
               {/* Worker full name */}
               <WorkerField />
               {/* appointment date */}
@@ -71,6 +71,7 @@ export default function ModalAddingNewAppointment({
 
               {/* notes */}
               <NotesField />
+              <SubmitAddingAppointment />
             </Form>
           </Formik>
           <button
