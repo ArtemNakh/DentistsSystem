@@ -9,6 +9,7 @@ import { PaymentEntity } from "../redux/modules/Payments/Payments.Entity";
 import { AuthEntity } from "../redux/modules/AuthUser/AuthUser.Entity";
 import { AppointmentActionsEntity } from "../redux/modules/AppointmentsActions/AppointmentActions.Entity";
 import { OperationListEntity } from "../redux/modules/OperationList/OperationList.Entity";
+import { FindingWorkerEntity } from "../redux/modules/FindingWorkers/FindingWorkerEntity";
 
 const clientContainer = createContainer({
   injectionMode: "PROXY",
@@ -23,6 +24,8 @@ const expansion = {
   AuthEntity: asClass(AuthEntity).singleton(),
   AppointmentActionsEntity: asClass(AppointmentActionsEntity).singleton(),
   OperationListEntity: asClass(OperationListEntity).singleton(),
+  FindingWorkersEntity: asClass(FindingWorkerEntity).singleton(),
+
 };
 
 clientContainer.register({ ...expansion });

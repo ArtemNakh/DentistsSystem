@@ -7,6 +7,7 @@ import { PaymentEntity } from "../redux/modules/Payments/Payments.Entity";
 import { AuthEntity } from "../redux/modules/AuthUser/AuthUser.Entity";
 import { AppointmentActionsEntity } from "../redux/modules/AppointmentsActions/AppointmentActions.Entity";
 import { OperationListEntity } from "../redux/modules/OperationList/OperationList.Entity";
+import { FindingWorkerEntity } from "../redux/modules/FindingWorkers/FindingWorkerEntity";
 
 export interface IContexContainer {
   ClientEntity: ClientEntity;
@@ -18,4 +19,5 @@ export interface IContexContainer {
   AuthEntity: AuthEntity;
   AppointmentActionsEntity: AppointmentActionsEntity;
   OperationListEntity: OperationListEntity;
+  FindingWorkersEntity: FindingWorkerEntity;
 }

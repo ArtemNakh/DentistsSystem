@@ -8,6 +8,7 @@ import { IClient } from "@/lib/redux/modules/Clients/clients.interface";
 import AppointmentDateField from "./components/AppointmentDateField";
 import NotesField from "./components/NotesField";
 import ClientField from "./components/ClientField";
+import WorkerField from "./components/WorkerField";
 
 interface ModalAddingNewAppointmentProps {
   onClose: () => void;
@@ -18,7 +19,6 @@ const initialValues: AddNewAppointmentPayload = {
   dentistId: 0,
   appointment_date: new Date(),
   notes: "",
-  
 };
 
 export default function ModalAddingNewAppointment({
@@ -63,7 +63,9 @@ export default function ModalAddingNewAppointment({
             <Form>
               {/* Client full name */}
               <ClientField />
-
+              
+              {/* Worker full name */}
+              <WorkerField />
               {/* appointment date */}
               <AppointmentDateField />
 

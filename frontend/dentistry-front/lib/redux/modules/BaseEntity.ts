@@ -20,6 +20,7 @@ import { WorkerEntity } from "./Workers/Workers.Entity";
 import { AuthEntity } from "./AuthUser/AuthUser.Entity";
 import { AppointmentActionsActionSaga } from "./AppointmentsActions/AppointmentActions.Entity";
 import { OperationListEntity } from "./OperationList/OperationList.Entity";
+import { FindingWorkerEntity } from "./FindingWorkers/FindingWorkerEntity";
 
 // Це буде базовий endpoint для всіх запитів.
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -36,6 +37,7 @@ export const enum EntitiesRedux {
   Auth = "auth",
   AppointmentActions = "appointmentActions",
   OperationList = "operationList",
+  FindingWorkers= "findingWorkers",
 }
 
 // Entities — тип для сутностей
@@ -48,7 +50,8 @@ export type Entities =
   | SpecialtyEntity
   | AppointmentActionsActionSaga
   | OperationListEntity
-  | AuthEntity;
+  | AuthEntity
+  |FindingWorkerEntity;
 
 // IQueryResult<T> — тип відповіді від API: масив даних + повідомлення.
 interface IQueryResult<T> {
@@ -191,7 +194,7 @@ export default class BaseEntity extends ClientContextDI {
       const normalizedData = Array.isArray(nonNormData)
         ? normalize(nonNormData, [this.schema])
         : normalize(nonNormData, this.schema);
-
+        
       return {
         type: typeAction,
         payload: normalizedData,

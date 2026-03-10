@@ -1,6 +1,10 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { Worker } from './entities/workers.entity';
 import { IWorker } from './entities/workers.interface';
 import { SpecialtyType } from 'src/specialty/entities/specialty.interface';
@@ -58,20 +62,16 @@ export class WorkersService {
   }
 
   public async GetDoctorsDentistry(dentistryId: number) {
-   
-    const doctors= this.workerRepo.find({
+    const doctors = this.workerRepo.find({
       where: {
         dentistry: { id: dentistryId },
         specialty: { type: SpecialtyType.DOCTOR },
       },
-      relations:['specialty','dentistry']
+      relations: ['specialty', 'dentistry'],
     });
 
-return doctors;
+    return doctors;
   }
-
-
-
 
   //temporary
   // ➕ Створення нового працівника
@@ -99,11 +99,36 @@ return doctors;
     return await this.workerRepo.save(worker);
   }
 
-
-
-   public async findByLoginTemp(login: string): Promise<Worker | null> {
+  public async findByLoginTemp(login: string): Promise<Worker | null> {
     const worker = await this.workerRepo.findOne({ where: { login } });
     return worker ?? null; // повертає null, якщо не знайдено
   }
 
+  async findByFullName(search: string, idDentistry: number): Promise<Worker[]> {
+    if (!search) {
+      return this.workerRepo.find({
+        where: { dentistry: { id: idDentistry } },
+        relations: ['specialty'],
+      });
+    }
+
+  const parts = search.trim().split(/\s+/);
+
+  // Масив умов OR для кожного слова і кожного поля
+  const where: any[] = [];
+
+  parts.forEach((part) => {
+    const like = Like(`%${part}%`);
+    where.push(
+      { dentistry: { id: idDentistry }, surname: like },
+      { dentistry: { id: idDentistry }, name: like },
+      { dentistry: { id: idDentistry }, middle_name: like },
+    );
+  });
+
+  return this.workerRepo.find({
+    where,
+    relations: ['specialty', 'dentistry'],
+  });
+  }
 }
