@@ -167,4 +167,22 @@ export class AppointmentService {
       );
     }
   }
+
+
+
+  // Отримати всі appointment для працівника на 3 місяці наперед
+  async findAppointmentsForWorker(workerId: number): Promise<IAppointment[]> {
+    const now = new Date();
+    const threeMonthsLater = new Date();
+    threeMonthsLater.setMonth(now.getMonth() + 3);
+
+    return this.appointmentRepo.find({
+      where: {
+        dentist: { id: workerId },
+        appointment_date: Between(now, threeMonthsLater),
+      },
+      relations: ['dentist', 'client'],
+      order: { appointment_date: 'ASC' },
+    });
+  }
 }

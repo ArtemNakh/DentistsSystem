@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { WorkerShiftsService } from './worker-shifts.service';
 import { ApiTags } from '@nestjs/swagger';
 
@@ -12,4 +12,12 @@ export class WorkerShiftsController {
     findAll() {
       return this.workerShiftsService.findAll();
     }
+
+
+
+  // Ендпоінт для отримання розкладу на 3 місяці
+  @Get(':id/shifts')
+  async getShifts(@Param('id') id: number) {
+    return this.workerShiftsService.findShiftsForWorker(id);
+  }
 }

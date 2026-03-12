@@ -3,6 +3,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
   Query,
 } from '@nestjs/common';
@@ -113,5 +114,11 @@ export class AppointmentController {
     } catch (error) {
       throw new BadRequestException(error.message);
     }
+  }
+
+  // Ендпоінт для отримання appointment на 3 місяці
+  @Get(':id/appointments')
+  async getAppointments(@ Param('id') id: number) {
+    return this.appointmentService.findAppointmentsForWorker(id);
   }
 }

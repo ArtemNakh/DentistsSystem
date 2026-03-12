@@ -20,6 +20,7 @@ export function* rootSaga() {
   const findingWorkersEntitySaga = clientContainer.resolve(
     "FindingWorkersEntity",
   );
+  const workerShifts = clientContainer.resolve("WorkerShiftsEntity");
   yield all([
     clientEntitySaga.watch(),
     dentistryEntitySaga.watch(),
@@ -31,5 +32,6 @@ export function* rootSaga() {
     appointmentActionsEntitySaga.watch(),
     operationListEntitySaga.watch(),
     findingWorkersEntitySaga.watch(),
+    workerShifts.watch(),
   ]);
 }

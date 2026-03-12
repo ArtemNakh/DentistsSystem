@@ -1,10 +1,12 @@
 import { useAppSelector } from "@/lib/redux/hooks";
+import { GetAppointmentsToWorker } from "@/lib/redux/modules/Appointments/actions/GetAppointmentsByWorker/GetAppointmentsByWorker";
 import { GetClientsByFullName } from "@/lib/redux/modules/Clients/actions/GetClientsByFullName/GetClientsByFullName";
 import { IClient } from "@/lib/redux/modules/Clients/clients.interface";
 import { IDentistry } from "@/lib/redux/modules/Dentistries/Dentistry.interface";
 import { GetWorkersByFullName } from "@/lib/redux/modules/FindingWorkers/actions/GetWorkersByFIO/GetWorkersByFIO";
 import { ISpecialty } from "@/lib/redux/modules/Specialties/Specialties.interface";
 import { IWorker } from "@/lib/redux/modules/Workers/Workers.interface";
+import { getShiftsWorker } from "@/lib/redux/modules/WorkerShifts/actions/GetShiftsToWorker/GetShiftsToWorker";
 import { RootState } from "@/lib/redux/store";
 import { createSelector } from "@reduxjs/toolkit";
 import { ErrorMessage, Field, useFormikContext } from "formik";
@@ -58,9 +60,9 @@ export default function WorkerField() {
     }
   }, [searchQuery, workers]);
 
-useEffect(() => {
-  console.log("workers from store:", workers);
-}, [workers]);
+  useEffect(() => {
+    console.log("workers from store:", workers);
+  }, [workers]);
   return (
     <>
       <div className="mx-5 text-gray-500">
@@ -122,17 +124,26 @@ useEffect(() => {
                   <li
                     key={worker.id}
                     onClick={() => {
-                      setFieldValue("dentistId", worker.id); // у Formik зберігається ID
+                      // зберігаємо ID у Formik
+                      setFieldValue("dentistId", worker.id);
+
+                      // показуємо ім’я у полі
                       setSelectedWorkerName(
                         `${worker.surname} ${worker.name} ${worker.middle_name ?? ""} — ${worker.specialty?.name ?? ""} (${new Date(worker.birthday).getFullYear()})`,
-                      ); // у полі показується ПІБ + рік
+                      );
+
+                      // робимо запити до БД через Redux Saga
+                      dispatch(getShiftsWorker({ idWorker: worker.id }));
+                      dispatch(
+                        GetAppointmentsToWorker({ workerId: worker.id }),
+                      );
+
                       setShowWorkerModal(false);
                     }}
                     className="p-2 hover:bg-gray-200 cursor-pointer"
                   >
-                    
-                    {worker.surname} {worker.name} {worker.middle_name}{" "}
-                    ({worker.specialty?.name}) (
+                    {worker.surname} {worker.name} {worker.middle_name} (
+                    {worker.specialty?.name}) (
                     {new Date(worker.birthday).getFullYear()})
                   </li>
                 ),

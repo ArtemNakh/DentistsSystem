@@ -3,7 +3,7 @@ import { AppointmentActionSaga } from "../../Appointment.Entity";
 export interface AddNewAppointmentPayload {
   clientId: number;
   dentistId: number;
-  appointment_date: Date;
+  appointment_date: string;
   notes?: string;
 }
 

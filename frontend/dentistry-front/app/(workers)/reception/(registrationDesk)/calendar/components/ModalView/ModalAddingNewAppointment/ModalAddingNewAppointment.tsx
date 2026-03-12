@@ -1,5 +1,8 @@
 import { useAppDispatch } from "@/lib/redux/hooks";
-import { AddNewAppointmentPayload } from "@/lib/redux/modules/Appointments/actions/AddNewAppointment/AddNewAppointment";
+import {
+  AddNewAppointment,
+  AddNewAppointmentPayload,
+} from "@/lib/redux/modules/Appointments/actions/AddNewAppointment/AddNewAppointment";
 import { ErrorMessage, Field, Form, Formik, useFormikContext } from "formik";
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -18,7 +21,7 @@ interface ModalAddingNewAppointmentProps {
 const initialValues: AddNewAppointmentPayload = {
   clientId: 0,
   dentistId: 0,
-  appointment_date: new Date(),
+  appointment_date: new Date().toISOString(),
   notes: "",
 };
 
@@ -33,13 +36,17 @@ export default function ModalAddingNewAppointment({
   const onSubmit = useCallback(
     async (values: AddNewAppointmentPayload, { setSubmitting }: any) => {
       try {
-        console.log("Adding appointment", values);
-
-        // тут викликаєш екшен для додавання
-        // await dispatch(AddNewAppointmentPayload(values));
+     
+        
+        await dispatch(
+          AddNewAppointment({
+            ...values,
+            appointment_date: new Date(values.appointment_date).toISOString(),
+          }),
+        );
 
         // закриваєш модалку після успішного додавання
-        // onClose();
+        onClose();
       } catch (err) {
         setError("Помилка при додаванні appointment: " + err);
       } finally {

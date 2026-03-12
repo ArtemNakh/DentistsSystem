@@ -79,4 +79,7 @@ export class ClientService {
 
     return qb.getMany();
   }
+
+
+  
 }
