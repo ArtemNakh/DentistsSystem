@@ -1,9 +1,12 @@
 import {
   BadRequestException,
+  Body,
   HttpException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
+  Param,
+  Patch,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Appointment } from './entity/appointment.entity';
@@ -168,8 +171,6 @@ export class AppointmentService {
     }
   }
 
-
-
   // Отримати всі appointment для працівника на 3 місяці наперед
   async findAppointmentsForWorker(workerId: number): Promise<IAppointment[]> {
     const now = new Date();
@@ -184,5 +185,29 @@ export class AppointmentService {
       relations: ['dentist', 'client'],
       order: { appointment_date: 'ASC' },
     });
+  }
+
+  async updateStatus(appointmentId: number, newStatus: StatusAppointment) {
+    const appointment = await this.appointmentRepo.findOne({
+      where: { id: appointmentId },
+    });
+    if (!appointment) {
+      throw new NotFoundException(
+        `Appointment with id ${appointmentId} not found`,
+      );
+    }
+
+    appointment.status = newStatus;
+    appointment.updated_at = new Date();
+
+    await this.appointmentRepo.save(appointment);
+
+    return {
+      message: {
+        code: 'success',
+        text: `Appointment ${appointmentId} status updated to ${newStatus}`,
+      },
+      data: [appointment],
+    };
   }
 }

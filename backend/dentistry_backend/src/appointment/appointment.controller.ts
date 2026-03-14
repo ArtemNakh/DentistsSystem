@@ -4,15 +4,28 @@ import {
   Controller,
   Get,
   Param,
+  ParseEnumPipe,
+  Patch,
   Post,
   Query,
 } from '@nestjs/common';
 import { AppointmentService } from './appointment.service';
-import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { IAppointment } from './entity/appointment.interface';
+import {
+  ApiBody,
+  ApiOperation,
+  ApiParam,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import {
+  IAppointment,
+  StatusAppointment,
+} from './entity/appointment.interface';
 import { AppointmentDto } from './dto/gettingNearectAppointment.dto';
 import { Dentistry } from 'src/dentistry/entities/dentistry.entity';
 import { CreateAppointmentDto } from './dto/createAppointment.dto';
+import { UpdateAppointmentStatusDto } from './dto/updateAppointmentStatus.dto';
 
 @ApiTags('Appointment')
 @Controller('appointment')
@@ -118,7 +131,42 @@ export class AppointmentController {
 
   // Ендпоінт для отримання appointment на 3 місяці
   @Get(':id/appointments')
-  async getAppointments(@ Param('id') id: number) {
+  async getAppointments(@Param('id') id: number) {
     return this.appointmentService.findAppointmentsForWorker(id);
+  }
+
+  @Patch(':appointmentId/update_status')
+  @ApiOperation({ summary: 'Оновлення статусу запису' })
+  @ApiParam({
+    name: 'appointmentId',
+    description: 'ID запису, який потрібно оновити',
+    type: Number,
+    example: 1940,
+  })
+  @ApiBody({ type: UpdateAppointmentStatusDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Статус запису успішно оновлено',
+    schema: {
+      example: {
+        message: {
+          code: 'success',
+          text: 'Appointment 1940 status updated to cancelled',
+        },
+        data: [
+          {
+            id: 1940,
+            status: 'cancelled',
+            updated_at: '2026-03-14T21:00:00.000Z',
+          },
+        ],
+      },
+    },
+  })
+  async updateStatus(
+    @Param('appointmentId') appointmentId: number,
+    @Body() dto: UpdateAppointmentStatusDto,
+  ) {
+    return this.appointmentService.updateStatus(appointmentId, dto.status);
   }
 }
