@@ -5,7 +5,7 @@ import { getAuthWorker } from "@/lib/redux/modules/AuthUser/actions/GetAuthWorke
 import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
 import { SpecialtyType } from "@/lib/redux/modules/Specialties/Specialties.interface";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function ProtectedRoute({
   children,
@@ -17,23 +17,28 @@ export default function ProtectedRoute({
   const authUser = useAppSelector((state: { auth: AuthState }) => state.auth);
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    if (authUser.user) {
-      console.log("work");
-      return;
-    }
-    dispatch(getAuthWorker({}));
+    const fetchUser = async () => {
+      if (!authUser.user) {
+        await dispatch(getAuthWorker({}));
+      }
+      setLoading(false);
+    };
+    fetchUser();
   }, [dispatch]);
-  
+
   useEffect(() => {
+    if (loading) return; // ще чекаємо дані
+
     if (!authUser.user) {
-      console.log("user not auth", authUser);
-      router.push("/w-auth/login");
-    } else if (!allowedRoles.includes(authUser.user.specialty.type)) {
-      console.log("auth", authUser);
-      router.push("403");
+      // router.push("/w-auth/login");
     }
-  }, [authUser, router, allowedRoles]);
+    else if (!allowedRoles.includes(authUser.user.specialty.type)) {
+      router.push("/403");
+    }
+  }, [authUser, router, allowedRoles, loading]);
 
   return <>{children}</>;
 }

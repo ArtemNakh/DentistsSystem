@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Body,
+  Get,
   HttpException,
   Injectable,
   InternalServerErrorException,
@@ -22,12 +23,16 @@ import {
   Repository,
 } from 'typeorm';
 import { CreateAppointmentDto } from './dto/createAppointment.dto';
+import { Worker } from 'src/workers/entities/workers.entity';
+import { SpecialtyType } from 'src/specialty/entities/specialty.interface';
 
 @Injectable()
 export class AppointmentService {
   constructor(
     @InjectRepository(Appointment)
     private appointmentRepo: Repository<Appointment>,
+    @InjectRepository(Worker)
+    private readonly workerRepo: Repository<Worker>,
   ) {}
 
   findAll(): Promise<IAppointment[]> {
@@ -209,5 +214,50 @@ export class AppointmentService {
       },
       data: [appointment],
     };
+  }
+
+  async getWorkerAppointmentsStatsByDentistry(dentistryId: number) {
+    const workers = await this.workerRepo.find({
+      where: {
+        dentistry: { id: dentistryId },
+        specialty: { type: SpecialtyType.DOCTOR },
+      },
+      relations: ['appointments', 'specialty', 'dentistry'],
+    });
+
+    const oneMonthAgo = new Date();
+    oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+
+    return workers.map((worker) => {
+      const appointmentsLastMonth =
+        worker.appointments?.filter((a) => a.appointment_date >= oneMonthAgo) ||
+        [];
+
+      const stats = {
+        total: appointmentsLastMonth.length,
+        schedule: appointmentsLastMonth.filter(
+          (a) => a.status === StatusAppointment.SCHEDULE,
+        ).length,
+        completed: appointmentsLastMonth.filter(
+          (a) => a.status === StatusAppointment.COMPLETED,
+        ).length,
+        waitPaid: appointmentsLastMonth.filter(
+          (a) => a.status === StatusAppointment.WAIT_PAID,
+        ).length,
+        cancelled: appointmentsLastMonth.filter(
+          (a) => a.status === StatusAppointment.CANCELLED,
+        ).length,
+      };
+
+      return {
+        worker: {
+          id: worker.id,
+          name: worker.name,
+          surname: worker.surname,
+          specialty: worker.specialty?.name,
+        },
+        stats,
+      };
+    });
   }
 }

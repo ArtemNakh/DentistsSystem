@@ -10,31 +10,33 @@ import { getPaymentsDentistry } from "@/lib/redux/modules/Payments/actions/getAl
 import { getAuthWorker } from "@/lib/redux/modules/AuthUser/actions/GetAuthWorker/GetAuthWorker";
 import { getAppointmentNearestTodayDentistry } from "@/lib/redux/modules/Appointments/actions/GetNearestTodayByDentistry/GetNearestTodayByDentistry";
 import { getAppointmentTodayDentistry } from "@/lib/redux/modules/Appointments/actions/GetTodayOperationByDentistry/GetTodayOperationByDentistry";
-
-
+import { GetWorkersAppointmentStats } from "@/lib/redux/modules/ADMINS/Stats/WorkerStats/actions/GetWorkersStats/GetWorkersStats";
+import { createSelector } from "@reduxjs/toolkit";
+import TableWorkersStats from "./components/TableAppointmentsWorkers";
+import TableWorkersWeekend from "./components/TableWeekendWorkers";
+import { GetNumbersWorkersWeekend } from "@/lib/redux/modules/ADMINS/Stats/WeekendStats/actions/WeekendStats.entity";
 
 export function AdminsMain() {
   const authUser = useAppSelector((state: { auth: AuthState }) => state.auth);
 
   const dispatch = useAppDispatch();
 
+ 
   
-  useEffect(() => {
-    if (authUser.user) {
-      console.log("work");
-      return;
-    }
-    dispatch(getAuthWorker({}));
-  }, [dispatch]);
 
   useEffect(() => {
     if (!authUser.user) return;
-
-    // тепер user гарантовано є
     dispatch(
-      getAppointmentNearestTodayDentistry({
+      GetWorkersAppointmentStats({
         dentistryId: authUser.user.dentistry.id,
       }),
+    ),
+
+    dispatch(GetNumbersWorkersWeekend({dentistryId:authUser.user.dentistry.id,}))
+    dispatch(
+      getAppointmentNearestTodayDentistry({
+         dentistryId: authUser.user.dentistry.id,
+        }),
     );
 
     if (authUser.user.dentistry?.id) {
@@ -43,13 +45,11 @@ export function AdminsMain() {
       );
     }
 
-    if (authUser.user.id) {
-      dispatch(
-        getAppointmentTodayDentistry({
-          dentistryId: authUser.user.dentistry.id,
-        }),
-      );
-    }
+    dispatch(
+      getAppointmentTodayDentistry({
+        dentistryId: authUser.user.dentistry.id,
+      }),
+    );
   }, [authUser.user, dispatch]);
 
   return (
@@ -63,6 +63,7 @@ export function AdminsMain() {
              додати показ актуального по часу записів(якщо час 12 то показувати записі до 12) , додати фільри по часу,доктору, пошук пацієкнта */}
             <div className="w-1/2 relative">
               <TableUpcomingEntries />
+              <TableWorkersStats /> {/* нова таблиця зі статистикою */}
             </div>
 
             {/* right patt */}
@@ -78,6 +79,9 @@ export function AdminsMain() {
                 <div className="h-1/2">
                   {/* Таблиця лікарів, які зараз оперують */}
                   <TableBusyDoctors />
+                </div>
+                <div className="h-1/2">
+                  <TableWorkersWeekend />
                 </div>
               </div>
             </div>

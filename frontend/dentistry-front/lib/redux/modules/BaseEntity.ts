@@ -23,6 +23,8 @@ import { OperationListEntity } from "./OperationList/OperationList.Entity";
 import { FindingWorkerEntity } from "./FindingWorkers/FindingWorkerEntity";
 import { ShiftsWorkerAction } from "./WorkerShifts/actions/GetShiftsToWorker/GetShiftsToWorker";
 import { WorkerShiftsEntity } from "./WorkerShifts/WorkerShifts.Entity";
+import { WorkerStatsEntity } from "./ADMINS/Stats/WorkerStats/WorkerStats.entity";
+import { WorkerWeekendEntity } from "./ADMINS/Stats/WeekendStats/actions/WeekendStats.entity";
 
 // Це буде базовий endpoint для всіх запитів.
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -40,7 +42,7 @@ export const enum EntitiesRedux {
   AppointmentActions = "appointmentActions",
   OperationList = "operationList",
   FindingWorkers = "findingWorkers",
-  WorkerShifts = "workerShifts",
+  WorkerShifts = "workerShifts",  WorkerStats = "workerStats", WorkersWeekend="workersWeekend"
 }
 
 // Entities — тип для сутностей
@@ -55,7 +57,7 @@ export type Entities =
   | OperationListEntity
   | AuthEntity
   | FindingWorkerEntity
-  | WorkerShiftsEntity;
+  | WorkerShiftsEntity|WorkerStatsEntity|WorkerWeekendEntity;
 
 // IQueryResult<T> — тип відповіді від API: масив даних + повідомлення.
 interface IQueryResult<T> {

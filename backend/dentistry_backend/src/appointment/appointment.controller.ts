@@ -169,4 +169,11 @@ export class AppointmentController {
   ) {
     return this.appointmentService.updateStatus(appointmentId, dto.status);
   }
+
+
+  
+  @Get('workers-stats/:dentistryId')
+  async getWorkersStatsByDentistry(@Param('dentistryId') dentistryId: number) {
+    return this.appointmentService.getWorkerAppointmentsStatsByDentistry(dentistryId);
+  }
 }
