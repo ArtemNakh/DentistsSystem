@@ -140,7 +140,7 @@ export default function WorkerField() {
 
                       setShowWorkerModal(false);
                     }}
-                    className="p-2 hover:bg-gray-200 cursor-pointer"
+                    className="p-2 hover:bg-[#7551B0] cursor-pointer"
                   >
                     {worker.surname} {worker.name} {worker.middle_name} (
                     {worker.specialty?.name}) (

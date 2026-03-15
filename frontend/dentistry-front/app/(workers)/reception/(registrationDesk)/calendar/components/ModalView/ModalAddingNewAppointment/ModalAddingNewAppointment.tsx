@@ -36,8 +36,6 @@ export default function ModalAddingNewAppointment({
   const onSubmit = useCallback(
     async (values: AddNewAppointmentPayload, { setSubmitting }: any) => {
       try {
-     
-        
         await dispatch(
           AddNewAppointment({
             ...values,
@@ -45,7 +43,6 @@ export default function ModalAddingNewAppointment({
           }),
         );
 
-        // закриваєш модалку після успішного додавання
         onClose();
       } catch (err) {
         setError("Помилка при додаванні appointment: " + err);

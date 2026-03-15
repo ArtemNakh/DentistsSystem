@@ -15,7 +15,7 @@ export default function RenderCalendarTile({
   const { t } = useTranslation();
   if (view !== "month") return null;
 
-  // Вибираємо записи саме для цього дня
+  
   const dayAppointments = appointments.filter(
     (a) => new Date(a.appointment_date).toDateString() === date.toDateString(),
   );

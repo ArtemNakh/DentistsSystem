@@ -16,7 +16,7 @@ import { getAppointmentDentistry } from "@/lib/redux/modules/Appointments/action
 import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
 import { getAuthWorker } from "@/lib/redux/modules/AuthUser/actions/GetAuthWorker/GetAuthWorker";
 
-export const DenormalizeAppointments = createSelector(
+const DenormalizeAppointments = createSelector(
   [
     (state: RootState) => state.appointments,
     (state: RootState) => state.workers,
@@ -47,24 +47,21 @@ export default function CalendarAdmin() {
   const authUser = useAppSelector((state: { auth: AuthState }) => state.auth);
 
   const appointments = useAppSelector(DenormalizeAppointments);
-  useEffect(() => {
-    if (authUser.user) {
-      console.log("work");
-      return;
-    }
-    dispatch(getAuthWorker({}));
-  }, [dispatch]);
 
   useEffect(() => {
+    console.log("Auth effect triggered", authUser.user);
     if (!authUser.user) {
-      console.log("check user ");
-      return;
+      dispatch(getAuthWorker({}));
     }
-
-    dispatch(
-      getAppointmentDentistry({ dentistryId: authUser.user.dentistry.id }),
-    );
   }, [dispatch, authUser.user]);
+
+  useEffect(() => {
+    const dentistryId = authUser.user?.dentistry?.id;
+    console.log("Appointments effect triggered", dentistryId);
+    if (dentistryId) {
+      dispatch(getAppointmentDentistry({ dentistryId }));
+    }
+  }, [dispatch, authUser.user?.dentistry?.id]);
 
   const [value, setValue] = useState<Date>(new Date());
 

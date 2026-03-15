@@ -88,6 +88,7 @@ export default function AppointmentDateField() {
           id="appointment_date"
           name="appointment_date"
           type="date"
+          className="placeholder-gray-400 text-gray-200 border border-gray-400 rounded px-2 py-1  focus:outline-none hover:border-gray-950"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             setSelectedDate(e.target.value);
 
@@ -99,20 +100,22 @@ export default function AppointmentDateField() {
                 new Date(s.shift_date).toDateString() ===
                 new Date(value).toDateString(),
             );
-            return isValid
-              ? undefined
-              : "Цей працівник не працює у вибраний день";
+            return isValid ? undefined : (
+              <div className="mt-2 w-auto h-auto text-red-500">
+                Цей працівник не працює у вибраний день
+              </div>
+            );
           }}
         />
         <ErrorMessage
           name="appointment_date"
           component="div"
-          className="text-red-500 text-lg"
+          className="text-red-500 text-lg w-full"
         />
       </div>
 
       {selectedDate && (
-        <div className="mx-5 mt-4 text-gray-500">
+        <div className="mx-5 mt-4 text-gray-400 hover:border-gray-900">
           <label className="block mb-1 text-lg text-gray-200">
             {t("Час операції")}
           </label>
