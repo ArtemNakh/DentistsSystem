@@ -84,11 +84,11 @@ export default function HeaderAdmin() {
             )}
           </div>
 
-          {/* center */}
+          <div>Рецепція</div>
 
           {/* right */}
           {/* button */}
-          
+
           {/* розклад із переглядок текущих та додаваня нових та видалення записів,сповіщення що було зроблено для цієї стоматології */}
           <div className=" ml-auto flex  space-x-2 ">
             <div className="flex items-center space-x-2">

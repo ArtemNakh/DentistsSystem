@@ -2,6 +2,7 @@ import { IWorker } from "../Workers/Workers.interface";
 
 export enum SpecialtyType {
   DOCTOR = "doctor",
+    RECEPTION= "reception",
   ADMIN = "admin",
 }
 

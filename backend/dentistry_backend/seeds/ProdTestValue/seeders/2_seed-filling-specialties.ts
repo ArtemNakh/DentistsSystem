@@ -1,11 +1,13 @@
-import { faker } from "@faker-js/faker";
-import { Specialty } from "../../../src/specialty/entities/specialty.entity";
-import { SpecialtyType } from "../../../src/specialty/entities/specialty.interface";
+import { faker } from '@faker-js/faker';
+import { Specialty } from '../../../src/specialty/entities/specialty.entity';
+import { SpecialtyType } from '../../../src/specialty/entities/specialty.interface';
 
+import { DataSource } from 'typeorm';
 
-import { DataSource } from "typeorm";
-
-export async function seedSpecialties(dataSource: DataSource,numbersSpecializations=30) {
+export async function seedSpecialties(
+  dataSource: DataSource,
+  numbersSpecializations = 30,
+) {
   const repo = dataSource.getRepository(Specialty);
 
   const specialties: Specialty[] = [];
@@ -14,7 +16,7 @@ export async function seedSpecialties(dataSource: DataSource,numbersSpecializati
     const specialty = repo.create({
       name: faker.person.jobTitle(),
       description: faker.lorem.sentence(),
-      type: faker.helpers.arrayElement([SpecialtyType.DOCTOR, SpecialtyType.ADMIN]),
+      type: faker.helpers.arrayElement(Object.values(SpecialtyType)),
     });
     specialties.push(specialty);
   }

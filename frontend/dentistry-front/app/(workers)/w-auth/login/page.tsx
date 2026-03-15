@@ -8,11 +8,13 @@ import SubmitButton from "./components/SubmitButton";
 import { loginWorker } from "./services/loginService";
 import { useTranslation } from "react-i18next";
 import LanguageSwitch from "@/app/components/LanguageSwitch";
+import { SpecialtyType } from "@/lib/redux/modules/Specialties/Specialties.interface";
+import { useRouter } from "next/navigation";
 
 export default function WorkerLogin() {
   const { t } = useTranslation();
   const loginValidation = useMemo(() => loginValidationSchema, []);
-
+  const router = useRouter(); // ← отримуємо екземпляр роутера
   const [error, setError] = useState<string | null>(null);
 
   const onSubmit = useCallback(
@@ -20,7 +22,24 @@ export default function WorkerLogin() {
       try {
         setError(null);
         const data = await loginWorker(values);
+        console.log("auth user ",data)
         localStorage.setItem("authToken", data.authToken);
+        // );
+
+        // перевіряємо спеціальність
+        switch (data.worker.specialty.type) {
+          case SpecialtyType.ADMIN:
+            router.push("/admins"); // сторінка для адмінів
+            break;
+          case SpecialtyType.DOCTOR:
+            router.push("/doctors"); // сторінка для лікарів
+            break;
+          case SpecialtyType.RECEPTION:
+            router.push("/reception/main"); // сторінка для реєстратури
+            break;
+          default:
+            router.push("/403"); // якщо тип невідомий
+        }
       } catch (e: any) {
         setError(e.message);
       }
