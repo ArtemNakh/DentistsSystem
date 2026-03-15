@@ -29,10 +29,10 @@ export default function WorkerLogin() {
         // перевіряємо спеціальність
         switch (data.worker.specialty.type) {
           case SpecialtyType.ADMIN:
-            router.push("/admins"); // сторінка для адмінів
+            router.push("/admins/main"); // сторінка для адмінів
             break;
           case SpecialtyType.DOCTOR:
-            router.push("/doctors"); // сторінка для лікарів
+            router.push("/doctors/main"); // сторінка для лікарів
             break;
           case SpecialtyType.RECEPTION:
             router.push("/reception/main"); // сторінка для реєстратури
