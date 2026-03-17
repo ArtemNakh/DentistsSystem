@@ -8,11 +8,11 @@ export interface IWorker {
   middle_name: string;
   birthday: Date;
   phone: string;
-  specialty: ISpecialty; //   specialty: ISpecialty;
-  dentistry: IDentistry; //   dentistry: IDentistry;
+  specialty: ISpecialty; 
+  dentistry: IDentistry; 
   login: string;
   password: string;
-
+ active: boolean; 
   created_at: Date;
   updated_at: Date;
 

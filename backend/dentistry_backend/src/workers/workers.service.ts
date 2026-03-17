@@ -10,11 +10,19 @@ import { IWorker } from './entities/workers.interface';
 import { SpecialtyType } from 'src/specialty/entities/specialty.interface';
 import * as argon2 from 'argon2';
 import { RegisterWorkerDto } from './registerWorker.dto';
+import { CreateWorkerDto } from './dto/CreateWorker.dto';
+import { Specialty } from 'src/specialty/entities/specialty.entity';
+import { Dentistry } from 'src/dentistry/entities/dentistry.entity';
+import { UpdateWorkerDto } from './dto/UpdateWorker.dto';
 
 @Injectable()
 export class WorkersService {
   constructor(
     @InjectRepository(Worker) private workerRepo: Repository<Worker>,
+    @InjectRepository(Specialty)
+    private readonly specialtyRepo: Repository<Specialty>,
+    @InjectRepository(Dentistry)
+    private readonly dentistryRepo: Repository<Dentistry>,
   ) {}
 
   //test
@@ -73,9 +81,53 @@ export class WorkersService {
     return doctors;
   }
 
+  async CreateWorker(dto: CreateWorkerDto): Promise<IWorker> {
+    const specialty = await this.specialtyRepo.findOne({
+      where: { id: dto.specialtyId },
+    });
+    const dentistry = await this.dentistryRepo.findOne({
+      where: { id: dto.dentistryId },
+    });
+
+    const worker = this.workerRepo.create({
+      ...dto,
+      specialty,
+      dentistry,
+    } as Partial<IWorker>); // <-- підказуємо TS, що це Partial<Worker>
+
+    return this.workerRepo.save(worker);
+  }
+
+  async UpdateWorker(id: number, dto: UpdateWorkerDto): Promise<Worker> {
+    const worker = await this.workerRepo.findOne({ where: { id } });
+    if (!worker) {
+      throw new Error(`Worker with id ${id} not found`);
+    }
+
+    const specialty = await this.specialtyRepo.findOneBy({
+      id: dto.specialtyId,
+    });
+    const dentistry = await this.dentistryRepo.findOneBy({
+      id: dto.dentistryId,
+    });
+
+    Object.assign(worker, { ...dto, specialty, dentistry });
+    return this.workerRepo.save(worker);
+  }
+
+  async RemoveWorker(idWorker: number): Promise<void> {
+    const worker = await this.workerRepo.findOne({ where: { id: idWorker } });
+    if (!worker) {
+      throw new NotFoundException('Worker not found');
+    }
+
+    worker.active = false;
+    await this.workerRepo.save(worker);
+  }
+
   //temporary
   // ➕ Створення нового працівника
-  public async createWorker(dto: RegisterWorkerDto): Promise<Worker> {
+  public async createWorkerTemporary(dto: RegisterWorkerDto): Promise<Worker> {
     // перевірка чи логін вже існує
     const exists = await this.workerRepo.findOne({
       where: { login: dto.login },
@@ -112,23 +164,23 @@ export class WorkersService {
       });
     }
 
-  const parts = search.trim().split(/\s+/);
+    const parts = search.trim().split(/\s+/);
 
-  // Масив умов OR для кожного слова і кожного поля
-  const where: any[] = [];
+    // Масив умов OR для кожного слова і кожного поля
+    const where: any[] = [];
 
-  parts.forEach((part) => {
-    const like = Like(`%${part}%`);
-    where.push(
-      { dentistry: { id: idDentistry }, surname: like },
-      { dentistry: { id: idDentistry }, name: like },
-      { dentistry: { id: idDentistry }, middle_name: like },
-    );
-  });
+    parts.forEach((part) => {
+      const like = Like(`%${part}%`);
+      where.push(
+        { dentistry: { id: idDentistry }, surname: like },
+        { dentistry: { id: idDentistry }, name: like },
+        { dentistry: { id: idDentistry }, middle_name: like },
+      );
+    });
 
-  return this.workerRepo.find({
-    where,
-    relations: ['specialty', 'dentistry'],
-  });
+    return this.workerRepo.find({
+      where,
+      relations: ['specialty', 'dentistry'],
+    });
   }
 }

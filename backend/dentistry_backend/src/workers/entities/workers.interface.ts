@@ -18,7 +18,8 @@ export interface IWorker {
 
   created_at: Date;
   updated_at: Date;
-  
+   active: boolean; 
+   
   //foreign connections
   licenses?: ILicense[];
   appointments?: IAppointment[];

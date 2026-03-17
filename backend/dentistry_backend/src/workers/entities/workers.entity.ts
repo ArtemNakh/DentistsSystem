@@ -55,6 +55,8 @@ export class Worker implements IWorker {
   @UpdateDateColumn({ name: 'updated_at' })
   updated_at: Date;
 
+  @Column({ type: 'boolean', default: true })
+  active: boolean;
   //Foreign connection
   @OneToMany(() => License, (license) => license.worker)
   licenses: License[];

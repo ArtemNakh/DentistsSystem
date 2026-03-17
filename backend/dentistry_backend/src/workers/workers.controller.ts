@@ -1,15 +1,32 @@
 import {
+  Body,
   Controller,
+  Delete,
   Get,
+  Param,
+  Post,
+  Put,
   Query,
   Req,
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import { WorkersService } from './workers.service';
-import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiOperation,
+  ApiParam,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { IWorker } from './entities/workers.interface';
 import { Request } from 'express';
+import { CreateWorkerDto } from './dto/CreateWorker.dto';
+import { UpdateWorkerDto } from './dto/UpdateWorker.dto';
+import { WorkerResponseDto } from './dto/Response/CreateWorker.response.dto';
+import { ErrorResponseDto } from './dto/Response/ErrorWorker.response.dto';
+import { WorkerUpdateResponseDto } from './dto/Response/UpdateWorker.response.dto';
 @ApiTags('Worker')
 @Controller('workers')
 export class WorkersController {
@@ -95,7 +112,6 @@ export class WorkersController {
 
   @Get('me')
   async getCurrentWorker(@Req() req: Request) {
-   
     if (!req.session.workerId) {
       throw new UnauthorizedException('No worker session');
     }
@@ -106,12 +122,65 @@ export class WorkersController {
   }
 
   @Get('search')
-  async searchWorkers(@Query('search') search: string,@Req() req: Request) {
-     const worker = await this.workersService.findById(
+  async searchWorkers(@Query('search') search: string, @Req() req: Request) {
+    const worker = await this.workersService.findById(
       Number(req.session.workerId),
     );
 
-    return this.workersService.findByFullName(search,worker.dentistry.id);
+    return this.workersService.findByFullName(search, worker.dentistry.id);
+  }
+
+  @Post('create')
+  @ApiOperation({ summary: 'Створити нового працівника' })
+  @ApiBody({ type: CreateWorkerDto })
+  @ApiResponse({
+    status: 201,
+    description: 'Працівника успішно створено',
+    type: WorkerResponseDto,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Некоректні дані для створення',
+    type: ErrorResponseDto,
+  })
+  CreateWorker(@Body() dto: CreateWorkerDto): Promise<IWorker> {
+    return this.workersService.CreateWorker(dto);
+  }
+
+  @Put(':id')
+  @ApiOperation({ summary: 'Оновити дані працівника' })
+  @ApiParam({ name: 'id', description: 'ID працівника', type: Number })
+  @ApiBody({ type: UpdateWorkerDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Працівника успішно оновлено',
+    type: WorkerUpdateResponseDto,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Працівника не знайдено',
+    schema: {
+      example: {
+        statusCode: 404,
+        message: 'Worker not found',
+        error: 'Not Found',
+      },
+    },
+  })
+  UpdateWorker(
+    @Param('id') id: number,
+    @Body() dto: UpdateWorkerDto,
+  ): Promise<IWorker> {
+    return this.workersService.UpdateWorker(id, dto);
+  }
+
+  @Delete(':id')
+  @ApiOperation({ summary: 'Деактивувати працівника (active = false)' })
+  @ApiParam({ name: 'id', description: 'ID працівника', type: Number })
+  @ApiResponse({ status: 200, description: 'Працівника успішно деактивовано' })
+  @ApiResponse({ status: 404, description: 'Працівника не знайдено' })
+  RemoveWorker(@Param('id') id: number): Promise<void> {
+    return this.workersService.RemoveWorker(id);
   }
 
   //   // Check autorization

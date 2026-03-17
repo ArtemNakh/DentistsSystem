@@ -154,7 +154,7 @@ export class AuthService {
       );
     }
     console.log('2' + dto);
-    const newWorker = await this.workerService.createWorker(dto);
+    const newWorker = await this.workerService.createWorkerTemporary(dto);
     return { message: 'Worker successfully registered.' };
   }
 }
