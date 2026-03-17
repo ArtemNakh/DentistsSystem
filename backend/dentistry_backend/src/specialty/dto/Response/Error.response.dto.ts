@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class ErrorResponseDto {
+export class ErrorSpecialtyResponseDto {
   @ApiProperty({
     example: ["type must be one of the following values: doctor, admin, reception"],
     description: 'Список повідомлень про помилки валідації'

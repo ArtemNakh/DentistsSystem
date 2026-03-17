@@ -19,7 +19,7 @@ import { CreateSpecialtyDto } from './dto/CreateSpecialty.dto';
 import { SpecialtyResponseDto } from './dto/Response/CreateSpecialty.response.dto';
 import { Specialty } from './entities/specialty.entity';
 import { UpdateSpecialtyDto } from './dto/UpdateSpecialty.dto';
-import { ErrorResponseDto } from './dto/Response/Error.response.dto';
+import { ErrorSpecialtyResponseDto } from './dto/Response/Error.response.dto';
 
 @ApiTags('Specialties')
 @Controller('specialties')
@@ -55,7 +55,7 @@ export class SpecialtyController {
   @ApiResponse({
     status: 400,
     description: 'Некоректні дані для оновлення',
-    type: ErrorResponseDto,
+    type: ErrorSpecialtyResponseDto,
   })
   UpdateSpecialty(
     @Param('id') id: number,
