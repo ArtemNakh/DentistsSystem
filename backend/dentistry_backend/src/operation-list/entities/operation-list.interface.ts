@@ -9,6 +9,7 @@ export interface IOperationList {
   description: string;
   price: number;
   dental_clinic: IDentistry;
+  active: boolean;
   //foreign connection
   appointment_action?: IAppointmentActions[];
 }

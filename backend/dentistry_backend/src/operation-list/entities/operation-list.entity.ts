@@ -26,6 +26,9 @@ export class OperationList implements IOperationList {
   @Column({ type: 'double', nullable: false })
   price: number;
 
+  @Column({ type: 'boolean', default: true })
+  active: boolean;
+
   @CreateDateColumn({ name: 'created_at' })
   created_at: Date;
 
