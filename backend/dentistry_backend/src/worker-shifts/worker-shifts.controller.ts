@@ -1,8 +1,11 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Query } from '@nestjs/common';
 import { WorkerShiftsService } from './worker-shifts.service';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { IWorkerShifts } from './entities/worker-shifts.interface';
 import { IWorker } from 'src/workers/entities/workers.interface';
+import { CreateWorkerShiftDto } from './dto/CreateWorker-shift.dto';
+import { WorkerShiftResponseDto } from './dto/response/Worker-shifts.response.dto';
+import { WorkerShifts } from './entities/worker-shifts.entity';
 
 @ApiTags('Workers shifts')
 @Controller('worker-shifts')
@@ -54,5 +57,24 @@ export class WorkerShiftsController {
     const startDate = new Date(start);
     const endDate = new Date(end);
     return this.workerShiftsService.getWeekendByWorker(workerId, startDate, endDate);
+  }
+
+
+  @Post('create')
+  @ApiOperation({ summary: 'Додати зміну працівнику' })
+  @ApiBody({ type: CreateWorkerShiftDto })
+  @ApiResponse({ status: 201, description: 'Зміну успішно створено', type: WorkerShiftResponseDto })
+  @ApiResponse({ status: 404, description: 'Працівника не знайдено' })
+  createShift(@Body() dto: CreateWorkerShiftDto): Promise<IWorkerShifts> {
+    return this.workerShiftsService.createShift(dto);
+  }
+
+  @Delete(':id')
+  @ApiOperation({ summary: 'Видалити зміну працівника' })
+  @ApiParam({ name: 'id', description: 'ID зміни', type: Number })
+  @ApiResponse({ status: 200, description: 'Зміну успішно видалено' })
+  @ApiResponse({ status: 404, description: 'Зміну не знайдено' })
+  removeShift(@Param('id') id: number): Promise<{ success: boolean; message: string }> {
+    return this.workerShiftsService.removeShift(id);
   }
 }

@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { WorkerShifts } from './entities/worker-shifts.entity';
 import { Between, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Worker } from 'src/workers/entities/workers.entity';
 import { IWorker } from 'src/workers/entities/workers.interface';
+import { CreateWorkerShiftDto } from './dto/CreateWorker-shift.dto';
 @Injectable()
 export class WorkerShiftsService {
   constructor(
@@ -124,4 +125,24 @@ export class WorkerShiftsService {
 
     return { worker, weekendDays };
   }
+
+
+
+  async createShift(dto: CreateWorkerShiftDto): Promise<WorkerShifts> {
+    const worker = await this.workerRepo.findOne({ where: { id: dto.workerId } });
+    if (!worker) throw new NotFoundException('Worker not found');
+
+    const shift = this.workerShiftsRepo.create({ ...dto, worker });
+    return this.workerShiftsRepo.save(shift);
+  }
+
+  async removeShift(id: number): Promise<{ success: boolean; message: string }> {
+    const shift = await this.workerShiftsRepo.findOne({ where: { id } });
+    if (!shift) throw new NotFoundException('Shift not found');
+
+    await this.workerShiftsRepo.remove(shift);
+    return { success: true, message: `Shift with id ${id} has been deleted successfully` };
+  }
+
+  
 }
