@@ -7,6 +7,7 @@ export enum ActionReducer {
   Get = "GET",
   Post = "POST",
   Update = "UPDATE",
+  Delete = "DELETE",
 }
 
 export const startReducer = (state: any, action: any) => {
@@ -89,8 +90,7 @@ export const BaseReducer = (entityName: string) => {
             ...rawData!,
           };
         }
-        
-        
+
         //Прибрати(переробити щоб автоматичесаки було)
         if (entityName === "auth" && action.payload.result) {
           const currentId = action.payload.result;
@@ -101,6 +101,19 @@ export const BaseReducer = (entityName: string) => {
         return updatedState;
       }
 
+      case ActionReducer.Delete: {
+        const idsToDelete = action.payload?.ids;
+        if (!idsToDelete) {
+          return state;
+        }
+
+        const updatedState = { ...state };
+        idsToDelete.forEach((id: string | number) => {
+          delete updatedState[id];
+        });
+
+        return updatedState;
+      }
       default:
         return state;
     }

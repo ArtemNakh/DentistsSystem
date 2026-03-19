@@ -128,7 +128,12 @@ export default class BaseEntity extends ClientContextDI {
         }),
     });
 
-    const result = await res.json();
+    let result = null;
+    try {
+      result = await res.json();
+    } catch {
+      result = null; // якщо тіло пусте
+    }
 
     console.log(
       "request api:",
@@ -270,4 +275,15 @@ export default class BaseEntity extends ClientContextDI {
   ) {
     yield this.actionRequest(endpoint, typeAction, data, method);
   }
+
+  // public *xDelete(endpoint: string, typeAction?: string, data?: any) {
+  //   yield this.actionRequest(endpoint, typeAction, data, HTTPMethod.DELETE);
+  // }
+  public *xDelete(endpoint: string, id: number, typeAction?: string) {
+  yield this.xFetch(endpoint, HTTPMethod.DELETE);
+  if (typeAction) {
+    yield put({ type: typeAction, payload: { ids: [id] } });
+  }
+}
+
 }

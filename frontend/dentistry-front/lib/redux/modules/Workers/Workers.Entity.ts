@@ -6,11 +6,15 @@ import { schema } from "normalizr";
 import { WorkersDentistryAction } from "./actions/GetWorkersDentistry/GetWorkersDentistry";
 import { SaveWorkersToReduxAction } from "./actions/SaveWorkersRedux/SaveWorkersToRedux";
 import { CreateWorkerAction } from "./actions/CreateWorker/CreateWorker";
+import { DeActiveWorkerAction } from "./actions/DeActiveWorker/DeActiveWorker";
 
 export enum WorkerActionSaga {
   GetWorkersDentistry = "Worker/getByDentistry",
   SaveWorkers = "Worker/saveWorkers",
   CreateWorker = "Worker/create",
+  UpdateWorker = "Worker/update",
+
+  DeActive = "Worker/deActive",
 }
 
 @EntityReducer(EntitiesRedux.Workers)
@@ -44,6 +48,26 @@ export class WorkerEntity extends BaseEntity {
       ActionReducer.Post,
     );
   }
+  // *UpdateWorkerSaga(action: ) {
+  //   yield call(
+  //     this.xSave.bind(this),
+  //     `/workers/create`,
+  //     action.payload,
+  //     ActionReducer.Post,
+  //   );
+  // }
+
+ *DeActiveWorkerSaga(action: DeActiveWorkerAction) {
+  const { idWorker } = action.payload;
+  yield call(
+    this.xDelete.bind(this),
+    `/workers/${idWorker}`,
+    idWorker,
+    ActionReducer.Delete
+  );
+}
+
+
   *watch() {
     yield takeLatest(
       WorkerActionSaga.GetWorkersDentistry,
@@ -56,6 +80,10 @@ export class WorkerEntity extends BaseEntity {
     yield takeLatest(
       WorkerActionSaga.CreateWorker,
       this.CreateWorkerSaga.bind(this),
+    );
+     yield takeLatest(
+      WorkerActionSaga.DeActive,
+      this.DeActiveWorkerSaga.bind(this),
     );
   }
 }

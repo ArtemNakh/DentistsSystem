@@ -1,3 +1,5 @@
+import { useAppDispatch } from "@/lib/redux/hooks";
+import { deActiveWorker } from "@/lib/redux/modules/Workers/actions/DeActiveWorker/DeActiveWorker";
 import { IWorker } from "@/lib/redux/modules/Workers/Workers.interface";
 import { format } from "date-fns";
 
@@ -6,6 +8,7 @@ interface TableBodyWorkerProps {
 }
 
 export default function TableBodyWorker({ workers }: TableBodyWorkerProps) {
+  const dispatch = useAppDispatch();
   return (
     <>
       <tbody>
@@ -63,7 +66,16 @@ export default function TableBodyWorker({ workers }: TableBodyWorkerProps) {
                       />
                     </svg>
                   </button>
-                  
+                  {/* Нова кнопка dispatch */}
+                  <button
+                    onClick={() => {
+                      console.log("deletedWorker", worker.id);
+                      dispatch(deActiveWorker({ idWorker: worker.id }));
+                    }}
+                    className="text-gray-700 border  px-3 py-2 rounded hover:bg-[#795FAE] transition"
+                  >
+                    Видалити
+                  </button>
                 </td>
               </tr>
             ))}
