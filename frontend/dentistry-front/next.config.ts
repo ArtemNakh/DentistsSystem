@@ -19,6 +19,7 @@ console.log(
     `\nAuth login client   http://localhost:${process.env.APPLICATION_PORT}/c-auth/login  `,
   `\nAuth Registration client   http://localhost:${process.env.APPLICATION_PORT}/c-auth/registration  `,
   `\n Reception main   http://localhost:${process.env.APPLICATION_PORT}/reception/main  `,
+    `\n Admin main   http://localhost:${process.env.APPLICATION_PORT}/admins/main  `,
 );
 
 export default nextConfig;

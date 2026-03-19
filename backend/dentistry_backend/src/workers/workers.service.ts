@@ -9,7 +9,7 @@ import { Worker } from './entities/workers.entity';
 import { IWorker } from './entities/workers.interface';
 import { SpecialtyType } from 'src/specialty/entities/specialty.interface';
 import * as argon2 from 'argon2';
-import { RegisterWorkerDto } from './registerWorker.dto';
+import { RegisterWorkerDto } from './dto/registerWorker.dto';
 import { CreateWorkerDto } from './dto/CreateWorker.dto';
 import { Specialty } from 'src/specialty/entities/specialty.entity';
 import { Dentistry } from 'src/dentistry/entities/dentistry.entity';
@@ -141,7 +141,7 @@ export class WorkersService {
       name: dto.name,
       surname: dto.surname,
       middle_name: dto.middle_name,
-      birthday: dto.birthday,
+      birthday: dto.birthday.toISOString(),
       phone: dto.phone,
       login: dto.login,
       password: hashedPassword,

@@ -30,7 +30,7 @@ export class Worker implements IWorker {
   middle_name: string;
 
   @Column({ type: 'date', nullable: false })
-  birthday: Date;
+  birthday: string;
 
   @Column({ type: 'varchar', length: 30, nullable: false })
   phone: string;

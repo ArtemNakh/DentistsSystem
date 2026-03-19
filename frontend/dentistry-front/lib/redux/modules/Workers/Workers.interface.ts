@@ -1,5 +1,5 @@
 import { IDentistry } from "../Dentistries/Dentistry.interface";
-import { ISpecialty } from "../Specialties/Specialties.interface";
+import { ISpecialty } from "../Specialties/Entities/Specialties/Specialties.interface";
 
 export interface IWorker {
   id: number;

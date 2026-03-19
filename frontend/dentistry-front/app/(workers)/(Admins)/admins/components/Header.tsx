@@ -29,20 +29,20 @@ export default function HeaderAdmin() {
   // список кнопок для сайдбару
   const sidebarItems = [
     {
-      label: t("reception.header_side.pages.calendar"),
-      path: "/reception/calendar",
+      label: t("admins.header_side.pages.calendar"),
+      path: "/admins/calendar",
     },
     {
-      label: t("reception.header_side.pages.payment"),
-      path: "/reception/payments",
+      label: t("admins.header_side.pages.payment"),
+      path: "/admins/payments",
     },
     {
-      label: t("reception.header_side.pages.workers"),
-      path: "/reception/workers",
+      label: t("admins.header_side.pages.workers"),
+      path: "/admins/workers",
     },
     {
-      label: t("reception.header_side.pages.history_operation"),
-      path: "/reception/historyOperations",
+      label: t("admins.header_side.pages.history_operation"),
+      path: "/admins/historyOperations",
     },
   ];
   return (

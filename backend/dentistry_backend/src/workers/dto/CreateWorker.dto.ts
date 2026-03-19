@@ -1,5 +1,5 @@
-import { IsDateString, IsNumber, IsString } from "class-validator";
-import { ApiProperty } from "@nestjs/swagger";
+import { IsDateString, IsNumber, IsString } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateWorkerDto {
   @ApiProperty({ example: 'Іван', description: 'Імʼя працівника' })
@@ -14,9 +14,12 @@ export class CreateWorkerDto {
   @IsString()
   middle_name: string;
 
-  @ApiProperty({ example: '1990-05-20', description: 'Дата народження у форматі YYYY-MM-DD' })
+  @ApiProperty({
+    example: '1990-05-20',
+    description: 'Дата народження у форматі YYYY-MM-DD',
+  })
   @IsDateString()
-  birthday: Date;
+  birthday: string;
 
   @ApiProperty({ example: '+380501234567', description: 'Телефон працівника' })
   @IsString()
@@ -34,7 +37,10 @@ export class CreateWorkerDto {
   @IsString()
   login: string;
 
-  @ApiProperty({ example: 'securePassword123', description: 'Пароль для входу' })
+  @ApiProperty({
+    example: 'securePassword123',
+    description: 'Пароль для входу',
+  })
   @IsString()
   password: string;
 }

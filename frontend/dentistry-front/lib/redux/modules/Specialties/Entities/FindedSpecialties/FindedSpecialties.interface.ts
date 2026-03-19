@@ -1,4 +1,4 @@
-import { IWorker } from "../Workers/Workers.interface";
+import { IWorker } from "../../../Workers/Workers.interface";
 
 export enum SpecialtyType {
   DOCTOR = "doctor",
@@ -6,7 +6,7 @@ export enum SpecialtyType {
   ADMIN = "admin",
 }
 
-export interface ISpecialty {
+export interface IFindedSpecialty {
   id: number;
   name: string;
   description?: string;

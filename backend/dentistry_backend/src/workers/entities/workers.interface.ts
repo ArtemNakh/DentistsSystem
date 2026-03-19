@@ -9,7 +9,7 @@ export interface IWorker {
   name: string;
   surname: string;
   middle_name: string;
-  birthday: Date;
+  birthday: string ;
   phone: string;
   specialty: ISpecialty;
   dentistry: IDentistry;

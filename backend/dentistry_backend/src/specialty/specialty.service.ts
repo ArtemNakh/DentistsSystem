@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Specialty } from './entities/specialty.entity';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { ISpecialty } from './entities/specialty.interface';
 import { CreateSpecialtyDto } from './dto/CreateSpecialty.dto';
 import { UpdateSpecialtyDto } from './dto/UpdateSpecialty.dto';
@@ -58,4 +58,25 @@ export class SpecialtyService {
       message: `Specialty with id ${id} has been deleted successfully`,
     };
   }
+
+  async findByFullName(
+  search: string,
+  idDentistry: number,
+): Promise<ISpecialty[]> {
+  if (!search) {
+    return this.specialtyRepository.find({
+      where: { workers: { dentistry: { id: idDentistry } } },
+      relations: ['workers', 'workers.dentistry'],
+    });
+  }
+
+  return this.specialtyRepository.find({
+    where: {
+      workers: { dentistry: { id: idDentistry } },
+      name: Like(`%${search.trim()}%`),
+    },
+   
+  });
+}
+
 }

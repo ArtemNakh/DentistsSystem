@@ -22,7 +22,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { LoginWorkerDto } from './dto/loginWorker.dto';
-import { RegisterWorkerDto } from 'src/workers/registerWorker.dto';
+import { RegisterWorkerDto } from 'src/workers/dto/registerWorker.dto';
 
 @ApiTags('Authentication')
 @Controller('auth')

@@ -8,7 +8,7 @@ import SubmitButton from "./components/SubmitButton";
 import { loginWorker } from "./services/loginService";
 import { useTranslation } from "react-i18next";
 import LanguageSwitch from "@/app/components/LanguageSwitch";
-import { SpecialtyType } from "@/lib/redux/modules/Specialties/Specialties.interface";
+import { SpecialtyType } from "@/lib/redux/modules/Specialties/Entities/Specialties/Specialties.interface";
 import { useRouter } from "next/navigation";
 
 export default function WorkerLogin() {

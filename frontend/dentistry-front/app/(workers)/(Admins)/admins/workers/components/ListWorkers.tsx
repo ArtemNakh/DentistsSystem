@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { IDentistry } from "@/lib/redux/modules/Dentistries/Dentistry.interface";
-import { ISpecialty } from "@/lib/redux/modules/Specialties/Specialties.interface";
+import { ISpecialty } from "@/lib/redux/modules/Specialties/Entities/Specialties/Specialties.interface";
 import { IWorker } from "@/lib/redux/modules/Workers/Workers.interface";
 import { RootState } from "@/lib/redux/store";
 import { createSelector } from "@reduxjs/toolkit";

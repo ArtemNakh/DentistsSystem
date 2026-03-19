@@ -63,8 +63,7 @@ export default function TableBodyWorker({ workers }: TableBodyWorkerProps) {
                       />
                     </svg>
                   </button>
-                  <button>Licenses NEed Add</button>
-                  {/* Додати кнопку яка посилається на ліцензії працівника */}
+                  
                 </td>
               </tr>
             ))}

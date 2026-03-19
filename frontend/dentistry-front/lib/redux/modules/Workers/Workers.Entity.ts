@@ -5,10 +5,12 @@ import { ActionReducer } from "../../rootReducer";
 import { schema } from "normalizr";
 import { WorkersDentistryAction } from "./actions/GetWorkersDentistry/GetWorkersDentistry";
 import { SaveWorkersToReduxAction } from "./actions/SaveWorkersRedux/SaveWorkersToRedux";
+import { CreateWorkerAction } from "./actions/CreateWorker/CreateWorker";
 
 export enum WorkerActionSaga {
   GetWorkersDentistry = "Worker/getByDentistry",
   SaveWorkers = "Worker/saveWorkers",
+  CreateWorker = "Worker/create",
 }
 
 @EntityReducer(EntitiesRedux.Workers)
@@ -34,6 +36,14 @@ export class WorkerEntity extends BaseEntity {
     yield call(this.ActionRedux.bind(this), payload, ActionReducer.Get);
   }
 
+  *CreateWorkerSaga(action: CreateWorkerAction) {
+    yield call(
+      this.xSave.bind(this),
+      `/workers/create`,
+      action.payload,
+      ActionReducer.Post,
+    );
+  }
   *watch() {
     yield takeLatest(
       WorkerActionSaga.GetWorkersDentistry,
@@ -42,6 +52,10 @@ export class WorkerEntity extends BaseEntity {
     yield takeLatest(
       WorkerActionSaga.SaveWorkers,
       this.saveWorkersSaga.bind(this),
+    );
+    yield takeLatest(
+      WorkerActionSaga.CreateWorker,
+      this.CreateWorkerSaga.bind(this),
     );
   }
 }

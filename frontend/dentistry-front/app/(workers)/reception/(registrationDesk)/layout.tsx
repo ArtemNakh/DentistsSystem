@@ -1,4 +1,4 @@
-import { SpecialtyType } from "@/lib/redux/modules/Specialties/Specialties.interface";
+import { SpecialtyType } from "@/lib/redux/modules/Specialties/Entities/Specialties/Specialties.interface";
 import HeaderAdmin from "./components/Header";
 import ProtectedRoute from "./ProtectedRoute";
 

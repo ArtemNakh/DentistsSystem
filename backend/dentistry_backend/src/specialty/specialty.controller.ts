@@ -6,8 +6,10 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { SpecialtyService } from './specialty.service';
+import { Request } from 'express';
 import {
   ApiBody,
   ApiOperation,
@@ -79,5 +81,13 @@ export class SpecialtyController {
     @Param('id') id: number,
   ): Promise<{ success: boolean; message: string }> {
     return this.specialtyService.RemoveSpecialty(id);
+  }
+
+  @Get('search')
+  async searchWorkers(
+    @Query('search') search: string,
+    @Query('dentistry') dentistry: number,
+  ) {
+    return this.specialtyService.findByFullName(search, dentistry);
   }
 }

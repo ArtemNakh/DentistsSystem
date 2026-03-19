@@ -14,7 +14,7 @@ import { normalize, schema } from "normalizr";
 import { ClientEntity } from "./Clients/ClientEntity";
 import { AppointmentEntity } from "./Appointments/Appointment.Entity";
 import { PaymentEntity } from "./Payments/Payments.Entity";
-import { SpecialtyEntity } from "./Specialties/Specialties.Entity";
+import { SpecialtyEntity } from "./Specialties/Entities/Specialties/Specialties.Entity";
 import { DentistryEntity } from "./Dentistries/Dentistry.Entity";
 import { WorkerEntity } from "./Workers/Workers.Entity";
 import { AuthEntity } from "./AuthUser/AuthUser.Entity";
@@ -25,6 +25,7 @@ import { ShiftsWorkerAction } from "./WorkerShifts/actions/GetShiftsToWorker/Get
 import { WorkerShiftsEntity } from "./WorkerShifts/WorkerShifts.Entity";
 import { WorkerStatsEntity } from "./ADMINS/Stats/WorkerStats/WorkerStats.entity";
 import { WorkerWeekendEntity } from "./ADMINS/Stats/WeekendStats/actions/WeekendStats.entity";
+import { FindingSpecialtyEntity } from "./Specialties/Entities/FindedSpecialties/FindedSpecialties.Entity";
 
 // Це буде базовий endpoint для всіх запитів.
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -42,7 +43,10 @@ export const enum EntitiesRedux {
   AppointmentActions = "appointmentActions",
   OperationList = "operationList",
   FindingWorkers = "findingWorkers",
-  WorkerShifts = "workerShifts",  WorkerStats = "workerStats", WorkersWeekend="workersWeekend"
+  WorkerShifts = "workerShifts",
+  WorkerStats = "workerStats",
+  WorkersWeekend = "workersWeekend",
+  FindingSpecialties = "findingSpecialties",
 }
 
 // Entities — тип для сутностей
@@ -57,7 +61,10 @@ export type Entities =
   | OperationListEntity
   | AuthEntity
   | FindingWorkerEntity
-  | WorkerShiftsEntity|WorkerStatsEntity|WorkerWeekendEntity;
+  | WorkerShiftsEntity
+  | WorkerStatsEntity
+  | WorkerWeekendEntity
+  | FindingSpecialtyEntity;
 
 // IQueryResult<T> — тип відповіді від API: масив даних + повідомлення.
 interface IQueryResult<T> {

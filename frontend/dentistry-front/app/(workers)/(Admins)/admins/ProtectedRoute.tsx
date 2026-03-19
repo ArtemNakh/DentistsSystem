@@ -3,7 +3,7 @@
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { getAuthWorker } from "@/lib/redux/modules/AuthUser/actions/GetAuthWorker/GetAuthWorker";
 import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
-import { SpecialtyType } from "@/lib/redux/modules/Specialties/Specialties.interface";
+import { SpecialtyType } from "@/lib/redux/modules/Specialties/Entities/Specialties/Specialties.interface";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -36,6 +36,8 @@ export default function ProtectedRoute({
       // router.push("/w-auth/login");
     }
     else if (!allowedRoles.includes(authUser.user.specialty.type)) {
+      console.log("allowedRoles",allowedRoles.toString())
+      console.log("type",authUser.user.specialty.type)
       router.push("/403");
     }
   }, [authUser, router, allowedRoles, loading]);

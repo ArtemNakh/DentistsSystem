@@ -2,7 +2,7 @@ import { ClientEntity } from "../redux/modules/Clients/ClientEntity";
 
 import { asClass, createContainer } from "awilix";
 import { WorkerEntity } from "../redux/modules/Workers/Workers.Entity";
-import { SpecialtyEntity } from "../redux/modules/Specialties/Specialties.Entity";
+import { SpecialtyEntity } from "../redux/modules/Specialties/Entities/Specialties/Specialties.Entity";
 import { DentistryEntity } from "../redux/modules/Dentistries/Dentistry.Entity";
 import { AppointmentEntity } from "../redux/modules/Appointments/Appointment.Entity";
 import { PaymentEntity } from "../redux/modules/Payments/Payments.Entity";
@@ -12,7 +12,11 @@ import { OperationListEntity } from "../redux/modules/OperationList/OperationLis
 import { FindingWorkerEntity } from "../redux/modules/FindingWorkers/FindingWorkerEntity";
 import { WorkerShiftsEntity } from "../redux/modules/WorkerShifts/WorkerShifts.Entity";
 import { WorkerStatsEntity } from "../redux/modules/ADMINS/Stats/WorkerStats/WorkerStats.entity";
-import { WorkerWeekendActionSaga, WorkerWeekendEntity } from "../redux/modules/ADMINS/Stats/WeekendStats/actions/WeekendStats.entity";
+import {
+  WorkerWeekendActionSaga,
+  WorkerWeekendEntity,
+} from "../redux/modules/ADMINS/Stats/WeekendStats/actions/WeekendStats.entity";
+import { FindingSpecialtyEntity } from "../redux/modules/Specialties/Entities/FindedSpecialties/FindedSpecialties.Entity";
 
 const clientContainer = createContainer({
   injectionMode: "PROXY",
@@ -30,7 +34,8 @@ const expansion = {
   FindingWorkersEntity: asClass(FindingWorkerEntity).singleton(),
   WorkerShiftsEntity: asClass(WorkerShiftsEntity).singleton(),
   WorkersStatsEntity: asClass(WorkerStatsEntity).singleton(),
-WorkerWeekendEntity: asClass(WorkerWeekendEntity).singleton(),
+  WorkerWeekendEntity: asClass(WorkerWeekendEntity).singleton(),
+  FindingSpecialtyEntity: asClass(FindingSpecialtyEntity).singleton(),
 };
 
 clientContainer.register({ ...expansion });

@@ -4,7 +4,7 @@ import { GetClientsByFullName } from "@/lib/redux/modules/Clients/actions/GetCli
 import { IClient } from "@/lib/redux/modules/Clients/clients.interface";
 import { IDentistry } from "@/lib/redux/modules/Dentistries/Dentistry.interface";
 import { GetWorkersByFullName } from "@/lib/redux/modules/FindingWorkers/actions/GetWorkersByFIO/GetWorkersByFIO";
-import { ISpecialty } from "@/lib/redux/modules/Specialties/Specialties.interface";
+import { ISpecialty } from "@/lib/redux/modules/Specialties/Entities/Specialties/Specialties.interface";
 import { IWorker } from "@/lib/redux/modules/Workers/Workers.interface";
 import { getShiftsWorker } from "@/lib/redux/modules/WorkerShifts/actions/GetShiftsToWorker/GetShiftsToWorker";
 import { RootState } from "@/lib/redux/store";
@@ -13,7 +13,7 @@ import { ErrorMessage, Field, useFormikContext } from "formik";
 import { denormalize, schema } from "normalizr";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 export const DenormalizeWorkers = createSelector(
   [

@@ -16,7 +16,7 @@ import { ConfigService } from '@nestjs/config';
 import { WorkersService } from 'src/workers/workers.service';
 import { Worker } from '../workers/entities/workers.entity';
 import { LoginWorkerDto } from './dto/loginWorker.dto';
-import { RegisterWorkerDto } from 'src/workers/registerWorker.dto';
+import { RegisterWorkerDto } from 'src/workers/dto/registerWorker.dto';
 
 @Injectable()
 export class AuthService {

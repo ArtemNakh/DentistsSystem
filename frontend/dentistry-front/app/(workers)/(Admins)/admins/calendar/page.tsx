@@ -9,7 +9,7 @@ import { IWorker } from "@/lib/redux/modules/Workers/Workers.interface";
 import { IAppointment } from "@/lib/redux/modules/Appointments/Appointment.interface";
 import { IClient } from "@/lib/redux/modules/Clients/clients.interface";
 import { IDentistry } from "@/lib/redux/modules/Dentistries/Dentistry.interface";
-import { ISpecialty } from "@/lib/redux/modules/Specialties/Specialties.interface";
+import { ISpecialty } from "@/lib/redux/modules/Specialties/Entities/Specialties/Specialties.interface";
 import RenderCalendarTile from "./components/renderCalendarTile";
 import AllDayRecords from "./components/AllDayRecords";
 import { getAppointmentDentistry } from "@/lib/redux/modules/Appointments/actions/GetAppointmentsDentistry/GetAppointmentsDentistry";

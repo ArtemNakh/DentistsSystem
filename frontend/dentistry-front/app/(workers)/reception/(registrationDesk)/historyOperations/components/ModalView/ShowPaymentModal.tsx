@@ -21,20 +21,20 @@ export default function ShowPaymentModal({
                     bg-white shadow-lg rounded-md p-4 border w-64"
         >
           <p>
-            {t("reception.history_operation.table.body.payment_modal.amount")}:{" "}
+            {t("reception.history_operation.table.body.payment_modal.amount")}{" "}
             {payment?.amount}
           </p>
           <p>
             {t(
               "reception.history_operation.table.body.payment_modal.method_pay",
             )}
-            : {payment?.method_pay}
+            {payment?.method_pay}
           </p>
           <p>
             {t(
               "reception.history_operation.table.body.payment_modal.payment_day",
             )}
-            :
+
             {payment?.payment_date
               ? format(new Date(payment.payment_date), "dd.MM.yyyy HH:mm")
               : "—"}
@@ -43,7 +43,7 @@ export default function ShowPaymentModal({
             {t(
               "reception.history_operation.table.body.payment_modal.status_pay",
             )}
-            : {payment?.status_paid}
+            {payment?.status_paid}
           </p>
         </div>
       )}
