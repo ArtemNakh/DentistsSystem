@@ -7,6 +7,7 @@ import { WorkersDentistryAction } from "./actions/GetWorkersDentistry/GetWorkers
 import { SaveWorkersToReduxAction } from "./actions/SaveWorkersRedux/SaveWorkersToRedux";
 import { CreateWorkerAction } from "./actions/CreateWorker/CreateWorker";
 import { DeActiveWorkerAction } from "./actions/DeActiveWorker/DeActiveWorker";
+import { UpdateWorkerAction } from "./actions/UpdateWorker/UpdateWorker";
 
 export enum WorkerActionSaga {
   GetWorkersDentistry = "Worker/getByDentistry",
@@ -48,25 +49,26 @@ export class WorkerEntity extends BaseEntity {
       ActionReducer.Post,
     );
   }
-  // *UpdateWorkerSaga(action: ) {
-  //   yield call(
-  //     this.xSave.bind(this),
-  //     `/workers/create`,
-  //     action.payload,
-  //     ActionReducer.Post,
-  //   );
-  // }
 
- *DeActiveWorkerSaga(action: DeActiveWorkerAction) {
-  const { idWorker } = action.payload;
-  yield call(
-    this.xDelete.bind(this),
-    `/workers/${idWorker}`,
-    idWorker,
-    ActionReducer.Delete
-  );
-}
+  *UpdateWorkerSaga(action: UpdateWorkerAction) {
+     const { id } = action.payload;
+    yield call(
+      this.xUpdate.bind(this),
+      `/workers/${id}`,
+      action.payload,
+      ActionReducer.Update,
+    );
+  }
 
+  *DeActiveWorkerSaga(action: DeActiveWorkerAction) {
+    const { idWorker } = action.payload;
+    yield call(
+      this.xDelete.bind(this),
+      `/workers/${idWorker}`,
+      idWorker,
+      ActionReducer.Delete,
+    );
+  }
 
   *watch() {
     yield takeLatest(
@@ -81,9 +83,13 @@ export class WorkerEntity extends BaseEntity {
       WorkerActionSaga.CreateWorker,
       this.CreateWorkerSaga.bind(this),
     );
-     yield takeLatest(
+    yield takeLatest(
       WorkerActionSaga.DeActive,
       this.DeActiveWorkerSaga.bind(this),
+    );
+    yield takeLatest(
+      WorkerActionSaga.UpdateWorker,
+      this.UpdateWorkerSaga.bind(this),
     );
   }
 }

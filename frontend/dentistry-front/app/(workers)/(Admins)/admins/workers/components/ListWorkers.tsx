@@ -7,10 +7,11 @@ import { createSelector } from "@reduxjs/toolkit";
 import TableWorkers from "./TableWorkers/TableWorkers";
 import { format } from "date-fns";
 import { WorkerFilters } from "./FilterPanel";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getWorkersDentistry } from "@/lib/redux/modules/Workers/actions/GetWorkersDentistry/GetWorkersDentistry";
 import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
 import { getAuthWorker } from "@/lib/redux/modules/AuthUser/actions/GetAuthWorker/GetAuthWorker";
+import UpdateWorkerModal from "../ModalView/UpdateWorkerView/UpdateWorkerModal";
 
 export const DenormalizeWorkers = createSelector(
   [
@@ -42,6 +43,7 @@ export default function ListWorkersWorker({ filters }: ListWorkersWorkerProps) {
 
   const dispatch = useAppDispatch();
 
+  const [selectedWorker, setSelectedWorker] = useState<IWorker | null>(null);
   useEffect(() => {
     if (authUser.user) {
       console.log("work");
@@ -75,7 +77,18 @@ export default function ListWorkersWorker({ filters }: ListWorkersWorkerProps) {
     <>
       <div className="w-full  ">
         <div className="mx-4">
-          <TableWorkers workers={filteredWorkers} />
+         <TableWorkers
+  workers={filteredWorkers}
+  selectedWorker={selectedWorker}
+  onSelectWorker={setSelectedWorker}
+/>
+
+          {selectedWorker && (
+            <UpdateWorkerModal
+              worker={selectedWorker}
+              onClose={() => setSelectedWorker(null)}
+            />
+          )}
         </div>
       </div>
     </>

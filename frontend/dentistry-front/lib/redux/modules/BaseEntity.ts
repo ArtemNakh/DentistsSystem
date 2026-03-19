@@ -280,10 +280,22 @@ export default class BaseEntity extends ClientContextDI {
   //   yield this.actionRequest(endpoint, typeAction, data, HTTPMethod.DELETE);
   // }
   public *xDelete(endpoint: string, id: number, typeAction?: string) {
-  yield this.xFetch(endpoint, HTTPMethod.DELETE);
-  if (typeAction) {
-    yield put({ type: typeAction, payload: { ids: [id] } });
+    yield this.xFetch(endpoint, HTTPMethod.DELETE);
+    if (typeAction) {
+      yield put({ type: typeAction, payload: { ids: [id] } });
+    }
   }
-}
-
+  /**
+   * Виконує PUT‑запит для оновлення даних.
+   * Використовується для редагування існуючих сутностей.
+   *
+   * @param endpoint - шлях до API (наприклад "/api/workers/1")
+   * @param data - обʼєкт із даними для оновлення
+   * @param typeAction - тип Redux‑дії (наприклад "UPDATE"), який редюсер використовує для оновлення стану
+   *
+   * @yields - результат виконання actionRequest(), який обробляє логіку запиту та dispatch'у
+   */
+  public *xUpdate(endpoint: string, data: any, typeAction?: string) {
+    yield this.actionRequest(endpoint, typeAction, data, HTTPMethod.PUT);
+  }
 }

@@ -2,12 +2,16 @@ import { useAppDispatch } from "@/lib/redux/hooks";
 import { deActiveWorker } from "@/lib/redux/modules/Workers/actions/DeActiveWorker/DeActiveWorker";
 import { IWorker } from "@/lib/redux/modules/Workers/Workers.interface";
 import { format } from "date-fns";
+import { useState } from "react";
+import UpdateWorkerModal from "../../ModalView/UpdateWorkerView/UpdateWorkerModal";
+
+
 
 interface TableBodyWorkerProps {
   workers: IWorker[];
+  onSelectWorker: (worker: IWorker) => void;
 }
-
-export default function TableBodyWorker({ workers }: TableBodyWorkerProps) {
+export default function TableBodyWorker({ workers, onSelectWorker }: TableBodyWorkerProps) {
   const dispatch = useAppDispatch();
   return (
     <>
@@ -76,6 +80,12 @@ export default function TableBodyWorker({ workers }: TableBodyWorkerProps) {
                   >
                     Видалити
                   </button>
+                  <button
+                    onClick={() => onSelectWorker(worker)}
+                    className="text-gray-700 border px-3 py-2 rounded hover:bg-green-500 transition"
+                  >
+                    Оновити
+                  </button>
                 </td>
               </tr>
             ))}
@@ -86,6 +96,8 @@ export default function TableBodyWorker({ workers }: TableBodyWorkerProps) {
           </tr>
         )}
       </tbody>
+
+      {/* Модальне вікно рендериться окремо */}
     </>
   );
 }

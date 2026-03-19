@@ -93,6 +93,8 @@ export class WorkersService {
       ...dto,
       specialty,
       dentistry,
+
+      birthday: new Date(dto.birthday),
     } as Partial<IWorker>); // <-- підказуємо TS, що це Partial<Worker>
 
     return this.workerRepo.save(worker);
