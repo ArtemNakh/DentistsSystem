@@ -10,7 +10,7 @@ export class CreateDentalClinics1766160645839 implements MigrationInterface {
         region VARCHAR(100) NOT NULL,
         created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
         updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-      );
+      )ENGINE=InnoDB;
     `);
   }
 
