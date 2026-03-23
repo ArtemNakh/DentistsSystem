@@ -12,6 +12,7 @@ import { WorkerShiftsEntity } from "../redux/modules/WorkerShifts/WorkerShifts.E
 import { WorkerStatsEntity } from "../redux/modules/ADMINS/Stats/WorkerStats/WorkerStats.entity";
 import { WorkerWeekendEntity } from "../redux/modules/ADMINS/Stats/WeekendStats/actions/WeekendStats.entity";
 import { FindingSpecialtyEntity } from "../redux/modules/Specialties/Entities/FindedSpecialties/FindedSpecialties.Entity";
+import { LicensesEntity } from "../redux/modules/Licenses/Licenses.Entity";
 
 export interface IContexContainer {
   ClientEntity: ClientEntity;
@@ -24,8 +25,9 @@ export interface IContexContainer {
   AppointmentActionsEntity: AppointmentActionsEntity;
   OperationListEntity: OperationListEntity;
   FindingWorkersEntity: FindingWorkerEntity;
-  WorkerShiftsEntity:WorkerShiftsEntity;
-  WorkerStatsEntity:WorkerStatsEntity;
-  WorkerWeekendEntity:WorkerWeekendEntity;
-  FindingSpecialtiesEntity:FindingSpecialtyEntity;
+  WorkerShiftsEntity: WorkerShiftsEntity;
+  WorkerStatsEntity: WorkerStatsEntity;
+  WorkerWeekendEntity: WorkerWeekendEntity;
+  FindingSpecialtiesEntity: FindingSpecialtyEntity;
+  LicensesEntity: LicensesEntity;
 }

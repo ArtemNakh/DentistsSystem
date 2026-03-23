@@ -143,7 +143,7 @@ export class WorkersService {
       name: dto.name,
       surname: dto.surname,
       middle_name: dto.middle_name,
-      birthday: dto.birthday.toISOString(),
+     birthday: new Date(dto.birthday).toISOString().split('T')[0],
       phone: dto.phone,
       login: dto.login,
       password: hashedPassword,

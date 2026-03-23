@@ -24,6 +24,7 @@ export function* rootSaga() {
   const workersStats = clientContainer.resolve("WorkersStatsEntity");
   const workerWeekend = clientContainer.resolve("WorkerWeekendEntity");
   const findingSpecialties = clientContainer.resolve("FindingSpecialtyEntity");
+  const licenses = clientContainer.resolve("LicensesEntity");
 
   yield all([
     clientEntitySaga.watch(),
@@ -40,5 +41,6 @@ export function* rootSaga() {
     workersStats.watch(),
     workerWeekend.watch(),
     findingSpecialties.watch(),
+    licenses.watch(),
   ]);
 }

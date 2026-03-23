@@ -44,6 +44,10 @@ export default function HeaderAdmin() {
       label: t("admins.header_side.pages.history_operation"),
       path: "/admins/historyOperations",
     },
+     {
+      label: t("admins.header_side.pages.licenses"),
+      path: "/admins/licenses",
+    },
   ];
   return (
     <>

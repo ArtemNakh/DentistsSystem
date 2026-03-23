@@ -44,4 +44,12 @@ export class LicenseController {
   removeLicense(@Param('id') id: number): Promise<{ success: boolean; message: string }> {
     return this.licenseService.removeLicense(id);
   }
+
+  @Get('dentistry/:dentistryId')
+  @ApiOperation({ summary: 'Отримати всі ліцензії для стоматології' })
+  @ApiParam({ name: 'dentistryId', description: 'ID стоматології', type: Number })
+  @ApiResponse({ status: 200, description: 'Список ліцензій стоматології' })
+  async getLicensesByDentistry(@Param('dentistryId') dentistryId: number) {
+    return this.licenseService.getLicensesByDentistry(dentistryId);
+  }
 }

@@ -49,4 +49,16 @@ export class LicenseService {
       message: `License with id ${id} has been deleted successfully`,
     };
   }
+
+
+  async getLicensesByDentistry(dentistryId: number): Promise<ILicense[]> {
+    return this.licenseRepo.find({
+      relations: ['worker', 'worker.dentistry'],
+      where: {
+        worker: {
+          dentistry: { id: dentistryId },
+        },
+      },
+    });
+  }
 }
