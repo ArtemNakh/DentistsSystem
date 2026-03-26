@@ -53,7 +53,7 @@ export class LicenseService {
 
   async getLicensesByDentistry(dentistryId: number): Promise<ILicense[]> {
     return this.licenseRepo.find({
-      relations: ['worker', 'worker.dentistry'],
+      relations: ['worker', 'worker.dentistry','worker.specialty'],
       where: {
         worker: {
           dentistry: { id: dentistryId },

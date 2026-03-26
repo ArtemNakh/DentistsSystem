@@ -18,17 +18,17 @@ export default function CreateWorkerModal({
   const authUser = useAppSelector((state: { auth: AuthState }) => state.auth);
   const dispatch = useAppDispatch();
 
-  const [form, setForm] = useState<CreateWorkerDto>({
-    name: "",
-    surname: "",
-    middle_name: "",
-    birthday: new Date(),
-    phone: "",
-    specialtyId: 0,
-    dentistryId: 0,
-    login: "",
-    password: "",
-  });
+  // const [form, setForm] = useState<CreateWorkerDto>({
+  //   name: "",
+  //   surname: "",
+  //   middle_name: "",
+  //   birthday: new Date(),
+  //   phone: "",
+  //   specialtyId: 0,
+  //   dentistryId: 0,
+  //   login: "",
+  //   password: "",
+  // });
 
   const onSubmit = useCallback(
     async (values: CreateWorkerPayload, { setSubmitting }: any) => {
