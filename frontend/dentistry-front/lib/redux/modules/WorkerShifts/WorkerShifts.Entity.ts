@@ -4,9 +4,15 @@ import { EntityReducer } from "../EntityReducer";
 import { ActionReducer } from "../../rootReducer";
 import { schema } from "normalizr";
 import { ShiftsWorkerAction } from "./actions/GetShiftsToWorker/GetShiftsToWorker";
+import { CreateWorkerShifts } from "./actions/CreateWorkerShifts/CreateWorkerShifts";
+import { DeleteWorkerShifts } from "./actions/DeleteWorkerShifts/CreateWorkerShifts";
+import { GetAllShiftsWorkersAction } from "./actions/GetShiftsToWorkers/GetShiftsToWorkers";
 
 export enum WorkerShiftsActionSaga {
   GetShiftsToWorker = "workerShifts/GetShiftsToWorker",
+  GetAllShiftsWorkers = "workerShifts/GetAll",
+  CreateShift = "workerShifts/create",
+  RemoveShift = "workerShifts/remove",
 }
 
 @EntityReducer(EntitiesRedux.WorkerShifts)
@@ -26,10 +32,57 @@ export class WorkerShiftsEntity extends BaseEntity {
     );
   }
 
+  *CreateWorkerShiftsSaga(action: CreateWorkerShifts) {
+    const payload = action.payload;
+
+    yield call(
+      this.xSave.bind(this),
+      `/worker-shifts/create`,
+      payload,
+      ActionReducer.Post,
+    );
+  }
+
+  *RemoveWorkerShiftsSaga(action: DeleteWorkerShifts) {
+    const { id } = action.payload;
+    yield call(
+      this.xDelete.bind(this),
+      `/worker-shifts/${id}`,
+      id,
+      ActionReducer.Delete,
+    );
+  }
+
+  // Сага для отримання всіх змін по стоматології
+  *getAllShiftsWorkersSaga(action: GetAllShiftsWorkersAction) {
+    const { idDentisty } = action.payload;
+
+    yield call(
+      this.xRead.bind(this),
+      `/worker-shifts/clinic/${idDentisty}`,
+      ActionReducer.Get,
+    );
+  }
+
   *watch() {
     yield takeLatest(
       WorkerShiftsActionSaga.GetShiftsToWorker,
       this.getShiftsToWorkerSaga.bind(this),
+    );
+
+    yield takeLatest(
+      WorkerShiftsActionSaga.CreateShift,
+      this.CreateWorkerShiftsSaga.bind(this),
+    );
+
+    yield takeLatest(
+      WorkerShiftsActionSaga.RemoveShift,
+      this.RemoveWorkerShiftsSaga.bind(this),
+    );
+
+    yield takeLatest(
+      WorkerShiftsActionSaga.GetAllShiftsWorkers,
+      this.getAllShiftsWorkersSaga.bind(this),
     );
   }
 }

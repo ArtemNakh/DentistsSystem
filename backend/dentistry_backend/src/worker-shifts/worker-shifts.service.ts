@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Worker } from 'src/workers/entities/workers.entity';
 import { IWorker } from 'src/workers/entities/workers.interface';
 import { CreateWorkerShiftDto } from './dto/CreateWorker-shift.dto';
+import { IWorkerShifts } from './entities/worker-shifts.interface';
 @Injectable()
 export class WorkerShiftsService {
   constructor(
@@ -144,5 +145,15 @@ export class WorkerShiftsService {
     return { success: true, message: `Shift with id ${id} has been deleted successfully` };
   }
 
-  
+   async getShiftsByClinicId(clinicId: number): Promise<IWorkerShifts[]> {
+    return this.workerShiftsRepo.find({
+      relations: ['worker', 'worker.dentistry','worker.specialty'],
+      where: {
+        worker: {
+          dentistry: { id: clinicId },
+        },
+      },
+      order: { shift_date: 'ASC', start_time: 'ASC' },
+    });
+  }
 }

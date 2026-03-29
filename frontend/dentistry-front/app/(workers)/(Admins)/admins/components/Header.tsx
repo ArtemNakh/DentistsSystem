@@ -48,6 +48,10 @@ export default function HeaderAdmin() {
       label: t("admins.header_side.pages.licenses"),
       path: "/admins/licenses",
     },
+     {
+      label: t("admins.header_side.pages.worker_shifts"),
+      path: "/admins/workers-shifts",
+    },
   ];
   return (
     <>
