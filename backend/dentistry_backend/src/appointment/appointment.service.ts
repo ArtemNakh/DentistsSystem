@@ -5,6 +5,7 @@ import {
   HttpException,
   Injectable,
   InternalServerErrorException,
+  Logger,
   NotFoundException,
   Param,
   Patch,
@@ -28,6 +29,7 @@ import { SpecialtyType } from 'src/specialty/entities/specialty.interface';
 
 @Injectable()
 export class AppointmentService {
+  private readonly logger = new Logger(AppointmentService.name);
   constructor(
     @InjectRepository(Appointment)
     private appointmentRepo: Repository<Appointment>,
@@ -40,7 +42,14 @@ export class AppointmentService {
   }
 
   findNearest(date: Date, dentistryId: number): Promise<IAppointment[]> {
-    const formatted = date.toISOString().split('T')[0]; // "2026-04-14"
+    const formatted = date.toISOString().split('T')[0];
+
+    this.logger.log(
+      `findNearest called with date=${formatted}, dentistryId=${dentistryId}`,
+    );
+    if (isNaN(dentistryId)) {
+      throw new BadRequestException('Invalid id');
+    }
     return this.appointmentRepo.find({
       relations: ['client', 'dentist'],
       where: {
@@ -259,5 +268,24 @@ export class AppointmentService {
         stats,
       };
     });
+  }
+
+  async getAppointmentById(id: number): Promise<IAppointment> {
+    const appointment = await this.appointmentRepo.findOne({
+      where: { id },
+      relations: [
+        'client',
+        'dentist',
+        'dentist.specialty',
+        'appointment_actions.operation',
+        'payment',
+      ],
+    });
+
+    if (!appointment) {
+      throw new NotFoundException(`Appointment with id ${id} not found`);
+    }
+
+    return appointment;
   }
 }

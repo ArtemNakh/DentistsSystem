@@ -1,4 +1,4 @@
-import { AppointmentActionSaga } from "../../Appointment.Entity";
+import { AppointmentActionSaga } from "../../Appointments.Entity";
 
 export interface AddNewAppointmentPayload {
   clientId: number;

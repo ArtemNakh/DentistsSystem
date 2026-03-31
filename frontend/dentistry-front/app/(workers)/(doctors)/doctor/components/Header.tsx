@@ -27,28 +27,28 @@ export default function HeaderAdmin() {
   // список кнопок для сайдбару
   const sidebarItems = [
     {
-      label: t("admins.header_side.pages.calendar"),
-      path: "/doctors/calendar",
+      label: t("doctor.header_side.pages.calendar"),
+      path: "/doctor/calendar",
     },
     {
-      label: t("admins.header_side.pages.payment"),
-      path: "/doctors/payments",
+      label: t("doctor.header_side.pages.payment"),
+      path: "/doctor/payments",
     },
     {
-      label: t("admins.header_side.pages.workers"),
-      path: "/doctors/workers",
+      label: t("doctor.header_side.pages.workers"),
+      path: "/doctor/workers",
     },
     {
-      label: t("admins.header_side.pages.history_operation"),
-      path: "/doctors/historyOperations",
+      label: t("doctor.header_side.pages.history_operation"),
+      path: "/doctor/historyOperations",
     },
     {
-      label: t("admins.header_side.pages.licenses"),
-      path: "/doctors/licenses",
+      label: t("doctor.header_side.pages.licenses"),
+      path: "/doctor/licenses",
     },
     {
-      label: t("admins.header_side.pages.worker_shifts"),
-      path: "/doctors/workers-shifts",
+      label: t("doctor.header_side.pages.worker_shifts"),
+      path: "/doctor/workers-shifts",
     },
   ];
   return (

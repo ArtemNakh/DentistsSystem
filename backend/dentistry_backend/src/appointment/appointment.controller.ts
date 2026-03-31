@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   ParseEnumPipe,
+  ParseIntPipe,
   Patch,
   Post,
   Query,
@@ -37,33 +38,44 @@ export class AppointmentController {
     return this.appointmentService.findAll();
   }
 
+
   @Get('nearest')
   @ApiOperation({
     summary: 'Отримати найближчі записи',
     description:
-      'Повертає список записів (appointments), починаючи з вказаної дати. ' +
-      'Можна використовувати для пошуку найближчих операцій чи консультацій.',
+      'Повертає список записів (appointments), починаючи з вказаної дати.',
   })
   @ApiQuery({
     name: 'date',
     type: String,
     required: true,
     example: '2026-03-01',
-    description: 'Дата у форматі ISO (YYYY-MM-DD), з якої починається пошук',
+    description: 'Дата у форматі ISO (YYYY-MM-DD)',
+  })
+  @ApiQuery({
+    name: 'dentistryId',
+    type: Number,
+    required: true,
+    example: 1,
+    description: 'ID стоматології',
   })
   @ApiResponse({
     status: 200,
     description: 'Список найближчих записів',
-    type: AppointmentDto, // якщо у тебе є DTO/клас, краще використати його
+    type: AppointmentDto,
     isArray: true,
   })
-  @ApiResponse({ status: 400, description: 'Некоректний формат дати' })
+  @ApiResponse({ status: 400, description: 'Некоректний формат дати або ID' })
   @ApiResponse({ status: 500, description: 'Внутрішня помилка сервера' })
   async getNearest(
     @Query('date') date: string,
-    @Query('dentistryId') dentistryId: number,
+    @Query('dentistryId', ParseIntPipe) dentistryId: number,
   ): Promise<IAppointment[]> {
     const parsedDate = new Date(date);
+    if (isNaN(parsedDate.getTime())) {
+      throw new BadRequestException('Некоректний формат дати');
+    }
+
     return this.appointmentService.findNearest(parsedDate, dentistryId);
   }
 
@@ -170,10 +182,99 @@ export class AppointmentController {
     return this.appointmentService.updateStatus(appointmentId, dto.status);
   }
 
-
-  
   @Get('workers-stats/:dentistryId')
   async getWorkersStatsByDentistry(@Param('dentistryId') dentistryId: number) {
-    return this.appointmentService.getWorkerAppointmentsStatsByDentistry(dentistryId);
+    return this.appointmentService.getWorkerAppointmentsStatsByDentistry(
+      dentistryId,
+    );
+  }
+
+  
+  @Get(':id')
+  @ApiOperation({
+    summary: 'Отримати запис за ID',
+    description:
+      'Повертає повний запис (appointment) разом із клієнтом, стоматологом, діями (appointment_actions) та оплатою. ' +
+      'Використовується для отримання детальної інформації про конкретний прийом.',
+  })
+  @ApiParam({
+    name: 'id',
+    type: Number,
+    required: true,
+    example: 1,
+    description: 'Ідентифікатор запису (appointment)',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Повний запис із усіма зв’язками',
+    schema: {
+      example: {
+        id: 1,
+        client: {
+          id: 1,
+          name: 'Gerry',
+          surname: 'Hoppe',
+          middle_name: 'Kyle',
+          birthdate: '1973-02-02',
+          blood_resus: 'plus',
+          blood_group: 3,
+          phone: '552-540-1913',
+          allergic_diseases: 'dignissimos itaque sequi',
+          email: 'Osvaldo_Reinger@hotmail.com',
+          password: 'fp5GQiFCZq',
+          isVerified: false,
+          created_at: '2026-03-23T18:33:33.000Z',
+          updated_at: '2026-03-23T18:33:33.000Z',
+        },
+        dentist: {
+          id: 8,
+          name: 'Cicero',
+          surname: 'Weimann',
+          middle_name: 'Sasha',
+          birthday: '1974-11-11',
+          phone: '237-649-5228',
+          login: 'Kasey15',
+          password: 'nXP7CU_dZn',
+          created_at: '2026-03-23T18:33:33.000Z',
+          updated_at: '2026-03-23T18:33:33.000Z',
+          active: true,
+        },
+        appointment_date: '2026-03-06T16:00:00.000Z',
+        notes: 'Optio expedita dolorum dolores.',
+        status: 'completed',
+        created_at: '2025-08-28T23:54:28.000Z',
+        updated_at: '2026-03-23T20:33:37.000Z',
+        appointment_actions: [
+          {
+            id: 1,
+            operation: {
+              id: 7,
+              name: 'Sleek Wooden Pants',
+              description: 'Andy shoes are designed...',
+              price: 792,
+              active: true,
+              created_at: '2026-03-23T18:33:33.000Z',
+              updated_at: '2026-03-23T18:33:33.000Z',
+            },
+            created_at: '2025-05-29T11:55:04.000Z',
+            updated_at: '2026-03-23T20:33:40.000Z',
+          },
+        ],
+        payment: {
+          id: 1,
+          amount: 2836,
+          status_paid: 'not_paid',
+          method_pay: 'cash',
+          payment_date: '2025-04-02',
+          created_at: '2025-10-07T03:29:34.000Z',
+          updated_at: '2026-03-23T20:33:56.000Z',
+        },
+      },
+    },
+  })
+  @ApiResponse({ status: 404, description: 'Запис не знайдено' })
+  @ApiResponse({ status: 500, description: 'Внутрішня помилка сервера' })
+  async getAppointment(@Param('id') id: number): Promise<IAppointment> {
+    return this.appointmentService.getAppointmentById(id);
   }
 }

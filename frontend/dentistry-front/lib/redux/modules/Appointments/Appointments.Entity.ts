@@ -12,6 +12,7 @@ import { addNewAppointmentAction } from "./actions/AddNewAppointment/AddNewAppoi
 import { GetAppointmentsToWorkerAction } from "./actions/GetAppointmentsByWorker/GetAppointmentsByWorker";
 import { UpdateAppointmentStatusAction } from "./actions/UpdateAppointmentStatus/UpdateAppointmentStatus";
 import HTTPMethod from "http-method-enum";
+import { GetAppointmentsByIdAction as GetAppointmentByIdAction } from "./actions/GetById/GetAppointmentsById";
 
 export enum AppointmentActionSaga {
   CreateAppointment = "Appointment/AddNew",
@@ -21,6 +22,7 @@ export enum AppointmentActionSaga {
   GetHistoryByDentistry = "Appointment/GetHistoryByDentistry",
   getAppointmentsToWorker = "Appointment/GetToWorker",
   UpdateStatus = "Appointment/UpdateStatus",
+  GetById = "Appointment/GetById",
 }
 
 @EntityReducer(EntitiesRedux.Appointments)
@@ -102,7 +104,15 @@ export class AppointmentEntity extends BaseEntity {
     );
   }
 
-  
+  *getByIdSaga(action: GetAppointmentByIdAction) {
+    const { appointmentId } = action.payload;
+    yield call(
+      this.xRead.bind(this),
+      `/appointment/${appointmentId}`,
+      ActionReducer.Get,
+    );
+  }
+
   *watch() {
     yield takeLatest(
       AppointmentActionSaga.GetNearestTodayByDentistry,
@@ -136,6 +146,10 @@ export class AppointmentEntity extends BaseEntity {
     yield takeLatest(
       AppointmentActionSaga.UpdateStatus,
       this.updateStatusSaga.bind(this),
+    );
+    yield takeLatest(
+      AppointmentActionSaga.GetById,
+      this.getByIdSaga.bind(this),
     );
   }
 }

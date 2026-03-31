@@ -10,15 +10,16 @@ import {
 import { IPayment, MethodPayment, StatusPayment } from './payment.interface';
 import { IAppointment } from '../../appointment/entity/appointment.interface';
 import { Appointment } from '../../appointment/entity/appointment.entity';
-
 @Entity({ name: 'payments' })
 export class Payment implements IPayment {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToOne(() => Appointment, (appointment) => appointment.payment)
+  @OneToOne(() => Appointment, (appointment) => appointment.payment, {
+    nullable: false,
+  })
   @JoinColumn({ name: 'appointment_id' })
-  appointment: IAppointment;
+  appointment: Appointment;
 
   @Column({ type: 'int', nullable: false })
   amount: number;
@@ -37,6 +38,4 @@ export class Payment implements IPayment {
 
   @UpdateDateColumn({ name: 'updated_at' })
   updated_at: Date;
-
-  //foreign connect
 }

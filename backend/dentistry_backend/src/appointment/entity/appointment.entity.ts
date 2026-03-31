@@ -54,6 +54,6 @@ export class Appointment implements IAppointment {
   @OneToMany(() => Notification, (notification) => notification.appointment)
   notifications: Notification[];
 
-  @OneToOne(()=>Payment,(payment)=>payment.appointment)
-  payment:Payment
+  @OneToOne(() => Payment, (payment) => payment.appointment)
+  payment: Payment;
 }

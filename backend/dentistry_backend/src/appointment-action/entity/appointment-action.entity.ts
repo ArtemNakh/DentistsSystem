@@ -11,23 +11,16 @@ import { IAppointmentActions } from './appointment-action.interface';
 
 import { Appointment } from '../../appointment/entity/appointment.entity';
 import { OperationList } from '../../operation-list/entities/operation-list.entity';
-
 @Entity({ name: 'appointments_actions' })
 export class AppointmentActions implements IAppointmentActions {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(
-    () => Appointment,
-    (appointment) => appointment.appointment_actions,
-  )
+  @ManyToOne(() => Appointment, (appointment) => appointment.appointment_actions, { nullable: false })
   @JoinColumn({ name: 'appointment_id' })
   appointment: Appointment;
 
-  @OneToOne(
-    () => OperationList,
-    (operation_list) => operation_list.appointment_actions,
-  )
+  @ManyToOne(() => OperationList, (operation_list) => operation_list.appointment_actions, { nullable: false })
   @JoinColumn({ name: 'operation_id' })
   operation: OperationList;
 

@@ -1,6 +1,6 @@
 "use client";
 import { Form, Formik } from "formik";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import loginValidationSchema from "./schemes/login.scheme";
 import LoginField from "./components/LoginField";
 import PasswordField from "./components/PasswordField";
@@ -10,6 +10,9 @@ import { useTranslation } from "react-i18next";
 import LanguageSwitch from "@/app/components/LanguageSwitch";
 import { SpecialtyType } from "@/lib/redux/modules/Specialties/Entities/Specialties/Specialties.interface";
 import { useRouter } from "next/navigation";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
+import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
+import { getAuthWorker } from "@/lib/redux/modules/AuthUser/actions/GetAuthWorker/GetAuthWorker";
 
 export default function WorkerLogin() {
   const { t } = useTranslation();
@@ -17,12 +20,41 @@ export default function WorkerLogin() {
   const router = useRouter(); // ← отримуємо екземпляр роутера
   const [error, setError] = useState<string | null>(null);
 
+  // Redux
+  const dispatch = useAppDispatch();
+  const authUser = useAppSelector((state: { auth: AuthState }) => state.auth);
+
+  // 🔑 Перевірка авторизації при завантаженні сторінки
+  useEffect(() => {
+    const checkAuth = async () => {
+      if (!authUser.user) {
+        await dispatch(getAuthWorker({}));
+      }
+      if (authUser.user) {
+        switch (authUser.user.specialty.type) {
+          case SpecialtyType.ADMIN:
+            router.push("/admins/main");
+            break;
+          case SpecialtyType.DOCTOR:
+            router.push("/doctor/main");
+            break;
+          case SpecialtyType.RECEPTION:
+            router.push("/reception/main");
+            break;
+          default:
+            router.push("/403");
+        }
+      }
+    };
+    checkAuth();
+  }, [authUser.user, dispatch, router]);
+
   const onSubmit = useCallback(
     async (values: { login: string; password: string }) => {
       try {
         setError(null);
         const data = await loginWorker(values);
-        console.log("auth user ",data)
+        console.log("auth user ", data);
         localStorage.setItem("authToken", data.authToken);
         // );
 
