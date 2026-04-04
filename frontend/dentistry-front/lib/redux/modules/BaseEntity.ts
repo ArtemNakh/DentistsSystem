@@ -12,7 +12,7 @@ import ClientContextDI from "@/lib/di/ContextDi";
 import { normalize, schema } from "normalizr";
 
 import { ClientEntity } from "./Clients/ClientEntity";
-import { AppointmentEntity } from "./Appointments/Appointment.Entity";
+
 import { PaymentEntity } from "./Payments/Payments.Entity";
 import { SpecialtyEntity } from "./Specialties/Entities/Specialties/Specialties.Entity";
 import { DentistryEntity } from "./Dentistries/Dentistry.Entity";
@@ -27,6 +27,8 @@ import { WorkerStatsEntity } from "./ADMINS/Stats/WorkerStats/WorkerStats.entity
 import { WorkerWeekendEntity } from "./ADMINS/Stats/WeekendStats/actions/WeekendStats.entity";
 import { FindingSpecialtyEntity } from "./Specialties/Entities/FindedSpecialties/FindedSpecialties.Entity";
 import { LicensesEntity } from "./Licenses/Licenses.Entity";
+import { AppointmentEntity } from "./Appointments/Appointments.Entity";
+import { FindingOperationListEntity } from "./FindingOperationList/OperationList/FindingOperationList.Entity";
 
 // Це буде базовий endpoint для всіх запитів.
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -49,6 +51,7 @@ export const enum EntitiesRedux {
   WorkersWeekend = "workersWeekend",
   FindingSpecialties = "findingSpecialties",
   Licenses = "licenses",
+  FindingOperationList = "findingOperationList",
 }
 
 // Entities — тип для сутностей
@@ -67,7 +70,8 @@ export type Entities =
   | WorkerStatsEntity
   | WorkerWeekendEntity
   | FindingSpecialtyEntity
-  | LicensesEntity;
+  | LicensesEntity
+  | FindingOperationListEntity;
 
 // IQueryResult<T> — тип відповіді від API: масив даних + повідомлення.
 interface IQueryResult<T> {

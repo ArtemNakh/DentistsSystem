@@ -19,6 +19,7 @@ import {
 import { FindingSpecialtyEntity } from "../redux/modules/Specialties/Entities/FindedSpecialties/FindedSpecialties.Entity";
 import { LicensesEntity } from "../redux/modules/Licenses/Licenses.Entity";
 import { AppointmentEntity } from "../redux/modules/Appointments/Appointments.Entity";
+import { FindingOperationListEntity } from "../redux/modules/FindingOperationList/OperationList/FindingOperationList.Entity";
 
 const clientContainer = createContainer({
   injectionMode: "PROXY",
@@ -39,6 +40,7 @@ const expansion = {
   WorkerWeekendEntity: asClass(WorkerWeekendEntity).singleton(),
   FindingSpecialtyEntity: asClass(FindingSpecialtyEntity).singleton(),
   LicensesEntity: asClass(LicensesEntity).singleton(),
+  FindingOperationListEntity: asClass(FindingOperationListEntity).singleton(),
 };
 
 clientContainer.register({ ...expansion });

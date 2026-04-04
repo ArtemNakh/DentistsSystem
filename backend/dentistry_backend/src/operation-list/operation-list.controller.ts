@@ -9,6 +9,7 @@ import {
   Req,
   Put,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { OperationListService } from './operation-list.service';
 import {
@@ -25,12 +26,12 @@ import {
 import { OperationList } from './entities/operation-list.entity';
 import { OperationResponseDto } from './dto/Response/CreateOperation-list.response.dto';
 import { IOperationList } from './entities/operation-list.interface';
-import { WorkerAuthGuard } from 'src/auth/guards/workerAuth.guard';
-import { Authorized } from 'src/auth/decorators/authorized.decorator';
+import { Authorization } from '../auth/decorators/auth.decorator';
+import { WorkerAuthGuard } from '../auth/guards/workerAuth.guard';
+import { SpecialtyType } from '../specialty/entities/specialty.interface';
+import { IWorker } from '../workers/entities/workers.interface';
+import { Authorized } from '../auth/decorators/authorized.decorator';
 import { Worker } from 'src/workers/entities/workers.entity';
-import { IWorker } from 'src/workers/entities/workers.interface';
-import { SpecialtyType } from 'src/specialty/entities/specialty.interface';
-import { Authorization } from 'src/auth/decorators/auth.decorator';
 @ApiTags('Operation List')
 @Controller('operation-list')
 export class OperationListController {
@@ -90,5 +91,13 @@ export class OperationListController {
     @Param('id') id: number,
   ): Promise<{ success: boolean; message: string }> {
     return this.operationListService.removeOperation(id);
+  }
+
+  @Get('search')
+  async searchOperations(
+    @Query('search') search: string,
+    @Query('dentistryId') dentistryId?: number, // приймаємо dentistryId
+  ): Promise<IOperationList[]> {
+    return this.operationListService.findByName(search, dentistryId);
   }
 }

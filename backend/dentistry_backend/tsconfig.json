@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "module": "nodenext",
+    
     "moduleResolution": "nodenext",
     //  "types": ["node", "express", "express-session"],
     // "resolvePackageJsonExports": true,
