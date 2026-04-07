@@ -1,3 +1,5 @@
+import HeaderClient from "../client/components/header";
+
 export default function AuthClientLayout({
   children,
 }: {
@@ -6,6 +8,7 @@ export default function AuthClientLayout({
   return (
     <>
       <div className="relative bg-white min-h-dvh">
+      
         {/* Yellow background */}
         <div className="absolute inset-0 flex justify-end pointer-events-none z-10">
           <div className="w-2/3 h-full bg-yellow-500 rounded-b-[1000px] rounded-br-none" />
