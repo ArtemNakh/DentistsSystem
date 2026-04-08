@@ -288,4 +288,18 @@ export class AppointmentService {
 
     return appointment;
   }
+
+  async findByClientId(clientId: number): Promise<Appointment[]> {
+    return this.appointmentRepo.find({
+      where: { client: { id: clientId } },
+      relations: [
+        'client',
+        'dentist',
+        'dentist.specialty',
+        'dentist.dentistry',
+        'payment',
+        'appointment_actions.operation',
+      ],
+    });
+  }
 }

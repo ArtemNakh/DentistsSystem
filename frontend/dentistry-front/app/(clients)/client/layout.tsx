@@ -25,7 +25,7 @@ export default function ClientLayout({
         </div>
 
         {/* Footer */}
-        <div className="relative z-20 mt-auto">
+        <div className="relative z-0 mt-auto">
           <ClientFooter />
         </div>
       </div>

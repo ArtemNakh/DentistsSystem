@@ -7,8 +7,8 @@ interface SidebarItem {
 }
 
 interface SideBarAdminsProps {
-  items: SidebarItem[]; // масив рядків для пунктів меню
-  onClose: () => void; // функція закриття
+  items: SidebarItem[]; 
+  onClose: () => void; 
 }
 
 export default function SideBarAdmins({ items, onClose }: SideBarAdminsProps) {

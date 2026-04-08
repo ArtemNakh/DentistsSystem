@@ -13,6 +13,7 @@ import { GetAppointmentsToWorkerAction } from "./actions/GetAppointmentsByWorker
 import { UpdateAppointmentStatusAction } from "./actions/UpdateAppointmentStatus/UpdateAppointmentStatus";
 import HTTPMethod from "http-method-enum";
 import { GetAppointmentsByIdAction as GetAppointmentByIdAction } from "./actions/GetById/GetAppointmentsById";
+import { GetAppointmentsToClientAction } from "./actions/GetAppointmentsByClient/GetAppointmentsByClient";
 
 export enum AppointmentActionSaga {
   CreateAppointment = "Appointment/AddNew",
@@ -23,6 +24,7 @@ export enum AppointmentActionSaga {
   getAppointmentsToWorker = "Appointment/GetToWorker",
   UpdateStatus = "Appointment/UpdateStatus",
   GetById = "Appointment/GetById",
+  GetToClient = "Appointment/GetToClient",
 }
 
 @EntityReducer(EntitiesRedux.Appointments)
@@ -34,6 +36,14 @@ export class AppointmentEntity extends BaseEntity {
         specialty: new schema.Entity(EntitiesRedux.Specialties),
         dentistry: new schema.Entity(EntitiesRedux.Dentistries),
       }),
+      appointment_actions: [
+        new schema.Entity(EntitiesRedux.AppointmentActions, {
+          operation: new schema.Entity(EntitiesRedux.OperationList, {
+            dental_clinic: new schema.Entity(EntitiesRedux.Dentistries),
+          }),
+        }),
+      ],
+      payment: new schema.Entity(EntitiesRedux.Payments),
     });
   }
 
@@ -92,6 +102,14 @@ export class AppointmentEntity extends BaseEntity {
       ActionReducer.Get,
     );
   }
+  *getAppointmentsToClientSaga(action: GetAppointmentsToClientAction) {
+    const { clientId } = action.payload;
+    yield call(
+      this.xRead.bind(this),
+      `/appointment/client/${clientId}`,
+      ActionReducer.Get,
+    );
+  }
 
   *updateStatusSaga(action: UpdateAppointmentStatusAction) {
     const { appointmentId, status } = action.payload;
@@ -143,6 +161,12 @@ export class AppointmentEntity extends BaseEntity {
       AppointmentActionSaga.getAppointmentsToWorker,
       this.getAppointmentsToWorkerSaga.bind(this),
     );
+
+    yield takeLatest(
+      AppointmentActionSaga.GetToClient,
+      this.getAppointmentsToClientSaga.bind(this),
+    );
+
     yield takeLatest(
       AppointmentActionSaga.UpdateStatus,
       this.updateStatusSaga.bind(this),

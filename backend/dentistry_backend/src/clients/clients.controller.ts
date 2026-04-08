@@ -32,7 +32,7 @@ export class ClientsController {
     const client = await this.clientsService.findById(
       Number(req.session.clientId),
     );
-    return { clientId: req.session.clientId, client };
+    return { ...client };
   }
 
   @Get('search')

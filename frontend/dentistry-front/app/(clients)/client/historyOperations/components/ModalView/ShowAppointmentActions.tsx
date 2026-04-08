@@ -17,7 +17,7 @@ export default function ShowAppointmentActions({
             <h2 className="text-xl text-gray-700 font-semibold mb-4">
               Appointment actions
             </h2>
-
+            {console.log("app", appointment)}
             {appointment.appointment_actions ? (
               appointment.appointment_actions?.map((action, index) => (
                 <div
@@ -25,8 +25,8 @@ export default function ShowAppointmentActions({
                   className="text-gray-600 border border-gray-200 my-1 px-2 py-2"
                 >
                   <p className=" text-xl"> Action : {index}</p>
-                  <p>Name: {action.operation?.name}</p>
-                  <p>Price:{action.operation?.price}</p>
+                  <p>Name: {action.operation.name}</p>
+                  <p>Price:{action.operation.price}</p>
                 </div>
               ))
             ) : (

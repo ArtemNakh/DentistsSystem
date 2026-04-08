@@ -38,7 +38,6 @@ export class AppointmentController {
     return this.appointmentService.findAll();
   }
 
-
   @Get('nearest')
   @ApiOperation({
     summary: 'Отримати найближчі записи',
@@ -136,7 +135,7 @@ export class AppointmentController {
       const newAppointment =
         await this.appointmentService.createAppointment(createAppointmentDto);
       return newAppointment;
-    } catch (error) {
+    } catch (error: any) {
       throw new BadRequestException(error.message);
     }
   }
@@ -189,7 +188,6 @@ export class AppointmentController {
     );
   }
 
-  
   @Get(':id')
   @ApiOperation({
     summary: 'Отримати запис за ID',
@@ -276,5 +274,11 @@ export class AppointmentController {
   @ApiResponse({ status: 500, description: 'Внутрішня помилка сервера' })
   async getAppointment(@Param('id') id: number): Promise<IAppointment> {
     return this.appointmentService.getAppointmentById(id);
+  }
+
+
+  @Get('client/:id')
+  async getAppointmentsByClient(@Param('id') id: number) {
+    return this.appointmentService.findByClientId(id);
   }
 }
