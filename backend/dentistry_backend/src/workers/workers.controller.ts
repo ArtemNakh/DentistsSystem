@@ -122,12 +122,11 @@ export class WorkersController {
   }
 
   @Get('search')
-  async searchWorkers(@Query('search') search: string, @Req() req: Request) {
-    const worker = await this.workersService.findById(
-      Number(req.session.workerId),
-    );
-
-    return this.workersService.findByFullName(search, worker.dentistry.id);
+  async searchWorkers(
+    @Query('search') search: string,
+    @Query('dentistryId') dentistryId: number,
+  ) {
+    return this.workersService.findByFullName(search, dentistryId);
   }
 
   @Post('create')

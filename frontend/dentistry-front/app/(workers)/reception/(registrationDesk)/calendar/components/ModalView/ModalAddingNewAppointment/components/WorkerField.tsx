@@ -1,5 +1,6 @@
 import { useAppSelector } from "@/lib/redux/hooks";
 import { GetAppointmentsToWorker } from "@/lib/redux/modules/Appointments/actions/GetAppointmentsByWorker/GetAppointmentsByWorker";
+import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
 import { GetClientsByFullName } from "@/lib/redux/modules/Clients/actions/GetClientsByFullName/GetClientsByFullName";
 import { IClient } from "@/lib/redux/modules/Clients/clients.interface";
 import { IDentistry } from "@/lib/redux/modules/Dentistries/Dentistry.interface";
@@ -41,16 +42,22 @@ export default function WorkerField() {
 
   const { setFieldValue } = useFormikContext<any>();
   let workers = useAppSelector(DenormalizeWorkers); //useSelector((state: RootState) => state.findingWorkers);
-
+  const authUser = useAppSelector((state: AuthState) => state.user);
   const [showWorkerModal, setShowWorkerModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredWorkers, setFilteredWorkers] = useState<IWorker[]>([]);
   const [selectedWorkerName, setSelectedWorkerName] = useState(""); // локальний стан для відображення
-  useEffect(() => {
-    if (searchQuery.length > 2) {
-      dispatch(GetWorkersByFullName({ fullName: searchQuery }));
-    }
-  }, [searchQuery, dispatch]);
+ useEffect(() => {
+  if (searchQuery.length > 2 && authUser?.dentistry?.id) {
+    dispatch(
+      GetWorkersByFullName({
+        fullName: searchQuery,
+        dentistryId: authUser.dentistry.id,
+      }),
+    );
+  }
+}, [searchQuery, dispatch, authUser]);
+
 
   useEffect(() => {
     if (searchQuery.length > 2) {
@@ -60,9 +67,6 @@ export default function WorkerField() {
     }
   }, [searchQuery, workers]);
 
-  useEffect(() => {
-    console.log("workers from store:", workers);
-  }, [workers]);
   return (
     <>
       <div className="mx-5 text-gray-500">

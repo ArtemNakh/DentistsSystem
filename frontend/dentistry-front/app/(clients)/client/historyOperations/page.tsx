@@ -2,10 +2,6 @@
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { IAppointment } from "@/lib/redux/modules/Appointments/Appointment.interface";
 import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
-import { IClient } from "@/lib/redux/modules/Clients/clients.interface";
-import { IDentistry } from "@/lib/redux/modules/Dentistries/Dentistry.interface";
-import { ISpecialty } from "@/lib/redux/modules/Specialties/Entities/Specialties/Specialties.interface";
-import { IWorker } from "@/lib/redux/modules/Workers/Workers.interface";
 import { RootState } from "@/lib/redux/store";
 import { createSelector } from "@reduxjs/toolkit";
 import { useEffect, useState } from "react";
@@ -13,9 +9,7 @@ import FilterPanelHistory from "./components/FilterPanel";
 import HistoryAppointmentsClient from "./components/HistoryAppointments";
 import { getAuthClient } from "@/lib/redux/modules/AuthUser/actions/GetAuthClient/GetAuthClient";
 import { GetAppointmentsToClient } from "@/lib/redux/modules/Appointments/actions/GetAppointmentsByClient/GetAppointmentsByClient";
-import { IOperationList } from "@/lib/redux/modules/OperationList/OperationList.interface";
-import { IAppointmentActions } from "@/lib/redux/modules/AppointmentsActions/AppointmentActions.interface";
-import { IPayment } from "@/lib/redux/modules/Payments/Payments.interface";
+
 
 export const DenormalizeAppointments = createSelector(
   [

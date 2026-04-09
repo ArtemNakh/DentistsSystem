@@ -1,5 +1,6 @@
 import { useAppSelector } from "@/lib/redux/hooks";
 import { GetAppointmentsToWorker } from "@/lib/redux/modules/Appointments/actions/GetAppointmentsByWorker/GetAppointmentsByWorker";
+import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
 import { GetClientsByFullName } from "@/lib/redux/modules/Clients/actions/GetClientsByFullName/GetClientsByFullName";
 import { IClient } from "@/lib/redux/modules/Clients/clients.interface";
 import { IDentistry } from "@/lib/redux/modules/Dentistries/Dentistry.interface";
@@ -46,11 +47,17 @@ export default function WorkerField() {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredWorkers, setFilteredWorkers] = useState<IWorker[]>([]);
   const [selectedWorkerName, setSelectedWorkerName] = useState(""); // локальний стан для відображення
+  const authUser = useAppSelector((state: AuthState) => state.user);
   useEffect(() => {
-    if (searchQuery.length > 2) {
-      dispatch(GetWorkersByFullName({ fullName: searchQuery }));
+    if (searchQuery.length > 2 && authUser?.dentistry?.id) {
+      dispatch(
+        GetWorkersByFullName({
+          fullName: searchQuery,
+          dentistryId: authUser.dentistry.id,
+        }),
+      );
     }
-  }, [searchQuery, dispatch]);
+  }, [searchQuery, dispatch, authUser]);
 
   useEffect(() => {
     if (searchQuery.length > 2) {

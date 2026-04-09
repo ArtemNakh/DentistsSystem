@@ -1,7 +1,10 @@
+
 import BaseEntity, { EntitiesRedux } from "../BaseEntity";
 import { EntityReducer } from "../EntityReducer";
 
-export enum DentistryActionSaga {}
+export enum DentistryActionSaga {
+  GetAllByCity = "dentistry/getAllByCity",
+}
 
 @EntityReducer(EntitiesRedux.Dentistries)
 export class DentistryEntity extends BaseEntity {
@@ -9,5 +12,6 @@ export class DentistryEntity extends BaseEntity {
     super(ctx, EntitiesRedux.Dentistries, {});
   }
 
+  /**Listener saga actions */
   *watch() {}
 }

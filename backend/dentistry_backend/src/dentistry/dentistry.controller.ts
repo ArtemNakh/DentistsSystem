@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 
 import { ApiTags } from '@nestjs/swagger';
 import { DentistryService } from './dentistry.service';
@@ -12,7 +12,12 @@ export class DentistryController {
   GetAllValue(){
     return this.dentistryService.findAll();
   }
-
+  
+ @Get("search")
+  async searchDentistries(@Query("search") city: string) {
+    console.log("quest",city)
+    return this.dentistryService.findByCity(city);
+  }
 
 
   // @Post()

@@ -14,6 +14,7 @@ import { WorkerWeekendEntity } from "../redux/modules/ADMINS/Stats/WeekendStats/
 import { FindingSpecialtyEntity } from "../redux/modules/Specialties/Entities/FindedSpecialties/FindedSpecialties.Entity";
 import { LicensesEntity } from "../redux/modules/Licenses/Licenses.Entity";
 import { AppointmentEntity } from "../redux/modules/Appointments/Appointments.Entity";
+import { FindingDentistryEntity } from "../redux/modules/FindingDentistries/FindingDentistry.Entity";
 
 export interface IContexContainer {
   ClientEntity: ClientEntity;
@@ -31,4 +32,5 @@ export interface IContexContainer {
   WorkerWeekendEntity: WorkerWeekendEntity;
   FindingSpecialtiesEntity: FindingSpecialtyEntity;
   LicensesEntity: LicensesEntity;
+  FindingDentistryEntity: FindingDentistryEntity;
 }

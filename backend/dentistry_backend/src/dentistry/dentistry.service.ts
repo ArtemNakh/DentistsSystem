@@ -4,11 +4,11 @@
 // import { InjectModel } from '@nestjs/sequelize';
 // import { Dentistry } from './entities/dentistry.entity';
 
-import { Inject, Injectable } from "@nestjs/common";
-import { Repository } from "typeorm";
-import { Dentistry } from "./entities/dentistry.entity";
-import { InjectRepository } from "@nestjs/typeorm";
-import { IDentistry } from "./entities/dentistry.interface";
+import { Inject, Injectable } from '@nestjs/common';
+import { ILike, Repository } from 'typeorm';
+import { Dentistry } from './entities/dentistry.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { IDentistry } from './entities/dentistry.interface';
 
 // @Injectable()
 // export class DentistryService {
@@ -39,18 +39,22 @@ import { IDentistry } from "./entities/dentistry.interface";
 //   // }
 // }
 
-
-
 @Injectable()
-export class DentistryService{
+export class DentistryService {
   constructor(
     @InjectRepository(Dentistry)
-    private dentistryRepository:Repository<Dentistry>
-  ){}
+    private dentistryRepository: Repository<Dentistry>,
+  ) {}
 
-  async findAll():Promise<IDentistry[]>{
+  async findAll(): Promise<IDentistry[]> {
     return this.dentistryRepository.find();
   }
 
-  
+  async findByCity(city: string): Promise<Dentistry[]> {
+    return this.dentistryRepository.find({
+      where: {
+        city: ILike(`%${city}%`), // нечутливий до регістру пошук
+      }, // якщо треба підтягнути працівників
+    });
+  }
 }

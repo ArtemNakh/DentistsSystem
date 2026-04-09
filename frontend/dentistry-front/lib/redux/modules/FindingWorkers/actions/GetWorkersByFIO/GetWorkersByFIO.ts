@@ -1,8 +1,8 @@
 import { FindingWorkersActionSaga } from "../../FindingWorkerEntity";
 
-
 export interface GetWorkersByFullNamePayload {
   fullName: string;
+  dentistryId: number;
 }
 
 export const GetWorkersByFullName = (payload: GetWorkersByFullNamePayload) => ({

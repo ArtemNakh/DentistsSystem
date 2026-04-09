@@ -8,7 +8,7 @@ export default function HeaderClient() {
   // список кнопок для сайдбару
   const sidebarItems = [
     { label: "Історія операцій", path: "/client/historyOperations" },
-    { label: "Запис на операцію", path: "/operation-record" },
+    { label: "Запис на операцію", path: "/client/create-appointment" },
   ];
 
   return (
