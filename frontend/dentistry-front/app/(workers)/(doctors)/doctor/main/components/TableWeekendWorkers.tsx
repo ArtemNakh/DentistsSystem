@@ -47,7 +47,8 @@ export default function TableWorkersWeekend() {
   return (
     <div className="w-auto h-fit mx-5 my-5 rounded-lg shadow-lg border border-gray-300">
       <h1 className="text-center text-base bg-linear-to-r from-[#874FD1] to-[#6F6697] text-white py-3">
-        {t("reception.main.workers_weekend.title")} кількість неробочих днів
+        {/* {t("reception.main.workers_weekend.title")}  */}
+        кількість неробочих днів
       </h1>
       <table className="w-full border-collapse text-center">
         <thead>

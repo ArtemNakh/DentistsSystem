@@ -339,5 +339,29 @@
         "history_operation": "Історія операцій"
       }
     }
+  },
+  "admins": {
+    "header_side": {
+      "pages": {
+        "calendar": "Календар",
+        "payment": "Оплата",
+        "workers": "Працівники",
+        "history_operation": "Історія операцій",
+        "menu": "Меню",
+        "licences": "Ліцензії",
+        "worker_shifts": "Графік роботи"
+      }
+    }
+  },
+  "doctor": {
+    "header_side": {
+      "pages": {
+        "calendar": "Календар",
+        "payment": "Оплата",
+        "history_operation": "Історія операцій",
+        "licences": "Ліцензії",
+        "worker_shifts": "Графік роботи"
+      }
+    }
   }
 }

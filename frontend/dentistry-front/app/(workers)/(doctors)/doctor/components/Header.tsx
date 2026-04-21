@@ -8,7 +8,7 @@ import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
 import { getAuthWorker } from "@/lib/redux/modules/AuthUser/actions/GetAuthWorker/GetAuthWorker";
 import { useTranslation } from "react-i18next";
 
-export default function HeaderAdmin() {
+export default function HeaderDoctor() {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
 
@@ -35,15 +35,11 @@ export default function HeaderAdmin() {
       path: "/doctor/payments",
     },
     {
-      label: t("doctor.header_side.pages.workers"),
-      path: "/doctor/workers",
-    },
-    {
       label: t("doctor.header_side.pages.history_operation"),
       path: "/doctor/historyOperations",
     },
     {
-      label: t("doctor.header_side.pages.licenses"),
+      label: t("doctor.header_side.pages.licences"),
       path: "/doctor/licenses",
     },
     {
