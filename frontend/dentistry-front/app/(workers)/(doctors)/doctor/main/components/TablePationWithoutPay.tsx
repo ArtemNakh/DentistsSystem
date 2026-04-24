@@ -1,51 +1,73 @@
 import { useAppSelector } from "@/lib/redux/hooks";
 import { IAppointment } from "@/lib/redux/modules/Appointments/Appointment.interface";
 import { IClient } from "@/lib/redux/modules/Clients/clients.interface";
+import { PaymentEntity, PaymentSchema } from "@/lib/redux/modules/Payments/Payments.Entity";
 import {
   IPayment,
   StatusPayment,
 } from "@/lib/redux/modules/Payments/Payments.interface";
+import { RootState } from "@/lib/redux/store";
 import { createSelector } from "@reduxjs/toolkit";
 import { format } from "date-fns";
+import { denormalize } from "normalizr";
 import { useTranslation } from "react-i18next";
-const selectPaymentsWithDetails = createSelector(
-  [
-    (state) => state.payments, // 1. беремо всі платежі
-    (state) => state.appointments, // 2. беремо всі записи (прийоми)
-    (state) => state.clients, // 3. беремо всіх клієнтів
-  ],
-  (paymentsObj, appointmentsObj, clientsObj) => {
-    // перетворюємо об’єкти у масиви
-    const payments: IPayment[] = Object.values(paymentsObj ?? {});
-    const appointments: IAppointment[] = Object.values(appointmentsObj ?? {});
-    const clients: IClient[] = Object.values(clientsObj ?? {});
+// const selectPaymentsWithDetails = createSelector(
+//   [
+//     (state) => state.payments, // 1. беремо всі платежі
+//     (state) => state.appointments, // 2. беремо всі записи (прийоми)
+//     (state) => state.clients, // 3. беремо всіх клієнтів
+//   ],
+//   (paymentsObj, appointmentsObj, clientsObj) => {
+//     // перетворюємо об’єкти у масиви
+//     const payments: IPayment[] = Object.values(paymentsObj ?? {});
+//     const appointments: IAppointment[] = Object.values(appointmentsObj ?? {});
+//     const clients: IClient[] = Object.values(clientsObj ?? {});
 
-    // для кожного платежу шукаємо його appointment і клієнта
-    return payments // фільтруємо лише ті, що не оплачені
-      .filter((payment) => payment.status_paid !== StatusPayment.PAID)
-      .map((payment) => {
-        // знаходимо appointment, який відповідає цьому платежу
-        const appt = appointments.find(
-          (a) => a.id === (payment.appointment as unknown as number),
-        );
+//     // для кожного платежу шукаємо його appointment і клієнта
+//     return payments // фільтруємо лише ті, що не оплачені
+//       .filter((payment) => payment.status_paid !== StatusPayment.PAID)
+//       .map((payment) => {
+//         // знаходимо appointment, який відповідає цьому платежу
+//         const appt = appointments.find(
+//           (a) => a.id === (payment.appointment as unknown as number),
+//         );
 
-        // якщо appointment знайдено, то шукаємо клієнта цього appointment
-        const client = appt
-          ? clients.find((c) => c.id === (appt.client as unknown as number))
-          : null;
+//         // якщо appointment знайдено, то шукаємо клієнта цього appointment
+//         const client = appt
+//           ? clients.find((c) => c.id === (appt.client as unknown as number))
+//           : null;
 
-        // повертаємо новий об’єкт платежу з вкладеним appointment і клієнтом
-        return {
-          ...payment,
-          appointment: appt ? { ...appt, client } : null,
-        };
-      });
-  },
-);
+//         // повертаємо новий об’єкт платежу з вкладеним appointment і клієнтом
+//         return {
+//           ...payment,
+//           appointment: appt ? { ...appt, client } : null,
+//         };
+//       });
+//   },
+// );
 
 export default function TablePationWithoutPay() {
   const { t } = useTranslation();
-  const payments = useAppSelector(selectPaymentsWithDetails);
+
+
+  // беремо весь state як entities
+  const entities = useAppSelector((state: RootState) => state);
+
+  // отримуємо всі payments денормалізовані
+  const payments = Object.keys(entities.payments ?? {})
+    .map((id) =>
+      denormalize(Number(id), PaymentSchema, entities)
+    )
+    .filter(Boolean);
+
+  // фільтруємо лише ті, що не оплачені
+  const unpaidPayments = payments.filter(
+    (payment) => payment.status_paid !== StatusPayment.PAID
+  );
+
+  console.log("Unpaid payments:", unpaidPayments);
+  
+  // const payments = useAppSelector(selectPaymentsWithDetails);
 
   return (
     <>

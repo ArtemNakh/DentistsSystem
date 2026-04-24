@@ -18,157 +18,188 @@ import {
   CompleteAppointmentActionsPayload,
 } from "@/lib/redux/modules/AppointmentsActions/actions/actions/CompleteAppointmentActions/CompleteAppointmentActions";
 import { MethodPayment } from "@/lib/redux/modules/Payments/Payments.interface";
+import { denormalize } from "normalizr";
+import { appointmentSchema } from "@/lib/redux/modules/Appointments/Appointments.Entity";
 
-export const makeDenormalizeAppointmentById = (appointmentId: number) =>
-  createSelector(
-    [
-      (state: RootState) => state.appointments,
-      (state: RootState) => state.clients,
-      (state: RootState) => state.workers,
-      (state: RootState) => state.specialties,
-      (state: RootState) => state.dentistries,
-    ],
-    (
-      appointmentsObj,
-      clientsObj,
-      workersObj,
-      specialtiesObj,
-      dentistriesObj,
-    ) => {
-      const a = appointmentsObj?.[appointmentId];
-      if (!a) return undefined;
+  // export const makeDenormalizeAppointmentById = (appointmentId: number) =>
+  //   createSelector(
+  //     [
+  //       (state: RootState) => state.appointments,
+  //       (state: RootState) => state.clients,
+  //       (state: RootState) => state.workers,
+  //       (state: RootState) => state.specialties,
+  //       (state: RootState) => state.dentistries,
+  //     ],
+  //     (
+  //       appointmentsObj,
+  //       clientsObj,
+  //       workersObj,
+  //       specialtiesObj,
+  //       dentistriesObj,
+  //     ) => {
+  //       const a = appointmentsObj?.[appointmentId];
+  //       if (!a) return undefined;
 
-      const client = clientsObj?.[a.client as unknown as number];
-      const dentist = workersObj?.[a.dentist as unknown as number];
+  //       const client = clientsObj?.[a.client as unknown as number];
+  //       const dentist = workersObj?.[a.dentist as unknown as number];
 
-      const specialty =
-        dentist?.specialty !== undefined
-          ? specialtiesObj?.[dentist.specialty as unknown as number]
-          : undefined;
+  //       const specialty =
+  //         dentist?.specialty !== undefined
+  //           ? specialtiesObj?.[dentist.specialty as unknown as number]
+  //           : undefined;
 
-      const dentistry =
-        dentist?.dentistry !== undefined
-          ? dentistriesObj?.[dentist.dentistry as unknown as number]
-          : undefined;
+  //       const dentistry =
+  //         dentist?.dentistry !== undefined
+  //           ? dentistriesObj?.[dentist.dentistry as unknown as number]
+  //           : undefined;
 
-      return {
-        ...a,
-        client,
-        dentist: dentist
-          ? {
-              ...dentist,
-              specialty,
-              dentistry,
-            }
-          : undefined,
-      } as IAppointment;
-    },
-  );
+  //       return {
+  //         ...a,
+  //         client,
+  //         dentist: dentist
+  //           ? {
+  //               ...dentist,
+  //               specialty,
+  //               dentistry,
+  //             }
+  //           : undefined,
+  //       } as IAppointment;
+  //     },
+  //   );
 
-interface AddActionsPageProps {
-  onClose: () => void;
-}
-
-interface FormValues {
-  appointmentId: number;
-  actions: string[]; // Formik працює з рядками
-  method_pay: MethodPayment;
-}
-
-const initialValues: FormValues = {
-  appointmentId: 0,
-  actions: [""],
-  method_pay: MethodPayment.CARD,
-};
-
-export default function OperationClient({ id }: { id: string }) {
-  const { t } = useTranslation();
-  const dispatch = useAppDispatch();
-  const authUser = useAppSelector((state: { auth: AuthState }) => state.auth);
-
-  const appointmentId = Number(id);
-  const selector = makeDenormalizeAppointmentById(appointmentId);
-  const appointment = useAppSelector((state: RootState) => selector(state));
-
-  const [error, setError] = useState<string | null>(null);
-
-  let operationList = useAppSelector(
-    (state: RootState) => state.findingOperationList,
-  );
-
-  const [showOperationListModal, setShowOperationListModal] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filteredOperationList, setFilteredOperationList] = useState<
-    IOperationList[]
-  >([]);
-  const [selectedOperationName, setSelectedOperationName] = useState(""); // локальний стан для відображення
-
-  // тепер беремо відфільтровані дії напряму з Redux
-  // const filteredActions = useAppSelector(
-  //   (state: RootState) => state.operationList.filtered,
-  // );
-
-  const onSubmit = useCallback(
-    async (values: FormValues, { setSubmitting }: any) => {
-      try {
-        const payload: CompleteAppointmentActionsPayload = {
-          ...values,
-          actions: values.actions.map((id) => Number(id)),
-        };
-        console.log("payload", payload);
-        await dispatch(
-          CompleteAppointmentActions({
-            appointmentId: payload.appointmentId,
-            actions: payload.actions,
-            method_pay: payload.method_pay,
-          }),
-        );
-      } catch (err) {
-        setError("Помилка при додаванні операцій: " + err);
-      } finally {
-        setSubmitting(false);
-      }
-    },
-    [dispatch],
-  );
-
-  useEffect(() => {
-    if (!appointment) {
-      dispatch(GetAppointmentById({ appointmentId }));
-    }
-  }, [dispatch, appointmentId, appointment]);
-
-  useEffect(() => {
-    if (searchQuery.length > 2) {
-      if (authUser.user?.dentistry?.id) {
-        dispatch(
-          GetActionsByTitle({
-            title: searchQuery,
-            dentistryId: authUser.user.dentistry.id,
-          }),
-        );
-      }
-    }
-  }, [searchQuery, dispatch]);
-
-  useEffect(() => {
-    if (searchQuery.length > 2) {
-      const normalized: IOperationList[] = Object.values(operationList ?? {});
-      setFilteredOperationList(normalized);
-    } else {
-      setFilteredOperationList([]);
-    }
-  }, [searchQuery, operationList]);
-
-  if (!appointment) {
-    return <p>Завантаження...</p>;
+  interface AddActionsPageProps {
+    onClose: () => void;
   }
 
-  return (
-    <div className="p-6 bg-gray-100 rounded shadow-md text-gray-700 text-base">
-      <h2 className="text-xl font-bold mb-4">
-        Запис на {new Date(appointment.appointment_date).toLocaleString()}
-      </h2>
+  interface FormValues {
+    appointmentId: number;
+    actions: string[]; // Formik працює з рядками
+    method_pay: MethodPayment;
+  }
+
+  const initialValues: FormValues = {
+    appointmentId: 0,
+    actions: [""],
+    method_pay: MethodPayment.CARD,
+  };
+
+  export default function OperationClient({ id }: { id: string }) {
+    const { t } = useTranslation();
+    const dispatch = useAppDispatch();
+    const authUser = useAppSelector((state: { auth: AuthState }) => state.auth);
+
+    const appointmentId = Number(id);
+
+
+    // const entities = useAppSelector((state: RootState) => state.appointments);
+    // const entities = useAppSelector((state: RootState) => state.entities);
+// const entities = useAppSelector((state: RootState) => ({
+//   appointments: state.appointments,
+//   clients: state.clients,
+//   workers: state.workers,
+//   specialties: state.specialties,
+//   dentistries: state.dentistries,
+//   payments: state.payments,
+//   appointmentActions: state.appointmentActions,
+//   operationList: state.operationList,
+// }));
+const entities = useAppSelector((state: RootState) => state);
+console.log("entit",entities)
+
+const appointment = denormalize(
+  appointmentId,
+  appointmentSchema,
+  entities
+);
+
+console.log("appointqweqwe",appointment)
+    // const selector = makeDenormalizeAppointmentById(appointmentId);
+    // const appointment = useAppSelector((state: RootState) => selector(state));
+
+
+    const [error, setError] = useState<string | null>(null);
+
+    let operationList = useAppSelector(
+      (state: RootState) => state.findingOperationList,
+    );
+
+    const [showOperationListModal, setShowOperationListModal] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [filteredOperationList, setFilteredOperationList] = useState<
+      IOperationList[]
+    >([]);
+    const [selectedOperationName, setSelectedOperationName] = useState(""); // локальний стан для відображення
+
+    
+
+    const onSubmit = useCallback(
+      async (values: FormValues, { setSubmitting }: any) => {
+        try {
+          const payload: CompleteAppointmentActionsPayload = {
+            ...values,
+            actions: values.actions.map((id) => Number(id)),
+          };
+          console.log("payload", payload);
+          await dispatch(
+            CompleteAppointmentActions({
+              appointmentId: payload.appointmentId,
+              actions: payload.actions,
+              method_pay: payload.method_pay,
+            }),
+          );
+        } catch (err) {
+          setError("Помилка при додаванні операцій: " + err);
+        } finally {
+          setSubmitting(false);
+        }
+      },
+      [dispatch],
+    );
+
+    
+
+    useEffect(() => {
+      if (!appointment) {
+      
+        dispatch(GetAppointmentById({ appointmentId }));
+      }
+    }, [dispatch, appointmentId, appointment]);
+
+    useEffect(() => {
+      if (searchQuery.length > 2) {
+        if (authUser.user?.dentistry?.id) {
+          dispatch(
+            GetActionsByTitle({
+              title: searchQuery,
+              dentistryId: authUser.user.dentistry.id,
+            }),
+          );
+        }
+      }
+    }, [searchQuery, dispatch]);
+
+    useEffect(() => {
+      if (searchQuery.length > 2) {
+        const normalized: IOperationList[] = Object.values(operationList ?? {});
+        setFilteredOperationList(normalized);
+      } else {
+        setFilteredOperationList([]);
+      }
+    }, [searchQuery, operationList]);
+
+  if (!appointment ) {
+    return <p>Завантаження...</p>;
+  } 
+
+
+    console.log("Appointments:", appointment);
+
+
+    return (
+      <div className="p-6 bg-gray-100 rounded shadow-md text-gray-700 text-base">
+        <h2 className="text-xl font-bold mb-4">
+          Запис на {new Date(appointment.appointment_date).toLocaleString()}
+        </h2>
       <p>
         <strong>Лікар:</strong> {appointment.dentist?.surname}{" "}
         {appointment.dentist?.name} {appointment.dentist?.middle_name} :{" "}

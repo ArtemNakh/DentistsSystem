@@ -11,6 +11,22 @@ export enum PaymentActionSaga {
   GetPaymentsDentistry = "Payment/GetByDentistry",
 }
 
+
+export const PaymentSchema = new schema.Entity(
+  EntitiesRedux.Payments, {
+      appointment: new schema.Entity(EntitiesRedux.Appointments, {
+        client: new schema.Entity(EntitiesRedux.Clients),
+        dentist: new schema.Entity(EntitiesRedux.Workers),
+        appointment_actions: [
+          new schema.Entity(EntitiesRedux.AppointmentActions, {
+            operation: new schema.Entity(EntitiesRedux.OperationList, {
+              dental_clinics: new schema.Entity(EntitiesRedux.Dentistries),
+            }),
+          }),
+        ],
+      }),}
+);
+
 @EntityReducer(EntitiesRedux.Payments)
 export class PaymentEntity extends BaseEntity {
   constructor(ctx: any) {
