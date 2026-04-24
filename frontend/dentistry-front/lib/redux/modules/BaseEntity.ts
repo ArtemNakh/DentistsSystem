@@ -9,7 +9,7 @@ import { HTTPMethod } from "http-method-enum";
 import i18n from "i18next";
 import { call, put } from "redux-saga/effects";
 import ClientContextDI from "@/lib/di/ContextDi";
-import { normalize, schema } from "normalizr";
+import { denormalize, normalize, schema } from "normalizr";
 
 import { ClientEntity } from "./Clients/ClientEntity";
 
@@ -88,6 +88,12 @@ interface IQueryResult<T> {
 // Це базовий клас для всіх ентіті.
 // Він успадковує ClientContextDI (твій DI‑контекст).
 export default class BaseEntity extends ClientContextDI {
+  private schema: schema.Entity;
+
+  /** Повертає normalizr-схему */
+  public getSchema() {
+    return this.schema;
+  }
   // Викликає super(ctx) для DI.
   // Створює normalizr‑схему для цієї ентіті.
   // Зберігає її у this.schema.
@@ -96,7 +102,6 @@ export default class BaseEntity extends ClientContextDI {
 
     this.schema = this.buildSchema(entityName, definition);
   }
-  private schema;
 
   /**
    * Рекурсивно створює normalizr-схему для Entity.
@@ -116,6 +121,7 @@ export default class BaseEntity extends ClientContextDI {
     return entity;
   }
 
+  
   /**Запит до бази даних та отримання результат */
   //   Виконує HTTP‑запит до API.
   // Якщо метод — POST/PUT/PATCH, додає body.

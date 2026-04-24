@@ -22,17 +22,20 @@
   // Без цього імпорту декоратори з метаданими не працювали б.
   import "reflect-metadata";
   import { EntitiesRedux } from "./BaseEntity";
+import { schema } from "normalizr";
 
   // Створюється ключ метаданих — просто рядок.
   // Під цим ключем у Reflect зберігатиметься масив назв сутностей.
   export const EntityReduxNames = "entity:name";
+export const EntityReduxSchemas = "entity:schema";
+
 
   // Оголошується фабрика декоратора.
   // Вона приймає параметр NameEntity — назву сутності, яку треба зареєструвати.
   export function EntityReducer(NameEntity: EntitiesRedux) {
     // Повертається власне декоратор класу.
     // target — це конструктор класу, до якого застосовано декоратор.
-    return function (target: Function) {
+    return function (target: any) {
       // Отримуємо поточні метадані з Reflect
       // Зчитуються метадані з об’єкта Reflect за ключем "entity:name".
       // Якщо метаданих ще немає — повернеться undefined.
@@ -57,5 +60,18 @@
       // Оновлений масив записується назад у метадані.
       // Тобто ми зберігаємо глобальний список усіх зареєстрованих сутностей.
       Reflect.defineMetadata(EntityReduxNames, existingEntities, Reflect);
+
+
+      // реєструємо схему (беремо статичне поле schema з класу)
+    if (target.schema) {
+      let existingSchemas: Record<string, schema.Entity> =
+        Reflect.getMetadata(EntityReduxSchemas, Reflect) ?? {};
+      existingSchemas[NameEntity] = target.schema;
+      Reflect.defineMetadata(EntityReduxSchemas, existingSchemas, Reflect);
+    }
     };
   }
+  // утиліта для отримання всіх схем
+export function getEntitySchemas(): Record<string, schema.Entity> {
+  return Reflect.getMetadata(EntityReduxSchemas, Reflect) ?? {};
+}

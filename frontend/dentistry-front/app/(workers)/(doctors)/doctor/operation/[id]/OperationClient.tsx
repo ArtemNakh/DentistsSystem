@@ -19,53 +19,9 @@ import {
 } from "@/lib/redux/modules/AppointmentsActions/actions/actions/CompleteAppointmentActions/CompleteAppointmentActions";
 import { MethodPayment } from "@/lib/redux/modules/Payments/Payments.interface";
 import { denormalize } from "normalizr";
-import { appointmentSchema } from "@/lib/redux/modules/Appointments/Appointments.Entity";
+import { AppointmentEntity } from "@/lib/redux/modules/Appointments/Appointments.Entity";
 
-  // export const makeDenormalizeAppointmentById = (appointmentId: number) =>
-  //   createSelector(
-  //     [
-  //       (state: RootState) => state.appointments,
-  //       (state: RootState) => state.clients,
-  //       (state: RootState) => state.workers,
-  //       (state: RootState) => state.specialties,
-  //       (state: RootState) => state.dentistries,
-  //     ],
-  //     (
-  //       appointmentsObj,
-  //       clientsObj,
-  //       workersObj,
-  //       specialtiesObj,
-  //       dentistriesObj,
-  //     ) => {
-  //       const a = appointmentsObj?.[appointmentId];
-  //       if (!a) return undefined;
 
-  //       const client = clientsObj?.[a.client as unknown as number];
-  //       const dentist = workersObj?.[a.dentist as unknown as number];
-
-  //       const specialty =
-  //         dentist?.specialty !== undefined
-  //           ? specialtiesObj?.[dentist.specialty as unknown as number]
-  //           : undefined;
-
-  //       const dentistry =
-  //         dentist?.dentistry !== undefined
-  //           ? dentistriesObj?.[dentist.dentistry as unknown as number]
-  //           : undefined;
-
-  //       return {
-  //         ...a,
-  //         client,
-  //         dentist: dentist
-  //           ? {
-  //               ...dentist,
-  //               specialty,
-  //               dentistry,
-  //             }
-  //           : undefined,
-  //       } as IAppointment;
-  //     },
-  //   );
 
   interface AddActionsPageProps {
     onClose: () => void;
@@ -91,28 +47,17 @@ import { appointmentSchema } from "@/lib/redux/modules/Appointments/Appointments
     const appointmentId = Number(id);
 
 
-    // const entities = useAppSelector((state: RootState) => state.appointments);
-    // const entities = useAppSelector((state: RootState) => state.entities);
-// const entities = useAppSelector((state: RootState) => ({
-//   appointments: state.appointments,
-//   clients: state.clients,
-//   workers: state.workers,
-//   specialties: state.specialties,
-//   dentistries: state.dentistries,
-//   payments: state.payments,
-//   appointmentActions: state.appointmentActions,
-//   operationList: state.operationList,
-// }));
+    
 const entities = useAppSelector((state: RootState) => state);
-console.log("entit",entities)
+// console.log("entit",entities)
 
 const appointment = denormalize(
   appointmentId,
-  appointmentSchema,
+  AppointmentEntity.schema,
   entities
 );
 
-console.log("appointqweqwe",appointment)
+// console.log("appointqweqwe",appointment)
     // const selector = makeDenormalizeAppointmentById(appointmentId);
     // const appointment = useAppSelector((state: RootState) => selector(state));
 
