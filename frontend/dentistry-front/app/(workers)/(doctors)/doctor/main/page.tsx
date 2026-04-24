@@ -1,6 +1,10 @@
 "use client";
 
-import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
+import {
+  TestuseAppSelector,
+  useAppDispatch,
+  useAppSelector,
+} from "@/lib/redux/hooks";
 import { useEffect } from "react";
 import TablePationWithoutPay from "./components/TablePationWithoutPay";
 import TableBusyDoctors from "./components/TableBusyDoctors";
@@ -18,26 +22,23 @@ import { getAppointmentNearestTodayDentistry } from "@/lib/redux/modules/Appoint
 import { getAppointmentTodayDentistry } from "@/lib/redux/modules/Appointments/actions/GetTodayOperationByDentistry/GetTodayOperationByDentistry";
 
 export function AdminsMain() {
-  const authUser = useAppSelector((state: { auth: AuthState }) => state.auth);
-
+  const authUser = TestuseAppSelector<AuthState>((state) => state.auth);
   const dispatch = useAppDispatch();
-
- 
-  
 
   useEffect(() => {
     if (!authUser.user) return;
-    dispatch(
+    (dispatch(
       GetWorkersAppointmentStats({
         dentistryId: authUser.user.dentistry.id,
       }),
     ),
-
-    dispatch(GetNumbersWorkersWeekend({dentistryId:authUser.user.dentistry.id,}))
+      dispatch(
+        GetNumbersWorkersWeekend({ dentistryId: authUser.user.dentistry.id }),
+      ));
     dispatch(
       getAppointmentNearestTodayDentistry({
-         dentistryId: authUser.user.dentistry.id,
-        }),
+        dentistryId: authUser.user.dentistry.id,
+      }),
     );
 
     if (authUser.user.dentistry?.id) {

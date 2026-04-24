@@ -39,6 +39,8 @@ export class WorkerStatsEntity extends BaseEntity {
     (this as any).schema = workerStatsSchema;
   }
 
+  static schema = new WorkerStatsEntity(null).getSchema();
+
   *getWorkersStatsSaga(action: GetWorkersAppointmentStatsAction) {
     const { dentistryId } = action.payload;
     yield call(

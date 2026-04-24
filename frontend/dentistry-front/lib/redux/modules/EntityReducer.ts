@@ -1,77 +1,75 @@
+// Це реєстратор сутностей, який:
+// працює як декоратор класу;
+// приймає назву сутності;
+// додає цю назву в глобальний список у Reflect під ключем "entity:name";
+// гарантує, що назва не дублюється;
+// дозволяє в будь-який момент отримати список усіх сутностей, які були задекоровані.
+// Навіщо це потрібно?
+// У твоїй архітектурі це може бути:
+// автоматична генерація редʼюсерів;
+// автоматична реєстрація саг;
+// побудова registry-патерну;
+// централізований список entity‑моделей для Redux або ORM‑подібної системи.
+// Тобто ти створюєш динамічну систему, де кожна сутність сама себе реєструє через декоратор.
 
-  // Це реєстратор сутностей, який:
-  // працює як декоратор класу;
-  // приймає назву сутності;
-  // додає цю назву в глобальний список у Reflect під ключем "entity:name";
-  // гарантує, що назва не дублюється;
-  // дозволяє в будь-який момент отримати список усіх сутностей, які були задекоровані.
-  // Навіщо це потрібно?
-  // У твоїй архітектурі це може бути:
-  // автоматична генерація редʼюсерів;
-  // автоматична реєстрація саг;
-  // побудова registry-патерну;
-  // централізований список entity‑моделей для Redux або ORM‑подібної системи.
-  // Тобто ти створюєш динамічну систему, де кожна сутність сама себе реєструє через декоратор.
+// Експортується порожній масив.
+export const entitieNames: string[] = [];
 
-  // Експортується порожній масив.
-  export const entitieNames: string[] = [];
-
-  // Підключається бібліотека reflect-metadata,
-  // яка дозволяє працювати з метаданими через
-  // Reflect.getMetadata та Reflect.defineMtadata.
-  // Без цього імпорту декоратори з метаданими не працювали б.
-  import "reflect-metadata";
-  import { EntitiesRedux } from "./BaseEntity";
+// Підключається бібліотека reflect-metadata,
+// яка дозволяє працювати з метаданими через
+// Reflect.getMetadata та Reflect.defineMtadata.
+// Без цього імпорту декоратори з метаданими не працювали б.
+import "reflect-metadata";
+import { EntitiesRedux } from "./BaseEntity";
 import { schema } from "normalizr";
 
-  // Створюється ключ метаданих — просто рядок.
-  // Під цим ключем у Reflect зберігатиметься масив назв сутностей.
-  export const EntityReduxNames = "entity:name";
+// Створюється ключ метаданих — просто рядок.
+// Під цим ключем у Reflect зберігатиметься масив назв сутностей.
+export const EntityReduxNames = "entity:name";
 export const EntityReduxSchemas = "entity:schema";
 
+// Оголошується фабрика декоратора.
+// Вона приймає параметр NameEntity — назву сутності, яку треба зареєструвати.
+export function EntityReducer(NameEntity: EntitiesRedux) {
+  // Повертається власне декоратор класу.
+  // target — це конструктор класу, до якого застосовано декоратор.
+  return function (target: any) {
+    // Отримуємо поточні метадані з Reflect
+    // Зчитуються метадані з об’єкта Reflect за ключем "entity:name".
+    // Якщо метаданих ще немає — повернеться undefined.
+    let existingEntities: EntitiesRedux[] = Reflect.getMetadata(
+      EntityReduxNames,
+      Reflect,
+    );
 
-  // Оголошується фабрика декоратора.
-  // Вона приймає параметр NameEntity — назву сутності, яку треба зареєструвати.
-  export function EntityReducer(NameEntity: EntitiesRedux) {
-    // Повертається власне декоратор класу.
-    // target — це конструктор класу, до якого застосовано декоратор.
-    return function (target: any) {
-      // Отримуємо поточні метадані з Reflect
-      // Зчитуються метадані з об’єкта Reflect за ключем "entity:name".
-      // Якщо метаданих ще немає — повернеться undefined.
-      let existingEntities: EntitiesRedux[] = Reflect.getMetadata(
-        EntityReduxNames,
-        Reflect,
-      );
+    // Якщо їх немає або тип некоректний — створюємо новий масив
+    // Якщо метадані відсутні або не є масивом — створюється новий порожній масив.
+    if (!Array.isArray(existingEntities)) {
+      existingEntities = [];
+    }
 
-      // Якщо їх немає або тип некоректний — створюємо новий масив
-      // Якщо метадані відсутні або не є масивом — створюється новий порожній масив.
-      if (!Array.isArray(existingEntities)) {
-        existingEntities = [];
-      }
+    // Додаємо нову назву, якщо вона ще не існує
+    // Якщо масив не містить назву сутності — додаємо її.
+    // Це захищає від дублювання.
+    if (!existingEntities.includes(NameEntity)) {
+      existingEntities.push(NameEntity);
+    }
 
-      // Додаємо нову назву, якщо вона ще не існує
-      // Якщо масив не містить назву сутності — додаємо її.
-      // Це захищає від дублювання.
-      if (!existingEntities.includes(NameEntity)) {
-        existingEntities.push(NameEntity);
-      }
+    // Оновлений масив записується назад у метадані.
+    // Тобто ми зберігаємо глобальний список усіх зареєстрованих сутностей.
+    Reflect.defineMetadata(EntityReduxNames, existingEntities, Reflect);
 
-      // Оновлений масив записується назад у метадані.
-      // Тобто ми зберігаємо глобальний список усіх зареєстрованих сутностей.
-      Reflect.defineMetadata(EntityReduxNames, existingEntities, Reflect);
-
-
-      // реєструємо схему (беремо статичне поле schema з класу)
+    // реєструємо схему (беремо статичне поле schema з класу)
     if (target.schema) {
       let existingSchemas: Record<string, schema.Entity> =
         Reflect.getMetadata(EntityReduxSchemas, Reflect) ?? {};
       existingSchemas[NameEntity] = target.schema;
       Reflect.defineMetadata(EntityReduxSchemas, existingSchemas, Reflect);
     }
-    };
-  }
-  // утиліта для отримання всіх схем
+
+  };
+}
+// утиліта для отримання всіх схем
 export function getEntitySchemas(): Record<string, schema.Entity> {
   return Reflect.getMetadata(EntityReduxSchemas, Reflect) ?? {};
 }

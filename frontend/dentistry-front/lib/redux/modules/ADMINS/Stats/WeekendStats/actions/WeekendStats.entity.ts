@@ -46,6 +46,8 @@ export class WorkerWeekendEntity extends BaseEntity {
     (this as any).schema = workerWeekendSchema;
   }
 
+  static schema = new WorkerWeekendEntity(null).getSchema();
+
   *getWorkersWeekendSaga(action: GetWorkersWeekendAction) {
     const { dentistryId } = action.payload;
 

@@ -10,23 +10,15 @@ export enum AuthActionSaga {
   GetAuthWorker = "Auth/getAuthWorker",
 }
 
-// interface GetAuthUserPayload {}
 
-// export type AuthUserActions =
-//   | {
-//       type: AuthActionSaga.GetAuthClient;
-//       payload: GetAuthUserPayload;
-//     }
-//   | {
-//       type: AuthActionSaga.GetAuthWorker;
-//       payload: GetAuthUserPayload;
-//     };
 
 @EntityReducer(EntitiesRedux.Auth)
 export class AuthEntity extends BaseEntity {
   constructor(ctx: any) {
-    super(ctx, EntitiesRedux.Auth, undefined);
+    super(ctx, EntitiesRedux.Auth, {});
   }
+
+  static schema = new AuthEntity(null).getSchema();
 
   *getAuthClientSaga(action: GetAuthClientAction) {
     yield call(this.xRead.bind(this), `/clients/me`, ActionReducer.Get);

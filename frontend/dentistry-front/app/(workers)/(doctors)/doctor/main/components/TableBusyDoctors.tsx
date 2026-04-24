@@ -1,35 +1,14 @@
-import { TestuseAppSelector, useAppSelector } from "@/lib/redux/hooks";
+import { TestuseAppSelector } from "@/lib/redux/hooks";
 import { IAppointment } from "@/lib/redux/modules/Appointments/Appointment.interface";
-import { AppointmentEntity } from "@/lib/redux/modules/Appointments/Appointments.Entity";
-import { RootState } from "@/lib/redux/store";
-import { denormalize } from "normalizr";
 import { useTranslation } from "react-i18next";
-
 
 export default function TableBusyDoctors() {
   const { t } = useTranslation();
 
-
-
-// vER1
-  // беремо весь state як entities
-//   const entities = useAppSelector((state: [IAppointment]) => state.appointments);
-// console.log("Entities",entities)
-//   // отримуємо всі appointments денормалізовані
-//   const appointments = Object.keys(entities.appointments ?? {})
-//     .map((id) => denormalize(Number(id), AppointmentEntity.schema, entities))
-//     .filter(Boolean);
-
-// const appointments = useAppSelector((state: IAppointment[]) => state.appointments);
-const appointments = TestuseAppSelector<IAppointment[]>(
-  (state) => state.appointments
-);
-
-console.log("appointmentsqwe", appointments);
-
-
-
-
+  const appointments = TestuseAppSelector<IAppointment[]>(
+    (state) => state.appointments,
+  );
+  
   const now = new Date();
 
   // фільтруємо лише ті прийоми, які йдуть прямо зараз
@@ -39,11 +18,6 @@ console.log("appointmentsqwe", appointments);
     return apptDate <= now && now <= apptEnd;
   });
 
-  console.log("Busy doctors:", operatingDoctors);
-
-
-  // const operatingDoctors = useAppSelector(selectBusyDoctors);
-console.log("operDoctor",operatingDoctors)
   return (
     <>
       <div className="mt-8  border-2  border-gray-450 ">

@@ -1,31 +1,21 @@
-import { useAppSelector } from "@/lib/redux/hooks";
-import { PaymentEntity } from "@/lib/redux/modules/Payments/Payments.Entity";
-import { StatusPayment } from "@/lib/redux/modules/Payments/Payments.interface";
-import { RootState } from "@/lib/redux/store";
+import { TestuseAppSelector, useAppSelector } from "@/lib/redux/hooks";
+import {
+  IPayment,
+  StatusPayment,
+} from "@/lib/redux/modules/Payments/Payments.interface";
 import { format } from "date-fns";
-import { denormalize } from "normalizr";
 import { useTranslation } from "react-i18next";
 
 export default function TablePationWithoutPay() {
   const { t } = useTranslation();
 
-  // беремо весь state як entities
-  const entities = useAppSelector((state: RootState) => state);
-
-  // отримуємо всі payments денормалізовані
-  const payments = Object.keys(entities.payments ?? {})
-    .map((id) => denormalize(Number(id), PaymentEntity.schema, entities))
-    .filter(Boolean);
+  const payments = TestuseAppSelector<IPayment[]>((state) => state.payments);
 
   // фільтруємо лише ті, що не оплачені
   const unpaidPayments = payments.filter(
     (payment) => payment.status_paid !== StatusPayment.PAID,
   );
-
-  // console.log("Unpaid payments:", unpaidPayments);
-
-  // const payments = useAppSelector(selectPaymentsWithDetails);
-
+  
   return (
     <>
       <div className="mt-5 text-base  border-2  border-gray-450">
@@ -58,7 +48,7 @@ export default function TablePationWithoutPay() {
               </tr>
             </thead>
             <tbody>
-              {payments.length === 0 ? (
+              {unpaidPayments.length === 0 ? (
                 <tr>
                   <td colSpan={4} className="text-center text-gray-200">
                     {t(
@@ -67,7 +57,7 @@ export default function TablePationWithoutPay() {
                   </td>
                 </tr>
               ) : (
-                payments.map((p, i) => (
+                unpaidPayments.map((p, i) => (
                   <tr
                     key={i}
                     className="odd:bg-white even:bg-gray-100 hover:bg-purple-100 transition-colors"

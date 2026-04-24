@@ -1,47 +1,8 @@
-import { useAppSelector } from "@/lib/redux/hooks";
+import { TestuseAppSelector } from "@/lib/redux/hooks";
 import { IAppointment } from "@/lib/redux/modules/Appointments/Appointment.interface";
-import { IClient } from "@/lib/redux/modules/Clients/clients.interface";
-import { IWorker } from "@/lib/redux/modules/Workers/Workers.interface";
-import { createSelector } from "@reduxjs/toolkit";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
-export const selectAppointmentsWithDetails = createSelector(
-  [
-    (state) => state.appointments,
-    (state) => state.clients,
-    (state) => state.workers,
-  ],
-  (appointmentsObj, clientsObj, dentistsObj) => {
-    const appointments: IAppointment[] = Object.values(appointmentsObj ?? {});
-    const clients: IClient[] = Object.values(clientsObj ?? {});
-    const dentists: IWorker[] = Object.values(dentistsObj ?? {});
-    // межі сьогоднішнього дня
-    const today = new Date();
-    const startOfDay = new Date(today.setHours(0, 0, 0, 0));
-    const endOfDay = new Date(today.setHours(23, 59, 59, 999));
-    return appointments // фільтруємо лише ті, що сьогодні
-      .filter((appt) => {
-        const apptDate = new Date(appt.appointment_date);
-        return apptDate >= startOfDay && apptDate <= endOfDay;
-      }) // сортуємо від ранку до вечора
-      .sort(
-        (a, b) =>
-          new Date(a.appointment_date).getTime() -
-          new Date(b.appointment_date).getTime(),
-      )
-      .map((appt) => {
-        const client = clients.find(
-          (c) => c.id === (appt.client as unknown as number),
-        );
-        const dentist = dentists.find(
-          (d) => d.id === (appt.dentist as unknown as number),
-        );
-        console.log("app", appointments);
-        return { ...appt, client: client ?? null, dentist: dentist ?? null };
-      });
-  },
-);
 
 export default function TableUpcomingEntries() {
   const { t } = useTranslation();
@@ -50,8 +11,28 @@ export default function TableUpcomingEntries() {
     index: number;
   } | null>(null);
 
-  const appointments = useAppSelector(selectAppointmentsWithDetails);
+  // денормалізовані appointments напряму через TestuseAppSelector
+  const appointments = TestuseAppSelector<IAppointment[]>(
+    (state) => state.appointments
+  );
+  
+  // межі сьогоднішнього дня
+  const today = new Date();
+  const startOfDay = new Date(today.setHours(0, 0, 0, 0));
+  const endOfDay = new Date(today.setHours(23, 59, 59, 999));
 
+  // фільтруємо лише ті, що сьогодні
+  const todayAppointments = appointments
+    .filter((appt) => {
+      const apptDate = new Date(appt.appointment_date);
+      return apptDate >= startOfDay && apptDate <= endOfDay;
+    })
+    .sort(
+      (a, b) =>
+        new Date(a.appointment_date).getTime() -
+        new Date(b.appointment_date).getTime(),
+    );
+    
   return (
     <>
       <div className="w-auto h-fit mx-5 my-5 rounded-lg shadow-lg border border-gray-300">
@@ -61,12 +42,12 @@ export default function TableUpcomingEntries() {
 
         {/* показ Списку записів */}
         <ul className="divide-y divide-gray-200">
-          {appointments.length === 0 ? (
+          {todayAppointments.length === 0 ? (
             <li className="px-3 py-2 text-center text-gray-200">
               {t("reception.main.upcomins_entires.no_upcoming_entries")}
             </li>
           ) : (
-            appointments.map((task, index) => (
+            todayAppointments.map((task, index) => (
               <li
                 key={index}
                 className="relative grid grid-cols-[250px_1fr_200px] bg-white hover:bg-purple-50 transition-colors cursor-pointer"
