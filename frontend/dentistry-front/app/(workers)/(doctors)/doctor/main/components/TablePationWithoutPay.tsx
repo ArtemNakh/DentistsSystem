@@ -11,6 +11,7 @@ export default function TablePationWithoutPay() {
 
   const payments = TestuseAppSelector<IPayment[]>((state) => state.payments);
 
+  // console.log("appointm",payments)
   // фільтруємо лише ті, що не оплачені
   const unpaidPayments = payments.filter(
     (payment) => payment.status_paid !== StatusPayment.PAID,

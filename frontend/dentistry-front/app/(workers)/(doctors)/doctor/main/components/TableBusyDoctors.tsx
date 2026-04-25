@@ -8,7 +8,6 @@ export default function TableBusyDoctors() {
   const appointments = TestuseAppSelector<IAppointment[]>(
     (state) => state.appointments,
   );
-  
   const now = new Date();
 
   // фільтруємо лише ті прийоми, які йдуть прямо зараз

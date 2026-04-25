@@ -23,8 +23,12 @@ import { getAppointmentTodayDentistry } from "@/lib/redux/modules/Appointments/a
 
 export function AdminsMain() {
   const authUser = TestuseAppSelector<AuthState>((state) => state.auth);
-  const dispatch = useAppDispatch();
+//   const authUser = TestuseAppSelector<AuthState>((state) =>
+//   Object.values(state.auth ?? {})
+// );
 
+  const dispatch = useAppDispatch();
+console.log("auth",authUser)
   useEffect(() => {
     if (!authUser.user) return;
     (dispatch(
