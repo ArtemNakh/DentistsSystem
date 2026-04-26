@@ -1,4 +1,5 @@
 import { TestuseAppSelector, useAppSelector } from "@/lib/redux/hooks";
+import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
 import {
   IPayment,
   StatusPayment,
@@ -10,19 +11,26 @@ export default function TablePationWithoutPay() {
   const { t } = useTranslation();
 
   const payments = TestuseAppSelector<IPayment[]>((state) => state.payments);
+const authUser = TestuseAppSelector<AuthState>((state) => state.auth);
+
+
 
   // console.log("appointm",payments)
   // фільтруємо лише ті, що не оплачені
+  // const unpaidPayments = payments.filter(
+  //   (payment) => payment.status_paid !== StatusPayment.PAID,
+  // );
   const unpaidPayments = payments.filter(
-    (payment) => payment.status_paid !== StatusPayment.PAID,
-  );
-  
+  (payment) =>
+    payment.status_paid !== StatusPayment.PAID &&
+    payment.appointment?.dentist?.id === authUser.user?.id
+);
   return (
     <>
       <div className="mt-5 text-base  border-2  border-gray-450">
         <div className="flex items-center justify-center my-2">
           <h2 className="text-base text-center  font-bold ">
-            {t("reception.main.patient_without_paid.patient_without_paid_info")}
+            {t("doctor.main.patient_without_paid.patient_without_paid_info")}
           </h2>
         </div>
         {/* Лічильник */}
@@ -34,17 +42,17 @@ export default function TablePationWithoutPay() {
               <tr>
                 <th className="px-4 py-2 text-left font-semibold">
                   {" "}
-                  {t("reception.main.patient_without_paid.table.patient")}
+                  {t("doctor.main.patient_without_paid.table_name.patient")}
                 </th>
                 <th className="px-4 py-2 text-left font-semibold">
-                  {t("reception.main.patient_without_paid.table.amount")}
+                  {t("doctor.main.patient_without_paid.table_name.amount")}
                 </th>
                 <th className="px-4 py-2 text-left font-semibold">
-                  {t("reception.main.patient_without_paid.table.status")}
+                  {t("doctor.main.patient_without_paid.table_name.status")}
                 </th>
 
                 <th className="px-4 py-2 text-left font-semibold">
-                  {t("reception.main.patient_without_paid.table.date")}
+                  {t("doctor.main.patient_without_paid.table_name.date")}
                 </th>
               </tr>
             </thead>
@@ -53,7 +61,7 @@ export default function TablePationWithoutPay() {
                 <tr>
                   <td colSpan={4} className="text-center text-gray-200">
                     {t(
-                      "reception.main.patient_without_paid.today_without_unpaid",
+                      "doctor.main.patient_without_paid.today_without_unpaid",
                     )}
                   </td>
                 </tr>

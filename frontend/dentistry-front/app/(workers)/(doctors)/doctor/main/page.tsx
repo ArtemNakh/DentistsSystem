@@ -7,14 +7,11 @@ import {
 } from "@/lib/redux/hooks";
 import { useEffect } from "react";
 import TablePationWithoutPay from "./components/TablePationWithoutPay";
-import TableBusyDoctors from "./components/TableBusyDoctors";
+
 import TableUpcomingEntries from "./components/TableUpcominsEntries";
 import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
 import { getPaymentsDentistry } from "@/lib/redux/modules/Payments/actions/getAllPaymentsByDentisty/getAllPaymentsByDentistry";
-import { getAuthWorker } from "@/lib/redux/modules/AuthUser/actions/GetAuthWorker/GetAuthWorker";
-
 import { GetWorkersAppointmentStats } from "@/lib/redux/modules/ADMINS/Stats/WorkerStats/actions/GetWorkersStats/GetWorkersStats";
-import { createSelector } from "@reduxjs/toolkit";
 import TableWorkersStats from "./components/TableAppointmentsWorkers";
 import TableWorkersWeekend from "./components/TableWeekendWorkers";
 import { GetNumbersWorkersWeekend } from "@/lib/redux/modules/ADMINS/Stats/WeekendStats/actions/WeekendStats.entity";
@@ -23,12 +20,8 @@ import { getAppointmentTodayDentistry } from "@/lib/redux/modules/Appointments/a
 
 export function AdminsMain() {
   const authUser = TestuseAppSelector<AuthState>((state) => state.auth);
-//   const authUser = TestuseAppSelector<AuthState>((state) =>
-//   Object.values(state.auth ?? {})
-// );
 
   const dispatch = useAppDispatch();
-console.log("auth",authUser)
   useEffect(() => {
     if (!authUser.user) return;
     (dispatch(
@@ -84,7 +77,7 @@ console.log("auth",authUser)
                 </div>
                 <div className="h-1/2">
                   {/* Таблиця лікарів, які зараз оперують */}
-                  <TableBusyDoctors />
+                  {/* <TableBusyDoctors /> */}
                 </div>
                 <div className="h-1/2">
                   <TableWorkersWeekend />

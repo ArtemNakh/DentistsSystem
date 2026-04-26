@@ -362,6 +362,44 @@
         "licences": "Ліцензії",
         "worker_shifts": "Графік роботи"
       }
+    },
+    "main": {
+      "records_for_workers": {
+        "stats_numbers_records_info": "Статістика кількості записів (загальна)",
+        "table_name": {
+          "doctor": "Доктор",
+          "total": "Всього",
+          "planned": "Заплановано",
+          "complete": "Завершено",
+          "await_payment": "Очікує оплати",
+          "canceled": "Скасовано"
+        }
+      },
+
+      "patient_without_paid": {
+        "patient_without_paid_info": "Пацієнти без оплати",
+        "today_without_unpaid": "  На сьогодні немає неоплачених операцій",
+        "table_name": {
+          "patient": "Пацієнт",
+          "amount": "Сума",
+          "status": "Статус оплати",
+          "date": "Дата"
+        }
+      },
+      "upcomins_entires": {
+        "nearest_record": "Найближчі записи",
+        "no_upcoming_entries": "На сьогодні немає найближчих операцій",
+        "table_name": {
+          "doctor": "Доктор",
+          "patient": "Пацієнт",
+          "date": "Дата"
+        }
+      },
+      "worker_weekend":
+      {
+        "worker_weekend_info":" Кількість неробочих днів"
+        ,"table_name":{"doctor":"Доктор","un_work_days":"Неробочі дні"}
+      }
     }
   }
 }

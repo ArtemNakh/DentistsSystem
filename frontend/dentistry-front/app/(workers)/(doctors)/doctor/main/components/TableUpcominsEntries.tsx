@@ -3,7 +3,6 @@ import { IAppointment } from "@/lib/redux/modules/Appointments/Appointment.inter
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
-
 export default function TableUpcomingEntries() {
   const { t } = useTranslation();
   const [selectedTask, setSelectedTask] = useState<{
@@ -13,9 +12,9 @@ export default function TableUpcomingEntries() {
 
   // денормалізовані appointments напряму через TestuseAppSelector
   const appointments = TestuseAppSelector<IAppointment[]>(
-    (state) => state.appointments
+    (state) => state.appointments,
   );
-  
+
   // межі сьогоднішнього дня
   const today = new Date();
   const startOfDay = new Date(today.setHours(0, 0, 0, 0));
@@ -32,60 +31,67 @@ export default function TableUpcomingEntries() {
         new Date(a.appointment_date).getTime() -
         new Date(b.appointment_date).getTime(),
     );
-    
+
   return (
-    <>
-      <div className="w-auto h-fit mx-5 my-5 rounded-lg shadow-lg border border-gray-300">
-        <h1 className="text-center text-base    bg-linear-to-r from-[#874FD1] to-[#6F6697] text-white py-3">
-          {t("reception.main.upcomins_entires.nearest_record")}
-        </h1>
+    <div className="w-auto h-fit  mx-5 my-5 rounded-lg shadow-lg border border-gray-300">
+      <h1 className="text-center  bg-linear-to-r from-[#874FD1] to-[#6F6697] text-white py-3">
+        {t("doctor.main.upcomins_entires.nearest_record")}
+      </h1>
 
-        {/* показ Списку записів */}
-        <ul className="divide-y divide-gray-200">
-          {todayAppointments.length === 0 ? (
-            <li className="px-3 py-2 text-center text-gray-200">
-              {t("reception.main.upcomins_entires.no_upcoming_entries")}
-            </li>
-          ) : (
-            todayAppointments.map((task, index) => (
-              <li
-                key={index}
-                className="relative grid grid-cols-[250px_1fr_200px] bg-white hover:bg-purple-50 transition-colors cursor-pointer"
-                onClick={() =>
-                  selectedTask?.index === index
-                    ? setSelectedTask(null)
-                    : setSelectedTask({ action: task.notes, index })
-                }
-              >
-                <span className="px-3 py-2 font-semibold text-gray-900">
-                  {task.dentist?.surname} {task.dentist?.name}{" "}
-                  {task.dentist?.middle_name}
-                </span>
-                <span className="px-3 py-2 text-gray-700">
-                  {task.client?.surname} {task.client?.name}{" "}
-                  {task.client?.middle_name}
-                </span>
-                <span className="px-3 py-2 text-gray-700">
-                  {new Date(task.appointment_date).toLocaleString("uk-UA", {
-                    year: "numeric",
-                    month: "2-digit",
-                    day: "2-digit",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
-                </span>
-
-                {/* маленьке модальне вікно напроти вибраного рядка */}
-                {selectedTask && selectedTask.index === index && (
-                  <div className="absolute top-0  left-full overflow-visible w-36 ml-2 border-2 border-gray-500 bg-gray-100 text-gray-900 rounded-md shadow-lg px-3 py-2 text-base ">
-                    {selectedTask.action}
-                  </div>
-                )}
-              </li>
-            ))
-          )}
-        </ul>
+      <div className="max-h-96  overflow-y-auto border-t border-gray-200">
+        <table className="min-w-full border-collapse rounded-lg shadow-lg overflow-hidden">
+          <thead className="bg-linear-to-r from-[#874FD1] to-[#6F6697] text-white">
+            <tr>
+              <th className="px-4 py-2 text-left font-semibold">
+                {t("doctor.main.upcomins_entires.table_name.doctor")}
+              </th>
+              <th className="px-4 py-2 text-left font-semibold">
+                {t("doctor.main.upcomins_entires.table_name.patient")}
+              </th>
+              <th className="px-4 py-2 text-left font-semibold">
+                {t("doctor.main.upcomins_entires.table_name.date")}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {todayAppointments.length === 0 ? (
+              <tr>
+                <td colSpan={3} className="text-center text-gray-200 py-2">
+                  {t("doctor.main.upcomins_entires.no_upcoming_entries")}
+                </td>
+              </tr>
+            ) : (
+              todayAppointments.map((task, index) => (
+                <tr
+                  key={index}
+                  className="odd:bg-gray-50 even:bg-gray-100 hover:bg-purple-200 transition-colors cursor-pointer"
+                  onClick={() =>
+                    selectedTask?.index === index
+                      ? setSelectedTask(null)
+                      : setSelectedTask({ action: task.notes, index })
+                  }
+                >
+                  <td className="px-4 py-2 text-gray-900">
+                    {task.dentist?.surname} {task.dentist?.name}
+                  </td>
+                  <td className="px-4 py-2 text-gray-700">
+                    {task.client?.surname} {task.client?.name}
+                  </td>
+                  <td className="px-4 py-2 text-gray-700">
+                    {new Date(task.appointment_date).toLocaleString("uk-UA", {
+                      year: "numeric",
+                      month: "2-digit",
+                      day: "2-digit",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
       </div>
-    </>
+    </div>
   );
 }
