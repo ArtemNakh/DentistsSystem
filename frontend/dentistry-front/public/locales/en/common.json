@@ -341,5 +341,56 @@
         "history_operation": "Operation History"
       }
     }
+  },
+  "doctor": {
+    "header_side": {
+      "pages": {
+        "calendar": "Calendar",
+        "payment": "Payment",
+        "history_operation": "Operation History",
+        "licences": "Licenses",
+        "worker_shifts": "Work Schedule"
+      }
+    },
+    "main": {
+      "records_for_workers": {
+        "stats_numbers_records_info": "Statistics of Number of Records (General)",
+        "table_name": {
+          "doctor": "Doctor",
+          "total": "Total",
+          "planned": "Planned",
+          "complete": "Completed",
+          "await_payment": "Awaiting Payment",
+          "canceled": "Canceled"
+        }
+      },
+
+      "patient_without_paid": {
+        "patient_without_paid_info": "Patients Without Payment",
+        "today_without_unpaid": "No unpaid operations today",
+        "table_name": {
+          "patient": "Patient",
+          "amount": "Amount",
+          "status": "Payment Status",
+          "date": "Date"
+        }
+      },
+      "upcomins_entires": {
+        "nearest_record": "Upcoming Records",
+        "no_upcoming_entries": "No upcoming operations today",
+        "table_name": {
+          "doctor": "Doctor",
+          "patient": "Patient",
+          "date": "Date"
+        }
+      },
+      "worker_weekend": {
+        "worker_weekend_info": "Number of Days Off",
+        "table_name": {
+          "doctor": "Doctor",
+          "un_work_days": "Days Off"
+        }
+      }
+    }
   }
 }

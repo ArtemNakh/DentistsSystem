@@ -27,7 +27,7 @@ export default function TableWorkersWeekend() {
   return (
     <div className="mt-8  border-2  border-gray-450 ">
       <h1 className="text-center text-base bg-linear-to-r from-[#874FD1] to-[#6F6697] text-white py-3">
-        {t("doctor.main.worker_weekend.title")}
+        {t("doctor.main.worker_weekend.worker_weekend_info")}
       </h1>
 
       <div className="max-h-96 border-2 border-gray-400 overflow-y-auto">
