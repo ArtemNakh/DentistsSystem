@@ -391,6 +391,45 @@
           "un_work_days": "Days Off"
         }
       }
+    },
+    "workers_shifts": {
+      "workers_shifts_info": "Dental clinic staff / work schedule",
+      "table_name": {
+        "name": "First name",
+        "middle_name": "Middle name",
+        "surname": "Last name",
+        "specialization/type": "Specialization/Type",
+        "birthday": "Date of birth",
+        "phone": "Phone",
+        "status_acc": "Account status"
+      },
+      "table_value": {
+        "state_account": { "active": "Active", "inactive": "Inactive" }
+      },
+      "shifts": {
+        "name": "Shifts",
+        "delete": "Delete",
+        "value_shift": "Shift",
+        "add_shift": "Add shift"
+      },
+      "adding_new_shift": {
+        "name": "New shift",
+        "form_field": {
+          "date_shift": "Shift date",
+          "time_start": "Start time",
+          "time_end": "End time"
+        },
+        "validation_error": {
+          "id_worker_need": "Worker ID is required",
+          "date_must_be": "Shift date is required",
+          "date_not_past": "Date cannot be in the past",
+          "time_start_must_be": "Start time is required",
+          "time_end_must_be": "End time is required",
+          "time_end_early_start": "End time must be later than start time"
+        },
+        "save": "Save",
+        "cancelled": "Cancel"
+      }
     }
   }
 }

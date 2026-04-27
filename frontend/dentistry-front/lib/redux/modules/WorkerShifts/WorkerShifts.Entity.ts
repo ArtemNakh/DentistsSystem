@@ -22,7 +22,9 @@ export class WorkerShiftsEntity extends BaseEntity {
       worker: new schema.Entity(EntitiesRedux.Workers),
     });
   }
-
+ // Статичне поля для отримання схеми
+  static schema = new WorkerShiftsEntity(null).getSchema();
+  
   *getShiftsToWorkerSaga(action: ShiftsWorkerAction) {
     const { idWorker } = action.payload;
     yield call(

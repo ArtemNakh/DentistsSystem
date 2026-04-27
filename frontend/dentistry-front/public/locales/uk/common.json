@@ -395,10 +395,48 @@
           "date": "Дата"
         }
       },
-      "worker_weekend":
-      {
-        "worker_weekend_info":" Кількість неробочих днів"
-        ,"table_name":{"doctor":"Доктор","un_work_days":"Неробочі дні"}
+      "worker_weekend": {
+        "worker_weekend_info": " Кількість неробочих днів",
+        "table_name": { "doctor": "Доктор", "un_work_days": "Неробочі дні" }
+      }
+    },
+    "workers_shifts": {
+      "workers_shifts_info": "Працівники стоматології / графік роботи",
+      "table_name": {
+        "name": "Ім'я",
+        "middle_name": "По-батькові",
+        "surname": "Фамілія",
+        "specialization/type": "Спеціалізація/Тип",
+        "birthday": "День народження",
+        "phone": "Телефон",
+        "status_acc": "Статус аккаунта"
+      },
+      "table_value": {
+        "state_account": { "active": "Активний", "inactive": "Неактивний" }
+      },
+      "shifts": {
+        "name": "Зміни",
+        "delete": "Видалити",
+        "value_shift": "Зміна",
+        "add_shift": "Додати зміну"
+      },
+      "adding_new_shift": {
+        "name": "Нові зміна",
+        "form_field": {
+          "date_shift": "Дата зміни",
+          "time_start": "Час початку",
+          "time_end": "Час завершення"
+        },
+        "validation_error": {
+          "id_worker_need": "ID працівника обовʼязковий",
+          "date_must_be": "Дата зміни обовʼязкова",
+          "date_not_past": "Дата не може бути в минулому",
+          "time_start_must_be": "Час початку обовʼязковий",
+          "time_end_must_be": "Час завершення обовʼязковий",
+          "time_end_early_start": "Час завершення повинен бути пізніше за час початку"
+        },
+        "save": "Зберегти",
+        "cancelled": "Скасовати"
       }
     }
   }
