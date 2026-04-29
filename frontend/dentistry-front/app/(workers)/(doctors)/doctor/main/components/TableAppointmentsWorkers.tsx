@@ -1,14 +1,14 @@
 "use client";
-import { TestuseAppSelector } from "@/lib/redux/hooks";
+import { UseDenormalizeSelector } from "@/lib/redux/hooks";
 import { useTranslation } from "react-i18next";
 import { IWorkerStats } from "@/lib/redux/modules/ADMINS/Stats/WorkerStats/IWorkerStats.interface";
 import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
 
 export default function TableWorkersStats() {
   const { t } = useTranslation();
-const authUser = TestuseAppSelector<AuthState>((state) => state.auth);
+const authUser = UseDenormalizeSelector<AuthState>((state) => state.auth);
 
-let stats = TestuseAppSelector<IWorkerStats[]>(
+let stats = UseDenormalizeSelector<IWorkerStats[]>(
   (state) => state.workerStats,
 );
 

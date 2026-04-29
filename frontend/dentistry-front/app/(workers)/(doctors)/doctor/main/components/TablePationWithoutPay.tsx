@@ -1,4 +1,4 @@
-import { TestuseAppSelector, useAppSelector } from "@/lib/redux/hooks";
+import { UseDenormalizeSelector, useAppSelector } from "@/lib/redux/hooks";
 import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
 import {
   IPayment,
@@ -10,8 +10,8 @@ import { useTranslation } from "react-i18next";
 export default function TablePationWithoutPay() {
   const { t } = useTranslation();
 
-  const payments = TestuseAppSelector<IPayment[]>((state) => state.payments);
-const authUser = TestuseAppSelector<AuthState>((state) => state.auth);
+  const payments = UseDenormalizeSelector<IPayment[]>((state) => state.payments);
+const authUser = UseDenormalizeSelector<AuthState>((state) => state.auth);
 
 
 

@@ -1,4 +1,4 @@
-import { TestuseAppSelector } from "@/lib/redux/hooks";
+import { UseDenormalizeSelector } from "@/lib/redux/hooks";
 import { IAppointment } from "@/lib/redux/modules/Appointments/Appointment.interface";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -11,7 +11,7 @@ export default function TableUpcomingEntries() {
   } | null>(null);
 
   // денормалізовані appointments напряму через TestuseAppSelector
-  const appointments = TestuseAppSelector<IAppointment[]>(
+  const appointments = UseDenormalizeSelector<IAppointment[]>(
     (state) => state.appointments,
   );
 

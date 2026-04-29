@@ -1,5 +1,5 @@
 "use client";
-import { TestuseAppSelector } from "@/lib/redux/hooks";
+import { UseDenormalizeSelector } from "@/lib/redux/hooks";
 import { useTranslation } from "react-i18next";
 import { IWorker } from "@/lib/redux/modules/Workers/Workers.interface";
 import { IWorkerWeekend } from "@/lib/redux/modules/ADMINS/Stats/WeekendStats/WeekendStats.interface";
@@ -15,11 +15,11 @@ export interface IWorkerWeekendWithWorker extends Omit<
 export default function TableWorkersWeekend() {
   const { t } = useTranslation();
 
-  let weekendStats = TestuseAppSelector<IWorkerWeekend[]>(
+  let weekendStats = UseDenormalizeSelector<IWorkerWeekend[]>(
     (state) => state.workersWeekend,
   );
 
-  const authUser = TestuseAppSelector<AuthState>((state) => state.auth);
+  const authUser = UseDenormalizeSelector<AuthState>((state) => state.auth);
 
   // робимо масив тільки з одним елементом
   weekendStats = weekendStats.filter((s) => s.worker?.id === authUser.user?.id);

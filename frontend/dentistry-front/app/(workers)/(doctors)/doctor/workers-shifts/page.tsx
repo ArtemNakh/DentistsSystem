@@ -1,7 +1,7 @@
 "use client";
 
 import {
-  TestuseAppSelector,
+  UseDenormalizeSelector,
   useAppDispatch,
   useAppSelector,
 } from "@/lib/redux/hooks";
@@ -17,9 +17,9 @@ import { useTranslation } from "react-i18next";
 export default function WorkersShiftsTable() {
   const { t } = useTranslation();
   const auth = useAppSelector((state: { auth: AuthState }) => state.auth);
-  const workersObj = TestuseAppSelector((state) => state.workers);
+  const workersObj = UseDenormalizeSelector((state) => state.workers);
   const workers: IWorker[] = Object.values(workersObj ?? {});
-  const shiftsObj = TestuseAppSelector((state) => state.workerShifts);
+  const shiftsObj = UseDenormalizeSelector((state) => state.workerShifts);
   const shifts: IWorkerShifts[] = Object.values(shiftsObj ?? {});
 
   const [expandedWorkerId, setExpandedWorkerId] = useState<number | null>(null);

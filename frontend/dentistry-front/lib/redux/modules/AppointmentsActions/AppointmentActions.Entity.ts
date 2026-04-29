@@ -29,6 +29,7 @@ export class AppointmentActionsEntity extends BaseEntity {
       }),
     });
   }
+  static schema = new AppointmentActionsEntity(null).getSchema();
 
   *CompleteAppointmentSaga(action: CompleteAppointmentActionsAction) {
     const payload = action.payload;

@@ -1,7 +1,7 @@
 "use client";
 
 import {
-  TestuseAppSelector,
+  UseDenormalizeSelector,
   useAppDispatch,
   useAppSelector,
 } from "@/lib/redux/hooks";
@@ -14,13 +14,13 @@ import { GetWorkerById } from "@/lib/redux/modules/Workers/actions/GetWorkerById
 import { GetLicensesWorker } from "@/lib/redux/modules/Licenses/actions/GetLicensesWorker/GetLicensesWorker";
 
 export default function WorkersTable() {
-  const workersObj = TestuseAppSelector((state: RootState) => state.workers);
+  const workersObj = UseDenormalizeSelector((state: RootState) => state.workers);
   const workers: IWorker[] = Object.values(workersObj ?? {});
 
   const auth = useAppSelector((state: { auth: AuthState }) => state.auth);
   console.log("auth", auth);
 
-  const licensesObj = TestuseAppSelector((state: RootState) => state.licenses);
+  const licensesObj = UseDenormalizeSelector((state: RootState) => state.licenses);
   const licenses: ILicense[] = Object.values(licensesObj ?? {});
 
   const dispatch = useAppDispatch();

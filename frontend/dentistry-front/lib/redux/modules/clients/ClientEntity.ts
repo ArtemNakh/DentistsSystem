@@ -21,6 +21,8 @@ export class ClientEntity extends BaseEntity {
     super(ctx, EntitiesRedux.Clients, {});
   }
 
+static schema = new ClientEntity(null).getSchema();
+  
   /**Get and save videos */
   *getClientSaga(action: GetClientAction) {
     yield call(this.xRead.bind(this), `/clients/test/all`, ActionReducer.Get);

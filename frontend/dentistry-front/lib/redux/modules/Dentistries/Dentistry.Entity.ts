@@ -11,7 +11,8 @@ export class DentistryEntity extends BaseEntity {
   constructor(ctx: any) {
     super(ctx, EntitiesRedux.Dentistries, {});
   }
-
+static schema = new DentistryEntity(null).getSchema();
+  
   /**Listener saga actions */
   *watch() {}
 }

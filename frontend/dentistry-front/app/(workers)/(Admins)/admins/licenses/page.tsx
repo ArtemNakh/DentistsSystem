@@ -140,7 +140,7 @@
 "use client";
 
 import {
-  TestuseAppSelector,
+  UseDenormalizeSelector,
   useAppDispatch,
   useAppSelector,
 } from "@/lib/redux/hooks";
@@ -157,12 +157,12 @@ import ListLicensesWorker from "./components/ModalView/ListLicenses/ListLicenses
 import React from "react";
 
 export default function WorkersTable() {
-  const workersObj = TestuseAppSelector((state) => state.workers);
+  const workersObj = UseDenormalizeSelector((state) => state.workers);
   const workers: IWorker[] = Object.values(workersObj ?? {});
  const auth = useAppSelector((state: { auth: AuthState }) => state.auth);
 
   const [expandedWorkerId, setExpandedWorkerId] = useState<number | null>(null);
-  const licensesObj = TestuseAppSelector((state) => state.licenses);
+  const licensesObj = UseDenormalizeSelector((state) => state.licenses);
   const licenses: ILicense[] = Object.values(licensesObj ?? {});
 
   const dispatch = useAppDispatch();

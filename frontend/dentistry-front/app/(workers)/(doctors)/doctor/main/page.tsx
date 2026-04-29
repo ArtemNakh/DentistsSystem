@@ -1,7 +1,7 @@
 "use client";
 
 import {
-  TestuseAppSelector,
+  UseDenormalizeSelector,
   useAppDispatch,
 } from "@/lib/redux/hooks";
 import { useEffect } from "react";
@@ -18,7 +18,7 @@ import { getAppointmentNearestTodayDentistry } from "@/lib/redux/modules/Appoint
 import { getAppointmentTodayDentistry } from "@/lib/redux/modules/Appointments/actions/GetTodayOperationByDentistry/GetTodayOperationByDentistry";
 
 export function AdminsMain() {
-  const authUser = TestuseAppSelector<AuthState>((state) => state.auth);
+  const authUser = UseDenormalizeSelector<AuthState>((state) => state.auth);
 
   const dispatch = useAppDispatch();
   useEffect(() => {

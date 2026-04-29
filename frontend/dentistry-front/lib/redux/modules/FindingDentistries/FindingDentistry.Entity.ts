@@ -13,7 +13,8 @@ export class FindingDentistryEntity extends BaseEntity {
   constructor(ctx: any) {
     super(ctx, EntitiesRedux.FindingDentistries, {});
   }
-
+static schema = new FindingDentistryEntity(null).getSchema();
+  
  *GetDentistriesByCitySaga(action: GetDentistriesByCityAction) {
   yield call(
     this.xRead.bind(this), // для GET краще xRead

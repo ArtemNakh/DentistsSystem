@@ -20,7 +20,8 @@ export class FindingWorkerEntity extends BaseEntity {
       dentistry: new schema.Entity(EntitiesRedux.Dentistries),
     });
   }
-
+static schema = new FindingWorkerEntity(null).getSchema();
+  
   *GetWorkersByFullNameSaga(action: GetWorkersByFullName) {
     yield call(
       this.xRead.bind(this), // для GET краще xRead

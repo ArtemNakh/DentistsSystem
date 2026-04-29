@@ -14,6 +14,7 @@ export class OperationListEntity extends BaseEntity {
     });
   }
 
+  static schema = new OperationListEntity(null).getSchema();
   
 
   *watch() {

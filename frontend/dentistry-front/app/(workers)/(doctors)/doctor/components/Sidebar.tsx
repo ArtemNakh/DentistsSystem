@@ -20,7 +20,7 @@ export default function SideBarAdmins({ items, onClose }: SideBarAdminsProps) {
           <div className="w-full h-full  mr-5">
             <Link
               className="block w-full h-full text-base font-bold"
-              href="/reception/main"
+              href="/doctor/main"
             >
               {t("reception.header_side.pages.menu")}
             </Link>

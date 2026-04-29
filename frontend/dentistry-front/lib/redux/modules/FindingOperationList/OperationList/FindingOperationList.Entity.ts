@@ -18,7 +18,8 @@ export class FindingOperationListEntity extends BaseEntity {
       appointment_action: [new schema.Entity(EntitiesRedux.AppointmentActions)],
     });
   }
-
+static schema = new FindingOperationListEntity(null).getSchema();
+  
   *GetOperationListByTitleSaga(action: GetActionsByTitle) {
     yield call(
       this.xRead.bind(this), // для GET краще xRead

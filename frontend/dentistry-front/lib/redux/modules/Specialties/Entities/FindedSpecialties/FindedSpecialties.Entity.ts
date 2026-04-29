@@ -14,7 +14,8 @@ export class FindingSpecialtyEntity extends BaseEntity {
   constructor(ctx: any) {
     super(ctx, EntitiesRedux.FindingSpecialties, {});
   }
-
+static schema = new FindingSpecialtyEntity(null).getSchema();
+  
   *GetByNameSaga(action: GetSpecialtiesByName) {
     yield call(
       this.xRead.bind(this), // для GET краще xRead
