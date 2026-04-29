@@ -46,7 +46,7 @@ export default function CreateWorkerShiftModal({
         start_time: "",
         end_time: "",
       }}
-      validationSchema={CreateWorkerShiftSchema}
+      validationSchema={CreateWorkerShiftSchema(t)}
       onSubmit={onSubmit}
     >
       {({ errors, touched }) => (
