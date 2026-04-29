@@ -1,6 +1,20 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { LicenseService } from './license.service';
-import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiOperation,
+  ApiParam,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { CreateLicenseDto } from './dto/CreateLicense.dto';
 import { LicenseResponseDto } from './dto/Response/CreateLicense.response.dto';
 import { License } from './entities/license.entity';
@@ -11,17 +25,20 @@ import { UpdateLicenseDto } from './dto/UpdateLicense.dto';
 @Controller('license')
 export class LicenseController {
   constructor(private readonly licenseService: LicenseService) {}
-  
+
   @Get('test/all')
   findAll() {
     return this.licenseService.findAll();
   }
 
-
   @Post('create')
   @ApiOperation({ summary: 'Створити нову ліцензію' })
   @ApiBody({ type: CreateLicenseDto })
-  @ApiResponse({ status: 201, description: 'Ліцензію успішно створено', type: LicenseResponseDto })
+  @ApiResponse({
+    status: 201,
+    description: 'Ліцензію успішно створено',
+    type: LicenseResponseDto,
+  })
   createLicense(@Body() dto: CreateLicenseDto): Promise<ILicense> {
     return this.licenseService.createLicense(dto);
   }
@@ -30,9 +47,16 @@ export class LicenseController {
   @ApiOperation({ summary: 'Оновити ліцензію' })
   @ApiParam({ name: 'id', description: 'ID ліцензії', type: Number })
   @ApiBody({ type: UpdateLicenseDto })
-  @ApiResponse({ status: 200, description: 'Ліцензію успішно оновлено', type: LicenseResponseDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Ліцензію успішно оновлено',
+    type: LicenseResponseDto,
+  })
   @ApiResponse({ status: 404, description: 'Ліцензію не знайдено' })
-  updateLicense(@Param('id') id: number, @Body() dto: UpdateLicenseDto): Promise<ILicense> {
+  updateLicense(
+    @Param('id') id: number,
+    @Body() dto: UpdateLicenseDto,
+  ): Promise<ILicense> {
     return this.licenseService.updateLicense(id, dto);
   }
 
@@ -41,15 +65,32 @@ export class LicenseController {
   @ApiParam({ name: 'id', description: 'ID ліцензії', type: Number })
   @ApiResponse({ status: 200, description: 'Ліцензію успішно видалено' })
   @ApiResponse({ status: 404, description: 'Ліцензію не знайдено' })
-  removeLicense(@Param('id') id: number): Promise<{ success: boolean; message: string }> {
+  removeLicense(
+    @Param('id') id: number,
+  ): Promise<{ success: boolean; message: string }> {
     return this.licenseService.removeLicense(id);
   }
 
   @Get('dentistry/:dentistryId')
   @ApiOperation({ summary: 'Отримати всі ліцензії для стоматології' })
-  @ApiParam({ name: 'dentistryId', description: 'ID стоматології', type: Number })
+  @ApiParam({
+    name: 'dentistryId',
+    description: 'ID стоматології',
+    type: Number,
+  })
   @ApiResponse({ status: 200, description: 'Список ліцензій стоматології' })
   async getLicensesByDentistry(@Param('dentistryId') dentistryId: number) {
     return this.licenseService.getLicensesByDentistry(dentistryId);
+  }
+
+  @Get('worker/:workerId')
+  @ApiOperation({ summary: 'Отримати всі ліцензії працівника за його ID' })
+  @ApiParam({ name: 'workerId', description: 'ID працівника', type: Number })
+  @ApiResponse({ status: 200, description: 'Ліцензії знайдено' })
+  @ApiResponse({ status: 404, description: 'Працівника не знайдено' })
+  async getLicensesByWorkerId(
+    @Param('workerId') workerId: number,
+  ): Promise<License[]> {
+    return this.licenseService.getLicensesByWorkerId(workerId);
   }
 }

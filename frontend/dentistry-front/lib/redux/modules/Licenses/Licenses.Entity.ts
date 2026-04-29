@@ -9,11 +9,13 @@ import {
   RemoveLicense,
   RemoveLicensePayload,
 } from "./actions/RemoveLicense/RemoveLicense";
+import { GetLicensesWorker } from "./actions/GetLicensesWorker/GetLicensesWorker";
 
 export enum LicensesActionSaga {
   GetLicensesWorkers = "licenses/getToWorkers",
   CreateLicense = "licenses/create",
   RemoveLicense = "licenses/remove",
+  GetByIdWorker = "licenses/GetLicensesWorker",
 }
 
 @EntityReducer(EntitiesRedux.Licenses)
@@ -25,6 +27,7 @@ export class LicensesEntity extends BaseEntity {
       }),
     });
   }
+  static schema = new LicensesEntity(null).getSchema();
 
   *GetLicensesWorkersSaga(action: GetLicensesWorkers) {
     const { dentistryId } = action.payload;
@@ -49,7 +52,21 @@ export class LicensesEntity extends BaseEntity {
 
   *RemoveLicenseSaga(action: RemoveLicense) {
     const { id } = action.payload;
-    yield call(this.xDelete.bind(this), `/license/${id}`, id, ActionReducer.Delete);
+    yield call(
+      this.xDelete.bind(this),
+      `/license/${id}`,
+      id,
+      ActionReducer.Delete,
+    );
+  }
+
+  *GetLicencesWorkerByIdSaga(action: GetLicensesWorker) {
+    const { workerId } = action.payload;
+    yield call(
+      this.xRead.bind(this),
+      `/license/worker/${workerId}`,
+      ActionReducer.Get,
+    );
   }
   *watch() {
     yield takeLatest(
@@ -65,6 +82,11 @@ export class LicensesEntity extends BaseEntity {
     yield takeLatest(
       LicensesActionSaga.RemoveLicense,
       this.RemoveLicenseSaga.bind(this),
+    );
+
+    yield takeLatest(
+      LicensesActionSaga.GetByIdWorker,
+      this.GetLicencesWorkerByIdSaga.bind(this),
     );
   }
 }

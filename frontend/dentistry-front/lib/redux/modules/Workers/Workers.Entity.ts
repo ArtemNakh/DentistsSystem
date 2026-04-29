@@ -8,13 +8,14 @@ import { SaveWorkersToReduxAction } from "./actions/SaveWorkersRedux/SaveWorkers
 import { CreateWorkerAction } from "./actions/CreateWorker/CreateWorker";
 import { DeActiveWorkerAction } from "./actions/DeActiveWorker/DeActiveWorker";
 import { UpdateWorkerAction } from "./actions/UpdateWorker/UpdateWorker";
+import { GetWorkerByIdAction } from "./actions/GetWorkerById/getWorkerById";
 
 export enum WorkerActionSaga {
   GetWorkersDentistry = "Worker/getByDentistry",
   SaveWorkers = "Worker/saveWorkers",
   CreateWorker = "Worker/create",
   UpdateWorker = "Worker/update",
-
+  GetWorkerById = "Worker/getById",
   DeActive = "Worker/deActive",
 }
 
@@ -26,6 +27,8 @@ export class WorkerEntity extends BaseEntity {
       dentistry: new schema.Entity(EntitiesRedux.Dentistries),
     });
   }
+  // Статичне поля для отримання схеми
+  static schema = new WorkerEntity(null).getSchema();
 
   *getDoctorsDentistSaga(action: WorkersDentistryAction) {
     const { idDentistry } = action.payload;
@@ -51,7 +54,7 @@ export class WorkerEntity extends BaseEntity {
   }
 
   *UpdateWorkerSaga(action: UpdateWorkerAction) {
-     const { id } = action.payload;
+    const { id } = action.payload;
     yield call(
       this.xUpdate.bind(this),
       `/workers/${id}`,
@@ -69,6 +72,16 @@ export class WorkerEntity extends BaseEntity {
       ActionReducer.Delete,
     );
   }
+
+   *getDoctorByIdSaga(action: GetWorkerByIdAction) {
+    const { id } = action.payload;
+    yield call(
+      this.xRead.bind(this),
+      `/workers/by-id/${id}`,
+      ActionReducer.Get,
+    );
+  }
+
 
   *watch() {
     yield takeLatest(
@@ -90,6 +103,10 @@ export class WorkerEntity extends BaseEntity {
     yield takeLatest(
       WorkerActionSaga.UpdateWorker,
       this.UpdateWorkerSaga.bind(this),
+    );
+    yield takeLatest(
+      WorkerActionSaga.GetWorkerById,
+      this.getDoctorByIdSaga.bind(this),
     );
   }
 }

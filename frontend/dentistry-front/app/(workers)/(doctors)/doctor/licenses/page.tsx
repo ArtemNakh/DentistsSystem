@@ -1,138 +1,141 @@
 "use client";
 
-import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
+import {
+  TestuseAppSelector,
+  useAppDispatch,
+  useAppSelector,
+} from "@/lib/redux/hooks";
 import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
-import { IDentistry } from "@/lib/redux/modules/Dentistries/Dentistry.interface";
-import { GetLicensesWorkers } from "@/lib/redux/modules/Licenses/actions/GetAllLicensesWorkers/GetAllLicensesWorkers";
 import { ILicense } from "@/lib/redux/modules/Licenses/Licenses.interface";
-import { ISpecialty } from "@/lib/redux/modules/Specialties/Entities/Specialties/Specialties.interface";
 import { IWorker } from "@/lib/redux/modules/Workers/Workers.interface";
 import { RootState } from "@/lib/redux/store";
-import { createSelector } from "@reduxjs/toolkit";
-import { useEffect, useState } from "react";
-import ListLicensesWorker from "./components/ModalView/ListLicenses/ListLicensesWorker";
-import React from "react";
+import { useEffect } from "react";
+import { GetWorkerById } from "@/lib/redux/modules/Workers/actions/GetWorkerById/getWorkerById";
+import { GetLicensesWorker } from "@/lib/redux/modules/Licenses/actions/GetLicensesWorker/GetLicensesWorker";
 
-export const DenormalizeLicenses = createSelector(
-  [
-    (state: RootState) => state.licenses,
-    (state: RootState) => state.workers,
-    (state: RootState) => state.specialties,
-  ],
-  (licensesObj, workersObj, specialtiesObj) => {
-    const licenses: ILicense[] = Object.values(licensesObj ?? {});
-    const workers: IWorker[] = Object.values(workersObj ?? {});
-
-    return licenses.map((lic) => {
-      const workerObj = workers.find((w) => w.id === (lic.worker as any))!;
-      return {
-        ...lic,
-        worker: workerObj,
-        issue_date: new Date(lic.issue_date),
-        expiration_date: new Date(lic.expiration_date),
-        created_at: new Date(lic.created_at),
-        updated_at: new Date(lic.updated_at),
-      };
-    });
-  },
-);
-
-export const DenormalizeWorkers = createSelector(
-  [
-    (state: RootState) => state.workers,
-    (state: RootState) => state.specialties,
-    (state: RootState) => state.dentistries,
-  ],
-  (workersObj, specialtiesObj, dentistriesObj) => {
-    const workers: IWorker[] = Object.values(workersObj ?? {});
-    const specialties: ISpecialty[] = Object.values(specialtiesObj ?? {});
-    const dentistries: IDentistry[] = Object.values(dentistriesObj ?? {});
-
-    return workers.map((w) => {
-      const specialty = specialties.find((s) => s.id === (w.specialty as any))!;
-
-      const dentistry = dentistries.find((d) => d.id === (w.dentistry as any))!;
-
-      return { ...w, specialty, dentistry };
-    });
-  },
-);
 export default function WorkersTable() {
-  const workers = useAppSelector(DenormalizeWorkers);
-  const auth = useAppSelector((state: { auth: AuthState }) => state.auth);
+  const workersObj = TestuseAppSelector((state: RootState) => state.workers);
+  const workers: IWorker[] = Object.values(workersObj ?? {});
 
-  const [expandedWorkerId, setExpandedWorkerId] = useState<number | null>(null);
-  // const licensesObj = useAppSelector((state: RootState) => state.licenses);
-  // const licenses = Object.values<ILicense>(licensesObj ?? {});
-  const licenses = useAppSelector(DenormalizeLicenses);
+  const auth = useAppSelector((state: { auth: AuthState }) => state.auth);
+  console.log("auth", auth);
+
+  const licensesObj = TestuseAppSelector((state: RootState) => state.licenses);
+  const licenses: ILicense[] = Object.values(licensesObj ?? {});
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (auth.user?.dentistry?.id) {
-      dispatch(GetLicensesWorkers({ dentistryId: auth.user.dentistry.id }));
+    if (auth.user?.id) {
+      dispatch(GetWorkerById({ id: auth.user.id }));
     }
   }, [dispatch, auth.user]);
 
+  useEffect(() => {
+    if (auth.user?.id) {
+      dispatch(GetLicensesWorker({ workerId: auth.user.id }));
+    }
+  }, [dispatch, auth.user]);
+
+  console.log("workers", workers);
+
+  const currentWorker = workers.find((w) => w.id === auth.user?.id);
+
+  if (!currentWorker) {
+    return (
+      <div className="p-4 text-center text-gray-300">
+        Немає даних для поточного користувача
+      </div>
+    );
+  }
+
   return (
-    <div className="p-4">
-      <h2 className="text-xl font-bold mb-4">Працівники стоматології</h2>
-      <table className="w-full border-collapse border border-gray-300">
-        <thead>
-          <tr className="bg-linear-to-l from-[#874FD1] to-[#6F6697]">
-            <th className="border p-2">Імʼя</th>
-            <th className="border p-2">По-батькові</th>
-            <th className="border p-2">Фамілія</th>
-            <th className="border p-2">Спеціалізація/Тип</th>
-            <th className="border p-2">Дата народження</th>
-            <th className="border p-2">телефон</th>
+    <div className="p-6 max-w-4xl mx-auto">
+      {/* Профіль користувача */}
+      <div className="bg-white rounded-lg shadow-md p-6 mb-6 border border-gray-200">
+        <h2 className="text-2xl font-black  mb-4 text-gray-800">Мій профіль</h2>
+        <div className="grid grid-cols-2 gap-4 text-gray-700">
+          <div>
+            <p className="text-xl  font-bold text-gray-500">Імʼя</p>
+            <p className="text-lg">{currentWorker.name}</p>
+          </div>
+          <div>
+            <p className="text-xl  font-bold text-gray-500">По-батькові</p>
+            <p className="text-lg">{currentWorker.middle_name}</p>
+          </div>
+          <div>
+            <p className="text-xl  font-bold text-gray-500">Фамілія</p>
+            <p className="text-lg">{currentWorker.surname}</p>
+          </div>
+          <div>
+            <p className="text-xl  font-bold text-gray-500">Спеціалізація</p>
+            <p className="text-lg">
+              {currentWorker.specialty?.name} ({currentWorker.specialty?.type})
+            </p>
+          </div>
+          <div>
+            <p className="text-xl  font-bold text-gray-500">Дата народження</p>
+            <p className="text-lg">
+              {new Date(currentWorker.birthday).toLocaleDateString()}
+            </p>
+          </div>
+          <div>
+            <p className="text-xl  font-bold text-gray-500">Телефон</p>
+            <p className="text-lg">{currentWorker.phone}</p>
+          </div>
+          <div>
+            <p className="text-xl  font-bold text-gray-500">Статус аккаунта</p>
+            <p className="text-lg">
+              {currentWorker.active ? "Активний" : "Неактивний"}
+            </p>
+          </div>
+        </div>
+      </div>
 
-            <th className="border">Статус аккаунта</th>
-          </tr>
-        </thead>
-        <tbody>
-          {workers.map((worker) => (
-            <React.Fragment key={worker.id}>
-              <tr
-                key={worker.id}
-                className="cursor-pointer transition hover:bg-black/20"
-                onClick={() =>
-                  setExpandedWorkerId(
-                    expandedWorkerId === worker.id ? null : worker.id,
-                  )
-                }
-              >
-                <td className="border p-2">{worker.name}</td>
-                <td className="border p-2">{worker.middle_name}</td>
-
-                <td className="border p-2">{worker.surname}</td>
-                <td className="border p-2">
-                  <div className="flex justify-between w-full">
-                    <span>{worker.specialty?.name}</span>
-                    <span>{worker.specialty?.type}</span>
-                  </div>
-                </td>
-
-                <td className="border p-2">
-                  {new Date(worker.birthday).toLocaleDateString()}
-                </td>
-
-                <td className="border p-2">{worker.phone}</td>
-                <td className="border p-2">
-                  {worker.active ? "Активний" : "Неактивний"}
-                </td>
+      {/* Ліцензії */}
+      <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
+        <h3 className="text-2xl font-semibold mb-4 text-gray-800">
+          Мої ліцензії
+        </h3>
+        {licenses.length > 0 ? (
+          <table className="min-w-full border-collapse border border-gray-200 text-gray-700">
+            <thead>
+              <tr className="bg-gray-100 text-gray-600">
+                <th className="border p-2">Номер ліцензії</th>
+                <th className="border p-2">Видана ким</th>
+                <th className="border p-2">Дата видачі</th>
+                <th className="border p-2">Дата закінчення</th>
+                <th className="border p-2">Створено</th>
+                <th className="border p-2">Оновлено</th>
               </tr>
-              {expandedWorkerId === worker.id && (
-                <tr>
-                  <ListLicensesWorker
-                    workerId={worker.id}
-                    licenses={licenses}
-                  />
+            </thead>
+            <tbody>
+              {licenses.map((license) => (
+                <tr key={license.id} className="hover:bg-gray-50 transition">
+                  <td className="border p-2">{license.number_license}</td>
+                  <td className="border p-2">{license.issued_by}</td>
+                  <td className="border p-2">
+                    {new Date(license.issue_date).toLocaleDateString()}
+                  </td>
+                  <td className="border p-2">
+                    {new Date(license.expiration_date).toLocaleDateString()}
+                  </td>
+                  <td className="border p-2">
+                    {new Date(license.created_at).toLocaleDateString()}
+                  </td>
+                  <td className="border p-2">
+                    {new Date(license.updated_at).toLocaleDateString()}
+                  </td>
                 </tr>
-              )}
-            </React.Fragment>
-          ))}
-        </tbody>
-      </table>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <p className="text-gray-500">Немає ліцензій</p>
+        )}
+      </div>
     </div>
   );
+
+  
 }

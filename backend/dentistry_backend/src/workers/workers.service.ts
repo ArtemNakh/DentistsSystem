@@ -30,6 +30,19 @@ export class WorkersService {
     return this.workerRepo.find({ relations: ['specialty', 'dentistry'] });
   }
 
+  public async getWorkerById(id: number): Promise<IWorker> {
+    const worker = await this.workerRepo.findOne({
+      where: { id },
+      relations: ['dentistry', 'specialty', 'licenses'], 
+    });
+
+    if (!worker) {
+      throw new NotFoundException(`Працівника з id=${id} не знайдено`);
+    }
+
+    return worker;
+  }
+
   public async findById(id: number): Promise<IWorker> {
     const worker = await this.workerRepo.findOne({
       where: { id },
@@ -143,7 +156,7 @@ export class WorkersService {
       name: dto.name,
       surname: dto.surname,
       middle_name: dto.middle_name,
-     birthday: new Date(dto.birthday).toISOString().split('T')[0],
+      birthday: new Date(dto.birthday).toISOString().split('T')[0],
       phone: dto.phone,
       login: dto.login,
       password: hashedPassword,

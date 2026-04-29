@@ -61,4 +61,18 @@ export class LicenseService {
       },
     });
   }
+
+   async getLicensesByWorkerId(workerId: number): Promise<License[]> {
+    const worker = await this.workerRepo.findOne({ where: { id: workerId } });
+    if (!worker) {
+      throw new NotFoundException(`Працівника з id=${workerId} не знайдено`);
+    }
+
+    const licenses = await this.licenseRepo.find({
+      where: { worker: { id: workerId } },
+      relations: ['worker'], 
+    });
+
+    return licenses;
+  }
 }

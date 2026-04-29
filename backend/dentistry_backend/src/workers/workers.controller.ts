@@ -37,6 +37,7 @@ export class WorkersController {
     return this.workersService.findAll();
   }
 
+
   @Get('all/doctors')
   @ApiOperation({
     summary: 'Отримання усіх докторів стоматології',
@@ -181,7 +182,15 @@ export class WorkersController {
   RemoveWorker(@Param('id') id: number): Promise<void> {
     return this.workersService.RemoveWorker(id);
   }
-
+  
+@Get('by-id/:id')
+  @ApiOperation({ summary: 'Отримати працівника за ID' })
+  @ApiParam({ name: 'id', description: 'ID працівника', type: Number })
+  @ApiResponse({ status: 200, description: 'Працівника знайдено' })
+  @ApiResponse({ status: 404, description: 'Працівника не знайдено' })
+  async getWorkerById(@Param('id') id: number): Promise<IWorker> {
+    return this.workersService.getWorkerById(id);
+  }
   //   // Check autorization
   // // доступ для всіх авторизованих працівників
   // @Get('worker/profile') @Authorization() getWorkerProfile(
