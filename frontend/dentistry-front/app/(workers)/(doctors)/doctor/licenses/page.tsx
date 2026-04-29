@@ -12,15 +12,20 @@ import { RootState } from "@/lib/redux/store";
 import { useEffect } from "react";
 import { GetWorkerById } from "@/lib/redux/modules/Workers/actions/GetWorkerById/getWorkerById";
 import { GetLicensesWorker } from "@/lib/redux/modules/Licenses/actions/GetLicensesWorker/GetLicensesWorker";
+import ListLicensesWorker from "./components/ModalView/ListLicenses/ListLicensesWorker";
 
 export default function WorkersTable() {
-  const workersObj = UseDenormalizeSelector((state: RootState) => state.workers);
+  const workersObj = UseDenormalizeSelector(
+    (state: RootState) => state.workers,
+  );
   const workers: IWorker[] = Object.values(workersObj ?? {});
 
   const auth = useAppSelector((state: { auth: AuthState }) => state.auth);
   console.log("auth", auth);
 
-  const licensesObj = UseDenormalizeSelector((state: RootState) => state.licenses);
+  const licensesObj = UseDenormalizeSelector(
+    (state: RootState) => state.licenses,
+  );
   const licenses: ILicense[] = Object.values(licensesObj ?? {});
 
   const dispatch = useAppDispatch();
@@ -93,49 +98,7 @@ export default function WorkersTable() {
       </div>
 
       {/* Ліцензії */}
-      <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
-        <h3 className="text-2xl font-semibold mb-4 text-gray-800">
-          Мої ліцензії
-        </h3>
-        {licenses.length > 0 ? (
-          <table className="min-w-full border-collapse border border-gray-200 text-gray-700">
-            <thead>
-              <tr className="bg-gray-100 text-gray-600">
-                <th className="border p-2">Номер ліцензії</th>
-                <th className="border p-2">Видана ким</th>
-                <th className="border p-2">Дата видачі</th>
-                <th className="border p-2">Дата закінчення</th>
-                <th className="border p-2">Створено</th>
-                <th className="border p-2">Оновлено</th>
-              </tr>
-            </thead>
-            <tbody>
-              {licenses.map((license) => (
-                <tr key={license.id} className="hover:bg-gray-50 transition">
-                  <td className="border p-2">{license.number_license}</td>
-                  <td className="border p-2">{license.issued_by}</td>
-                  <td className="border p-2">
-                    {new Date(license.issue_date).toLocaleDateString()}
-                  </td>
-                  <td className="border p-2">
-                    {new Date(license.expiration_date).toLocaleDateString()}
-                  </td>
-                  <td className="border p-2">
-                    {new Date(license.created_at).toLocaleDateString()}
-                  </td>
-                  <td className="border p-2">
-                    {new Date(license.updated_at).toLocaleDateString()}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        ) : (
-          <p className="text-gray-500">Немає ліцензій</p>
-        )}
-      </div>
+      <ListLicensesWorker licenses={licenses} />
     </div>
   );
-
-  
 }

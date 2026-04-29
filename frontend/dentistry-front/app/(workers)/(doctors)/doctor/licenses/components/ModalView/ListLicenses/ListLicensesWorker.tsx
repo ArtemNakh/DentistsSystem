@@ -1,80 +1,58 @@
 // ListLicensesWorker.tsx
 import { ILicense } from "@/lib/redux/modules/Licenses/Licenses.interface";
-import { useState } from "react";
-import CreateLicenseModal from "../CreateLicense/CreateLicense";
-import { RemoveLicense } from "@/lib/redux/modules/Licenses/actions/RemoveLicense/RemoveLicense";
-import { useAppDispatch } from "@/lib/redux/hooks";
+import { useTranslation } from "react-i18next";
 
 interface Props {
-  workerId: number;
   licenses: ILicense[];
 }
 
-export default function ListLicensesWorker({ workerId, licenses }: Props) {
-  const dispatch = useAppDispatch();
-  const workerLicenses = licenses.filter(
-    (lic: ILicense) => lic.worker?.id === workerId,
-  );
-  const [showCreateLicense, setShowCreateLicense] = useState(false);
-
+export default function ListLicensesWorker({ licenses }: Props) {
+  const { t } = useTranslation();
   return (
-    <td
-      colSpan={7}
-      className="border p-2 bg-linear-to-l from-[#7C48BF] to-[#776EA3]"
-    >
-      <div>
-        <h3 className="font-semibold mb-2">Ліцензії:</h3>
-        {workerLicenses.length === 0 ? (
-          <p className="text-gray-200">Немає ліцензій</p>
-        ) : (
-          <ul className="space-y-2">
-            {workerLicenses.map((lic) => (
-              <li
-                key={lic.id}
-                className="flex justify-between items-center border p-2 rounded"
-              >
-                <div>
-                  <span className="font-medium">{lic.number_license}</span>{" "}
-                  <span className="font-medium">
-                    Дата згасання:{" "}
-                    <span className="font-medium">
-                      Дата згасання:{" "}
-                      <span>
-                        Дата згасання:{" "}
-                        {new Date(lic.expiration_date).toLocaleDateString()}
-                      </span>
-                    </span>
-                  </span>{" "}
-                  <span className="font-medium">Видав: {lic.issued_by}</span>{" "}
-                  <span className="text-sm text-gray-200">
-                    (видано: {new Date(lic.issue_date).toLocaleDateString()})
-                  </span>
-                </div>
-                <div className="flex gap-2">
-                  <button
-                    className="px-2 py-1 bg-[#7B4DBC] hover:bg-[#6C4DA1] border border-gray-700 text-white rounded"
-                    onClick={() => dispatch(RemoveLicense({ id: lic.id }))}
-                  >
-                    Видалити
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
-        <button
-          className="mt-2 px-3 py-1 bg-[#7963AC] border border-gray-600 hover:bg-[#685594] text-white rounded"
-          onClick={() => setShowCreateLicense(true)}
-        >
-          Додати ліцензію
-        </button>
-      </div>
-      {showCreateLicense && (
-        <CreateLicenseModal
-          workerId={workerId}
-          onClose={() => setShowCreateLicense(false)}
-        />
+    <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
+      <h3 className="text-2xl font-semibold mb-4 text-gray-800">
+        Мої ліцензії
+      </h3>
+      {licenses.length > 0 ? (
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {licenses.map((license) => (
+            <div
+              key={license.id}
+              className="border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition"
+            >
+              <p className="text-sm text-gray-500">Номер ліцензії</p>
+              <p className="font-medium text-gray-800 mb-2">
+                {license.number_license}
+              </p>
+
+              <p className="text-sm text-gray-500">Видана ким</p>
+              <p className="text-gray-700 mb-2">{license.issued_by}</p>
+
+              <p className="text-sm text-gray-500">Дата видачі</p>
+              <p className="text-gray-700 mb-2">
+                {new Date(license.issue_date).toLocaleDateString()}
+              </p>
+
+              <p className="text-sm text-gray-500">Дата закінчення</p>
+              <p className="text-gray-700 mb-2">
+                {new Date(license.expiration_date).toLocaleDateString()}
+              </p>
+
+              <p className="text-sm text-gray-500">Створено</p>
+              <p className="text-gray-700 mb-2">
+                {new Date(license.created_at).toLocaleDateString()}
+              </p>
+
+              <p className="text-sm text-gray-500">Оновлено</p>
+              <p className="text-gray-700">
+                {new Date(license.updated_at).toLocaleDateString()}
+              </p>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p className="text-gray-500">Немає ліцензій</p>
       )}
-    </td>
+    </div>
   );
 }
