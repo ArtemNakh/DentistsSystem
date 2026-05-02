@@ -439,7 +439,33 @@
         "cancelled": "Скасувати"
       }
     },
-    "licenses": {},
+    "licenses": {
+      "no_value": "Немає даних для поточного користувача",
+      "profile": {
+        "title": "Мій профіль",
+        "name": "Ім'я",
+        "middle_name": "По-батькові",
+        "surname": "Фамілія",
+        "specialization": "Спеціалізація",
+        "birthday": "День народження",
+        "phone": "Телефон",
+        "status": {
+          "title": "Статус аккаунта",
+          "active": "Активний",
+          "no_active": "Неактивний"
+        }
+      },
+      "list": {
+        "title": "Мої ліцензії",
+        "number_licens": "Номер ліцензії",
+        "issued_by": "Видана ким",
+        "issue_date": "Дата видачі",
+        "expiration_date": "Дата закінчення",
+        "create": "Створено",
+        "update": "Оновлено",
+        "no_value": "Немає ліцензій"
+      }
+    },
     "history_operation": {
       "filters": {
         "fio_client": " ФІО Клієнта",
@@ -469,14 +495,14 @@
         "payment_day": "День оплати",
         "status_pay": "Статус оплати"
       },
-      "actions":{
-        "name":"Дії операції",
-        "list":{
-          "name":"Назва",
-          "price":"Ціна",
-          "no_action":"Дії відсутні"
+      "actions": {
+        "name": "Дії операції",
+        "list": {
+          "name": "Назва",
+          "price": "Ціна",
+          "no_action": "Дії відсутні"
         },
-        "close":"Зачинити"
+        "close": "Зачинити"
       }
     }
   }

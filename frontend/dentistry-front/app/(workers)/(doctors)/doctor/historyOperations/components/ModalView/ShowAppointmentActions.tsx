@@ -35,7 +35,7 @@ export default function ShowAppointmentActions({
                 {appointment.appointment_actions.map((action, index) => (
                   <div
                     key={index}
-                    className="rounded-xl border border-[#AD8ED6] bg-gradient-to-r from-[#9370D6] to-white shadow hover:shadow-md transition p-4"
+                    className="rounded-xl border border-[#AD8ED6] bg-linear-to-r from-[#9370D6] to-white shadow hover:shadow-md transition p-4"
                   >
                     <p className="text-lg font-semibold text-indigo-100 mb-2">
                       Action {index + 1}
