@@ -343,6 +343,7 @@
   "admins": {
     "header_side": {
       "pages": {
+        
         "calendar": "Календар",
         "payment": "Оплата",
         "workers": "Працівники",
@@ -355,7 +356,8 @@
   },
   "doctor": {
     "header_side": {
-      "pages": {
+        "pages": {
+          "menu":"Меню",
         "calendar": "Календар",
         "payment": "Оплата",
         "history_operation": "Історія операцій",
