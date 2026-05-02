@@ -5,8 +5,7 @@ import { useState } from "react";
 import ShowAppointmentActions from "../ModalView/ShowAppointmentActions";
 import { useTranslation } from "react-i18next";
 
-interface TableHistoryAppointmentsProps{
-
+interface TableHistoryAppointmentsProps {
   appointments: IAppointment[];
 }
 
@@ -18,17 +17,15 @@ export default function TableHistoryAppointments({
 
   return (
     <>
-      <table className="w-full   border-collapse border border-gray-600 text-lg">
-        <TableHeaderHistoryAppointment />
-
-
+      <div className="w-full overflow-x-auto overflow-y-hidden">
+        <table className="min-w-full border-collapse border border-gray-600 text-lg">
+          <TableHeaderHistoryAppointment />
           <TableBodyHistoryAppointment
             appointments={appointments}
             setSelectedAppointment={setSelectedAppointment}
           />
-      
-      
-      </table>
+        </table>
+      </div>
 
       <ShowAppointmentActions
         appointment={selectedAppointment}

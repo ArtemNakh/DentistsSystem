@@ -15,7 +15,7 @@ export default function TableBodyHistoryAppointment({
   setSelectedAppointment,
 }: TableBodyHistoryAppointmentProps) {
   const { t } = useTranslation();
-  // {t("reception.history_operation.table.header.client")}
+
   const [selectedPayment, setSelectedPayment] = useState<IPayment | null>(null);
 
   return (
@@ -23,7 +23,9 @@ export default function TableBodyHistoryAppointment({
       <tbody>
         {!appointments ? (
           <tr>
-            <td className="text-gray-900">Loading...</td>
+            <td className="text-gray-900">
+              {t("doctor.history_operation.table.loading")}...
+            </td>
           </tr>
         ) : appointments.length > 0 ? (
           <>
@@ -111,7 +113,7 @@ export default function TableBodyHistoryAppointment({
         ) : (
           <tr>
             <td className="text-gray-900">
-              {t("reception.history_operation.table.body.noValue")}
+              {t("doctor.history_operation.table.body.no_value")}
             </td>
           </tr>
         )}

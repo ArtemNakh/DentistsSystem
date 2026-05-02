@@ -1,130 +1,23 @@
 "use client";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { getHistoryAppointmentByDentistry } from "@/lib/redux/modules/Appointments/actions/GetHistoryAppointmentDentistry/GetHistoryAppointmentDentistry";
-import { IAppointment } from "@/lib/redux/modules/Appointments/Appointment.interface";
 import { getAuthWorker } from "@/lib/redux/modules/AuthUser/actions/GetAuthWorker/GetAuthWorker";
 import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
-import { IClient } from "@/lib/redux/modules/Clients/clients.interface";
-import { IDentistry } from "@/lib/redux/modules/Dentistries/Dentistry.interface";
-import { ISpecialty } from "@/lib/redux/modules/Specialties/Entities/Specialties/Specialties.interface";
-import { IWorker } from "@/lib/redux/modules/Workers/Workers.interface";
-import { RootState } from "@/lib/redux/store";
-import { createSelector } from "@reduxjs/toolkit";
 import { useEffect, useState } from "react";
-import FilterPanelHistory from "./components/FilterPanel";
+import FilterPanelHistory, { HistoryFilters } from "./components/FilterPanel";
 import HistoryAppointmentsWorker from "./components/HistoryAppointments";
-import { IAppointmentActions } from "@/lib/redux/modules/AppointmentsActions/AppointmentActions.interface";
-import { IOperationList } from "@/lib/redux/modules/OperationList/OperationList.interface";
-import { IPayment } from "@/lib/redux/modules/Payments/Payments.interface";
 
-export const DenormalizeAppointments = createSelector(
-  [
-    (state: RootState) => state.appointments,
-    (state: RootState) => state.clients,
-    (state: RootState) => state.workers,
-    (state: RootState) => state.specialties,
-    (state: RootState) => state.dentistries,
-    (state: RootState) => state.appointmentActions,
-    (state: RootState) => state.operationList,
-    (state: RootState) => state.payments,
-  ],
-  (
-    appointmentsObj,
-    clientsObj,
-    workersObj,
-    specialtiesObj,
-    dentistriesObj,
-    appointmentActionsObj,
-    operationListObj,
-    paymentsObj,
-  ) => {
-    if (!appointmentsObj) return [];
-
-    return Object.values(appointmentsObj).map((a) => {
-      if (!a) return undefined;
-
-      // client
-      const client = clientsObj?.[a.client as unknown as number];
-
-      // dentist
-      const dentist = workersObj?.[a.dentist as unknown as number];
-
-      const specialty =
-        dentist?.specialty !== undefined
-          ? specialtiesObj?.[dentist.specialty as unknown as number]
-          : undefined;
-
-      const dentistry =
-        dentist?.dentistry !== undefined
-          ? dentistriesObj?.[dentist.dentistry as unknown as number]
-          : undefined;
-
-      // appointment_actions
-      const appointmentActions =
-        a.appointment_actions?.map((actionId: number) => {
-          const action = appointmentActionsObj?.[actionId];
-          if (!action) return undefined;
-
-          const operation =
-            action.operation !== undefined
-              ? operationListObj?.[action.operation as unknown as number]
-              : undefined;
-
-          const dentalClinic =
-            operation?.dental_clinic !== undefined
-              ? dentistriesObj?.[
-                  operation.dental_clinic as unknown as number
-                ]
-              : undefined;
-
-          return {
-            ...action,
-            operation: operation
-              ? {
-                  ...operation,
-                  dental_clinic: dentalClinic,
-                }
-              : undefined,
-          };
-        })?.filter(Boolean);
-
-      // payment
-      const payment =
-        a.payment !== undefined
-          ? paymentsObj?.[a.payment as unknown as number]
-          : undefined;
-
-      return {
-        ...a,
-        client,
-        dentist: dentist
-          ? {
-              ...dentist,
-              specialty,
-              dentistry,
-            }
-          : undefined,
-        appointment_actions: appointmentActions,
-        payment,
-      } as IAppointment;
-    }).filter(Boolean); // прибираємо undefined якщо були
-  },
-);
-// сторінка яка показує усі операції для стоматології (із фільтром текущії, заплановані, зроблені,скасовано)
 export default function HistoryOperationReception() {
   const dispatch = useAppDispatch();
-  // const appointments = useAppSelector(DenormalizeAppointments);
-
   const authUser = useAppSelector((state: { auth: AuthState }) => state.auth);
 
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<HistoryFilters>({
     fioClient: "",
-    fioWorker: "",
-    specialty: "",
-    statusPaid: "",
+    status_paid: null,
     appointment_date: "",
   });
 
+  // отримання данихз авторизованого користувача
   useEffect(() => {
     if (authUser.user) {
       console.log("Un authorized worker");
@@ -133,10 +26,9 @@ export default function HistoryOperationReception() {
     dispatch(getAuthWorker({}));
   }, [dispatch]);
 
+  // отримання історії усіх прийомів для авторизованого працівника
   useEffect(() => {
     if (!authUser.user) return;
-
-    //отримання усі  appointment які були плоть до сьогодні
     dispatch(
       getHistoryAppointmentByDentistry({
         dentistryId: authUser.user.dentistry.id,
@@ -148,7 +40,6 @@ export default function HistoryOperationReception() {
     <>
       <div className="font-bold ">
         {/* Фільтр */}
-
         <FilterPanelHistory filters={filters} setFilters={setFilters} />
 
         {/* Список працівників */}

@@ -438,6 +438,46 @@
         "save": "Зберегти",
         "cancelled": "Скасувати"
       }
+    },
+    "licenses": {},
+    "history_operation": {
+      "filters": {
+        "fio_client": " ФІО Клієнта",
+        "status_paid": {
+          "name": "Статус оплати",
+          "status": { "paid": "Оплачено", "not_paid": "Не оплачено" }
+        },
+        "appointment_date": "Дата записи"
+      },
+      "table": {
+        "header": {
+          "client": "Клієнт",
+          "worker": "Працівник",
+          "operation_date": "Дата операції",
+          "status_operation": "Статус операції",
+          "notes": "Замітки",
+          "payment": "Оплата",
+          "actions": "Дії"
+        },
+        "loading": "Завантаження",
+        "no_value": "немає даних",
+        "body": {}
+      },
+      "payment": {
+        "amount": "Сума",
+        "method_pay": "Метод оплати",
+        "payment_day": "День оплати",
+        "status_pay": "Статус оплати"
+      },
+      "actions":{
+        "name":"Дії операції",
+        "list":{
+          "name":"Назва",
+          "price":"Ціна",
+          "no_action":"Дії відсутні"
+        },
+        "close":"Зачинити"
+      }
     }
   }
 }

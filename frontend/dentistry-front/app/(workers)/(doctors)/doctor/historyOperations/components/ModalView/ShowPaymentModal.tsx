@@ -21,18 +21,15 @@ export default function ShowPaymentModal({
                     bg-white shadow-lg rounded-md p-4 border w-64"
         >
           <p>
-            {t("reception.history_operation.table.body.payment_modal.amount")}:{" "}
-            {payment?.amount}
+            {t("doctor.history_operation.payment.amount")}: {payment?.amount}
+          </p>
+          <p>
+            {t("doctor.history_operation.payment.method_pay")}:{" "}
+            {payment?.method_pay}
           </p>
           <p>
             {t(
-              "reception.history_operation.table.body.payment_modal.method_pay",
-            )}
-            : {payment?.method_pay}
-          </p>
-          <p>
-            {t(
-              "reception.history_operation.table.body.payment_modal.payment_day",
+              "doctor.history_operation.payment.payment_day",
             )}
             :
             {payment?.payment_date
@@ -41,7 +38,7 @@ export default function ShowPaymentModal({
           </p>
           <p>
             {t(
-              "reception.history_operation.table.body.payment_modal.status_pay",
+              "doctor.history_operation.payment.status_pay",
             )}
             : {payment?.status_paid}
           </p>
