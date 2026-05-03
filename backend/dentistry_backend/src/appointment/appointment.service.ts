@@ -186,7 +186,9 @@ export class AppointmentService {
   }
 
   // Отримати всі appointment для працівника на 3 місяці наперед
-  async findAppointmentsForWorker(workerId: number): Promise<IAppointment[]> {
+  async findAppointmentsForWorkerToNext3Month(
+    workerId: number,
+  ): Promise<IAppointment[]> {
     const now = new Date();
     const threeMonthsLater = new Date();
     threeMonthsLater.setMonth(now.getMonth() + 3);
@@ -198,6 +200,16 @@ export class AppointmentService {
       },
       relations: ['dentist', 'client'],
       order: { appointment_date: 'ASC' },
+    });
+  }
+
+  // Отримати всі appointment для працівника
+  async findAppointmentsForWorker(workerId: number): Promise<IAppointment[]> {
+    return this.appointmentRepo.find({
+      where: {
+        dentist: { id: workerId },
+      },
+      relations: ['dentist', 'client', 'appointment_actions', 'payment'],
     });
   }
 

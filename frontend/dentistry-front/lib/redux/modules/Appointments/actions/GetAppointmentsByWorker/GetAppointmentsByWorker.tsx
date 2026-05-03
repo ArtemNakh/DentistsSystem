@@ -1,12 +1,12 @@
 import { AppointmentActionSaga } from "../../Appointments.Entity";
 
-export interface GetAppointmentsToWorkerPayload {
+export interface GetAppointmentsByWorkerPayload {
   workerId: number;
 }
 
-export const GetAppointmentsToWorker = (payload: GetAppointmentsToWorkerPayload) => ({
+export const GetAppointmentsByWorker = (payload: GetAppointmentsByWorkerPayload) => ({
   type: AppointmentActionSaga.getAppointmentsToWorker ,
   payload,
 });
 
-export type GetAppointmentsToWorkerAction = ReturnType<typeof GetAppointmentsToWorker>;
+export type GetAppointmentsByWorkerAction = ReturnType<typeof GetAppointmentsByWorker>;

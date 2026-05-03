@@ -1,5 +1,5 @@
 import { useAppSelector } from "@/lib/redux/hooks";
-import { GetAppointmentsToWorker } from "@/lib/redux/modules/Appointments/actions/GetAppointmentsByWorker/GetAppointmentsByWorker";
+import { GetAppointmentsByWorkerNext3Month } from "@/lib/redux/modules/Appointments/actions/GetAppointmentsByWorkerNext3Month/GetAppointmentsByWorkerNext3Month";
 import { GetClientsByFullName } from "@/lib/redux/modules/Clients/actions/GetClientsByFullName/GetClientsByFullName";
 import { IClient } from "@/lib/redux/modules/Clients/clients.interface";
 import { IDentistry } from "@/lib/redux/modules/Dentistries/Dentistry.interface";
@@ -133,7 +133,7 @@ export default function WorkerField() {
                       `${worker.surname} ${worker.name} ${worker.middle_name ?? ""} — ${worker.specialty?.name ?? ""} (${new Date(worker.birthday).getFullYear()})`,
                     );
                     dispatch(getShiftsWorker({ idWorker: worker.id }));
-                    dispatch(GetAppointmentsToWorker({ workerId: worker.id }));
+                    dispatch(GetAppointmentsByWorkerNext3Month({ workerId: worker.id }));
                     setShowWorkerModal(false);
                   }}
                   className="p-3 cursor-pointer hover:bg-purple-50 transition-colors"

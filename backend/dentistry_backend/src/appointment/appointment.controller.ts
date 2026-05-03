@@ -19,12 +19,9 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import {
-  IAppointment,
-  StatusAppointment,
-} from './entity/appointment.interface';
+import { IAppointment } from './entity/appointment.interface';
 import { AppointmentDto } from './dto/gettingNearectAppointment.dto';
-import { Dentistry } from 'src/dentistry/entities/dentistry.entity';
+
 import { CreateAppointmentDto } from './dto/createAppointment.dto';
 import { UpdateAppointmentStatusDto } from './dto/updateAppointmentStatus.dto';
 
@@ -141,9 +138,17 @@ export class AppointmentController {
   }
 
   // Ендпоінт для отримання appointment на 3 місяці
-  @Get(':id/appointments')
+  @Get(':id/appointments/next/3month')
   async getAppointments(@Param('id') id: number) {
-    return this.appointmentService.findAppointmentsForWorker(id);
+    return this.appointmentService.findAppointmentsForWorkerToNext3Month(id);
+  }
+
+  @Get(':workerId/appointments')
+  async getAppointmentsByWorker(
+    @Param('workerId') workerId: number,
+  ): Promise<IAppointment[]> {
+    console.log("workerid test",workerId)
+    return this.appointmentService.findAppointmentsForWorker(workerId);
   }
 
   @Patch(':appointmentId/update_status')
@@ -275,7 +280,6 @@ export class AppointmentController {
   async getAppointment(@Param('id') id: number): Promise<IAppointment> {
     return this.appointmentService.getAppointmentById(id);
   }
-
 
   @Get('client/:id')
   async getAppointmentsByClient(@Param('id') id: number) {

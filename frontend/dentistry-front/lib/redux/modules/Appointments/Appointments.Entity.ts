@@ -9,11 +9,12 @@ import { getAppointmentTodayDentistryAction } from "./actions/GetTodayOperationB
 import { getAppointmentsDentistryAction } from "./actions/GetAppointmentsDentistry/GetAppointmentsDentistry";
 import { getHistoryAppointmentByDentistryAction } from "./actions/GetHistoryAppointmentDentistry/GetHistoryAppointmentDentistry";
 import { addNewAppointmentAction } from "./actions/AddNewAppointment/AddNewAppointment";
-import { GetAppointmentsToWorkerAction } from "./actions/GetAppointmentsByWorker/GetAppointmentsByWorker";
+import { GetAppointmentsByWorkerNext3MonthAction } from "./actions/GetAppointmentsByWorkerNext3Month/GetAppointmentsByWorkerNext3Month";
 import { UpdateAppointmentStatusAction } from "./actions/UpdateAppointmentStatus/UpdateAppointmentStatus";
 import HTTPMethod from "http-method-enum";
 import { GetAppointmentsByIdAction as GetAppointmentByIdAction } from "./actions/GetById/GetAppointmentsById";
 import { GetAppointmentsToClientAction } from "./actions/GetAppointmentsByClient/GetAppointmentsByClient";
+import { GetAppointmentsByWorkerAction } from "./actions/GetAppointmentsByWorker/GetAppointmentsByWorker";
 
 export enum AppointmentActionSaga {
   CreateAppointment = "Appointment/AddNew",
@@ -22,11 +23,11 @@ export enum AppointmentActionSaga {
   GetAppointmentsDentistry = "Appointment/GetToDentistry",
   GetHistoryByDentistry = "Appointment/GetHistoryByDentistry",
   getAppointmentsToWorker = "Appointment/GetToWorker",
+  getAppointmentsToWorkerNext3Month = "Appointment/GetToWorkerNext3Month",
   UpdateStatus = "Appointment/UpdateStatus",
   GetById = "Appointment/GetById",
   GetToClient = "Appointment/GetToClient",
 }
-
 
 @EntityReducer(EntitiesRedux.Appointments)
 export class AppointmentEntity extends BaseEntity {
@@ -47,10 +48,10 @@ export class AppointmentEntity extends BaseEntity {
       payment: new schema.Entity(EntitiesRedux.Payments),
     });
   }
-  
+
   // Статичне поля для отримання схеми
   static schema = new AppointmentEntity(null).getSchema();
-  
+
   *getNearestTodaySaga(action: getAppointmentNearestTodayDentistryAction) {
     const today = format(new Date(), "yyyy-MM-dd");
 
@@ -98,7 +99,17 @@ export class AppointmentEntity extends BaseEntity {
     );
   }
 
-  *getAppointmentsToWorkerSaga(action: GetAppointmentsToWorkerAction) {
+  *getAppointmentsToWorkerNewxt3monthSaga(
+    action: GetAppointmentsByWorkerNext3MonthAction,
+  ) {
+    const { workerId } = action.payload;
+    yield call(
+      this.xRead.bind(this),
+      `/appointment/${workerId}/appointments/next/3month`,
+      ActionReducer.Get,
+    );
+  }
+  *getAppointmentsToWorkerSaga(action: GetAppointmentsByWorkerAction) {
     const { workerId } = action.payload;
     yield call(
       this.xRead.bind(this),
@@ -162,10 +173,13 @@ export class AppointmentEntity extends BaseEntity {
     );
 
     yield takeLatest(
+      AppointmentActionSaga.getAppointmentsToWorkerNext3Month,
+      this.getAppointmentsToWorkerNewxt3monthSaga.bind(this),
+    );
+ yield takeLatest(
       AppointmentActionSaga.getAppointmentsToWorker,
       this.getAppointmentsToWorkerSaga.bind(this),
     );
-
     yield takeLatest(
       AppointmentActionSaga.GetToClient,
       this.getAppointmentsToClientSaga.bind(this),

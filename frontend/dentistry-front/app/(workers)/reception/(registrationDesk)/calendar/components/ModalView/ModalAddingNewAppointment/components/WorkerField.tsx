@@ -1,5 +1,5 @@
 import { useAppSelector } from "@/lib/redux/hooks";
-import { GetAppointmentsToWorker } from "@/lib/redux/modules/Appointments/actions/GetAppointmentsByWorker/GetAppointmentsByWorker";
+import { GetAppointmentsByWorkerNext3Month } from "@/lib/redux/modules/Appointments/actions/GetAppointmentsByWorkerNext3Month/GetAppointmentsByWorkerNext3Month";
 import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
 import { GetClientsByFullName } from "@/lib/redux/modules/Clients/actions/GetClientsByFullName/GetClientsByFullName";
 import { IClient } from "@/lib/redux/modules/Clients/clients.interface";
@@ -139,7 +139,7 @@ export default function WorkerField() {
                       // робимо запити до БД через Redux Saga
                       dispatch(getShiftsWorker({ idWorker: worker.id }));
                       dispatch(
-                        GetAppointmentsToWorker({ workerId: worker.id }),
+                        GetAppointmentsByWorkerNext3Month({ workerId: worker.id }),
                       );
 
                       setShowWorkerModal(false);
