@@ -343,7 +343,6 @@
   "admins": {
     "header_side": {
       "pages": {
-        
         "calendar": "Календар",
         "payment": "Оплата",
         "workers": "Працівники",
@@ -356,8 +355,8 @@
   },
   "doctor": {
     "header_side": {
-        "pages": {
-          "menu":"Меню",
+      "pages": {
+        "menu": "Меню",
         "calendar": "Календар",
         "payment": "Оплата",
         "history_operation": "Історія операцій",
@@ -503,6 +502,54 @@
           "name": "Назва",
           "price": "Ціна",
           "no_action": "Дії відсутні"
+        },
+        "close": "Зачинити"
+      }
+    },
+    "payments": {
+      "filters": {
+        "amount": "Сума",
+        "status_paid": {
+          "name": "Статус оплати",
+          "status": {
+            "paid": "Оплачено",
+            "not_paid": "Не оплачено"
+          }
+        },
+        "method_paid": {
+          "name": "Метод оплати",
+          "method": {
+            "cart": "Карта",
+            "cash": "Готівка",
+            "transfer": "Перевод"
+          }
+        },
+        "status_appointment": {
+          "name": "Статус записі ",
+          "status": {
+            "schedule": "Заплановано",
+            "complete": "Завершено",
+            "wait_paid": "Очікує оплати",
+            "cancelled": "Скасовано"
+          }
+        },
+        "fio_worker": "ФІО працівника",
+        "date_begin": "Початкова дата",
+        "date_end": "Кінцева дата"
+      },
+      "table_header": {
+        "client": "Клієнт",
+        "worker": "Працівник",
+        "amount": "Сума",
+        "status": "Статус оплати",
+        "method": "Метод оплати",
+        "payment_date": "Дата оплати",
+        "actions": "Діїі"
+      },
+      "full_info_appointment": {
+        "apponnt_actions": "Дії операції",
+        "appointment_actions": {
+          "actions": "Дія"
         },
         "close": "Зачинити"
       }
