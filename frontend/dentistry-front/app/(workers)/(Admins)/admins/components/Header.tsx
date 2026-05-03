@@ -9,6 +9,7 @@ import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
 import { AuthActionSaga } from "@/lib/redux/modules/AuthUser/AuthUser.Entity";
 import { getAuthWorker } from "@/lib/redux/modules/AuthUser/actions/GetAuthWorker/GetAuthWorker";
 import { useTranslation } from "react-i18next";
+import { logoutWorker } from "@/lib/redux/modules/AuthUser/actions/logoutAuthWorker/LogoutAuthWorker";
 
 export default function HeaderAdmin() {
   const { t } = useTranslation();
@@ -44,11 +45,11 @@ export default function HeaderAdmin() {
       label: t("admins.header_side.pages.history_operation"),
       path: "/admins/historyOperations",
     },
-     {
+    {
       label: t("admins.header_side.pages.licences"),
       path: "/admins/licenses",
     },
-     {
+    {
       label: t("admins.header_side.pages.worker_shifts"),
       path: "/admins/workers-shifts",
     },
@@ -137,8 +138,11 @@ export default function HeaderAdmin() {
                     dropdownClassName="absolute bg-[#7D5ABB]  border-2 border-gray-600 "
                     activeItemClassName="bg-[#6D4FA3]"
                   />
-                  <button className="border border-gray-600 px-1 py-1">
-                    {" "}
+
+                  <button
+                    onClick={() => dispatch(logoutWorker({}))}
+                    className="border border-gray-600 px-2 py-1 rounded hover:bg-gray-200 transition"
+                  >
                     Exit
                   </button>
                 </div>

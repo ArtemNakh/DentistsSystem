@@ -4,13 +4,13 @@ import { EntityReducer } from "../EntityReducer";
 import { ActionReducer } from "../../rootReducer";
 import { GetAuthClientAction } from "./actions/GetAuthClient/GetAuthClient";
 import { GetAuthWorkerAction } from "./actions/GetAuthWorker/GetAuthWorker";
+import { LogoutAuthWorkerAction } from "./actions/logoutAuthWorker/LogoutAuthWorker";
 
 export enum AuthActionSaga {
   GetAuthClient = "Auth/getAuthClient",
   GetAuthWorker = "Auth/getAuthWorker",
+  logoutWorker = "Auth/logoutWorker",
 }
-
-
 
 @EntityReducer(EntitiesRedux.Auth)
 export class AuthEntity extends BaseEntity {
@@ -22,6 +22,14 @@ export class AuthEntity extends BaseEntity {
 
   *getAuthClientSaga(action: GetAuthClientAction) {
     yield call(this.xRead.bind(this), `/clients/me`, ActionReducer.Get);
+  }
+  *logoutAuthWorkerSaga(action: LogoutAuthWorkerAction) {
+    yield call(
+      this.xSave.bind(this),
+      `/auth/logoutWorker`,
+      undefined,
+      ActionReducer.Post,
+    );
   }
 
   *getAuthWorkerSaga(action: GetAuthWorkerAction) {
@@ -36,6 +44,9 @@ export class AuthEntity extends BaseEntity {
     yield takeLatest(
       AuthActionSaga.GetAuthWorker,
       this.getAuthWorkerSaga.bind(this),
+    ); yield takeLatest(
+      AuthActionSaga.logoutWorker,
+      this.logoutAuthWorkerSaga.bind(this),
     );
   }
 }

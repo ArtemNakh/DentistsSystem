@@ -7,6 +7,7 @@ import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
 
 import { getAuthWorker } from "@/lib/redux/modules/AuthUser/actions/GetAuthWorker/GetAuthWorker";
 import { useTranslation } from "react-i18next";
+import { logoutWorker } from "@/lib/redux/modules/AuthUser/actions/logoutAuthWorker/LogoutAuthWorker";
 
 export default function HeaderDoctor() {
   const { t } = useTranslation();
@@ -47,6 +48,7 @@ export default function HeaderDoctor() {
       path: "/doctor/workers-shifts",
     },
   ];
+
   return (
     <>
       <div className="bg-[#7E5BBA] border border-gray-600 ">
@@ -131,8 +133,11 @@ export default function HeaderDoctor() {
                     dropdownClassName="absolute bg-[#7D5ABB]  border-2 border-gray-600 "
                     activeItemClassName="bg-[#6D4FA3]"
                   />
-                  <button className="border border-gray-600 px-1 py-1">
-                    {" "}
+                  
+                  <button
+                    onClick={() => dispatch(logoutWorker({}))}
+                    className="border border-gray-600 px-2 py-1 rounded hover:bg-gray-200 transition"
+                  >
                     Exit
                   </button>
                 </div>

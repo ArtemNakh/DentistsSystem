@@ -19,7 +19,7 @@ export default function SideBarAdmins({ items, onClose }: SideBarAdminsProps) {
   
   return (
     <>
-      <div className="fixed top-0 left-0 w-64 h-full bg-gradient-to-b from-[#64359A] to-[#534A79] text-gray-300 shadow-lg z-50">
+      <div className="fixed top-0 left-0 w-64 h-full bg-linear-to-b from-[#64359A] to-[#534A79] text-gray-300 shadow-lg z-50">
         <div className="p-4 flex justify-between items-center border-b border-gray-700">
           <div className="w-full h-full mr-5">
             <Link
