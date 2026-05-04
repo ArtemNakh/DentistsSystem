@@ -1,5 +1,5 @@
 import { useAppDispatch } from "@/lib/redux/hooks";
-import { MethodPayment } from "@/lib/redux/modules/Payments/Payments.interface";
+
 import { Formik, Form, Field, FieldArray, ErrorMessage } from "formik";
 import { useState, useCallback } from "react";
 import { useTranslation } from "react-i18next";

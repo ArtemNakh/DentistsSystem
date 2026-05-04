@@ -553,6 +553,61 @@
         },
         "close": "Зачинити"
       }
+    },
+    "calendar": {
+      "current_appointment": " Поточний запис",
+      "appointments_adaptive_view": "Записи",
+      "more_record": "ще",
+      "add_new_appointment": "Add appointment",
+      "records_on": "Записи на",
+      "no_records_day": "Немає записів на цей день",
+      "information": "Інформація",
+      "no_appointment_time": "На даний час немає операції",
+      "appointment": {
+        "title": "Деталі запису",
+        "patient": "Пацієнт",
+        "doctor": "Лікар",
+        "date": "Дата",
+        "status": "Статус",
+        "notes": "Нотатки",
+        "close": "Закрити"
+      }
+    },
+    "operation": {
+      "save": "Зберегти",
+      "appointment_on": " Запис на",
+      "doctor": "Лікар",
+      "patient": "Пацієнт",
+      "group_blood": "Группа крові",
+      "issues": "Хвороби",
+      "operation_form": {
+        "operation_actions": "Дії операції",
+        "delete": "Видалити",
+        "adding_action": "Додати дію"
+      },
+      "find_actions": {
+        "FindOperation": "Пошук операції",
+        "name_placeholder": "Введіть назву",
+        "close": "Закрити"
+      },
+      "method_pay": {
+        "name": "Спосіб оплати",
+        "method": {
+          "card": "Карта",
+          "cash": "Готівка",
+          "transfer": "Перевод"
+        }
+      },"schema": {
+        "appointment_id_must": "Appointment ID є обов’язковим",
+        "appointment_id_posit": "Appointment ID має бути додатнім",
+        "appointment_id_whole": "Appointment ID має бути цілим числом",
+        "action_id_posit": "Кожна дія має бути додатнім числом",
+        "action_id_whole": "Кожна дія має бути цілим числом",
+        "action_list_must": "Список дій є обов’язковим",
+        "action_more_0": "Має бути хоча б одна дія",
+        "method_pay_must": "Метод оплати є обов’язковим",
+        "method_pay_way": "Метод оплати має бути CARD, CASH або TRANSFER"
+      } 
     }
   }
 }

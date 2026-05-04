@@ -545,6 +545,62 @@
         },
         "close": "Close"
       }
+    },
+    "calendar": {
+      "current_appointment": "Current appointment",
+      "appointments_adaptive_view": "Appointments",
+      "more_record": "more",
+      "add_new_appointment": "Add appointment",
+      "records_on": "Appointments on",
+      "no_records_day": "No appointments for this day",
+      "information": "Information",
+      "no_appointment_time": "There is no operation at this time.",
+      "appointment": {
+        "title": "Detail appointment",
+        "patient": "Patient",
+        "doctor": "Doctor",
+        "date": "Date",
+        "status": "Status",
+        "notes": "Notes",
+        "close": "Close"
+      }
+    },
+    "operation": {
+      "save": "Save",
+      "appointment_on": "Appointment on",
+      "doctor": "Doctor",
+      "patient": "Patient",
+      "group_blood": "Blood group",
+      "issues": "Diseases",
+      "operation_form": {
+        "operation_actions": "Operation actions",
+        "delete": "Delete",
+        "adding_action": "Add action"
+      },
+      "find_actions": {
+        "FindOperation": "Find operation",
+        "name_placeholder": "Enter name",
+        "close": "Close"
+      },
+      "method_pay": {
+        "name": "Payment method",
+        "method": {
+          "card": "Card",
+          "cash": "Cash",
+          "transfer": "Transfer"
+        }
+      },
+      "schema": {
+        "appointment_id_must": "Appointment ID is required",
+        "appointment_id_posit": "Appointment ID must be positive",
+        "appointment_id_whole": "Appointment ID must be an integer",
+        "action_id_posit": "Each action must be a positive number",
+        "action_id_whole": "Each action must be an integer",
+        "action_list_must": "Action list is required",
+        "action_more_0": "There must be at least one action",
+        "method_pay_must": "Payment method is required",
+        "method_pay_way": "Payment method must be CARD, CASH, or TRANSFER"
+      }
     }
   }
 }

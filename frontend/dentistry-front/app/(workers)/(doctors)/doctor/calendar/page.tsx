@@ -11,13 +11,14 @@ import { RootState } from "@/lib/redux/store";
 import { IAppointment } from "@/lib/redux/modules/Appointments/Appointment.interface";
 import RenderCalendarTile from "./components/renderCalendarTile";
 import AllDayRecords from "./components/AllDayRecords";
-
 import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
 import { getAuthWorker } from "@/lib/redux/modules/AuthUser/actions/GetAuthWorker/GetAuthWorker";
-import { GetAppointmentsByWorkerNext3Month } from "@/lib/redux/modules/Appointments/actions/GetAppointmentsByWorkerNext3Month/GetAppointmentsByWorkerNext3Month";
 import { GetAppointmentsByWorker } from "@/lib/redux/modules/Appointments/actions/GetAppointmentsByWorker/GetAppointmentsByWorker";
+import { useTranslation } from "react-i18next";
+import i18n from "@/i18next.config";
 
 export default function CalendarAdmin() {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const authUser = useAppSelector((state: { auth: AuthState }) => state.auth);
   const appointments: IAppointment[] = Object.values(
@@ -66,6 +67,7 @@ export default function CalendarAdmin() {
           <Calendar
             value={value}
             onChange={(val) => setValue(val as Date)}
+             locale={i18n.language}
             tileContent={({ date, view }) => (
               <RenderCalendarTile
                 date={date}
@@ -104,9 +106,9 @@ export default function CalendarAdmin() {
         {/* Триггер для мобільних */}
         <button
           onClick={() => setShowSidebar(true)}
-          className="fixed bottom-4 right-4 md:hidden bg-[#7D4DBF] text-white px-4 py-2 rounded shadow-lg"
+          className="fixed bottom-4 right-4 md:hidden bg-[#8C56D6] text-white px-4 py-2 rounded shadow-lg border-2 border-gray-450"
         >
-          Записи
+          {t("doctor.calendar.appointments_adaptive_view")}
         </button>
       </div>
     </>

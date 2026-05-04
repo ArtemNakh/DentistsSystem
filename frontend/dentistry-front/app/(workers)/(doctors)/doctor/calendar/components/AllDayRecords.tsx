@@ -1,9 +1,7 @@
 import { IAppointment } from "@/lib/redux/modules/Appointments/Appointment.interface";
 import { useState } from "react";
 import AppointmentModal from "./ModalView/ModalShowFullAppointment/ModalShowFullAppointment";
-import ModalAddingNewAppointment from "./ModalView/ModalAddingNewAppointment/ModalAddingNewAppointment";
 import { useTranslation } from "react-i18next";
-import RegistrationClientView from "./ModalView/RegistrationClient/RegistrationClient";
 import { useRouter } from "next/navigation";
 
 interface AllDayRecordsProps {
@@ -43,38 +41,9 @@ export default function AllDayRecords({
   return (
     <>
       <div className="w-60 border border-gray-400 bg-linear-to-r from-[#874FD1] to-[#7562A5] flex flex-col h-full">
-        {/* button for adding new appointment */}
-        <div className="">
-          <button
-            onClick={() => setShowModal(true)}
-            className="border border-gray-400 m-2 px-2 py-1 hover:bg-[#7D4DBF] active:bg-[#6C43A6]"
-          >
-            <img
-              src="/new_appointment.png"
-              alt="icon registration client"
-              className="w-6 h-6"
-            />{" "}
-            {/* {t("reception.calendar.add_new_appointment")} */}
-          </button>
+        {/*кнопка для поточного запису */}
 
-          {showModal && (
-            <ModalAddingNewAppointment onClose={() => setShowModal(false)} />
-          )}
-          {/* Button for show modal registration client */}
-          <button
-            onClick={() => setShowModalRegistrClient(true)}
-            className="border border-gray-400 m-2 px-2 py-1 hover:bg-[#7D4DBF] active:bg-[#6C43A6]"
-          >
-            <img
-              src="/new_client.png"
-              alt="icon registration client"
-              className="w-6 h-6"
-            />
-            {/* {t("reception.calendar.add_new_client")} */}
-          </button>
-
-          {/* Нова кнопка для поточного запису */}
-
+        <div className="mt-5 -mb-2">
           <button
             onClick={() => {
               if (currentAppointment) {
@@ -85,15 +54,17 @@ export default function AllDayRecords({
             }}
             className="border border-gray-400 m-2 px-2 py-1 hover:bg-[#7D4DBF] active:bg-[#6C43A6]"
           >
-            Поточний запис
+            {t("doctor.calendar.current_appointment")}
           </button>
 
           {/* Якщо немає запису — показуємо модальне вікно */}
           {showNoAppointmentModal && (
             <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
               <div className="bg-gray-200 p-6 rounded w-96 text-gray-600">
-                <h2 className="text-lg font-bold mb-4">Інформація</h2>
-                <p>На даний час немає операції</p>
+                <h2 className="text-lg font-bold mb-4">
+                  {t("doctor.calendar.information")}
+                </h2>
+                <p>{t("doctor.calendar.no_appointment_time")}</p>
                 <div className="flex justify-end mt-4">
                   <button
                     onClick={() => setShowNoAppointmentModal(false)}
@@ -104,12 +75,6 @@ export default function AllDayRecords({
                 </div>
               </div>
             </div>
-          )}
-
-          {showModalRegistrClient && (
-            <RegistrationClientView
-              onClose={() => setShowModalRegistrClient(false)}
-            />
           )}
         </div>
         <div

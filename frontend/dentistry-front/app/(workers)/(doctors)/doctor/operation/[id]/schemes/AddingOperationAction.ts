@@ -1,23 +1,24 @@
+import i18n from "@/i18next.config";
 import { MethodPayment } from "@/lib/redux/modules/Payments/Payments.interface";
 import * as Yup from "yup";
 
 export const AddingOperationAction = Yup.object().shape({
   appointmentId: Yup.number()
-    .required("Appointment ID є обов’язковим")
-    .positive("Appointment ID має бути додатнім")
-    .integer("Appointment ID має бути цілим числом"),
+    .required(i18n.t("doctor.operation.schema.appointment_id_must"))
+    .positive(i18n.t("doctor.operation.schema.appointment_id_posit"))
+    .integer(i18n.t("doctor.operation.schema.appointment_id_whole")),
   actions: Yup.array()
     .of(
       Yup.number()
-        .positive("Кожна дія має бути додатнім числом")
-        .integer("Кожна дія має бути цілим числом"),
+        .positive(i18n.t("doctor.operation.schema.action_id_posit"))
+        .integer(i18n.t("doctor.operation.schema.action_id_whole")),
     )
-    .required("Список дій є обов’язковим")
-    .min(1, "Має бути хоча б одна дія"),
+    .required(i18n.t("doctor.operation.schema.action_list_must"))
+    .min(1, i18n.t("doctor.operation.schema.action_more_0")),
   method_pay: Yup.string()
-    .required("Метод оплати є обов’язковим")
+    .required(i18n.t("doctor.operation.schema.method_pay_must"))
     .oneOf(
       [MethodPayment.CARD, MethodPayment.CASH, MethodPayment.TRANSFER],
-      "Метод оплати має бути CARD, CASH або TRANSFER",
+      i18n.t("doctor.operation.schema.method_pay_way"),
     ),
 });
