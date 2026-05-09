@@ -89,6 +89,7 @@ export class AppointmentEntity extends BaseEntity {
       ActionReducer.Get,
     );
   }
+  
 
   *addNewAppointmentSaga(action: addNewAppointmentAction) {
     yield call(
@@ -109,6 +110,7 @@ export class AppointmentEntity extends BaseEntity {
       ActionReducer.Get,
     );
   }
+
   *getAppointmentsToWorkerSaga(action: GetAppointmentsByWorkerAction) {
     const { workerId } = action.payload;
     yield call(
@@ -166,6 +168,7 @@ export class AppointmentEntity extends BaseEntity {
       AppointmentActionSaga.GetHistoryByDentistry,
       this.getHistoryByDentistrySaga.bind(this),
     );
+    
 
     yield takeLatest(
       AppointmentActionSaga.CreateAppointment,

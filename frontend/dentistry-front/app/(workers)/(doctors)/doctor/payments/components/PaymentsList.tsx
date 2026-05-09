@@ -14,6 +14,7 @@ import { RootState } from "@/lib/redux/store";
 import { createSelector } from "@reduxjs/toolkit";
 import { useEffect } from "react";
 import { PaymentFilters } from "./FilterPanel";
+import { getAllPaymentsDentist } from "@/lib/redux/modules/Payments/actions/getAllPaymentsDentist/getAllPaymentsByDoctor";
 
 // export const DenormalizePayments = createSelector(
 //   [
@@ -148,7 +149,7 @@ export default function PaymentsList({ filters }: PaymentsListProps) {
   useEffect(() => {
     if (!authUser.user) return;
 
-    dispatch(getPaymentsDentistry({ dentistryId: authUser.user.dentistry.id }));
+    dispatch(getAllPaymentsDentist({dentistId: authUser.user.id }));
   }, [authUser.user?.dentistry?.id, dispatch]);
 
   const filteredPayments = getFilteredPayments(payments, filters);

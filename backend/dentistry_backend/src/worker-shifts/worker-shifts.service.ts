@@ -23,14 +23,9 @@ export class WorkerShiftsService {
 
   // Отримати розклад на 3 місяці наперед
   async findShiftsForWorker(workerId: number): Promise<WorkerShifts[]> {
-    const now = new Date();
-    const threeMonthsLater = new Date();
-    threeMonthsLater.setMonth(now.getMonth() + 3);
-
     return this.workerShiftsRepo.find({
       where: {
         worker: { id: workerId },
-        shift_date: Between(now, threeMonthsLater),
       },
       relations: ['worker', 'worker.specialty'],
       order: { shift_date: 'ASC' },
@@ -51,7 +46,7 @@ export class WorkerShiftsService {
     // Отримати всіх працівників стоматології
     const workers = await this.workerRepo.find({
       where: { dentistry: { id: dentistryId } },
-      relations: ["specialty"],
+      relations: ['specialty'],
     });
 
     const result: { worker: Worker; weekendDays: number }[] = [];
@@ -127,27 +122,32 @@ export class WorkerShiftsService {
     return { worker, weekendDays };
   }
 
-
-
   async createShift(dto: CreateWorkerShiftDto): Promise<WorkerShifts> {
-    const worker = await this.workerRepo.findOne({ where: { id: dto.workerId } });
+    const worker = await this.workerRepo.findOne({
+      where: { id: dto.workerId },
+    });
     if (!worker) throw new NotFoundException('Worker not found');
 
     const shift = this.workerShiftsRepo.create({ ...dto, worker });
     return this.workerShiftsRepo.save(shift);
   }
 
-  async removeShift(id: number): Promise<{ success: boolean; message: string }> {
+  async removeShift(
+    id: number,
+  ): Promise<{ success: boolean; message: string }> {
     const shift = await this.workerShiftsRepo.findOne({ where: { id } });
     if (!shift) throw new NotFoundException('Shift not found');
 
     await this.workerShiftsRepo.remove(shift);
-    return { success: true, message: `Shift with id ${id} has been deleted successfully` };
+    return {
+      success: true,
+      message: `Shift with id ${id} has been deleted successfully`,
+    };
   }
 
-   async getShiftsByClinicId(clinicId: number): Promise<IWorkerShifts[]> {
+  async getShiftsByClinicId(clinicId: number): Promise<IWorkerShifts[]> {
     return this.workerShiftsRepo.find({
-      relations: ['worker', 'worker.dentistry','worker.specialty'],
+      relations: ['worker', 'worker.dentistry', 'worker.specialty'],
       where: {
         worker: {
           dentistry: { id: clinicId },

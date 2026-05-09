@@ -38,7 +38,7 @@ export class PaymentEntity extends BaseEntity {
     const { dentistId } = action.payload;
     yield call(
       this.xRead.bind(this),
-      `/payment/all?dentist=${dentistId}`,
+      `/payment/allByWorker?dentist=${dentistId}`,
       ActionReducer.Get,
     );
   }

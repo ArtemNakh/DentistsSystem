@@ -13,6 +13,7 @@ import React from "react";
 import { getAllShiftsWorkers } from "@/lib/redux/modules/WorkerShifts/actions/GetShiftsToWorkers/GetShiftsToWorkers";
 import { IWorkerShifts } from "@/lib/redux/modules/WorkerShifts/WorkerShifts.interface";
 import { useTranslation } from "react-i18next";
+import { getShiftsWorker } from "@/lib/redux/modules/WorkerShifts/actions/GetShiftsToWorker/GetShiftsToWorker";
 
 export default function WorkersShiftsTable() {
   const { t } = useTranslation();
@@ -28,7 +29,7 @@ export default function WorkersShiftsTable() {
 
   useEffect(() => {
     if (auth.user?.dentistry?.id) {
-      dispatch(getAllShiftsWorkers({ idDentisty: auth.user.dentistry.id }));
+      dispatch(getShiftsWorker({ idWorker: auth.user.id }));
     }
   }, [dispatch, auth.user]);
 
