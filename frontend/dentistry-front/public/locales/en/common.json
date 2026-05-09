@@ -190,32 +190,60 @@
         "worker_shifts": "Work Schedule"
       }
     },
-    "main": {
-      "upcomins_entries": {
-        "title": "Upcoming Appointments",
-        "table_head": {
-          "doctor": "Doctor",
-          "client": "Client",
-          "date": "Date",
-          "notes": "Notes"
-        },
-        "table_body": {
-          "no_values": "No appointments for today"
-        }
-      },
-      "stats_workers": {
-        "title": "Overall Appointment Statistics",
-        "table_head": {
-          "doctor": "Doctor",
-          "all": "Total",
-          "planned": "Planned",
-          "completed": "Completed",
-          "await_pay": "Awaiting Payment",
-          "cancelled": "Cancelled"
-        },
-        "no_value": "No workers available for statistics"
-      }
+  "main": {
+  "upcomins_entries": {
+    "title": "Upcoming Appointments",
+    "table_head": {
+      "doctor": "Doctor",
+      "client": "Client",
+      "date": "Date",
+      "notes": "Notes"
+    },
+    "table_body": {
+      "no_values": "No appointments today"
     }
+  },
+  "stats_workers": {
+    "title": "Overall Appointment Statistics",
+    "table_head": {
+      "doctor": "Doctor",
+      "all": "Total",
+      "planned": "Planned",
+      "completed": "Completed",
+      "await_pay": "Awaiting Payment",
+      "cancelled": "Cancelled"
+    },
+    "no_value": "No workers available for statistics"
+  },
+  "busy_workers": {
+    "title": "Doctors Currently Operating",
+    "table_head": {
+      "doctor": "Doctor",
+      "specialization": "Specialization",
+      "patient": "Patient"
+    },
+    "no_busy_doctors": "No doctors are currently operating"
+  },
+  "patient_without_paid": {
+    "title": "Patients with Unpaid Operations",
+    "table_head": {
+      "patient": "Patient",
+      "amount": "Amount",
+      "status": "Payment Status",
+      "date": "Date"
+    },
+    "no_unpaid_operation": "No unpaid operations"
+  },
+  "weekend_workers": {
+    "title": "Number of Worker Days Off",
+    "table_head": {
+      "worker": "Worker",
+      "amount_unworking_day": "Days Off"
+    },
+    "no_value": "No data on number of days off"
+  }
+}
+
   },
   "reception": {
     "workers": {
