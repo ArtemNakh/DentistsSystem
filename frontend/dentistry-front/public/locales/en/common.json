@@ -178,7 +178,45 @@
     },
     "server": "Server`s error,repeat later"
   },
-
+  "admins": {
+    "header_side": {
+      "pages": {
+        "calendar": "Calendar",
+        "payment": "Payment",
+        "workers": "Workers",
+        "history_operation": "Operation History",
+        "menu": "Menu",
+        "licences": "Licenses",
+        "worker_shifts": "Work Schedule"
+      }
+    },
+    "main": {
+      "upcomins_entries": {
+        "title": "Upcoming Appointments",
+        "table_head": {
+          "doctor": "Doctor",
+          "client": "Client",
+          "date": "Date",
+          "notes": "Notes"
+        },
+        "table_body": {
+          "no_values": "No appointments for today"
+        }
+      },
+      "stats_workers": {
+        "title": "Overall Appointment Statistics",
+        "table_head": {
+          "doctor": "Doctor",
+          "all": "Total",
+          "planned": "Planned",
+          "completed": "Completed",
+          "await_pay": "Awaiting Payment",
+          "cancelled": "Cancelled"
+        },
+        "no_value": "No workers available for statistics"
+      }
+    }
+  },
   "reception": {
     "workers": {
       "filters": {

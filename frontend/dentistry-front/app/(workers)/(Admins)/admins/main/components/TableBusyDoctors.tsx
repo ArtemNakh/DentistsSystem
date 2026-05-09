@@ -1,72 +1,27 @@
-import { useAppSelector } from "@/lib/redux/hooks";
+import { UseDenormalizeSelector } from "@/lib/redux/hooks";
 import { IAppointment } from "@/lib/redux/modules/Appointments/Appointment.interface";
-import { IClient } from "@/lib/redux/modules/Clients/clients.interface";
-import { IDentistry } from "@/lib/redux/modules/Dentistries/Dentistry.interface";
-import { ISpecialty } from "@/lib/redux/modules/Specialties/Entities/Specialties/Specialties.interface";
-import { IWorker } from "@/lib/redux/modules/Workers/Workers.interface";
 import { RootState } from "@/lib/redux/store";
-import { createSelector } from "@reduxjs/toolkit";
 import { useTranslation } from "react-i18next";
-
-export const selectBusyDoctors = createSelector(
-  [
-    (state: RootState) => state.appointments, // всі прийоми
-    (state: RootState) => state.clients, // всі клієнти
-    (state: RootState) => state.workers, // всі лікарі
-    (state: RootState) => state.specialties, // всі спеціалізації
-    (state: RootState) => state.dentistries, // всі стоматології
-  ],
-  (appointmentsObj, clientsObj, workersObj, specialtiesObj, dentistriesObj) => {
-    const now = new Date();
-    const appointments: IAppointment[] = Object.values(appointmentsObj ?? {});
-    const clients: IClient[] = Object.values(clientsObj ?? {});
-    const workers: IWorker[] = Object.values(workersObj ?? {});
-    const specialties: ISpecialty[] = Object.values(specialtiesObj ?? {});
-
-    const dentistries: IDentistry[] = Object.values(dentistriesObj ?? {});
-    return appointments // фільтруємо лише ті прийоми, які йдуть прямо зараз
-      .filter((appt) => {
-        const apptDate = new Date(appt.appointment_date); // приклад: якщо прийом триває 1 годину
-        const apptEnd = new Date(apptDate.getTime() + 60 * 60 * 1000);
-        return apptDate <= now && now <= apptEnd;
-      })
-      .map((appt) => {
-        // знаходимо клієнта
-        const client = clients.find(
-          (c) => c.id === (appt.client as unknown as number),
-        ); // знаходимо лікаря
-        const doctor = workers.find(
-          (w) => w.id === (appt.dentist as unknown as number),
-        ); // знаходимо спеціалізацію лікаря
-        const specialty = doctor
-          ? specialties.find(
-              (s) => s.id === (doctor.specialty as unknown as number),
-            )
-          : null; // знаходимо стоматологію лікаря
-        const dentistry = doctor
-          ? dentistries.find(
-              (d) => d.id === (doctor.dentistry as unknown as number),
-            )
-          : null;
-        return {
-          ...appt,
-          client: client ?? null,
-          dentist: doctor ? { ...doctor, specialty, dentistry } : null,
-        };
-      });
-  },
-);
 
 export default function TableBusyDoctors() {
   const { t } = useTranslation();
-  const operatingDoctors = useAppSelector(selectBusyDoctors);
+  const operatingDoctors = Object.values(
+    UseDenormalizeSelector<IAppointment[]>(
+      (state: RootState) => state.appointments,
+    ),
+  ).filter((appt) => {
+    const now = new Date();
+    const apptDate = new Date(appt.appointment_date);
+    const apptEnd = new Date(apptDate.getTime() + 60 * 60 * 1000);
+    return apptDate <= now && now <= apptEnd;
+  });
 
   return (
     <>
       <div className="mt-8  border-2  border-gray-450 ">
         <div className="flex items-center justify-center my-2">
           <h2 className="text-base text-center  font-bold ">
-            {t("reception.main.busy_doctors.name")}
+            {t("admins.main.busy_workers.title")}
           </h2>
         </div>
         <div className="max-h-96 border-2 border-gray-400 overflow-y-auto">
@@ -74,13 +29,13 @@ export default function TableBusyDoctors() {
             <thead className="bg-linear-to-r from-[#874FD1] to-[#6F6697] text-white">
               <tr>
                 <th className="px-4 py-2 text-left font-semibold">
-                  {t("reception.main.busy_doctors.table.doctor")}
+                  {t("admins.main.busy_workers.table_head.doctor")}
                 </th>
                 <th className="px-4 py-2 text-left font-semibold">
-                  {t("reception.main.busy_doctors.table.specialization")}
+                  {t("admins.main.busy_workers.table_head.specialization")}
                 </th>
                 <th className="px-4 py-2 text-left font-semibold">
-                  {t("reception.main.busy_doctors.table.patient")}
+                  {t("admins.main.busy_workers.table_head.patient")}
                 </th>
               </tr>
             </thead>
@@ -88,7 +43,7 @@ export default function TableBusyDoctors() {
               {operatingDoctors.length === 0 ? (
                 <tr>
                   <td colSpan={4} className="text-center text-gray-200">
-                    {t("reception.main.busy_doctors.today_wthout_busy_doctor")}
+                    {t("admins.main.busy_workers.no_busy_doctors")}
                   </td>
                 </tr>
               ) : (

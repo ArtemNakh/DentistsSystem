@@ -1,58 +1,27 @@
-import { useAppSelector } from "@/lib/redux/hooks";
-import { IAppointment } from "@/lib/redux/modules/Appointments/Appointment.interface";
-import { IClient } from "@/lib/redux/modules/Clients/clients.interface";
+import {  UseDenormalizeSelector } from "@/lib/redux/hooks";
 import {
   IPayment,
   StatusPayment,
 } from "@/lib/redux/modules/Payments/Payments.interface";
-import { createSelector } from "@reduxjs/toolkit";
+import { RootState } from "@/lib/redux/store";
 import { format } from "date-fns";
 import { useTranslation } from "react-i18next";
-const selectPaymentsWithDetails = createSelector(
-  [
-    (state) => state.payments, // 1. беремо всі платежі
-    (state) => state.appointments, // 2. беремо всі записи (прийоми)
-    (state) => state.clients, // 3. беремо всіх клієнтів
-  ],
-  (paymentsObj, appointmentsObj, clientsObj) => {
-    // перетворюємо об’єкти у масиви
-    const payments: IPayment[] = Object.values(paymentsObj ?? {});
-    const appointments: IAppointment[] = Object.values(appointmentsObj ?? {});
-    const clients: IClient[] = Object.values(clientsObj ?? {});
-
-    // для кожного платежу шукаємо його appointment і клієнта
-    return payments // фільтруємо лише ті, що не оплачені
-      .filter((payment) => payment.status_paid !== StatusPayment.PAID)
-      .map((payment) => {
-        // знаходимо appointment, який відповідає цьому платежу
-        const appt = appointments.find(
-          (a) => a.id === (payment.appointment as unknown as number),
-        );
-
-        // якщо appointment знайдено, то шукаємо клієнта цього appointment
-        const client = appt
-          ? clients.find((c) => c.id === (appt.client as unknown as number))
-          : null;
-
-        // повертаємо новий об’єкт платежу з вкладеним appointment і клієнтом
-        return {
-          ...payment,
-          appointment: appt ? { ...appt, client } : null,
-        };
-      });
-  },
-);
 
 export default function TablePationWithoutPay() {
   const { t } = useTranslation();
-  const payments = useAppSelector(selectPaymentsWithDetails);
+  
+  // отримуємо всі платежі з денормалізацією
+  const payments: IPayment[] = Object.values(
+    UseDenormalizeSelector<IPayment[]>((state: RootState) => state.payments) ??
+      {},
+  ).filter((payment) => payment.status_paid !== StatusPayment.PAID);
 
   return (
     <>
       <div className="mt-5 text-base  border-2  border-gray-450">
         <div className="flex items-center justify-center my-2">
           <h2 className="text-base text-center  font-bold ">
-            {t("reception.main.patient_without_paid.patient_without_paid_info")}
+            {t("admins.main.patient_without_paid.title")}
           </h2>
         </div>
         {/* Лічильник */}
@@ -64,17 +33,17 @@ export default function TablePationWithoutPay() {
               <tr>
                 <th className="px-4 py-2 text-left font-semibold">
                   {" "}
-                  {t("reception.main.patient_without_paid.table.patient")}
+                  {t("admins.main.patient_without_paid.table_head.patient")}
                 </th>
                 <th className="px-4 py-2 text-left font-semibold">
-                  {t("reception.main.patient_without_paid.table.amount")}
+                  {t("admins.main.patient_without_paid.table_head.amount")}
                 </th>
                 <th className="px-4 py-2 text-left font-semibold">
-                  {t("reception.main.patient_without_paid.table.status")}
+                  {t("admins.main.patient_without_paid.table_head.status")}
                 </th>
 
                 <th className="px-4 py-2 text-left font-semibold">
-                  {t("reception.main.patient_without_paid.table.date")}
+                  {t("admins.main.patient_without_paid.no_unpaid_operation")}
                 </th>
               </tr>
             </thead>

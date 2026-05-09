@@ -351,6 +351,59 @@
         "licences": "Ліцензії",
         "worker_shifts": "Графік роботи"
       }
+    },
+    "main": {
+      "upcomins_entries": {
+        "title": "Найближчі записи",
+        "table_head": {
+          "doctor": "Доктор",
+          "client": "Клієнт",
+          "date": "Дата",
+          "notes": "Замітки"
+        },
+        "table_body": {
+          "no_values": "На сьогодні немає записів"
+        }
+      },
+      "stats_workers": {
+        "title": "  Статістика кількості записів (загальна)",
+        "table_head": {
+          "doctor": "Доктор",
+          "all": "Всього",
+          "planned": "Заплановано",
+          "completed": "Завершено",
+          "await_pay": "Очікує оплати",
+          "cancelled": "Скасовано"
+        },
+        "no_value": "Немає працівників для статистики"
+      },
+      "busy_workers": {
+        "title": "Лікарі які оперують",
+        "table_head": {
+          "doctor": "Лікар",
+          "specialization": "Спеціалізація",
+          "patient": "Пацієнт"
+        },
+        "no_busy_doctors": "Немає лікарів які зараз оперують"
+      },
+      "patient_without_paid": {
+        "title": "Пацієнти які не оплатили операцію",
+        "table_head": {
+          "patient": "Пацієнт",
+          "amount": "Сума",
+          "status": "Статус оплати",
+          "date": "Дата"
+        },
+        "no_unpaid_operation": "Немає неоплачених операцій"
+      },
+      "weekend_workers": {
+        "title": "Кілкість вихідних у працівників",
+        "table_head": {
+          "worker": "Працівник",
+          "amount_unworking_day": "Неробочі дні"
+        },
+        "no_value": "Немає даних по кількості неробочих днів "
+      }
     }
   },
   "doctor": {
@@ -597,7 +650,8 @@
           "cash": "Готівка",
           "transfer": "Перевод"
         }
-      },"schema": {
+      },
+      "schema": {
         "appointment_id_must": "Appointment ID є обов’язковим",
         "appointment_id_posit": "Appointment ID має бути додатнім",
         "appointment_id_whole": "Appointment ID має бути цілим числом",
@@ -607,7 +661,7 @@
         "action_more_0": "Має бути хоча б одна дія",
         "method_pay_must": "Метод оплати є обов’язковим",
         "method_pay_way": "Метод оплати має бути CARD, CASH або TRANSFER"
-      } 
+      }
     }
   }
 }
