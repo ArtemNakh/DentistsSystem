@@ -22,8 +22,10 @@ export default function CalendarAdmin() {
   const dispatch = useAppDispatch();
   const authUser = useAppSelector((state: { auth: AuthState }) => state.auth);
   const appointments: IAppointment[] = Object.values(
-    UseDenormalizeSelector((state: RootState) => state.appointments),
-  );
+    UseDenormalizeSelector<IAppointment[]>(
+      (state: RootState) => state.appointments,
+    ),
+  ).filter((appointment) => appointment.dentist?.id === authUser.user?.id);
 
   //отримання авторизованого користувача
   useEffect(() => {
@@ -67,7 +69,7 @@ export default function CalendarAdmin() {
           <Calendar
             value={value}
             onChange={(val) => setValue(val as Date)}
-             locale={i18n.language}
+            locale={i18n.language}
             tileContent={({ date, view }) => (
               <RenderCalendarTile
                 date={date}

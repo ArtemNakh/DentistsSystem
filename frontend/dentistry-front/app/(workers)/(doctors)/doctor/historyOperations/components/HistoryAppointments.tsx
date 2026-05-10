@@ -5,6 +5,7 @@ import TableHistoryAppointments from "./TableHistoryAppointments/TableHistoryApp
 import { useTranslation } from "react-i18next";
 import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
 import { IAppointment } from "@/lib/redux/modules/Appointments/Appointment.interface";
+import { RootState } from "@/lib/redux/store";
 
 interface HistoryAppointmentsWorkerProps {
   filters: HistoryFilters;
@@ -14,11 +15,14 @@ export default function HistoryAppointmentsWorker({
   filters,
 }: HistoryAppointmentsWorkerProps) {
   const { t } = useTranslation();
-
-  const appointmentsObj = UseDenormalizeSelector(
-    (state: { appointments: AuthState }) => state.appointments,
+  const authUser: AuthState = UseDenormalizeSelector(
+    (state:{ auth: AuthState}) => state.auth,
   );
-  const appointments: IAppointment[] = Object.values(appointmentsObj ?? {});
+  const appointments: IAppointment[] = Object.values(
+    UseDenormalizeSelector<IAppointment[]>(
+      (state: { appointments: AuthState }) => state.appointments,
+    ).filter((appointment) => appointment.dentist?.id === authUser.user?.id),
+  );
 
   const filteredAppointments = appointments.filter((ap) => {
     // фільтрування по ФІО клієнта
@@ -28,11 +32,11 @@ export default function HistoryAppointmentsWorker({
         .toLowerCase()
         .includes(filters.fioClient.toLowerCase());
 
-// фільтрування по статусу оплати
+    // фільтрування по статусу оплати
     const statusPaidMatch =
       !filters.status_paid || ap.payment?.status_paid === filters.status_paid;
 
-      // фільтрування по даті (різні форми записи)
+    // фільтрування по даті (різні форми записи)
     const formattedDate = format(new Date(ap.appointment_date), "dd.MM.yyyy");
     const filter = filters.appointment_date?.trim() || "";
 

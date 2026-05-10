@@ -113,7 +113,7 @@ export default function TableBodyHistoryAppointment({
         ) : (
           <tr>
             <td className="text-gray-900">
-              {t("doctor.history_operation.table.body.no_value")}
+              {t("doctor.history_operation.table.no_value")}
             </td>
           </tr>
         )}

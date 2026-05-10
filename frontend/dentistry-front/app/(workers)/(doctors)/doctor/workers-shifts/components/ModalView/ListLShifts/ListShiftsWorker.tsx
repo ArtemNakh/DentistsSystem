@@ -1,8 +1,4 @@
-
-
-
 import { useState } from "react";
-import CreateWorkerShiftModal from "../CreateShift/CreateShift";
 import { useAppDispatch } from "@/lib/redux/hooks";
 import { IWorkerShifts } from "@/lib/redux/modules/WorkerShifts/WorkerShifts.interface";
 import { DeleteShiftsWorker } from "@/lib/redux/modules/WorkerShifts/actions/DeleteWorkerShifts/CreateWorkerShifts";
@@ -15,12 +11,10 @@ interface Props {
 
 export default function ListShiftsWorker({ workerId, shifts }: Props) {
   const { t, i18n } = useTranslation();
-  const dispatch = useAppDispatch();
   const workerShifts = shifts.filter(
     (lic: IWorkerShifts) => lic.worker?.id === workerId,
   );
 
-  const [showCreateShift, setShowCreateShift] = useState(false);
   const [selectedMonth, setSelectedMonth] = useState<number>(
     new Date().getMonth(),
   );
@@ -113,35 +107,13 @@ export default function ListShiftsWorker({ workerId, shifts }: Props) {
                       {lic.start_time} {lic.end_time}
                     </span>
                   </div>
-                  <div className="flex gap-2">
-                    <button
-                      className="px-2 py-1 bg-[#7B4DBC] hover:bg-[#6C4DA1] border border-gray-700 text-white rounded"
-                      onClick={() =>
-                        dispatch(DeleteShiftsWorker({ id: lic.id }))
-                      }
-                    >
-                      {t("doctor.workers_shifts.shifts.delete")}
-                    </button>
-                  </div>
+                 
+                 
                 </li>
               ))}
           </ul>
         )}
-
-        <button
-          className="mt-2 px-3 py-1 bg-[#7963AC] border border-gray-600 hover:bg-[#685594] text-white rounded"
-          onClick={() => setShowCreateShift(true)}
-        >
-          {t("doctor.workers_shifts.shifts.add_shift")}
-        </button>
       </div>
-
-      {showCreateShift && (
-        <CreateWorkerShiftModal
-          workerId={workerId}
-          onClose={() => setShowCreateShift(false)}
-        />
-      )}
     </td>
   );
 }
