@@ -37,7 +37,7 @@ export default function TableUpcomingEntries() {
       {/* таблиця */}
       {appointments.length === 0 ? (
         <div className="text-center text-gray-400 py-6">
-          {t("admins.main.upcomins_entries.table_head.no_values")}
+          {t("admins.main.upcomins_entries.table_body.no_values")}
         </div>
       ) : (
         <>

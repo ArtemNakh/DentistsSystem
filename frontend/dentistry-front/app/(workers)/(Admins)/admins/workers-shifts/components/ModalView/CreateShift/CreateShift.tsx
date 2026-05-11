@@ -1,6 +1,6 @@
 "use client";
 
-import { Field, Form, Formik } from "formik";
+import { Form, Formik } from "formik";
 import { useAppDispatch } from "@/lib/redux/hooks";
 import {
   CreateShiftsWorker,
@@ -10,6 +10,8 @@ import { CreateWorkerShiftSchema } from "./schemes/CreateShift.schema";
 import ModalWrapper from "./components/ModalWrapper";
 import FormField from "./components/FormField";
 import ActionButtons from "./components/ActionButtons";
+import { useTranslation } from "react-i18next";
+import i18n from "@/i18next.config";
 
 export default function CreateWorkerShiftModal({
   workerId,
@@ -18,6 +20,7 @@ export default function CreateWorkerShiftModal({
   workerId: number;
   onClose: () => void;
 }) {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
 
   const onSubmit = async (
@@ -49,24 +52,26 @@ export default function CreateWorkerShiftModal({
       {({ errors, touched }) => (
         <Form>
           <ModalWrapper>
-            <h2 className="text-lg font-bold mb-4">Нова зміна</h2>
+            <h2 className="text-lg font-bold mb-4">
+              {t("admins.workers_shifts.adding_new_shift.title")}
+            </h2>
 
             <FormField
-              label="Дата зміни"
+              label={t("admins.workers_shifts.adding_new_shift.date_shift")}
               name="shift_date"
               type="date"
               errors={errors}
               touched={touched}
             />
             <FormField
-              label="Час початку"
+              label={t("admins.workers_shifts.adding_new_shift.time_start")}
               name="start_time"
               type="time"
               errors={errors}
               touched={touched}
             />
             <FormField
-              label="Час завершення"
+              label={t("admins.workers_shifts.adding_new_shift.time_end")}
               name="end_time"
               type="time"
               errors={errors}

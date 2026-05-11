@@ -63,7 +63,7 @@ export default function ListShiftsWorker({ workerId, shifts }: Props) {
           ))}
         </div>
 
-        {/* Перемикач років */}
+
         {/* Перемикач років */}
         <div className="flex flex-wrap gap-2 mb-3">
           {availableYears.map((year) => (
@@ -82,7 +82,8 @@ export default function ListShiftsWorker({ workerId, shifts }: Props) {
         </div>
 
         {filteredShifts.length === 0 ? (
-          <p className="text-gray-200"> Немає змін</p>
+          <p className="text-gray-200"> 
+          {t("doctor.workers_shifts.no_value")}:</p>
         ) : (
           <ul className="space-y-2">
             {filteredShifts

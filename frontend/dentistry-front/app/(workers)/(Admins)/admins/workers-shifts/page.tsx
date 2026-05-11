@@ -1,53 +1,30 @@
 "use client";
 
-import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
+import {
+  useAppDispatch,
+  useAppSelector,
+  UseDenormalizeSelector,
+} from "@/lib/redux/hooks";
 import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
-import { IDentistry } from "@/lib/redux/modules/Dentistries/Dentistry.interface";
-import { GetLicensesWorkers } from "@/lib/redux/modules/Licenses/actions/GetAllLicensesWorkers/GetAllLicensesWorkers";
-
-import { ISpecialty } from "@/lib/redux/modules/Specialties/Entities/Specialties/Specialties.interface";
 import { IWorker } from "@/lib/redux/modules/Workers/Workers.interface";
 import { RootState } from "@/lib/redux/store";
-import { createSelector } from "@reduxjs/toolkit";
 import { useEffect, useState } from "react";
 import ListShiftsWorker from "./components/ModalView/ListLShifts/ListShiftsWorker";
 import React from "react";
 import { getAllShiftsWorkers } from "@/lib/redux/modules/WorkerShifts/actions/GetShiftsToWorkers/GetShiftsToWorkers";
 import { IWorkerShifts } from "@/lib/redux/modules/WorkerShifts/WorkerShifts.interface";
+import { useTranslation } from "react-i18next";
 
-
-export const DenormalizeWorkers = createSelector(
-  [
-    (state: RootState) => state.workers,
-  ],
-  (workersObj) => {
-    const workers: IWorker[] = Object.values(workersObj ?? {});
-    return workers.map((w) => ({
-      ...w,
-      specialty: w.specialty,
-      dentistry: w.dentistry,
-    }));
-  },
-);
-
-export const DenormalizeWorkerShifts = createSelector(
-  [
-    (state: RootState) => state.workerShifts,
-    (state: RootState) => state.workers,
-  ],
-  (workerShiftsObj, workersObj) => {
-    const workerShifts: IWorkerShifts[] = Object.values(workerShiftsObj ?? {});
-    const workers: IWorker[] = Object.values(workersObj ?? {});
-
-    return workerShifts.map((shift) => {
-      const worker = workers.find((w) => w.id === (shift.worker as any))!;
-      return { ...shift, worker };
-    });
-  },
-);
 export default function WorkersShiftsTable() {
-  const workers = useAppSelector(DenormalizeWorkers);
-  const shifts = useAppSelector(DenormalizeWorkerShifts);
+  const { t } = useTranslation();
+  const workers: IWorker[] = Object.values(
+    UseDenormalizeSelector<IWorker[]>((state: RootState) => state.workers),
+  );
+  const shifts: IWorkerShifts[] = Object.values(
+    UseDenormalizeSelector<IWorkerShifts[]>(
+      (state: RootState) => state.workerShifts,
+    ),
+  );
   const auth = useAppSelector((state: { auth: AuthState }) => state.auth);
 
   const [expandedWorkerId, setExpandedWorkerId] = useState<number | null>(null);
@@ -61,19 +38,34 @@ export default function WorkersShiftsTable() {
   }, [dispatch, auth.user]);
 
   return (
-    <div className="p-4">
-      <h2 className="text-xl font-bold mb-4">Працівники стоматології  / графік роботи</h2>
+    <div className="p-4 overflow-x-auto">
+      <h2 className="text-xl font-bold mb-4">
+        {t("admins.workers_shifts.title")}
+      </h2>
       <table className="w-full border-collapse border border-gray-300">
         <thead>
           <tr className="bg-linear-to-l from-[#874FD1] to-[#6F6697]">
-            <th className="border p-2">Імʼя</th>
-            <th className="border p-2">По-батькові</th>
-            <th className="border p-2">Фамілія</th>
-            <th className="border p-2">Спеціалізація/Тип</th>
-            <th className="border p-2">Дата народження</th>
-            <th className="border p-2">телефон</th>
-
-            <th className="border">Статус аккаунта</th>
+            <th className="border p-2">
+              {t("admins.workers_shifts.table_head.name")}
+            </th>
+            <th className="border p-2">
+              {t("admins.workers_shifts.table_head.middle_name")}
+            </th>
+            <th className="border p-2">
+              {t("admins.workers_shifts.table_head.surname")}
+            </th>
+            <th className="border p-2">
+              {t("admins.workers_shifts.table_head.specialization")}
+            </th>
+            <th className="border p-2">
+              {t("admins.workers_shifts.table_head.birthday")}
+            </th>
+            <th className="border p-2">
+              {t("admins.workers_shifts.table_head.phone")}
+            </th>
+            <th className="border">
+              {t("admins.workers_shifts.table_head.status_acc")}
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -105,7 +97,7 @@ export default function WorkersShiftsTable() {
 
                 <td className="border p-2">{worker.phone}</td>
                 <td className="border p-2">
-                  {worker.active ? "Активний" : "Неактивний"}
+                  {worker.active ? t("admins.workers_shifts.status_type.active") : t("admins.workers_shifts.status_type.no_active")}
                 </td>
               </tr>
               {expandedWorkerId === worker.id && (

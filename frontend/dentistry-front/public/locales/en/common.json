@@ -190,60 +190,98 @@
         "worker_shifts": "Work Schedule"
       }
     },
-  "main": {
-  "upcomins_entries": {
-    "title": "Upcoming Appointments",
-    "table_head": {
-      "doctor": "Doctor",
-      "client": "Client",
-      "date": "Date",
-      "notes": "Notes"
+    "main": {
+      "upcomins_entries": {
+        "title": "Upcoming Appointments",
+        "table_head": {
+          "doctor": "Doctor",
+          "client": "Client",
+          "date": "Date",
+          "notes": "Notes"
+        },
+        "table_body": {
+          "no_values": "No appointments today"
+        }
+      },
+      "stats_workers": {
+        "title": "Overall Appointment Statistics",
+        "table_head": {
+          "doctor": "Doctor",
+          "all": "Total",
+          "planned": "Planned",
+          "completed": "Completed",
+          "await_pay": "Awaiting Payment",
+          "cancelled": "Cancelled"
+        },
+        "no_value": "No workers available for statistics"
+      },
+      "busy_workers": {
+        "title": "Doctors Currently Operating",
+        "table_head": {
+          "doctor": "Doctor",
+          "specialization": "Specialization",
+          "patient": "Patient"
+        },
+        "no_busy_doctors": "No doctors are currently operating"
+      },
+      "patient_without_paid": {
+        "title": "Patients with Unpaid Operations",
+        "table_head": {
+          "patient": "Patient",
+          "amount": "Amount",
+          "status": "Payment Status",
+          "date": "Date"
+        },
+        "no_unpaid_operation": "No unpaid operations"
+      },
+      "weekend_workers": {
+        "title": "Number of Worker Days Off",
+        "table_head": {
+          "worker": "Worker",
+          "amount_unworking_day": "Days Off"
+        },
+        "no_value": "No data on number of days off"
+      }
     },
-    "table_body": {
-      "no_values": "No appointments today"
+    "workers_shifts": {
+      "title": "Dental Clinic Workers / Work Schedule",
+      "table_head": {
+        "name": "First Name",
+        "middle_name": "Patronymic",
+        "surname": "Last Name",
+        "specialization": "Specialization",
+        "birthday": "Birthday",
+        "phone": "Phone",
+        "status_acc": "Account Status"
+      },
+      "status_type": {
+        "active": "Active",
+        "no_active": "Inactive"
+      },
+      "list_shifts": {
+        "shift": "Shift",
+        "shifts": "Shifts",
+        "no_shifts": "No Shifts",
+        "add_shift": "Add Shift",
+        "delete_shift": "Delete"
+      },
+      "adding_new_shift": {
+        "title": "New Shift",
+        "schema_adding": {
+          "worker_id_must": "Worker ID is required",
+          "date_must": "Shift date is required",
+          "date_not_past": "Date cannot be in the past",
+          "start_time_must": "Start time is required",
+          "end_time_must": "End time is required",
+          "match_start_end_time": "End time must be later than start time"
+        },
+        "date_shift": "Shift Date",
+        "time_start": "Start Time",
+        "time_end": "End Time",
+        "save": "Save",
+        "cancelled": "Cancel"
+      }
     }
-  },
-  "stats_workers": {
-    "title": "Overall Appointment Statistics",
-    "table_head": {
-      "doctor": "Doctor",
-      "all": "Total",
-      "planned": "Planned",
-      "completed": "Completed",
-      "await_pay": "Awaiting Payment",
-      "cancelled": "Cancelled"
-    },
-    "no_value": "No workers available for statistics"
-  },
-  "busy_workers": {
-    "title": "Doctors Currently Operating",
-    "table_head": {
-      "doctor": "Doctor",
-      "specialization": "Specialization",
-      "patient": "Patient"
-    },
-    "no_busy_doctors": "No doctors are currently operating"
-  },
-  "patient_without_paid": {
-    "title": "Patients with Unpaid Operations",
-    "table_head": {
-      "patient": "Patient",
-      "amount": "Amount",
-      "status": "Payment Status",
-      "date": "Date"
-    },
-    "no_unpaid_operation": "No unpaid operations"
-  },
-  "weekend_workers": {
-    "title": "Number of Worker Days Off",
-    "table_head": {
-      "worker": "Worker",
-      "amount_unworking_day": "Days Off"
-    },
-    "no_value": "No data on number of days off"
-  }
-}
-
   },
   "reception": {
     "workers": {

@@ -6,10 +6,17 @@ interface FormFieldProps {
   type: string;
   errors: Record<string, string | undefined>;
   touched: Record<string, boolean | undefined>;
+  locale?: string;
 }
 
-// Поле форми з валідацією
-export default function FormField({ label, name, type, errors, touched }: FormFieldProps) {
+export default function FormField({
+  label,
+  name,
+  type,
+  errors,
+  touched,
+  locale
+}: FormFieldProps) {
   return (
     <div className="mb-2">
       <label className="text-sm font-medium">{label}</label>
@@ -17,6 +24,7 @@ export default function FormField({ label, name, type, errors, touched }: FormFi
         type={type}
         name={name}
         className="border p-2 w-full"
+        locale={locale}
       />
       {errors[name] && touched[name] && (
         <div className="text-red-500 text-sm">{errors[name]}</div>
