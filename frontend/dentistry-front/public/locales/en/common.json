@@ -311,6 +311,58 @@
           "dentist": "Doctor"
         }
       }
+    },
+    "payments": {
+      "filters": {
+        "amount": "Amount",
+        "status_paid": {
+          "name": "Payment Status",
+          "status": {
+            "paid": "Paid",
+            "not_paid": "Not Paid"
+          }
+        },
+        "method_paid": {
+          "name": "Payment Method",
+          "method": {
+            "cart": "Card",
+            "cash": "Cash",
+            "transfer": "Transfer"
+          }
+        },
+        "status_appointment": {
+          "name": "Appointment Status",
+          "status": {
+            "schedule": "Scheduled",
+            "complete": "Completed",
+            "wait_paid": "Awaiting Payment",
+            "cancelled": "Cancelled"
+          }
+        },
+        "fio_worker": "Worker Full Name",
+        "date_begin": "Start Date",
+        "date_end": "End Date"
+      },
+      "table_header": {
+        "client": "Client",
+        "worker": "Worker",
+        "amount": "Amount",
+        "status": "Payment Status",
+        "method": "Payment Method",
+        "payment_date": "Payment Date",
+        "actions": "Actions"
+      },
+      "full_info_appointment": {
+        "apponnt_actions": "Operation Actions",
+        "appointment_actions": {
+          "actions": "Action",
+          "name": "Name",
+          "description": "Description",
+          "price": "Price"
+        },
+        "close": "Close"
+      },
+      "no_pay": "No paid"
     }
   },
   "reception": {

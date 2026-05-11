@@ -8,24 +8,26 @@ export default function TableHeaderPayments({}: TableHeaderPaymentsProps) {
       <thead>
         <tr className="border-gray-400">
           <th className="border  px-4 py-2 text-center">
-            {t("reception.payments.table_header.client")}
+            {t("admins.payments.table_header.client")}
           </th>
           <th className="border  px-4 py-2 text-center">
-            {t("reception.payments.table_header.worker")}
+            {t("admins.payments.table_header.worker")}
           </th>
           <th className="border  px-4 py-2 text-center">
-            {t("reception.payments.table_header.amount")}
+            {t("admins.payments.table_header.amount")}
           </th>
           <th className="border  px-4 py-2 text-center">
-            {t("reception.payments.table_header.status")}
+            {t("admins.payments.table_header.status")}
           </th>
           <th className="border  px-4 py-2 text-center">
-            {t("reception.payments.table_header.method")}
+            {t("admins.payments.table_header.method")}
           </th>
           <th className="border  px-4 py-2 text-center">
-            {t("reception.payments.table_header.payment_date")}
+            {t("admins.payments.table_header.payment_date")}
           </th>
-          <th className="border  px-4 py-2 text-center">{t("reception.payments.table_header.actions")}</th>
+          <th className="border  px-4 py-2 text-center">
+            {t("admins.payments.table_header.actions")}
+          </th>
         </tr>
       </thead>
     </>

@@ -430,21 +430,21 @@
       "adding_new_shift": {
         "title": "Нова зміна",
         "schema_adding": {
-          "worker_id_must":"ID працівника обовʼязковий",
-          "date_must":"Дата зміни обовʼязкова",
-          "date_not_past":"Дата не може бути в минулому",
-          "start_time_must":"Час початку обовʼязковий",
-          "end_time_must":"Час завершення обовʼязковий",
-          "match_start_end_time":"Час завершення повинен бути пізніше за час початку"
+          "worker_id_must": "ID працівника обовʼязковий",
+          "date_must": "Дата зміни обовʼязкова",
+          "date_not_past": "Дата не може бути в минулому",
+          "start_time_must": "Час початку обовʼязковий",
+          "end_time_must": "Час завершення обовʼязковий",
+          "match_start_end_time": "Час завершення повинен бути пізніше за час початку"
         },
-        "date_shift":"Дата зміни"
-        ,"time_start":"Час початку",
-        "time_end":"Час завершення",
-        "save":"Зберегти",
-        "cancelled":"Скасувати"
+        "date_shift": "Дата зміни",
+        "time_start": "Час початку",
+        "time_end": "Час завершення",
+        "save": "Зберегти",
+        "cancelled": "Скасувати"
       }
     },
-    
+
     "calendar": {
       "more_record": "ще",
       "add_new_appointment": "Add appointment",
@@ -452,7 +452,7 @@
       "records_on": "Записи на",
       "no_records_day": "Немає записів на цей день",
       "appointment": {
-        "title":"Деталі запису",
+        "title": "Деталі запису",
         "patient": "Пацієнт",
         "doctor": "Лікар",
         "date": "Дата",
@@ -474,6 +474,58 @@
           "dentist": "Лікар"
         }
       }
+    },
+    "payments": {
+      "filters": {
+        "amount": "Сума",
+        "status_paid": {
+          "name": "Статус оплати",
+          "status": {
+            "paid": "Оплачено",
+            "not_paid": "Не оплачено"
+          }
+        },
+        "method_paid": {
+          "name": "Метод оплати",
+          "method": {
+            "cart": "Карта",
+            "cash": "Готівка",
+            "transfer": "Перевод"
+          }
+        },
+        "status_appointment": {
+          "name": "Статус записі ",
+          "status": {
+            "schedule": "Заплановано",
+            "complete": "Завершено",
+            "wait_paid": "Очікує оплати",
+            "cancelled": "Скасовано"
+          }
+        },
+        "fio_worker": "ФІО працівника",
+        "date_begin": "Початкова дата",
+        "date_end": "Кінцева дата"
+      },
+      "table_header": {
+        "client": "Клієнт",
+        "worker": "Працівник",
+        "amount": "Сума",
+        "status": "Статус оплати",
+        "method": "Метод оплати",
+        "payment_date": "Дата оплати",
+        "actions": "Діїі"
+      },
+      "full_info_appointment": {
+        "apponnt_actions": "Дії операції",
+        "appointment_actions": {
+          "actions": "Дія",
+          "name": "Ім'я",
+          "description": "Опис",
+          "price": "Ціна"
+        },
+        "close": "Зачинити"
+      },
+      "no_pay": "Немає оплат"
     }
   },
   "doctor": {

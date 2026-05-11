@@ -17,7 +17,7 @@ export default function FullInfoAppointment({
     <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-brightness-30">
       <div className="bg-gray-200 text-base  text-gray-700 rounded-lg shadow-lg p-6 w-11/12 max-w-4xl h-5/6 overflow-auto">
         <h2 className=" font-semibold mb-4">
-          {t("reception.payments.full_info_appointment.apponnt_actions")}
+          {t("admins.payments.full_info_appointment.apponnt_actions")}
         </h2>
 
         <p>{appointment.notes}</p>
@@ -29,13 +29,31 @@ export default function FullInfoAppointment({
           >
             <p className=" text-base">
               {t(
-                "reception.payments.full_info_appointment.appointment_actions.actions",
+                "admins.payments.full_info_appointment.appointment_actions.actions",
               )}
               : {index}
             </p>
-            <p>Name: {action.operation.name}</p>
-            <p>Description: {action.operation.description}</p>
-            <p>Price:{action.operation.price}</p>
+            <p>
+              {" "}
+              {t(
+                "admins.payments.full_info_appointment.appointment_actions.name",
+              )}
+              : {action.operation.name}
+            </p>
+            <p>
+              {" "}
+              {t(
+                "admins.payments.full_info_appointment.appointment_actions.description",
+              )}
+              : {action.operation.description}
+            </p>
+            <p>
+              {" "}
+              {t(
+                "admins.payments.full_info_appointment.appointment_actions.price",
+              )}
+              :{action.operation.price}
+            </p>
           </div>
         ))}
 
@@ -43,7 +61,7 @@ export default function FullInfoAppointment({
           onClick={() => setAppointment(null)}
           className="mt-4 px-4 py-2 bg-[#816EB5] text-white rounded hover:bg-[#7463A3]"
         >
-          {t("reception.payments.full_info_appointment.close")}
+          {t("admins.payments.full_info_appointment.close")}
         </button>
       </div>
     </div>,

@@ -2,6 +2,7 @@ import { IAppointment } from "@/lib/redux/modules/Appointments/Appointment.inter
 import { IPayment } from "@/lib/redux/modules/Payments/Payments.interface";
 import { useState } from "react";
 import FullInfoAppointment from "../ModalViews/FullInfoAppointment";
+import { useTranslation } from "react-i18next";
 
 interface TableBodyPaymentsProps {
   payments: IPayment[];
@@ -10,6 +11,7 @@ interface TableBodyPaymentsProps {
 export default function TableBodyPayments({
   payments,
 }: TableBodyPaymentsProps) {
+  const { t } = useTranslation();
   const [fullInfo, setFullInfo] = useState<IAppointment | null>(null);
 
   return (
@@ -56,11 +58,11 @@ export default function TableBodyPayments({
           </>
         ) : (
           <tr>
-            <td className="text-gray-900">Немає оплат</td>
+            <td className="text-gray-900">{t("admins.payments.no_pay")}</td>
           </tr>
         )}
       </tbody>
-      
+
       <FullInfoAppointment
         appointment={fullInfo}
         setAppointment={setFullInfo}

@@ -32,7 +32,7 @@ export default function FilterPanelPayments({
           {/* ФІО */}
           <div className="flex flex-col">
             <label className="text-gray-200">
-              {t("reception.payments.filters.fio_worker")}
+              {t("admins.payments.filters.fio_worker")}
             </label>
             <input
               value={filters.fio_worker}
@@ -46,7 +46,7 @@ export default function FilterPanelPayments({
           {/* Сума */}
           <div className="flex flex-col">
             <label className="text-gray-200">
-              {t("reception.payments.filters.amount")}
+              {t("admins.payments.filters.amount")}
             </label>
             <input
               type="number"
@@ -61,7 +61,7 @@ export default function FilterPanelPayments({
           {/* Статус оплати */}
           <div className="flex flex-col">
             <label className="text-gray-200">
-              {t("reception.payments.filters.status_paid.name")}
+              {t("admins.payments.filters.status_paid.name")}
             </label>
             <select
               value={filters.status_paid ?? ""}
@@ -78,10 +78,10 @@ export default function FilterPanelPayments({
             >
               <option value="">—</option>
               <option value={StatusPayment.PAID}>
-                {t("reception.payments.filters.status_paid.status.paid")}
+                {t("admins.payments.filters.status_paid.status.paid")}
               </option>
               <option value={StatusPayment.NOT_PAID}>
-                {t("reception.payments.filters.status_paid.status.not_paid")}
+                {t("admins.payments.filters.status_paid.status.not_paid")}
               </option>
             </select>
           </div>
@@ -89,7 +89,7 @@ export default function FilterPanelPayments({
           {/* Метод оплати */}
           <div className="flex flex-col">
             <label className="text-gray-200">
-              {t("reception.payments.filters.method_paid.name")}
+              {t("admins.payments.filters.method_paid.name")}
             </label>
             <select
               value={filters.method_pay ?? ""}
@@ -106,13 +106,13 @@ export default function FilterPanelPayments({
             >
               <option value="">—</option>
               <option value={MethodPayment.CARD}>
-                {t("reception.payments.filters.method_paid.method.cart")}
+                {t("admins.payments.filters.method_paid.method.cart")}
               </option>
               <option value={MethodPayment.CASH}>
-                {t("reception.payments.filters.method_paid.method.cash")}
+                {t("admins.payments.filters.method_paid.method.cash")}
               </option>
               <option value={MethodPayment.TRANSFER}>
-                {t("reception.payments.filters.method_paid.method.transfer")}
+                {t("admins.payments.filters.method_paid.method.transfer")}
               </option>
             </select>
           </div>
@@ -120,7 +120,7 @@ export default function FilterPanelPayments({
           {/* Статус прийому */}
           <div className="flex flex-col">
             <label className="text-gray-200">
-              {t("reception.payments.filters.status_appointment.name")}
+              {t("admins.payments.filters.status_appointment.name")}
             </label>
             <select
               value={filters.status_appointment ?? ""}
@@ -138,22 +138,22 @@ export default function FilterPanelPayments({
               <option value="">—</option>
               <option value={StatusAppointment.SCHEDULE}>
                 {t(
-                  "reception.payments.filters.status_appointment.status.schedule",
+                  "admins.payments.filters.status_appointment.status.schedule",
                 )}
               </option>
               <option value={StatusAppointment.COMPLETED}>
                 {t(
-                  "reception.payments.filters.status_appointment.status.complete",
+                  "admins.payments.filters.status_appointment.status.complete",
                 )}
               </option>
               <option value={StatusAppointment.WAIT_PAID}>
                 {t(
-                  "reception.payments.filters.status_appointment.status.wait_paid",
+                  "admins.payments.filters.status_appointment.status.wait_paid",
                 )}
               </option>
               <option value={StatusAppointment.CANCELLED}>
                 {t(
-                  "reception.payments.filters.status_appointment.status.cancelled",
+                  "admins.payments.filters.status_appointment.status.cancelled",
                 )}
               </option>
             </select>
@@ -162,7 +162,7 @@ export default function FilterPanelPayments({
           {/* Дата початку */}
           <div className="flex flex-col">
             <label className="text-gray-200">
-              {t("reception.payments.filters.date_begin")}
+              {t("admins.payments.filters.date_begin")}
             </label>
             <input
               type="date"
@@ -177,7 +177,7 @@ export default function FilterPanelPayments({
           {/* Дата завершення */}
           <div className="flex flex-col">
             <label className="text-gray-200">
-              {t("reception.payments.filters.date_end")}
+              {t("admins.payments.filters.date_end")}
             </label>
             <input
               type="date"
