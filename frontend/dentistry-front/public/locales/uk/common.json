@@ -473,7 +473,8 @@
           "client": { "name": "Клієнт" },
           "dentist": "Лікар"
         }
-      }
+      },
+      "appointments_adaptive_view": "Записи"
     },
     "payments": {
       "filters": {
@@ -526,6 +527,9 @@
         "close": "Зачинити"
       },
       "no_pay": "Немає оплат"
+    },
+    "workers": {
+      "add_worker": "Додати працівника"
     }
   },
   "doctor": {

@@ -6,10 +6,10 @@ import FilterPanelWorkers from "./components/FilterPanel";
 import ListWorkersWorker from "./components/ListWorkers";
 import CreateWorkerModal from "./ModalView/AddingNewWorkerField/CreateWorkerModal";
 
-
 interface WorkerReceptionProps {}
 
 export default function WorkerReception({}: WorkerReceptionProps) {
+  const { t } = useTranslation();
   const [filters, setFilters] = useState({
     fio: "",
     specialty: "",
@@ -27,7 +27,7 @@ export default function WorkerReception({}: WorkerReceptionProps) {
             onClick={() => setShowCreateModal(true)}
             className="border border-gray-450 mr-4 hover:bg-[#7C4ABF] text-white px-4 py-2 rounded"
           >
-            Додати працівника
+            {t("admins.workers.add_worker")}
           </button>
         </div>
 

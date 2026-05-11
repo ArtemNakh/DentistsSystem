@@ -310,7 +310,8 @@
           "client": { "name": "Client" },
           "dentist": "Doctor"
         }
-      }
+      },
+      "appointments_adaptive_view": "Appointments"
     },
     "payments": {
       "filters": {

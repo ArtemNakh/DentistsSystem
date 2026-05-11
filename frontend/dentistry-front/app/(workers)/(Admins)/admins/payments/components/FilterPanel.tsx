@@ -28,7 +28,7 @@ export default function FilterPanelPayments({
   return (
     <>
       <div className=" w-full">
-        <div className="mx-4 text-base   border border-gray-600  flex items-center gap-4 p-2  ">
+        <div className="mx-4 text-base   border border-gray-600  flex flex-wrap items-center gap-4 p-2  ">
           {/* ФІО */}
           <div className="flex flex-col">
             <label className="text-gray-200">

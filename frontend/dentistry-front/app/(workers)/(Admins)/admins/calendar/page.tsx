@@ -15,8 +15,10 @@ import { getAppointmentDentistry } from "@/lib/redux/modules/Appointments/action
 import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
 import { getAuthWorker } from "@/lib/redux/modules/AuthUser/actions/GetAuthWorker/GetAuthWorker";
 import i18n from "@/i18next.config";
+import { useTranslation } from "react-i18next";
 
 export default function CalendarAdmin() {
+  const{t}=useTranslation()
   const dispatch = useAppDispatch();
   const authUser = useAppSelector((state: { auth: AuthState }) => state.auth);
 
@@ -43,6 +45,20 @@ export default function CalendarAdmin() {
 
   const [value, setValue] = useState<Date>(new Date());
 
+  const [showSidebar, setShowSidebar] = useState(false);
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(min-width: 768px)");
+    const handler = (e: MediaQueryListEvent | MediaQueryList) => {
+      if (e.matches) setShowSidebar(false);
+    };
+    handler(mediaQuery);
+    mediaQuery.addEventListener("change", handler);
+    return () => mediaQuery.removeEventListener("change", handler);
+  }, []);
+
+  const sidebarContent = (
+    <AllDayRecords appointments={appointments} selectedDate={value} />
+  );
   return (
     <>
       <div className=" flex  min-h-screen ">
@@ -69,9 +85,32 @@ export default function CalendarAdmin() {
           />
         </div>
         {/* Right part */}
-        <div className="h-full">
-          <AllDayRecords appointments={appointments} selectedDate={value} />
+        {/* Sidebar для великих екранів */}
+        <div className="hidden md:block  border-l border-gray-300">
+          {sidebarContent}
         </div>
+        {/* Overlay sidebar для мобільних */}
+        {showSidebar && (
+          <div
+            className="fixed inset-0 bg-black/50 flex justify-end z-50 md:hidden"
+            onClick={() => setShowSidebar(false)}
+          >
+            <div
+              className=" bg-linear-to-r from-[#874FD1] to-[#7562A5] h-full shadow-lg relative"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {sidebarContent}
+            </div>
+          </div>
+        )}
+        {/* Триггер для мобільних */}
+        <button
+          onClick={() => setShowSidebar(true)}
+          className="fixed bottom-4 right-4 md:hidden bg-[#8C56D6] text-white px-4 py-2 rounded shadow-lg border-2 border-gray-450"
+        >
+          {t("admins.calendar.appointments_adaptive_view")}
+        </button>
+       
       </div>
     </>
   );
