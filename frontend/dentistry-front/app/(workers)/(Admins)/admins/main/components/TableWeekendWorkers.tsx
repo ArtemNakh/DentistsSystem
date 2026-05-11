@@ -27,10 +27,12 @@ export default function TableWorkersWeekend() {
   );
 
   return (
-    <div className="w-full h-fit mx-2 my-4 rounded-lg shadow-lg border border-gray-300 overflow-x-auto">
-      <h1 className="text-center text-sm sm:text-base md:text-lg bg-linear-to-r from-[#874FD1] to-[#6F6697] text-white py-2 sm:py-3">
-        {t("admins.main.weekend_workers.title")}
-      </h1>
+    <div className="w-full h-fit  my-4 rounded-lg shadow-lg border border-gray-300 overflow-x-auto">
+   <div className="flex items-center justify-center my-2">
+          <h2 className="text-base text-center  font-bold ">
+              {t("admins.main.weekend_workers.title")}
+        </h2>
+      </div>
       <table className="min-w-full border-collapse text-center text-xs sm:text-sm md:text-base">
         <thead>
           <tr className="bg-linear-to-r from-[#874FD1] to-[#6F6697] text-white">
@@ -69,5 +71,4 @@ export default function TableWorkersWeekend() {
       </table>
     </div>
   );
-
 }

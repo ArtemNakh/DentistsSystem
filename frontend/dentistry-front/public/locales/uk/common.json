@@ -443,6 +443,37 @@
         "save":"Зберегти",
         "cancelled":"Скасувати"
       }
+    },
+    
+    "calendar": {
+      "more_record": "ще",
+      "add_new_appointment": "Add appointment",
+      "add_new_client": "Add client",
+      "records_on": "Записи на",
+      "no_records_day": "Немає записів на цей день",
+      "appointment": {
+        "title":"Деталі запису",
+        "patient": "Пацієнт",
+        "doctor": "Лікар",
+        "date": "Дата",
+        "status": "Статус",
+        "notes": "Нотатки",
+        "close": "Закрити"
+      },
+      "modal": {
+        "RegistrationClient": {
+          "close": "Закрити"
+        },
+        "adding_appointment": {
+          "notes": { "name": "Заметки", "placeholder": "Додайте заметки" },
+          "appointment_date": {
+            "name": "Дата записи",
+            "placeholder": "Введіть дату записі"
+          },
+          "client": { "name": "Клієнт" },
+          "dentist": "Лікар"
+        }
+      }
     }
   },
   "doctor": {

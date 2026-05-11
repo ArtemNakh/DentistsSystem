@@ -281,6 +281,36 @@
         "save": "Save",
         "cancelled": "Cancel"
       }
+    },
+    "calendar": {
+      "more_record": "more",
+      "add_new_appointment": "Add appointment",
+      "add_new_client": "Add client",
+      "records_on": "Records on",
+      "no_records_day": "No records for this day",
+      "appointment": {
+        "title": "Appointment details",
+        "patient": "Patient",
+        "doctor": "Doctor",
+        "date": "Date",
+        "status": "Status",
+        "notes": "Notes",
+        "close": "Close"
+      },
+      "modal": {
+        "RegistrationClient": {
+          "close": "Close"
+        },
+        "adding_appointment": {
+          "notes": { "name": "Notes", "placeholder": "Add notes" },
+          "appointment_date": {
+            "name": "Appointment date",
+            "placeholder": "Enter appointment date"
+          },
+          "client": { "name": "Client" },
+          "dentist": "Doctor"
+        }
+      }
     }
   },
   "reception": {
