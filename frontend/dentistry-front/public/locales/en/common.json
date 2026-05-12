@@ -429,6 +429,49 @@
         "update": "Update",
         "no_workers": "No workers"
       }
+    },
+    "history_operation": {
+      "filters": {
+        "fio_client": "Client full name",
+        "fio_worker": "Worker full name",
+        "specialty": "Specialty",
+        "status_paid": "Payment status",
+        "appointment_date": "Appointment date"
+      },
+      "table": {
+        "header": {
+          "client": "Client",
+          "worker": "Worker",
+          "operation_date": "Operation date",
+          "status_operation": "Operation status",
+          "notes": "Notes",
+          "payment": "Payment",
+          "actions": "Action"
+        },
+        "body": {
+          "noValue": "No operation history",
+          "payment_modal": {
+            "amount": "Amount",
+            "method_pay": "Payment method",
+            "payment_day": "Payment day",
+            "status_pay": "Payment status"
+          }
+        }
+      },
+      "appointment_action": {
+        "appointment_actions": "Operation actions",
+        "action": "Action",
+        "name": "Name",
+        "price": "Price",
+        "no_action": "No actions available",
+        "close": "Close"
+      },
+      "payment_modal": {
+        "amount": "Amount",
+        "method_pay": "Payment method",
+        "day_payment": "Payment day",
+        "status_pay": "Payment status"
+      }
     }
   },
   "reception": {
