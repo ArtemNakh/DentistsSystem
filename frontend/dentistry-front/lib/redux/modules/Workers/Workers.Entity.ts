@@ -30,11 +30,11 @@ export class WorkerEntity extends BaseEntity {
   // Статичне поля для отримання схеми
   static schema = new WorkerEntity(null).getSchema();
 
-  *getDoctorsDentistSaga(action: WorkersDentistryAction) {
+  *getWorkersDentistrySaga(action: WorkersDentistryAction) {
     const { idDentistry } = action.payload;
     yield call(
       this.xRead.bind(this),
-      `/workers/all/doctors?dentistry=${idDentistry}`,
+      `/workers/all?dentistry=${idDentistry}`,
       ActionReducer.Get,
     );
   }
@@ -86,7 +86,7 @@ export class WorkerEntity extends BaseEntity {
   *watch() {
     yield takeLatest(
       WorkerActionSaga.GetWorkersDentistry,
-      this.getDoctorsDentistSaga.bind(this),
+      this.getWorkersDentistrySaga.bind(this),
     );
     yield takeLatest(
       WorkerActionSaga.SaveWorkers,

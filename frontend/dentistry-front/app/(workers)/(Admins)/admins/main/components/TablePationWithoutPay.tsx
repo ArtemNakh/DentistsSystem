@@ -43,7 +43,7 @@ export default function TablePationWithoutPay() {
                 </th>
 
                 <th className="px-4 py-2 text-left font-semibold">
-                  {t("admins.main.patient_without_paid.no_unpaid_operation")}
+                  {t("admins.main.patient_without_paid.table_head.date")}
                 </th>
               </tr>
             </thead>

@@ -38,7 +38,7 @@ export class WorkersController {
   }
 
 
-  @Get('all/doctors')
+  @Get('all')
   @ApiOperation({
     summary: 'Отримання усіх докторів стоматології',
     description:

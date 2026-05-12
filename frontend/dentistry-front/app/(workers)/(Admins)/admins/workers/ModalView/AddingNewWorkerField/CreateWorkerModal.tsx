@@ -1,6 +1,5 @@
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
-import { useCallback, useState } from "react";
-import { CreateWorkerDto } from "./dto/CreateWorkerDto";
+import { useCallback } from "react";
 import SpecialtyField from "./components/SpecialtyField";
 import { Field, Form, Formik } from "formik";
 import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
@@ -9,26 +8,16 @@ import {
   CreateWorkerPayload,
 } from "@/lib/redux/modules/Workers/actions/CreateWorker/CreateWorker";
 import { CreateWorkerSchema } from "./schema/CreateWorkerSchema";
+import { useTranslation } from "react-i18next";
 
 export default function CreateWorkerModal({
   onClose,
 }: {
   onClose: () => void;
 }) {
+  const { t, i18n } = useTranslation();
   const authUser = useAppSelector((state: { auth: AuthState }) => state.auth);
   const dispatch = useAppDispatch();
-
-  // const [form, setForm] = useState<CreateWorkerDto>({
-  //   name: "",
-  //   surname: "",
-  //   middle_name: "",
-  //   birthday: new Date(),
-  //   phone: "",
-  //   specialtyId: 0,
-  //   dentistryId: 0,
-  //   login: "",
-  //   password: "",
-  // });
 
   const onSubmit = useCallback(
     async (values: CreateWorkerPayload, { setSubmitting }: any) => {
@@ -71,11 +60,15 @@ export default function CreateWorkerModal({
         <Form>
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
             <div className="bg-gray-200 p-6 rounded w-96 text-gray-600">
-              <h2 className="text-lg font-bold mb-4">Новий працівник</h2>
+              <h2 className="text-lg font-bold mb-4">
+                {t("admins.workers.create_worker.title")}
+              </h2>
 
               <Field
                 name="name"
-                placeholder="Імʼя"
+                placeholder={t(
+                  "admins.workers.create_worker.placeholders.name",
+                )}
                 className="border p-2 w-full mb-2"
               />
               {errors.name && touched.name && (
@@ -84,7 +77,9 @@ export default function CreateWorkerModal({
 
               <Field
                 name="surname"
-                placeholder="Прізвище"
+                placeholder={t(
+                  "admins.workers.create_worker.placeholders.surname",
+                )}
                 className="border p-2 w-full mb-2"
               />
               {errors.surname && touched.surname && (
@@ -93,7 +88,9 @@ export default function CreateWorkerModal({
 
               <Field
                 name="middle_name"
-                placeholder="По-батькові"
+                placeholder={t(
+                  "admins.workers.create_worker.placeholders.middle_name",
+                )}
                 className="border p-2 w-full mb-2"
               />
               {errors.middle_name && touched.middle_name && (
@@ -103,6 +100,10 @@ export default function CreateWorkerModal({
               <Field
                 type="date"
                 name="birthday"
+                placeholder={t(
+                  "admins.workers.create  worker.placeholders.birthday",
+                )}
+                lang={i18n.language}
                 className="border p-2 w-full mb-2"
               />
               {errors.birthday && touched.birthday && (
@@ -111,7 +112,9 @@ export default function CreateWorkerModal({
 
               <Field
                 name="phone"
-                placeholder="Телефон"
+                placeholder={t(
+                  "admins.workers.create_worker.placeholders.phone",
+                )}
                 className="border p-2 w-full mb-2"
               />
               {errors.phone && touched.phone && (
@@ -122,7 +125,9 @@ export default function CreateWorkerModal({
 
               <Field
                 name="login"
-                placeholder="Логін"
+                placeholder={t(
+                  "admins.workers.create_worker.placeholders.login",
+                )}
                 className="border p-2 w-full mb-2"
               />
               {errors.login && touched.login && (
@@ -132,7 +137,9 @@ export default function CreateWorkerModal({
               <Field
                 type="password"
                 name="password"
-                placeholder="Пароль"
+                placeholder={t(
+                  "admins.workers.create_worker.placeholders.password",
+                )}
                 className="border p-2 w-full mb-4"
               />
               {errors.password && touched.password && (
@@ -144,14 +151,14 @@ export default function CreateWorkerModal({
                   type="submit"
                   className=" text-gray-200 px-4 py-2 rounded bg-[#7A5EB2] hover:bg-[#674F96]"
                 >
-                  Зберегти
+                  {t("admins.workers.create_worker.save")}
                 </button>
                 <button
                   type="button"
                   onClick={onClose}
                   className="px-4 py-2 border text-gray-200 rounded bg-[#7A5EB2] hover:bg-[#674F96]"
                 >
-                  Скасувати
+                  {t("admins.workers.create_worker.cancelled")}
                 </button>
               </div>
             </div>

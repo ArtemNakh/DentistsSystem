@@ -9,22 +9,19 @@ export default function TableHeaderWorker({}: TableHeaderWorkerProps) {
       <thead className="">
         <tr>
           <th className="border border-gray-400 w-1/2  px-2 py-1">
-            
-            {t("reception.workers.table_header.fio")}
+            {t("admins.workers.table_header.fio")}
           </th>
           <th className="border  border-gray-400 w-auto  px-1 py-1">
-            {t("reception.workers.table_header.specialty")}
+            {t("admins.workers.table_header.specialty")}
           </th>
           <th className="border border-gray-400  w-32 px-2 py-1">
-            {t("reception.workers.table_header.birthday")}
+            {t("admins.workers.table_header.birthday")}
           </th>
           <th className="border border-gray-400 px-2 w-40 py-1">
-            
-            {t("reception.workers.table_header.phone")}
+            {t("admins.workers.table_header.phone")}
           </th>
           <th className="border border-gray-400 px-2 py-1">
-            
-            {t("reception.workers.table_header.actions")}
+            {t("admins.workers.table_header.actions")}
           </th>
         </tr>
       </thead>

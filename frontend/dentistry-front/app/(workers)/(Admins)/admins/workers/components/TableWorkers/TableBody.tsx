@@ -2,16 +2,17 @@ import { useAppDispatch } from "@/lib/redux/hooks";
 import { deActiveWorker } from "@/lib/redux/modules/Workers/actions/DeActiveWorker/DeActiveWorker";
 import { IWorker } from "@/lib/redux/modules/Workers/Workers.interface";
 import { format } from "date-fns";
-import { useState } from "react";
-import UpdateWorkerModal from "../../ModalView/UpdateWorkerView/UpdateWorkerModal";
-
-
+import { useTranslation } from "react-i18next";
 
 interface TableBodyWorkerProps {
   workers: IWorker[];
   onSelectWorker: (worker: IWorker) => void;
 }
-export default function TableBodyWorker({ workers, onSelectWorker }: TableBodyWorkerProps) {
+export default function TableBodyWorker({
+  workers,
+  onSelectWorker,
+}: TableBodyWorkerProps) {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   return (
     <>
@@ -78,13 +79,13 @@ export default function TableBodyWorker({ workers, onSelectWorker }: TableBodyWo
                     }}
                     className="text-gray-700 border  px-3 py-2 rounded hover:bg-[#795FAE] transition"
                   >
-                    Видалити
+                    {t("admins.workers.table_body.delete")}
                   </button>
                   <button
                     onClick={() => onSelectWorker(worker)}
                     className="text-gray-700 border px-3 py-2 rounded hover:bg-green-500 transition"
                   >
-                    Оновити
+                    {t("admins.workers.table_body.update")}
                   </button>
                 </td>
               </tr>
@@ -92,12 +93,12 @@ export default function TableBodyWorker({ workers, onSelectWorker }: TableBodyWo
           </>
         ) : (
           <tr>
-            <td className="text-gray-900">Немає працівників</td>
+            <td className="text-gray-900">
+              {t("admins.workers.table_body.no_workers")}
+            </td>
           </tr>
         )}
       </tbody>
-
-      {/* Модальне вікно рендериться окремо */}
     </>
   );
 }

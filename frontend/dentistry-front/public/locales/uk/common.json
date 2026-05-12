@@ -529,7 +529,69 @@
       "no_pay": "Немає оплат"
     },
     "workers": {
-      "add_worker": "Додати працівника"
+      "add_worker": "Додати працівника",
+      "filters": {
+        "fio": "ФІО працівника",
+        "placeholder_fio": "Іван Іванович Іванов",
+        "specialty": "Спеціалізація",
+        "placeholder_specialty": "Хірург",
+        "birthday": "День народження"
+      },
+      "create_worker": {
+        "title": "Новий працівник",
+        "specialty": "Спеціалізація",
+        "find": "Пошук",
+        "find_specialization": "Пошук спеціалізації",
+        "enter_name_specialization": "Введіть назву спеціалізації",
+        "enter_name": "Введіть назву",
+        "placeholders": {
+          "name": "Ім'я",
+          "surname": "Прізвище",
+          "middle_name": "По-батькові",
+          "birthday": "День народження",
+          "phone": "Телефон",
+          "login": "Логін",
+          "password": "Пароль"
+        },
+        "save": "Зберегти",
+        "cancelled": "Скасувати",
+        "close": "Закрити"
+      },
+      "update_worker": {
+        "update_worker": "Оновити працівника",
+        "placeholders": {
+          "name": "Ім'я",
+          "surname": "Прізвище",
+          "middle_name": "По-батькові",
+          "birthday": "День народження",
+          "phone": "Телефон",
+          "login": "Логін",
+          "password": "Пароль"
+        },
+        "find_specialization": {
+          "specialization": "Спеціалізація",
+          "enter_name_specialization": "Введіть назву спеціалізації",
+          "find": "Пошук",
+          "find_specialization": "Пошук спеціалізації",
+          "enter_name": "Введіть назву",
+          "close": "Закрити"
+        },
+        "active": "Активний",
+        "update": "Оновити",
+        "cancelled": "Скасувати"
+      },
+      "table_header": {
+        "fio": "ФІО",
+        "specialty": "Спеціальність",
+        "birthday": "День народження",
+        "phone": "Телефон",
+        "actions": "Дія"
+      },
+      "table_body": {
+        "delete": "Видалити",
+        "update": "Оновити",
+        "no_workers": "Немає працівників"
+      }
     }
   },
   "doctor": {

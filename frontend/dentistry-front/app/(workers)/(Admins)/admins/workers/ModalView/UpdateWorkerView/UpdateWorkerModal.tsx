@@ -8,6 +8,7 @@ import {
 } from "@/lib/redux/modules/Workers/actions/UpdateWorker/UpdateWorker";
 import SpecialtyField from "./components/SpecialtyField";
 import { UpdateWorkerSchema } from "./schema/UpdateWorkerSchema";
+import { useTranslation } from "react-i18next";
 
 export default function UpdateWorkerModal({
   worker,
@@ -16,6 +17,7 @@ export default function UpdateWorkerModal({
   worker: IWorker;
   onClose: () => void;
 }) {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const onSubmit = useCallback(
     async (values: UpdateWorkerPayload, { setSubmitting }: any) => {
@@ -54,10 +56,14 @@ export default function UpdateWorkerModal({
         <Form>
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
             <div className="bg-gray-200 p-6 rounded w-96 text-gray-600">
-              <h2 className="text-lg font-bold mb-4">Оновлення працівника</h2>
+              <h2 className="text-lg font-bold mb-4">
+                {t("admins.workers.update_worker.update_worker")}
+              </h2>
               <Field
                 name="name"
-                placeholder="Імʼя"
+                placeholder={t(
+                  "admins.workers.update_worker.placeholders.name",
+                )}
                 className="border p-2 w-full mb-2"
               />
               {errors.name && touched.name && (
@@ -66,7 +72,9 @@ export default function UpdateWorkerModal({
 
               <Field
                 name="surname"
-                placeholder="Прізвище"
+                placeholder={t(
+                  "admins.workers.update_worker.placeholders.surname",
+                )}
                 className="border p-2 w-full mb-2"
               />
               {errors.surname && touched.surname && (
@@ -75,7 +83,9 @@ export default function UpdateWorkerModal({
 
               <Field
                 name="middle_name"
-                placeholder="По-батькові"
+                placeholder={t(
+                  "admins.workers.update_worker.placeholders.middle_name",
+                )}
                 className="border p-2 w-full mb-2"
               />
               {errors.middle_name && touched.middle_name && (
@@ -84,7 +94,7 @@ export default function UpdateWorkerModal({
 
               <Field
                 type="date"
-                name="birthday"
+                name={t("admins.workers.update_worker.placeholders.birthday")}
                 className="border p-2 w-full mb-2"
               />
               {errors.birthday && touched.birthday && (
@@ -93,7 +103,9 @@ export default function UpdateWorkerModal({
 
               <Field
                 name="phone"
-                placeholder="Телефон"
+                placeholder={t(
+                  "admins.workers.update_worker.placeholders.phone",
+                )}
                 className="border p-2 w-full mb-2"
               />
               {errors.phone && touched.phone && (
@@ -107,7 +119,9 @@ export default function UpdateWorkerModal({
 
               <Field
                 name="login"
-                placeholder="Логін"
+                placeholder={t(
+                  "admins.workers.update_worker.placeholders.login",
+                )}
                 className="border p-2 w-full mb-2"
               />
               {errors.login && touched.login && (
@@ -117,7 +131,9 @@ export default function UpdateWorkerModal({
               <Field
                 type="password"
                 name="password"
-                placeholder="Пароль"
+                placeholder={t(
+                  "admins.workers.update_worker.placeholders.password",
+                )}
                 className="border p-2 w-full mb-4"
               />
               {errors.password && touched.password && (
@@ -125,7 +141,7 @@ export default function UpdateWorkerModal({
               )}
               <label className="flex items-center gap-2 mb-2">
                 <Field type="checkbox" name="active" />
-                <span>Активний</span>
+                <span>{t("admins.workers.update_worker.active")}</span>
               </label>
               {errors.active && touched.active && (
                 <div className="text-red-500 text-sm">{errors.active}</div>
@@ -136,14 +152,14 @@ export default function UpdateWorkerModal({
                   type="submit"
                   className="text-gray-200 px-4 py-2 rounded bg-[#7A5EB2] hover:bg-[#674F96]"
                 >
-                  Оновити
+                  {t("admins.workers.update_worker.update")}
                 </button>
                 <button
                   type="button"
                   onClick={onClose}
                   className="px-4 py-2 border text-gray-200 rounded bg-[#7A5EB2] hover:bg-[#674F96]"
                 >
-                  Скасувати
+                  {t("admins.workers.update_worker.cancelled")}
                 </button>
               </div>
             </div>

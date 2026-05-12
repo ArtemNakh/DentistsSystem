@@ -364,6 +364,71 @@
         "close": "Close"
       },
       "no_pay": "No paid"
+    },
+    "workers": {
+      "add_worker": "Add worker",
+      "filters": {
+        "fio": "Worker full name",
+        "placeholder_fio": "John Smith Johnson",
+        "specialty": "Specialty",
+        "placeholder_specialty": "Surgeon",
+        "birthday": "Birthday"
+      },
+      "create_worker": {
+        "title": "New worker",
+        "specialty": "Specialty",
+        "find": "Search",
+        "find_specialization": "Search specialization",
+        "enter_name_specialization": "Enter specialization name",
+        "enter_name": "Enter name",
+        "placeholders": {
+          "name": "First name",
+          "surname": "Last name",
+          "middle_name": "Middle name",
+          "birthday": "Birthday",
+          "phone": "Phone",
+          "login": "Login",
+          "password": "Password"
+        },
+        "save": "Save",
+        "cancelled": "Cancel",
+        "close": "Close"
+      },
+      "update_worker": {
+        "update_worker": "Update worker",
+        "placeholders": {
+          "name": "First name",
+          "surname": "Last name",
+          "middle_name": "Middle name",
+          "birthday": "Birthday",
+          "phone": "Phone",
+          "login": "Login",
+          "password": "Password"
+        },
+        "find_specialization": {
+          "specialization": "Specialty",
+          "enter_name_specialization": "Enter specialization name",
+          "find": "Search",
+          "find_specialization": "Search specialization",
+          "enter_name": "Enter name",
+          "close": "Close"
+        },
+        "active": "Active",
+        "update": "Update",
+        "cancelled": "Cancel"
+      },
+      "table_header": {
+        "fio": "Full name",
+        "specialty": "Specialty",
+        "birthday": "Birthday",
+        "phone": "Phone",
+        "actions": "Action"
+      },
+      "table_body": {
+        "delete": "Delete",
+        "update": "Update",
+        "no_workers": "No workers"
+      }
     }
   },
   "reception": {

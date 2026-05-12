@@ -1,9 +1,11 @@
-import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
-import { IDentistry } from "@/lib/redux/modules/Dentistries/Dentistry.interface";
-import { ISpecialty } from "@/lib/redux/modules/Specialties/Entities/Specialties/Specialties.interface";
+import {
+  useAppDispatch,
+  useAppSelector,
+  UseDenormalizeSelector,
+} from "@/lib/redux/hooks";
 import { IWorker } from "@/lib/redux/modules/Workers/Workers.interface";
 import { RootState } from "@/lib/redux/store";
-import { createSelector } from "@reduxjs/toolkit";
+
 import TableWorkers from "./TableWorkers/TableWorkers";
 import { format } from "date-fns";
 import { WorkerFilters } from "./FilterPanel";
@@ -12,27 +14,6 @@ import { getWorkersDentistry } from "@/lib/redux/modules/Workers/actions/GetWork
 import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
 import { getAuthWorker } from "@/lib/redux/modules/AuthUser/actions/GetAuthWorker/GetAuthWorker";
 import UpdateWorkerModal from "../ModalView/UpdateWorkerView/UpdateWorkerModal";
-
-export const DenormalizeWorkers = createSelector(
-  [
-    (state: RootState) => state.workers,
-    (state: RootState) => state.specialties,
-    (state: RootState) => state.dentistries,
-  ],
-  (workersObj, specialtiesObj, dentistriesObj) => {
-    const workers: IWorker[] = Object.values(workersObj ?? {});
-    const specialties: ISpecialty[] = Object.values(specialtiesObj ?? {});
-    const dentistries: IDentistry[] = Object.values(dentistriesObj ?? {});
-
-    return workers.map((w) => {
-      const specialty = specialties.find((s) => s.id === (w.specialty as any))!;
-
-      const dentistry = dentistries.find((d) => d.id === (w.dentistry as any))!;
-
-      return { ...w, specialty, dentistry };
-    });
-  },
-);
 
 interface ListWorkersWorkerProps {
   filters: WorkerFilters;
@@ -56,7 +37,10 @@ export default function ListWorkersWorker({ filters }: ListWorkersWorkerProps) {
     if (!authUser.user) return;
     dispatch(getWorkersDentistry({ idDentistry: authUser.user?.dentistry.id }));
   }, [authUser]);
-  const workers = useAppSelector(DenormalizeWorkers);
+
+  const workers = Object.values(
+    UseDenormalizeSelector<IWorker[]>((state: RootState) => state.workers),
+  ).filter((worker) => worker?.dentistry?.id === authUser.user?.dentistry?.id);
 
   const filteredWorkers = workers.filter((w) => {
     const fioMatch =
@@ -75,13 +59,12 @@ export default function ListWorkersWorker({ filters }: ListWorkersWorkerProps) {
 
   return (
     <>
-      <div className="w-full  ">
-        <div className="mx-4">
-         <TableWorkers
-  workers={filteredWorkers}
-  selectedWorker={selectedWorker}
-  onSelectWorker={setSelectedWorker}
-/>
+      <div className="w-full ">
+        <div className="mx-4  overflow-x-scroll">
+          <TableWorkers
+            workers={filteredWorkers}
+            onSelectWorker={setSelectedWorker}
+          />
 
           {selectedWorker && (
             <UpdateWorkerModal

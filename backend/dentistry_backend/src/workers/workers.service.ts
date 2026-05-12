@@ -86,7 +86,7 @@ export class WorkersService {
     const doctors = this.workerRepo.find({
       where: {
         dentistry: { id: dentistryId },
-        specialty: { type: SpecialtyType.DOCTOR },
+        // specialty: { type: SpecialtyType.DOCTOR },
       },
       relations: ['specialty', 'dentistry'],
     });
