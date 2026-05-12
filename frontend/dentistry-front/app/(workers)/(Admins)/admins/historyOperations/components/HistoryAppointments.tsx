@@ -1,9 +1,11 @@
 import { HistoryFilters } from "./FilterPanel";
-import { useAppSelector } from "@/lib/redux/hooks";
-import { DenormalizeAppointments } from "../page";
+import { UseDenormalizeSelector } from "@/lib/redux/hooks";
 import { format } from "date-fns";
 import TableHistoryAppointments from "./TableHistoryAppointments/TableHistoryAppointments";
 import { useTranslation } from "react-i18next";
+import { IAppointment } from "@/lib/redux/modules/Appointments/Appointment.interface";
+import { RootState } from "@/lib/redux/store";
+import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
 
 interface HistoryAppointmentsWorkerProps {
   filters: HistoryFilters;
@@ -13,7 +15,17 @@ export default function HistoryAppointmentsWorker({
   filters,
 }: HistoryAppointmentsWorkerProps) {
   const { t } = useTranslation();
-  const appointments = useAppSelector(DenormalizeAppointments);
+  const authUser = UseDenormalizeSelector<AuthState>(
+    (state: { auth: AuthState }) => state.auth,
+  );
+  const appointments: IAppointment[] = Object.values(
+    UseDenormalizeSelector<IAppointment[]>(
+      (state: RootState) => state.appointments,
+    ),
+  ).filter(
+    (appointment) =>
+      appointment.dentist?.dentistry.id === authUser.user?.dentistry.id,
+  );
 
   const filteredAppointments = appointments.filter((ap) => {
     const fioClientMatch =
@@ -52,7 +64,7 @@ export default function HistoryAppointmentsWorker({
   return (
     <>
       <div className="w-full  ">
-        <div className="mx-4 text-base">
+        <div className="mx-4 overflow-x-scroll text-base">
           <TableHistoryAppointments appointments={filteredAppointments} />
         </div>
       </div>

@@ -15,7 +15,7 @@ export default function TableBodyHistoryAppointment({
   setSelectedAppointment,
 }: TableBodyHistoryAppointmentProps) {
   const { t } = useTranslation();
-  // {t("reception.history_operation.table.header.client")}
+  
   const [selectedPayment, setSelectedPayment] = useState<IPayment | null>(null);
 
   return (
@@ -81,7 +81,6 @@ export default function TableBodyHistoryAppointment({
                   {selectedPayment?.id === appointment.payment?.id && (
                     <ShowPaymentModal
                       payment={selectedPayment}
-                      setPayment={setSelectedPayment}
                     />
                   )}
                 </td>
@@ -111,7 +110,7 @@ export default function TableBodyHistoryAppointment({
         ) : (
           <tr>
             <td className="text-gray-900">
-              {t("reception.history_operation.table.body.noValue")}
+              {t("admins.history_operation.table.body.noValue")}
             </td>
           </tr>
         )}

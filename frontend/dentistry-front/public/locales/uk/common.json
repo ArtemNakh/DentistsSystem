@@ -592,6 +592,49 @@
         "update": "Оновити",
         "no_workers": "Немає працівників"
       }
+    },
+    "history_operation": {
+      "filters": {
+        "fio_client": " ФІО Клієнта",
+        "fio_worker": "ФІО Працівника",
+        "specialty": "Спеціалізація",
+        "status_paid": "Статус оплати",
+        "appointment_date": "Дата записи"
+      },
+      "table": {
+        "header": {
+          "client": "Клієнт",
+          "worker": "Працівник",
+          "operation_date": "Дата операції",
+          "status_operation": "Статус операції",
+          "notes": "Заметки",
+          "payment": "Оплата",
+          "actions": "Дія"
+        },
+        "body": {
+          "noValue": "Немає історій операції",
+          "payment_modal": {
+            "amount": "",
+            "method_pay": "",
+            "payment_day": "",
+            "status_pay": ""
+          }
+        }
+      },
+      "appointment_action": {
+        "appointment_actions": "Дії операції",
+        "action": "Дія",
+        "name": "Назва",
+        "price": "Ціна",
+        "no_action": "Дії відсутні",
+        "close": "Зачинити"
+      },
+      "payment_modal": {
+        "amount":"Сума",
+        "method_pay":"Метод оплати",
+        "day_payment":"День оплати",
+        "status_pay":"Статус оплати"
+      }
     }
   },
   "doctor": {
