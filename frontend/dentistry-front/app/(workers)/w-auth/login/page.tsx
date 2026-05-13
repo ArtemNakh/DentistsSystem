@@ -29,11 +29,10 @@ export default function WorkerLogin() {
   useEffect(() => {
     const checkAuth = async () => {
       if (!authUser.user) {
-        console.log("get worker")
+        console.log("get worker");
         await dispatch(getAuthWorker({}));
       }
       if (authUser.user) {
-        
         switch (authUser.user.specialty.type) {
           case SpecialtyType.ADMIN:
             router.push("/admins/main");
@@ -60,8 +59,8 @@ export default function WorkerLogin() {
         console.log("auth user ", data);
         localStorage.setItem("authToken", data.authToken);
 
-Cookies.set("auth_token", data.authToken, { path: "/" });
-Cookies.set("role", data.worker.specialty.type, { path: "/" });
+        Cookies.set("auth_token", data.authToken, { path: "/" });
+        Cookies.set("role", data.worker.specialty.type, { path: "/" });
         // );
 
         // перевіряємо спеціальність
@@ -70,7 +69,7 @@ Cookies.set("role", data.worker.specialty.type, { path: "/" });
             router.push("/admins/main"); // сторінка для адмінів
             break;
           case SpecialtyType.DOCTOR:
-            router.push("/doctors/main"); // сторінка для лікарів
+            router.push("/doctor/main"); // сторінка для лікарів
             break;
           case SpecialtyType.RECEPTION:
             router.push("/reception/main"); // сторінка для реєстратури
