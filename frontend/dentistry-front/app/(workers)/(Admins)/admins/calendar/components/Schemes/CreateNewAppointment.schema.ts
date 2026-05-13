@@ -3,17 +3,17 @@ import i18n from "i18next";
 
 export const CreateAppointmentSchema = Yup.object().shape({
   clientId: Yup.number()
-    .required("Client ID є обов’язковим")
-    .positive("Client ID має бути додатнім")
-    .integer("Client ID має бути цілим числом"),
+    .required(()=>i18n.t("admins.calendar.modal.adding_appointment.schema.client_id_must"))
+    .positive(()=>i18n.t("admins.calendar.modal.adding_appointment.schema.client_id_addition"))
+    .integer(()=>i18n.t("admins.calendar.modal.adding_appointment.schema.client_id_whole")),
   dentistId: Yup.number()
-    .required("Dentist ID є обов’язковим")
-    .positive("Dentist ID має бути додатнім")
-    .integer("Dentist ID має бути цілим числом"),
+    .required(()=>i18n.t("admins.calendar.modal.adding_appointment.schema.dentist_id_must"))
+    .positive(()=>i18n.t("admins.calendar.modal.adding_appointment.schema.dentist_id_addition"))
+    .integer(()=>i18n.t("admins.calendar.modal.adding_appointment.schema.dentist_id_whole")),
   appointment_date: Yup.date()
-    .required("Дата прийому є обов’язковою")
-    .min(new Date(), "Дата прийому не може бути в минулому"),
+    .required(()=>i18n.t("admins.calendar.modal.adding_appointment.schema.data_must"))
+    .min(new Date(), ()=>i18n.t("admins.calendar.modal.adding_appointment.schema.data_not_past")),
   notes: Yup.string()
-    .max(500, "Нотатки не можуть перевищувати 500 символів")
+    .max(500, ()=>i18n.t("admins.calendar.modal.adding_appointment.schema.notes_max"))
     .optional(),
 });

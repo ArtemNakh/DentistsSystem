@@ -308,7 +308,18 @@
             "placeholder": "Enter appointment date"
           },
           "client": { "name": "Client" },
-          "dentist": "Doctor"
+          "dentist": "Doctor",
+          "schema": {
+            "client_id_must": "Client ID is required",
+            "client_id_addition": "Client ID must be positive",
+            "client_id_whole": "Client ID must be an integer",
+            "dentist_id_must": "Dentist ID is required",
+            "dentist_id_addition": "Dentist ID must be positive",
+            "dentist_id_whole": "Dentist ID must be an integer",
+            "date_must": "Appointment date is required",
+            "date_not_past": "Appointment date cannot be in the past",
+            "notes_max": "Notes cannot exceed 500 characters"
+          }
         }
       },
       "appointments_adaptive_view": "Appointments"
@@ -390,6 +401,22 @@
           "login": "Login",
           "password": "Password"
         },
+        "schema": {
+          "name_must": "Імʼя є обовʼязковим",
+          "surname_must": "Прізвище є обовʼязковим",
+          "middle_name_must": "По-батькові є обовʼязковим",
+          "birthday_must": "Дата народження є обовʼязковою",
+          "uncorrect_format_birthday": "Невірний формат дати (YYYY-MM-DD)",
+          "phone_must": "Телефон є обовʼязковим",
+          "uncorrect_format_phone": "Невірний формат телефону",
+          "choose_specialization": "Оберіть спеціальність",
+          "must_more_specialization": "Спеціалізація повинна бути",
+          "doctor_id_must": "ID стоматології є обовʼязковим",
+          "choose_doctor": "Оберіть стоматологію",
+          "login_must": "Логін є обовʼязковим",
+          "password_must": "Пароль є обовʼязковим",
+          "more_6_password": "Пароль має містити мінімум 6 символів"
+        },
         "save": "Save",
         "cancelled": "Cancel",
         "close": "Close"
@@ -413,6 +440,7 @@
           "enter_name": "Enter name",
           "close": "Close"
         },
+
         "active": "Active",
         "update": "Update",
         "cancelled": "Cancel"

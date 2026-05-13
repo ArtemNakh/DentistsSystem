@@ -1,27 +1,44 @@
+import i18n from "@/i18next.config";
 import * as Yup from "yup";
 
 export const CreateWorkerSchema = Yup.object().shape({
-  name: Yup.string()
-    .required("Імʼя є обовʼязковим"),
-  surname: Yup.string()
-    .required("Прізвище є обовʼязковим"),
-  middle_name: Yup.string()
-    .required("По-батькові є обовʼязковим"),
+  name: Yup.string().required(() =>
+    i18n.t("admins.workers.create_worker.schema.name_must"),
+  ),
+  surname: Yup.string().required(() =>
+    i18n.t("admins.workers.create_worker.schema.surname_must"),
+  ),
+  middle_name: Yup.string().required(() =>
+    i18n.t("admins.workers.create_worker.schema.middle_name"),
+  ),
   birthday: Yup.date()
-    .required("Дата народження є обовʼязковою")
-    .typeError("Невірний формат дати (YYYY-MM-DD)"),
+    .required(() => i18n.t("admins.workers.create_worker.schema.birthday_must"))
+    .typeError(() =>
+      i18n.t("admins.workers.create_worker.schema.uncorrect_format_birthday"),
+    ),
   phone: Yup.string()
-    .required("Телефон є обовʼязковим")
-    .matches(/^\+?\d{10,15}$/, "Невірний формат телефону"),
+    .required(() => i18n.t("admins.workers.create_worker.schema.phone_must"))
+    .matches(/^\+?\d{10,15}$/, () =>
+      i18n.t("admins.workers.create_worker.schema.uncorrect_format_phone"),
+    ),
   specialtyId: Yup.number()
-    .required("Оберіть спеціальність")
-    .min(1, "Оберіть спеціальність"),
+    .required(() =>
+      i18n.t("admins.workers.create_worker.schema.choose_specialization"),
+    )
+    .min(1, () =>
+      i18n.t("admins.workers.create_worker.schema.must_more_specialization"),
+    ),
   dentistryId: Yup.number()
-    .required("ID стоматології є обовʼязковим")
-    .min(1, "Оберіть стоматологію"),
-  login: Yup.string()
-    .required("Логін є обовʼязковим"),
+    .required(() =>
+      i18n.t("admins.workers.create_worker.schema.doctor_id_must"),
+    )
+    .min(1, () => i18n.t("admins.workers.create_worker.schema.choose_doctor")),
+  login: Yup.string().required(() =>
+    i18n.t("admins.workers.create_worker.schema.login_must"),
+  ),
   password: Yup.string()
-    .required("Пароль є обовʼязковим")
-    .min(6, "Пароль має містити мінімум 6 символів"),
+    .required(() => i18n.t("admins.workers.create_worker.schema.password_must"))
+    .min(6, () =>
+      i18n.t("admins.workers.create_worker.schema.more_6_password"),
+    ),
 });
