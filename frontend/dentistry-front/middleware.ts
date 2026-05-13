@@ -22,9 +22,12 @@ export function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL("/403", req.url));
   }
 
+  if (pathname.startsWith("/reception") && role !== SpecialtyType.RECEPTION) {
+    return NextResponse.redirect(new URL("/403", req.url));
+  }
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/admins/:path*", "/doctor/:path*"], // захищаємо обидві групи сторінок
+  matcher: ["/admins/:path*", "/doctor/:path*","/reception/:path*"], // захищаємо обидві групи сторінок
 };
