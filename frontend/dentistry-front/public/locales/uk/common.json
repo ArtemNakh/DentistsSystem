@@ -470,7 +470,7 @@
             "name": "Дата записи",
             "placeholder": "Введіть дату записі"
           },
-           "schema": {
+          "schema": {
             "client_id_must": "Client ID є обов’язковим",
             "client_id_addition": "Client ID має бути додатнім",
             "client_id_whole": "Client ID має бути цілим числом",
@@ -658,10 +658,51 @@
         "close": "Зачинити"
       },
       "payment_modal": {
-        "amount":"Сума",
-        "method_pay":"Метод оплати",
-        "day_payment":"День оплати",
-        "status_pay":"Статус оплати"
+        "amount": "Сума",
+        "method_pay": "Метод оплати",
+        "day_payment": "День оплати",
+        "status_pay": "Статус оплати"
+      }
+    },
+    "license": {
+      "worker_dentistry": "Працівники стоматології",
+      "table_head": {
+        "name": "Ім'я",
+        "middle_name": "По-батькові",
+        "surname": "Прізвище",
+        "specialization": "Спеціалізація",
+        "birthday": "День народження",
+        "phone": "Телефон",
+        "status_acc": "Статус аккаунта"
+      },
+      "status_type": { "active": "Активний", "no_active": "Неактивний" },
+      "list_license": {
+        "licenses": "Ліцензії",
+        "no_licenses": "Немає ліцензій",
+        "issued_by": "Видана ким",
+        "issue_date": "Дата видачі",
+        "expiration_date": "Дата закінчення",
+        "add_license": "Додати ліцензію",
+        "delete": "Видалити"
+      },
+      "create_license": {
+        "placeholder": {
+          "issued_by": "Наприклад: МОЗ України",
+          "number_license": "Наприклад: LIC-2026-001"
+        },
+        "schema": {
+          "issue_date_must": "Дата видачі обовʼязкова",
+          "issued_by_must": "Орган видачі обовʼязковий",
+          "number_license_must": "Номер ліцензії обовʼязковий",
+          "expiration_date_must": "Дата закінчення обовʼязкова"
+        },
+        "new_license": "Нова ліцензія",
+        "number_license": "Номер ліцензії",
+        "issued_by": "Видана ким",
+        "issue_date": "Дата видачі",
+        "expiration_date": "Дата закінчення",
+        "save": "Зберегти",
+        "cancel": "Скасувати"
       }
     }
   },

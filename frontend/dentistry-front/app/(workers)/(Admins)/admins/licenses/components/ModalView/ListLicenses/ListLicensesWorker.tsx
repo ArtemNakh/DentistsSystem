@@ -1,9 +1,10 @@
-// ListLicensesWorker.tsx
+
 import { ILicense } from "@/lib/redux/modules/Licenses/Licenses.interface";
 import { useState } from "react";
 import CreateLicenseModal from "../CreateLicense/CreateLicense";
 import { RemoveLicense } from "@/lib/redux/modules/Licenses/actions/RemoveLicense/RemoveLicense";
 import { useAppDispatch } from "@/lib/redux/hooks";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   workerId: number;
@@ -11,6 +12,7 @@ interface Props {
 }
 
 export default function ListLicensesWorker({ workerId, licenses }: Props) {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const workerLicenses = licenses.filter(
     (lic: ILicense) => lic.worker?.id === workerId,
@@ -20,53 +22,61 @@ export default function ListLicensesWorker({ workerId, licenses }: Props) {
   return (
     <td
       colSpan={7}
-      className="border p-2 bg-linear-to-l from-[#7C48BF] to-[#776EA3]"
+      className="border p-4 bg-linear-to-l from-[#7C48BF] to-[#776EA3]"
     >
       <div>
-        <h3 className="font-semibold mb-2">Ліцензії:</h3>
+        <h3 className="text-lg font-bold mb-3 text-white">
+          {t("admins.license.list_license.licenses")}:
+        </h3>
         {workerLicenses.length === 0 ? (
-          <p className="text-gray-200">Немає ліцензій</p>
+          <p className="text-gray-200 italic">
+            {t("admins.license.list_license.no_licenses")}
+          </p>
         ) : (
-          <ul className="space-y-2">
+          <div className="grid gap-3">
             {workerLicenses.map((lic) => (
-              <li
+              <div
                 key={lic.id}
-                className="flex justify-between items-center border p-2 rounded"
+                className="bg-white/10 backdrop-blur-sm rounded-lg p-4 shadow-md hover:shadow-lg transition"
               >
-                <div>
-                  <span className="font-medium">{lic.number_license}</span>{" "}
-                  <span className="font-medium">
-                    Дата згасання:{" "}
-                    <span className="font-medium">
-                      Дата згасання:{" "}
-                      <span>
-                        Дата згасання:{" "}
+                <div className="flex justify-between items-center">
+                  <div className="space-y-1">
+                    <p className="text-white font-semibold">
+                      № {lic.number_license}
+                    </p>
+                    <p className="text-sm text-gray-200">
+                      {t("admins.license.list_license.issued_by")}:{" "}
+                      <span className="font-medium">{lic.issued_by}</span>
+                    </p>
+                    <p className="text-sm text-gray-200">
+                      {t("admins.license.list_license.issue_date")}:{" "}
+                      <span className="bg-green-600/30 text-green-200 px-2 py-0.5 rounded">
+                        {new Date(lic.issue_date).toLocaleDateString()}
+                      </span>
+                    </p>
+                    <p className="text-sm text-gray-200">
+                      {t("admins.license.list_license.expiration_date")}:{" "}
+                      <span className="bg-red-600/30 text-red-200 px-2 py-0.5 rounded">
                         {new Date(lic.expiration_date).toLocaleDateString()}
                       </span>
-                    </span>
-                  </span>{" "}
-                  <span className="font-medium">Видав: {lic.issued_by}</span>{" "}
-                  <span className="text-sm text-gray-200">
-                    (видано: {new Date(lic.issue_date).toLocaleDateString()})
-                  </span>
-                </div>
-                <div className="flex gap-2">
+                    </p>
+                  </div>
                   <button
-                    className="px-2 py-1 bg-[#7B4DBC] hover:bg-[#6C4DA1] border border-gray-700 text-white rounded"
+                    className="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded-md shadow"
                     onClick={() => dispatch(RemoveLicense({ id: lic.id }))}
                   >
-                    Видалити
+                    {t("admins.license.list_license.delete")}
                   </button>
                 </div>
-              </li>
+              </div>
             ))}
-          </ul>
+          </div>
         )}
         <button
-          className="mt-2 px-3 py-1 bg-[#7963AC] border border-gray-600 hover:bg-[#685594] text-white rounded"
+          className="mt-4 px-4 py-2 bg-[#7963AC] hover:bg-[#685594] text-white font-medium rounded-md shadow-md"
           onClick={() => setShowCreateLicense(true)}
         >
-          Додати ліцензію
+          {t("admins.license.list_license.add_license")}
         </button>
       </div>
       {showCreateLicense && (

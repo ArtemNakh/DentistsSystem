@@ -500,7 +500,49 @@
         "day_payment": "Payment day",
         "status_pay": "Payment status"
       }
-    }
+    },
+  "license": {
+  "worker_dentistry": "Dental Clinic Workers",
+  "table_head": {
+    "name": "First Name",
+    "middle_name": "Middle Name",
+    "surname": "Last Name",
+    "specialization": "Specialization",
+    "birthday": "Date of Birth",
+    "phone": "Phone",
+    "status_acc": "Account Status"
+  },
+  "status_type": { "active": "Active", "no_active": "Inactive" },
+  "list_license": {
+    "licenses": "Licenses",
+    "no_licenses": "No licenses",
+    "issued_by": "Issued By",
+    "issue_date": "Issue Date",
+    "expiration_date": "Expiration Date",
+    "add_license": "Add License",
+    "delete": "Delete"
+  },
+  "create_license": {
+    "placeholder": {
+      "issued_by": "Example: Ministry of Health of Ukraine",
+      "number_license": "Example: LIC-2026-001"
+    },
+    "schema": {
+      "issue_date_must": "Issue date is required",
+      "issued_by_must": "Issuing authority is required",
+      "number_license_must": "License number is required",
+      "expiration_date_must": "Expiration date is required"
+    },
+    "new_license": "New License",
+    "number_license": "License Number",
+    "issued_by": "Issued By",
+    "issue_date": "Issue Date",
+    "expiration_date": "Expiration Date",
+    "save": "Save",
+    "cancel": "Cancel"
+  }
+}
+
   },
   "reception": {
     "workers": {
