@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
 import { getAuthWorker } from "@/lib/redux/modules/AuthUser/actions/GetAuthWorker/GetAuthWorker";
+import Cookies from "js-cookie";
 
 export default function WorkerLogin() {
   const { t } = useTranslation();
@@ -28,9 +29,11 @@ export default function WorkerLogin() {
   useEffect(() => {
     const checkAuth = async () => {
       if (!authUser.user) {
+        console.log("get worker")
         await dispatch(getAuthWorker({}));
       }
       if (authUser.user) {
+        
         switch (authUser.user.specialty.type) {
           case SpecialtyType.ADMIN:
             router.push("/admins/main");
@@ -56,6 +59,9 @@ export default function WorkerLogin() {
         const data = await loginWorker(values);
         console.log("auth user ", data);
         localStorage.setItem("authToken", data.authToken);
+
+Cookies.set("auth_token", data.authToken, { path: "/" });
+Cookies.set("role", data.worker.specialty.type, { path: "/" });
         // );
 
         // перевіряємо спеціальність

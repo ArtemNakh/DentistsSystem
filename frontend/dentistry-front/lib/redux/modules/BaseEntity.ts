@@ -121,7 +121,6 @@ export default class BaseEntity extends ClientContextDI {
     return entity;
   }
 
-  
   /**Запит до бази даних та отримання результат */
   //   Виконує HTTP‑запит до API.
   // Якщо метод — POST/PUT/PATCH, додає body.
@@ -208,9 +207,9 @@ export default class BaseEntity extends ClientContextDI {
     method: HTTPMethod = HTTPMethod.GET,
   ): Generator<any, void, unknown> {
     const nonNormData = yield this.xFetch(endpoint, method, data);
-
-    yield this.ActionRedux(nonNormData, typeAction);
-    // yield this.SaveReduxData(nonNormData, typeAction);
+    if (nonNormData && typeAction) {
+      yield this.ActionRedux(nonNormData, typeAction);
+    } // yield this.SaveReduxData(nonNormData, typeAction);
   }
 
   /**

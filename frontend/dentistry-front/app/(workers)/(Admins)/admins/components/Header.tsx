@@ -10,11 +10,14 @@ import { AuthActionSaga } from "@/lib/redux/modules/AuthUser/AuthUser.Entity";
 import { getAuthWorker } from "@/lib/redux/modules/AuthUser/actions/GetAuthWorker/GetAuthWorker";
 import { useTranslation } from "react-i18next";
 import { logoutWorker } from "@/lib/redux/modules/AuthUser/actions/logoutAuthWorker/LogoutAuthWorker";
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
+
 
 export default function HeaderAdmin() {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-
+  const router = useRouter();
   const [profileModule, setProfileModule] = useState(false);
   const [leftSideBar, setLeftSideBar] = useState(false);
   // const authUser = useSelector((state: RootState) => state.auth.user);
@@ -140,7 +143,19 @@ export default function HeaderAdmin() {
                   />
 
                   <button
-                    onClick={() => dispatch(logoutWorker({}))}
+                    onClick={async () => {
+                      await dispatch(logoutWorker({}));
+                      // очищаємо cookies, якщо вони є
+                      document.cookie =
+                        "auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+                      document.cookie =
+                        "role=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+                      // редірект на логін
+
+                      Cookies.remove("auth_token");
+                      Cookies.remove("role");
+                      router.push("/w-auth/login");
+                    }}
                     className="border border-gray-600 px-2 py-1 rounded hover:bg-gray-200 transition"
                   >
                     Exit

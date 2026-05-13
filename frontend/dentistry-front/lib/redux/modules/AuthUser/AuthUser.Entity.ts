@@ -33,7 +33,12 @@ export class AuthEntity extends BaseEntity {
   }
 
   *getAuthWorkerSaga(action: GetAuthWorkerAction) {
-    yield call(this.xRead.bind(this), `/workers/me`, ActionReducer.Get);
+    try {
+      yield call(this.xRead.bind(this), `/workers/me`, ActionReducer.Get);
+    } catch (error) {
+      // якщо 401 або інша помилка — нічого не додаємо в Redux
+      console.log("Auth check failed:", error);
+    } // yield call(this.xRead.bind(this), `/workers/me`, ActionReducer.Get);
   }
 
   *watch() {
@@ -44,7 +49,8 @@ export class AuthEntity extends BaseEntity {
     yield takeLatest(
       AuthActionSaga.GetAuthWorker,
       this.getAuthWorkerSaga.bind(this),
-    ); yield takeLatest(
+    );
+    yield takeLatest(
       AuthActionSaga.logoutWorker,
       this.logoutAuthWorkerSaga.bind(this),
     );

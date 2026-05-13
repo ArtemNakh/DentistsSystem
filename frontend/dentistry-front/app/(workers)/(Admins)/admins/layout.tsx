@@ -8,7 +8,7 @@ interface RegesterLayoutProps {
 
 export default function RegesterLayout({ children }: RegesterLayoutProps) {
   return (
-   <ProtectedRoute allowedRoles={[SpecialtyType.ADMIN]}>
+  //  <ProtectedRoute allowedRoles={[SpecialtyType.ADMIN]}>
       <div className="w-full min-h-screen flex flex-col">
         {/* HEader */}
         <HeaderAdmin />
@@ -20,6 +20,6 @@ export default function RegesterLayout({ children }: RegesterLayoutProps) {
 
         {/* Footer */}
       </div>
-    </ProtectedRoute>
+    // </ProtectedRoute>
   );
 }
