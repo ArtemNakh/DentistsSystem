@@ -4,7 +4,7 @@ import { MailerService } from '@nestjs-modules/mailer';
 import { render } from '@react-email/components';
 import { ConfirmationTemplate } from './templates/confirmation.template';
 import { ResetPasswordTemplate } from './templates/reset-password.template';
-
+import { InfoAboutAppointmentTemplate } from './templates/infoAboutAppointment';
 
 @Injectable()
 export class EmailService {
@@ -23,6 +23,17 @@ export class EmailService {
     const domain = this.configService.getOrThrow<string>('APPLICATION_ORIGIN');
     const html = await render(ResetPasswordTemplate({ domain, token }));
     return this.sendMail(email, 'Reset password', html);
+  }
+
+  public async sendInformPlannedAppointment({
+    email,
+    textMessage,
+  }: {
+    email: string;
+    textMessage: string;
+  }) {
+    const html = await render(InfoAboutAppointmentTemplate({ textMessage }));
+    return this.sendMail(email, 'Information about appointment', html);
   }
 
   private sendMail(email: string, subject: string, html: string) {

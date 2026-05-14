@@ -125,10 +125,7 @@ export class AppointmentController {
     @Body() createAppointmentDto: CreateAppointmentDto,
   ): Promise<IAppointment> {
     try {
-      // базова перевірка (можна винести у DTO через class-validator)
-      // if (!createAppointmentDto.date || !createAppointmentDto.dentistryId) {
-      //   throw new BadRequestException('Потрібно вказати дату та dentistryId');
-      // }
+      
       const newAppointment =
         await this.appointmentService.createAppointment(createAppointmentDto);
       return newAppointment;

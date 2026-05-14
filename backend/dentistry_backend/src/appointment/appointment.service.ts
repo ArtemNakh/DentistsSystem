@@ -1,8 +1,10 @@
 import {
   BadRequestException,
   Body,
+  forwardRef,
   Get,
   HttpException,
+  Inject,
   Injectable,
   InternalServerErrorException,
   Logger,
@@ -26,6 +28,7 @@ import {
 import { CreateAppointmentDto } from './dto/createAppointment.dto';
 import { Worker } from 'src/workers/entities/workers.entity';
 import { SpecialtyType } from 'src/specialty/entities/specialty.interface';
+import { NotificationService } from 'src/notification/notification.service';
 
 @Injectable()
 export class AppointmentService {
@@ -35,6 +38,8 @@ export class AppointmentService {
     private appointmentRepo: Repository<Appointment>,
     @InjectRepository(Worker)
     private readonly workerRepo: Repository<Worker>,
+    @Inject(forwardRef(() => NotificationService))
+    private readonly notificationService: NotificationService,
   ) {}
 
   findAll(): Promise<IAppointment[]> {
@@ -176,8 +181,33 @@ export class AppointmentService {
         notes: createAppointmentDto.notes,
         status: StatusAppointment.SCHEDULE,
       });
-      const result = await this.appointmentRepo.save(newAppointment);
-      return result;
+      const savedAppointment = await this.appointmentRepo.save(newAppointment);
+      //  console.log('appointemnt', newAppointment);
+      //  console.log('appointemntres', result);
+
+      // 🔹 Отримуємо повний appointment з усіма потрібними relations
+      const fullAppointment = await this.appointmentRepo.findOne({
+        where: { id: savedAppointment.id },
+        relations: [
+          'client',
+          'dentist',
+          'dentist.specialty',
+          'dentist.dentistry',
+          'appointment_actions',
+          'payment',
+        ],
+      });
+
+      if (!fullAppointment) {
+        throw new InternalServerErrorException(
+          'Failed to load full appointment after save',
+        );
+      }
+
+      await this.notificationService.informPlannedAppointment({
+        appointment: fullAppointment,
+      });
+      return savedAppointment;
     } catch (err) {
       throw new InternalServerErrorException(
         'Unexpected error while fetching appointments',
