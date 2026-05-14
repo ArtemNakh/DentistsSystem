@@ -7,7 +7,6 @@ import { SpecialtyModule } from './specialty/specialty.module';
 import { OperationListModule } from './operation-list/operation-list.module';
 import { ClientsModule } from './clients/clients.module';
 import { AuthModule } from './auth/auth.module';
-
 import { TokensModule } from './tokens/tokens.module';
 import AppDataSource from './database/data-source';
 import { EmailConfirmationModule } from './auth/email-confirmation/email-confirmation.module';
