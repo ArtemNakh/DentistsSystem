@@ -4,7 +4,7 @@ export enum TypeRemaind {
   APPOINTMENT_REMINDER = 'appointment_reminder',
   PAYMENT_REMINDER = 'payment_reminder',
   GENERAL = 'general',
-  PLANNED_APPOINTMENT='appointment_planned'
+  PLANNED_APPOINTMENT = 'planned_appointment',
 }
 
 export interface INotification {

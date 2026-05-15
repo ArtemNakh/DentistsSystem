@@ -11,6 +11,7 @@ import { Notification } from './entity/notification.entity';
 import { Twilio } from 'twilio';
 import { IAppointment } from 'src/appointment/entity/appointment.interface';
 import { EmailService } from 'src/libs/email/email.service';
+import { SmsService } from 'src/libs/sms/sms.service';
 
 @Injectable()
 export class NotificationService {
@@ -21,6 +22,7 @@ export class NotificationService {
     @InjectRepository(Notification)
     private notificationRepo: Repository<Notification>,
     private readonly emailService: EmailService,
+    private readonly smsService: SmsService,
   ) {
     const accountSid = configService.get('TWILIO_ACCOUNT_SID');
     const authToken = configService.get('TWILIO_AUTH_TOKEN');
@@ -42,21 +44,23 @@ export class NotificationService {
         'Appointment ID is required for notification',
       );
     }
-    
+
+    console.log('aqweqwe', appointment);
     const messageAboutPlannedAppointment =
       'You have schedule appointment to doctor:' +
-      // appointment.dentist.surname +
-      // appointment.dentist.name +
-      // appointment.dentist.middle_name +
-      '  on' +
+      ' ' +
+      appointment.dentist.surname +
+      ' ' +
+      appointment.dentist.name +
+      ' ' +
+      appointment.dentist.middle_name +
+      '  on ' +
       appointment.appointment_date.toString();
-    const testmessageAboutPlannedAppointment = 't';
     const newNotification = this.notificationRepo.create({
       appointment: { id: appointment.id },
       message: messageAboutPlannedAppointment,
       is_send: false,
-      type_remaind: TypeRemaind.GENERAL,
-      // type_remaind: TypeRemaind.PLANNED_APPOINTMENT,
+      type_remaind: TypeRemaind.PLANNED_APPOINTMENT,
     });
 
     try {
@@ -64,14 +68,17 @@ export class NotificationService {
         await this.notificationRepo.save(newNotification);
 
       try {
-        // // Повідомлення на телефон (twilio)
-        await this.sendPlannedAppointmentSms(
+        // Повідомлення на телефон (twilio)
+        await this.smsService.sendPlannedAppointmentSms(
           appointment.client.phone,
-          testmessageAboutPlannedAppointment,
+          messageAboutPlannedAppointment,
         );
 
         //Відправка повідомлення на пошту
-        await this.emailService.sendInformPlannedAppointment({email:appointment.client.email, textMessage:messageAboutPlannedAppointment})
+        await this.emailService.sendInformPlannedAppointment({
+          email: appointment.client.email,
+          textMessage: messageAboutPlannedAppointment,
+        });
 
         // Якщо відправка успішна — оновлюємо статус
         savedNotification.is_send = true;
@@ -83,7 +90,6 @@ export class NotificationService {
 
       return savedNotification;
     } catch (error: any) {
-      console.log('errorqweqwe', error.message);
       throw new InternalServerErrorException(
         `Failed to save notification: ${error.message}`,
       );
@@ -91,47 +97,4 @@ export class NotificationService {
   }
 
   async nearestAppointment() {}
-
-  async sendPlannedAppointmentSms(
-    phoneNumber: string,
-    textNotification: string,
-  ) {
-    try {
-      const message = await this.twilioClient.messages.create({
-        body: textNotification,
-        from: this.configService.get('TWILIO_SENDER_PHONE_NUMBER'),
-        to: phoneNumber,
-      });
-
-      return { sid: message.sid, status: message.status };
-    } catch (error: any) {
-      throw new InternalServerErrorException(
-        `Failed to send SMS: ${error.message}`,
-      );
-    }
-  }
-
-  // async sendOtp(phoneNumber: string) {
-  //   const serviceSid = this.configService.get(
-  //     'TWILIO_VERIFICATION_SERVICE_SID',
-  //   );
-  //   let msg = '';
-  //   await this.twilioClient.verify.v2
-  //     .services(serviceSid)
-  //     .verifications.create({ to: phoneNumber, channel: 'sms' })
-  //     .then((verification) => (msg = verification.status));
-  //   return { msg: msg };
-  // }
-
-  // async verifyOtp(phoneNumber: string, code: string) {
-  //   const serviceSid = this.configService.get(
-  //     'TWILIO_VERIFICATION_SERVICE_SID',
-  //   );
-  //   let msg = '';
-  //   await this.twilioClient.verify.v2
-  //     .services(serviceSid)
-  //     .verificationChecks.create({ to: phoneNumber, code: code })
-  //     .then((verification) => (msg = verification.status));
-  //   return { msg: msg };
-  // }
 }
