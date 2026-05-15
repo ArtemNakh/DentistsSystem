@@ -1,16 +1,12 @@
 import {
   BadRequestException,
-  Body,
   forwardRef,
-  Get,
   HttpException,
   Inject,
   Injectable,
   InternalServerErrorException,
   Logger,
-  NotFoundException,
-  Param,
-  Patch,
+  NotFoundException
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Appointment } from './entity/appointment.entity';
@@ -21,7 +17,6 @@ import {
 import {
   Between,
   LessThanOrEqual,
-  MoreThanOrEqual,
   Raw,
   Repository,
 } from 'typeorm';
@@ -182,10 +177,8 @@ export class AppointmentService {
         status: StatusAppointment.SCHEDULE,
       });
       const savedAppointment = await this.appointmentRepo.save(newAppointment);
-      //  console.log('appointemnt', newAppointment);
-      //  console.log('appointemntres', result);
-
-      // 🔹 Отримуємо повний appointment з усіма потрібними relations
+    
+      // Отримуємо повний appointment з усіма потрібними relations
       const fullAppointment = await this.appointmentRepo.findOne({
         where: { id: savedAppointment.id },
         relations: [

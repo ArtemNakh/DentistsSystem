@@ -13,18 +13,16 @@ export class SmsService {
     );
   }
 
-  async sendPlannedAppointmentSms(
+  async sendSmsForClient(
     phoneNumber: string,
     textNotification: string,
   ) {
     try {
-      console.log('phone_number', phoneNumber, '  text', textNotification);
       const message = await this.twilioClient.messages.create({
         body: textNotification,
         from: this.configService.get('TWILIO_SENDER_PHONE_NUMBER'),
         to: phoneNumber,
       });
-      console.log('message', message);
       return { sid: message.sid, status: message.status };
     } catch (error: any) {
       throw new InternalServerErrorException(
@@ -33,21 +31,7 @@ export class SmsService {
     }
   }
 
-  //   async sendOtp(phoneNumber: string) {
-  //     const serviceSid = this.configService.get('TWILIO_VERIFICATION_SERVICE_SID');
-  //     const verification = await this.twilioClient.verify.v2
-  //       .services(serviceSid)
-  //       .verifications.create({ to: phoneNumber, channel: 'sms' });
+  
+  
 
-  //     return { msg: verification.status };
-  //   }
-
-  //   async verifyOtp(phoneNumber: string, code: string) {
-  //     const serviceSid = this.configService.get('TWILIO_VERIFICATION_SERVICE_SID');
-  //     const verification = await this.twilioClient.verify.v2
-  //       .services(serviceSid)
-  //       .verificationChecks.create({ to: phoneNumber, code });
-
-  //     return { msg: verification.status };
-  //   }
 }

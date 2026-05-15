@@ -5,30 +5,20 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { ConfigService } from '@nestjs/config';
 import { INotification, TypeRemaind } from './entity/notification.interface';
 import { Notification } from './entity/notification.entity';
-import { Twilio } from 'twilio';
 import { IAppointment } from 'src/appointment/entity/appointment.interface';
 import { EmailService } from 'src/libs/email/email.service';
 import { SmsService } from 'src/libs/sms/sms.service';
 
 @Injectable()
 export class NotificationService {
-  private twilioClient: Twilio;
-
   constructor(
-    private readonly configService: ConfigService,
     @InjectRepository(Notification)
     private notificationRepo: Repository<Notification>,
     private readonly emailService: EmailService,
     private readonly smsService: SmsService,
-  ) {
-    const accountSid = configService.get('TWILIO_ACCOUNT_SID');
-    const authToken = configService.get('TWILIO_AUTH_TOKEN');
-
-    this.twilioClient = new Twilio(accountSid, authToken);
-  }
+  ) {}
 
   findAll(): Promise<INotification[]> {
     return this.notificationRepo.find({ relations: ['appointment'] });
@@ -68,8 +58,8 @@ export class NotificationService {
         await this.notificationRepo.save(newNotification);
 
       try {
-        // Повідомлення на телефон (twilio)
-        await this.smsService.sendPlannedAppointmentSms(
+        // Повідомлення про додавання запису до стоматолога на телефон (twilio)
+        await this.smsService.sendSmsForClient(
           appointment.client.phone,
           messageAboutPlannedAppointment,
         );
