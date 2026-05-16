@@ -6,7 +6,7 @@ import {
   Injectable,
   InternalServerErrorException,
   Logger,
-  NotFoundException
+  NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Appointment } from './entity/appointment.entity';
@@ -17,6 +17,7 @@ import {
 import {
   Between,
   LessThanOrEqual,
+  MoreThanOrEqual,
   Raw,
   Repository,
 } from 'typeorm';
@@ -177,7 +178,7 @@ export class AppointmentService {
         status: StatusAppointment.SCHEDULE,
       });
       const savedAppointment = await this.appointmentRepo.save(newAppointment);
-    
+
       // Отримуємо повний appointment з усіма потрібними relations
       const fullAppointment = await this.appointmentRepo.findOne({
         where: { id: savedAppointment.id },
@@ -337,4 +338,82 @@ export class AppointmentService {
       ],
     });
   }
+
+  /**
+   * Знаходить найближчі записи клієнтів для стоматології.
+   * @param dentistryId ID стоматології
+   * @param startDate Початкова дата (необов’язково)
+   * @param endDate Кінцева дата (необов’язково)
+   * @returns Масив записів на прийом
+   */
+  async findNearestClientsAppoinment({
+    dentistryId,
+    startDate,
+    endDate,
+  }: {
+    dentistryId: number;
+    startDate?: Date;
+    endDate?: Date;
+  }): Promise<IAppointment[]> {
+    // Перевірка даних аршумента
+    if (!dentistryId || dentistryId <= 0) {
+      throw new BadRequestException(
+        'Dentistry ID is required and must be valid',
+      );
+    }
+
+    try {
+      // базовий фільтр по клініці
+      const whereCondition: any = {
+        dentist: { dentistry: { id: dentistryId } },
+      };
+
+      // якщо передано початкову дату
+      if (startDate) {
+        whereCondition.appointment_date = MoreThanOrEqual(startDate);
+      }
+
+      // якщо передано кінцеву дату
+      if (endDate) {
+        if (whereCondition.appointment_date) {
+          // комбінуємо умови
+          whereCondition.appointment_date = Between(
+            startDate ?? new Date(0),
+            endDate,
+          );
+        } else {
+          whereCondition.appointment_date = LessThanOrEqual(endDate);
+        }
+      }
+      const appointments = this.appointmentRepo.find({
+        where: whereCondition,
+        relations: [
+          'client',
+          'dentist',
+          'dentist.specialty',
+          'dentist.dentistry',
+        ],
+        order: { appointment_date: 'ASC' },
+      });
+
+      // перевірка на присутність даних
+      if (!appointments || (await appointments).length === 0) {
+        this.logger.warn(
+          `No upcoming appointments found for dentistry with ID ${dentistryId}`,
+        );
+        return [];
+      }
+      return appointments;
+    } catch (error: any) {
+      this.logger.error(
+        `Error while finding nearest appointments for dentistry ${dentistryId}`,
+        error.stack,
+      );
+      throw new InternalServerErrorException(
+        'Failed to retrieve nearest appointments',
+      );
+    }
+  }
+
+  
 }
