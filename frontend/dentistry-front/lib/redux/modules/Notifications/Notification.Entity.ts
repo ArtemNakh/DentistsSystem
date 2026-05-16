@@ -1,15 +1,8 @@
 import BaseEntity, { EntitiesRedux } from "../BaseEntity";
 import { EntityReducer } from "../EntityReducer";
-import { call, takeLatest } from "redux-saga/effects";
-import { ActionReducer } from "../../rootReducer";
-import { SendRemindAppointmentAction } from "./actions/SendRemindAppointment/SendRemindAppointment";
-import { SendRemindPaymentAction } from "./actions/SendRemindPayment/SendRemindPayment";
 import { schema } from "normalizr";
 
-export enum NotificationActionSaga {
-  SendRemindAboutAppointment = "notification/remindAppointments",
-  SendRemindPayment = "notification/remindPayment",
-}
+export enum NotificationActionSaga {}
 
 @EntityReducer(EntitiesRedux.Notifications)
 export class NotificationEntity extends BaseEntity {
@@ -34,35 +27,5 @@ export class NotificationEntity extends BaseEntity {
   }
   static schema = new NotificationEntity(null).getSchema();
 
-  *SendRemindAppointmentSaga(action: SendRemindAppointmentAction) {
-    const { dentistryId } = action.payload;
-
-    yield call(
-      this.xRead.bind(this),
-      `/notification/${dentistryId}/remind-appointment`,
-      ActionReducer.Post,
-    );
-  }
-
-  *SendRemindPaymentSaga(action: SendRemindPaymentAction) {
-    const { dentistryId } = action.payload;
-
-    yield call(
-      this.xRead.bind(this),
-      `/notification/${dentistryId}/remind-pay`,
-      ActionReducer.Post,
-    );
-  }
-
-  *watch() {
-    yield takeLatest(
-      NotificationActionSaga.SendRemindAboutAppointment,
-      this.SendRemindAppointmentSaga.bind(this),
-    );
-
-    yield takeLatest(
-      NotificationActionSaga.SendRemindPayment,
-      this.SendRemindPaymentSaga.bind(this),
-    );
-  }
+  *watch() {}
 }

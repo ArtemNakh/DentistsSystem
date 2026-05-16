@@ -2,11 +2,11 @@ import { SpecialtyType } from "@/lib/redux/modules/Specialties/Entities/Specialt
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-export function middleware(req: NextRequest) {
-  const token = req.cookies.get("auth_token")?.value; 
-  const role = req.cookies.get("role")?.value; 
-  // console.log("token", token); 
-  // console.log("role", role); 
+export function proxy(req: NextRequest) {
+  const token = req.cookies.get("auth_token")?.value;
+  const role = req.cookies.get("role")?.value;
+  // console.log("token", token);
+  // console.log("role", role);
   if (!token) {
     console.log("token", token);
     return NextResponse.redirect(new URL("/w-auth/login", req.url));
@@ -28,5 +28,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admins/:path*", "/doctor/:path*","/reception/:path*"], 
+  matcher: ["/admins/:path*", "/doctor/:path*", "/reception/:path*"],
 };
