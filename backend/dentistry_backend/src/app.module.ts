@@ -19,17 +19,15 @@ import { AppointmentModule } from './appointment/appointment.module';
 import { AppointmentActionModule } from './appointment-action/appointment-action.module';
 import { NotificationModule } from './notification/notification.module';
 import { PaymentModule } from './payment/payment.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { TasksModule } from './tasks/task.module';
 
 @Module({
   imports: [
-    //підключає модуль конфігурації,
-    // робить його глобальним,
-    // завантажує кастомну конфігурацію з функції config.
     ConfigModule.forRoot({
       isGlobal: true,
       load: [config],
     }),
-
     TypeOrmModule.forRoot(AppDataSource.options),
 
     DentistryModule,
@@ -48,6 +46,7 @@ import { PaymentModule } from './payment/payment.module';
     AppointmentActionModule,
     NotificationModule,
     PaymentModule,
+    TasksModule,
   ],
 
   controllers: [],

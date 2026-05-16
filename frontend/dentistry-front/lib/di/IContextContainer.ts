@@ -15,6 +15,7 @@ import { FindingSpecialtyEntity } from "../redux/modules/Specialties/Entities/Fi
 import { LicensesEntity } from "../redux/modules/Licenses/Licenses.Entity";
 import { AppointmentEntity } from "../redux/modules/Appointments/Appointments.Entity";
 import { FindingDentistryEntity } from "../redux/modules/FindingDentistries/FindingDentistry.Entity";
+import { NotificationEntity } from "../redux/modules/Notifications/Notification.Entity";
 
 export interface IContexContainer {
   ClientEntity: ClientEntity;
@@ -33,4 +34,5 @@ export interface IContexContainer {
   FindingSpecialtiesEntity: FindingSpecialtyEntity;
   LicensesEntity: LicensesEntity;
   FindingDentistryEntity: FindingDentistryEntity;
+  NotificationEntity: NotificationEntity;
 }

@@ -1,4 +1,4 @@
-import { IAppointment } from 'src/appointment/entity/appointment.interface';
+import { IAppointment } from "../Appointments/Appointment.interface";
 
 export enum TypeRemaind {
   APPOINTMENT_REMINDER = 'appointment_reminder',
@@ -6,7 +6,6 @@ export enum TypeRemaind {
   GENERAL = 'general',
   PLANNED_APPOINTMENT = 'planned_appointment',
 }
-
 export interface INotification {
   id: number;
   appointment: IAppointment;
@@ -16,5 +15,4 @@ export interface INotification {
 
   created_at: Date;
   updated_at: Date;
-
 }

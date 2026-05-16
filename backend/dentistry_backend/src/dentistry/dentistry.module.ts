@@ -25,6 +25,8 @@ import { DentistryController } from "./dentistry.controller";
     imports: [TypeOrmModule.forFeature([Dentistry])],
   providers: [DentistryService],
   controllers: [DentistryController],
+  exports:[DentistryService]
+
 })
 
 export class DentistryModule{

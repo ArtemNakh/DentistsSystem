@@ -16,6 +16,7 @@ import {
 import { EmailService } from 'src/libs/email/email.service';
 import { SmsService } from 'src/libs/sms/sms.service';
 import { AppointmentService } from 'src/appointment/appointment.service';
+import { Cron } from '@nestjs/schedule';
 
 @Injectable()
 export class NotificationService {
@@ -106,6 +107,20 @@ export class NotificationService {
       });
 
     for (const appointment of tomorrowAppointments) {
+      // перевірка чи вже є notification для цього appointment
+      const existingNotification = await this.notificationRepo.findOne({
+        where: {
+          appointment: { id: appointment.id },
+          type_remaind: TypeRemaind.APPOINTMENT_REMINDER,
+          is_send: true,
+        },
+      });
+
+      if (existingNotification) {
+        // якщо вже є відправлене повідомлення — пропускаємо
+        continue;
+      }
+
       // створення notifications
       const messageRemindAboutAppointment =
         'Reminder: You have an appointment with Dr. ' +
@@ -134,30 +149,38 @@ export class NotificationService {
 
       // Надсилання повідомлень
       // Надсилання sms
-      await this.smsService.sendSmsForClient(
-        appointment.client.phone,
-        messageRemindAboutAppointment,
-      );
+      // await this.smsService.sendSmsForClient(
+      //   appointment.client.phone,
+      //   messageRemindAboutAppointment,
+      // );
 
       // Надсилання email
-      await this.emailService.sendRemaindAboutAppointment({
-        email: appointment.client.email,
-        doctorName:
-          appointment.dentist.surname +
-          ' ' +
-          appointment.dentist.name +
-          ' ' +
-          appointment.dentist.middle_name,
-        appointmentDate: new Date(appointment.appointment_date).toLocaleString(
-          'uk-UA',
-        ),
-      });
+      // await this.emailService.sendRemaindAboutAppointment({
+      //   email: appointment.client.email,
+      //   doctorName:
+      //     appointment.dentist.surname +
+      //     ' ' +
+      //     appointment.dentist.name +
+      //     ' ' +
+      //     appointment.dentist.middle_name,
+      //   appointmentDate: new Date(appointment.appointment_date).toLocaleString(
+      //     'uk-UA',
+      //   ),
+      // });
 
+      console.log("test")
       // Оновлення notification після успішних відправок
       newNotification.is_send = true;
       await this.notificationRepo.save(newNotification);
     }
   }
+  
+  // @Cron('0 9 * * *')
+  // @Cron('0 * * * * *')
+  // async handleDailyReminder() {
+  //   // тут викликаєш метод з потрібним dentistryId
+  //   await this.remindAboutAppointment({ dentistryId: 1 });
+  // }
 
   // повідомлення про неоплачену операцію після н-кількості днів
   async remindAboutPay({ dentistryId }: { dentistryId: number }) {
@@ -168,7 +191,6 @@ export class NotificationService {
         dentistryId,
         endDate: now,
       });
-
 
     const unpaidAppointments = appointments.filter(
       (appt) => appt.status === StatusAppointment.WAIT_PAID,
@@ -181,6 +203,20 @@ export class NotificationService {
       const diffInMs = now.getTime() - appointmentDate.getTime();
       const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
 
+      // перевірка чи вже є notification для цього appointment
+      const existingNotification = await this.notificationRepo.findOne({
+        where: {
+          appointment: { id: appointment.id },
+          type_remaind: TypeRemaind.PAYMENT_REMINDER,
+          is_send: true,
+        },
+      });
+
+      if (existingNotification) {
+        // якщо вже є відправлене повідомлення — пропускаємо
+        continue;
+      }
+      
       if (diffInDays >= 2) {
         const messagePaymentReminder =
           'Reminder: Please complete the payment for your appointment with Dr. ' +
@@ -206,7 +242,7 @@ export class NotificationService {
           type_remaind: TypeRemaind.PAYMENT_REMINDER,
         });
         await this.notificationRepo.save(newNotification);
-console.log("appointet",newNotification)
+        console.log('appointet', newNotification);
         // Надсилання sms
         // await this.smsService.sendSmsForClient(
         //   appointment.client.phone,

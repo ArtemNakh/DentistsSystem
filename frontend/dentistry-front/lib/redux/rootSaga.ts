@@ -29,6 +29,9 @@ export function* rootSaga() {
     "FindingOperationListEntity",
   );
   const findingDentistries = clientContainer.resolve("FindingDentistries");
+  const notificationEntitySaga = clientContainer.resolve(
+    "NotificationEntity",
+  );
 
   yield all([
     clientEntitySaga.watch(),
@@ -48,5 +51,6 @@ export function* rootSaga() {
     licenses.watch(),
     findingOperationList.watch(),
     findingDentistries.watch(),
+    notificationEntitySaga.watch(),
   ]);
 }
