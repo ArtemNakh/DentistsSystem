@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IDentistry } from 'src/dentistry/entities/dentistry.interface';
+import { IDentistry } from '@/dentistry/entities/dentistry.interface';
 
 
 export class OperationResponseDto    {

@@ -4,7 +4,7 @@ import { Between, LessThanOrEqual, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ILicense } from './entities/license.interface';
 import { CreateLicenseDto } from './dto/CreateLicense.dto';
-import { Worker } from 'src/workers/entities/workers.entity';
+import { Worker } from '@/workers/entities/workers.entity';
 import { UpdateLicenseDto } from './dto/UpdateLicense.dto';
 @Injectable()
 export class LicenseService {

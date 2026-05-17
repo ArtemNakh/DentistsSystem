@@ -6,7 +6,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Request } from 'express';
-import { ClientService } from 'src/clients/clients.service';
+import { ClientService } from '@/clients/clients.service';
 
 // // 🔐 AuthGuard
 // // Призначення: перевіряє, чи користувач взагалі авторизований.

@@ -1,4 +1,4 @@
-import { IAppointment } from 'src/appointment/entity/appointment.interface';
+import { IAppointment } from '@/appointment/entity/appointment.interface';
 
 export enum StatusPayment {
   PAID = 'paid',

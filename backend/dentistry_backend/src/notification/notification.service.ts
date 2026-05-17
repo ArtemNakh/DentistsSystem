@@ -12,11 +12,11 @@ import { Notification } from './entity/notification.entity';
 import {
   IAppointment,
   StatusAppointment,
-} from 'src/appointment/entity/appointment.interface';
-import { EmailService } from 'src/libs/email/email.service';
-import { SmsService } from 'src/libs/sms/sms.service';
-import { AppointmentService } from 'src/appointment/appointment.service';
-import { Cron } from '@nestjs/schedule';
+} from '@/appointment/entity/appointment.interface';
+import { EmailService } from '@/libs/email/email.service';
+import { SmsService } from '@/libs/sms/sms.service';
+import { AppointmentService } from '@/appointment/appointment.service';
+
 
 @Injectable()
 export class NotificationService {

@@ -1,7 +1,7 @@
-import { IAppointmentActions } from 'src/appointment-action/entity/appointment-action.interface';
-import { IClient } from 'src/clients/entities/client.interface';
-import { IPayment } from 'src/payment/entity/payment.interface';
-import { IWorker } from 'src/workers/entities/workers.interface';
+import { IAppointmentActions } from '@/appointment-action/entity/appointment-action.interface';
+import { IClient } from '@/clients/entities/client.interface';
+import { IPayment } from '@/payment/entity/payment.interface';
+import { IWorker } from '@/workers/entities/workers.interface';
 
 export enum StatusAppointment {
   SCHEDULE = 'schedule',

@@ -1,5 +1,5 @@
-import { IAppointment } from 'src/appointment/entity/appointment.interface';
-import { IOperationList } from 'src/operation-list/entities/operation-list.interface';
+import { IAppointment } from '@/appointment/entity/appointment.interface';
+import { IOperationList } from '@/operation-list/entities/operation-list.interface';
 
 export interface IAppointmentActions {
   id: number;

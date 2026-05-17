@@ -3,7 +3,6 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   Req,
@@ -23,7 +22,6 @@ import {
   CreateOperationDto,
   UpdateOperationDto,
 } from './dto/CreateOperation-list.dto';
-import { OperationList } from './entities/operation-list.entity';
 import { OperationResponseDto } from './dto/Response/CreateOperation-list.response.dto';
 import { IOperationList } from './entities/operation-list.interface';
 import { Authorization } from '../auth/decorators/auth.decorator';
@@ -31,7 +29,7 @@ import { WorkerAuthGuard } from '../auth/guards/workerAuth.guard';
 import { SpecialtyType } from '../specialty/entities/specialty.interface';
 import { IWorker } from '../workers/entities/workers.interface';
 import { Authorized } from '../auth/decorators/authorized.decorator';
-import { Worker } from 'src/workers/entities/workers.entity';
+import { Worker } from '@/workers/entities/workers.entity';
 @ApiTags('Operation List')
 @Controller('operation-list')
 export class OperationListController {

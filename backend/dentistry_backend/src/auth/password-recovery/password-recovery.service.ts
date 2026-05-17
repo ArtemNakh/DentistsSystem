@@ -3,16 +3,16 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { ClientService } from 'src/clients/clients.service';
-import { EmailService } from 'src/libs/email/email.service';
+import { ClientService } from '@/clients/clients.service';
+import { EmailService } from '@/libs/email/email.service';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { NewPasswordDto } from './dto/new-password.dto';
 import { v4 as uuidv4 } from 'uuid';
-import { Token } from 'src/tokens/entities/tokens.entity';
+import { Token } from '@/tokens/entities/tokens.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { TokenType } from 'src/tokens/entities/tokens.interface';
-import { Client } from 'src/clients/entities/client.entity';
+import { TokenType } from '@/tokens/entities/tokens.interface';
+import { Client } from '@/clients/entities/client.entity';
 import { hash } from 'argon2';
 
 @Injectable()

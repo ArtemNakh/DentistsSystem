@@ -17,7 +17,6 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { IWorkerShifts } from './entities/worker-shifts.interface';
-import { IWorker } from 'src/workers/entities/workers.interface';
 import { CreateWorkerShiftDto } from './dto/CreateWorker-shift.dto';
 import { WorkerShiftResponseDto } from './dto/response/Worker-shifts.response.dto';
 import { WorkerShifts } from './entities/worker-shifts.entity';

@@ -6,17 +6,17 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { ClientService } from 'src/clients/clients.service';
+import { ClientService } from '@/clients/clients.service';
 import { RegisterClientDto } from './dto/registerClient.dto';
 import { EmailConfirmationService } from './email-confirmation/email-confirmation.service';
-import { Client } from 'src/clients/entities/client.entity';
+import { Client } from '@/clients/entities/client.entity';
 import { LoginClientDto } from './dto/loginClient.dto';
 import { verify } from 'argon2';
 import { ConfigService } from '@nestjs/config';
-import { WorkersService } from 'src/workers/workers.service';
+import { WorkersService } from '@/workers/workers.service';
 import { Worker } from '../workers/entities/workers.entity';
 import { LoginWorkerDto } from './dto/loginWorker.dto';
-import { RegisterWorkerDto } from 'src/workers/dto/registerWorker.dto';
+import { RegisterWorkerDto } from '@/workers/dto/registerWorker.dto';
 
 @Injectable()
 export class AuthService {

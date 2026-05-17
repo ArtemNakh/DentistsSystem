@@ -3,11 +3,11 @@ import { EmailConfirmationService } from './email-confirmation.service';
 import { EmailConfirmationController } from './email-confirmation.controller';
 
 import { AuthModule } from '../auth.module';
-import { EmailModule } from 'src/libs/email/email.module';
-import { Client } from 'src/clients/entities/client.entity';
-import { Token } from 'src/tokens/entities/tokens.entity';
+import { EmailModule } from '@/libs/email/email.module';
+import { Client } from '@/clients/entities/client.entity';
+import { Token } from '@/tokens/entities/tokens.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ClientsModule } from 'src/clients/clients.module';
+import { ClientsModule } from '@/clients/clients.module';
 
 @Module({
   imports: [

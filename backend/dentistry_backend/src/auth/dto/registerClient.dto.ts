@@ -12,8 +12,8 @@ import {
   MinLength,
   Validate,
 } from 'class-validator';
-import { BloodSign } from 'src/clients/entities/client.interface';
-import { IsPasswordsMatchingConstraint } from 'src/libs/decorators/is-passwords-matching-constraint.decorator';
+import { BloodSign } from '@/clients/entities/client.interface';
+import { IsPasswordsMatchingConstraint } from '@/libs/decorators/is-passwords-matching-constraint.decorator';
 
 export class RegisterClientDto {
   @ApiProperty({ description: 'Client`s name', example: 'Ivan' })

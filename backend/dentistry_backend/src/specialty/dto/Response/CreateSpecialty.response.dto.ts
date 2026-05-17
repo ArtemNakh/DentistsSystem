@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { SpecialtyType } from 'src/specialty/entities/specialty.interface';
+import { SpecialtyType } from '@/specialty/entities/specialty.interface';
 
 
 export class SpecialtyResponseDto {

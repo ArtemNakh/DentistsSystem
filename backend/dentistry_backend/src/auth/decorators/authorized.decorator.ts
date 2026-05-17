@@ -10,7 +10,7 @@ import { Worker } from '../../workers/entities/workers.entity';
  */
 
 
-import { Client } from 'src/clients/entities/client.entity';
+import { Client } from '@/clients/entities/client.entity';
 
 export const Authorized = createParamDecorator(
   (data: keyof Worker | keyof Client, ctx: ExecutionContext) => {

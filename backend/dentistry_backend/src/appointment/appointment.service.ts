@@ -22,9 +22,9 @@ import {
   Repository,
 } from 'typeorm';
 import { CreateAppointmentDto } from './dto/createAppointment.dto';
-import { Worker } from 'src/workers/entities/workers.entity';
-import { SpecialtyType } from 'src/specialty/entities/specialty.interface';
-import { NotificationService } from 'src/notification/notification.service';
+import { Worker } from '@/workers/entities/workers.entity';
+import { SpecialtyType } from '@/specialty/entities/specialty.interface';
+import { NotificationService } from '@/notification/notification.service';
 
 @Injectable()
 export class AppointmentService {

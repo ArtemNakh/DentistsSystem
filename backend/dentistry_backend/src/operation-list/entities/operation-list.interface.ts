@@ -1,5 +1,5 @@
-import { IAppointmentActions } from 'src/appointment-action/entity/appointment-action.interface';
-import { IDentistry } from 'src/dentistry/entities/dentistry.interface';
+import { IAppointmentActions } from '@/appointment-action/entity/appointment-action.interface';
+import { IDentistry } from '@/dentistry/entities/dentistry.interface';
 
 export interface IOperationList {
   id: number;

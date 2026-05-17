@@ -7,12 +7,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Like, Repository } from 'typeorm';
 import { Worker } from './entities/workers.entity';
 import { IWorker } from './entities/workers.interface';
-import { SpecialtyType } from 'src/specialty/entities/specialty.interface';
 import * as argon2 from 'argon2';
 import { RegisterWorkerDto } from './dto/registerWorker.dto';
 import { CreateWorkerDto } from './dto/CreateWorker.dto';
-import { Specialty } from 'src/specialty/entities/specialty.entity';
-import { Dentistry } from 'src/dentistry/entities/dentistry.entity';
+import { Specialty } from '@/specialty/entities/specialty.entity';
+import { Dentistry } from '@/dentistry/entities/dentistry.entity';
 import { UpdateWorkerDto } from './dto/UpdateWorker.dto';
 
 @Injectable()

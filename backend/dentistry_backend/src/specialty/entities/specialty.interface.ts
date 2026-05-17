@@ -1,4 +1,4 @@
-import { IWorker } from 'src/workers/entities/workers.interface';
+import { IWorker } from '@/workers/entities/workers.interface';
 
 export enum SpecialtyType {
   DOCTOR = 'doctor',

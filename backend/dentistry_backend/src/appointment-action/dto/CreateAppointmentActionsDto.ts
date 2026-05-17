@@ -1,4 +1,4 @@
-import { MethodPayment } from "src/payment/entity/payment.interface";
+import { MethodPayment } from "@/payment/entity/payment.interface";
 
 export class CreateAppointmentActionsDto {
   appointmentId: number;

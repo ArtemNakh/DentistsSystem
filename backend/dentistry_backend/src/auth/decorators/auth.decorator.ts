@@ -2,7 +2,7 @@ import { applyDecorators, UseGuards } from '@nestjs/common';
 import { RolesGuard } from '../guards/roles.guard';
 
 import { RoleConfig, Roles } from './roles-decorator';
-import { SpecialtyType } from 'src/specialty/entities/specialty.interface';
+import { SpecialtyType } from '@/specialty/entities/specialty.interface';
 import { WorkerAuthGuard } from '../guards/workerAuth.guard';
 
 /**

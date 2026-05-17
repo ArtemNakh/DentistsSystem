@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IWorker } from 'src/workers/entities/workers.interface';
+import { IWorker } from '@/workers/entities/workers.interface';
 
 export class WorkerShiftResponseDto {
   @ApiProperty({ example: 1 })

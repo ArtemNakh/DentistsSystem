@@ -3,9 +3,9 @@ import { NotificationService } from './notification.service';
 import { NotificationController } from './notification.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Notification } from './entity/notification.entity';
-import { EmailModule } from 'src/libs/email/email.module';
-import { SmsModule } from 'src/libs/sms/sms.module';
-import { AppointmentModule } from 'src/appointment/appointment.module';
+import { EmailModule } from '@/libs/email/email.module';
+import { SmsModule } from '@/libs/sms/sms.module';
+import { AppointmentModule } from '@/appointment/appointment.module';
 @Module({
   imports: [
     TypeOrmModule.forFeature([Notification]),

@@ -3,13 +3,12 @@ import { AppointmentActions } from './entity/appointment-action.entity';
 import { DataSource, In, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IAppointmentActions } from './entity/appointment-action.interface';
-import { Appointment } from 'src/appointment/entity/appointment.entity';
-import { Payment } from 'src/payment/entity/payment.entity';
-import { OperationList } from 'src/operation-list/entities/operation-list.entity';
+import { Appointment } from '@/appointment/entity/appointment.entity';
+import { Payment } from '@/payment/entity/payment.entity';
+import { OperationList } from '@/operation-list/entities/operation-list.entity';
 import { CreateAppointmentActionsDto } from './dto/CreateAppointmentActionsDto';
-import { StatusPayment } from 'src/payment/entity/payment.interface';
-import { StatusAppointment } from 'src/appointment/entity/appointment.interface';
-import dataSource from 'src/database/data-source';
+import { StatusPayment } from '@/payment/entity/payment.interface';
+import { StatusAppointment } from '@/appointment/entity/appointment.interface';
 
 @Injectable()
 export class AppointmentActionService {

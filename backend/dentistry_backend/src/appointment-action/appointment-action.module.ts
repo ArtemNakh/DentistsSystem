@@ -3,9 +3,9 @@ import { AppointmentActionService } from './appointment-action.service';
 import { AppointmentActionController } from './appointment-action.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppointmentActions } from './entity/appointment-action.entity';
-import { OperationList } from 'src/operation-list/entities/operation-list.entity';
-import { Payment } from 'src/payment/entity/payment.entity';
-import { Appointment } from 'src/appointment/entity/appointment.entity';
+import { OperationList } from '@/operation-list/entities/operation-list.entity';
+import { Payment } from '@/payment/entity/payment.entity';
+import { Appointment } from '@/appointment/entity/appointment.entity';
 
 @Module({
   imports: [

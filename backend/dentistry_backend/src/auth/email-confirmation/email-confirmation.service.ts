@@ -6,15 +6,15 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { Request } from 'express';
-import { EmailService } from 'src/libs/email/email.service';
-import { Token } from 'src/tokens/entities/tokens.entity';
-import { TokenType } from 'src/tokens/entities/tokens.interface';
+import { EmailService } from '@/libs/email/email.service';
+import { Token } from '@/tokens/entities/tokens.entity';
+import { TokenType } from '@/tokens/entities/tokens.interface';
 
 import { Repository } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import { ConfirmationDto } from './dto/confirmation.dto';
-import { ClientService } from 'src/clients/clients.service';
-import { Client } from 'src/clients/entities/client.entity';
+import { ClientService } from '@/clients/clients.service';
+import { Client } from '@/clients/entities/client.entity';
 import { AuthService } from '../auth.service';
 import { InjectRepository } from '@nestjs/typeorm';
 

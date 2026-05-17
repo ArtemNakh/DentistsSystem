@@ -2,8 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { WorkerShifts } from './entities/worker-shifts.entity';
 import { Between, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Worker } from 'src/workers/entities/workers.entity';
-import { IWorker } from 'src/workers/entities/workers.interface';
+import { Worker } from '@/workers/entities/workers.entity';
 import { CreateWorkerShiftDto } from './dto/CreateWorker-shift.dto';
 import { IWorkerShifts } from './entities/worker-shifts.interface';
 @Injectable()

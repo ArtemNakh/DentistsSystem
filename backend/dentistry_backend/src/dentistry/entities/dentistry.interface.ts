@@ -1,5 +1,5 @@
-import { IOperationList } from 'src/operation-list/entities/operation-list.interface';
-import { IWorker } from 'src/workers/entities/workers.interface';
+import { IOperationList } from '@/operation-list/entities/operation-list.interface';
+import { IWorker } from '@/workers/entities/workers.interface';
 
 export interface IDentistry {
   id: number;
