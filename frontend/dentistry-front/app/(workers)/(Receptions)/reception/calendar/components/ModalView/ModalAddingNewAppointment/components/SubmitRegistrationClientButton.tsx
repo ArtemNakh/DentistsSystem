@@ -1,4 +1,4 @@
-import { useFormikContext } from "formik";
+
 import { useTranslation } from "react-i18next";
 
 export default function SubmitAddingAppointment() {
@@ -11,7 +11,7 @@ export default function SubmitAddingAppointment() {
           type="submit"
           className="border w-full border-gray-400 rounded p-2  text-gray-200 hover:bg-[#774EB5]"
         >
-          Додати
+          {t("reception.calendar.modal.adding_appointment.add")}
         </button>
       </div>
     </>

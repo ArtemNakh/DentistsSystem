@@ -3,11 +3,10 @@ import {
   AddNewAppointment,
   AddNewAppointmentPayload,
 } from "@/lib/redux/modules/Appointments/actions/AddNewAppointment/AddNewAppointment";
-import { ErrorMessage, Field, Form, Formik, useFormikContext } from "formik";
-import { useCallback, useEffect, useState } from "react";
+import { Form, Formik } from "formik";
+import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { CreateAppointmentSchema } from "../../Schemes/CreateNewAppointment.schema";
-import { IClient } from "@/lib/redux/modules/Clients/clients.interface";
 import AppointmentDateField from "./components/AppointmentDateField";
 import NotesField from "./components/NotesField";
 import ClientField from "./components/ClientField";
@@ -57,7 +56,11 @@ export default function ModalAddingNewAppointment({
     <>
       <div className="fixed inset-0  backdrop-brightness-30 flex items-center justify-center z-50">
         <div className="bg-linear-to-r from-[#874FD1] to-[#7562A5]  p-6 rounded shadow-lg w-2/3 h-2/3 overflow-auto">
-          <h2 className="text-base font-bold mb-4">Додавання нового запису</h2>
+          <h2 className="text-base font-bold mb-4">
+            {t(
+              "reception.calendar.modal.adding_appointment.adding_new_appointment",
+            )}
+          </h2>
 
           <Formik
             initialValues={initialValues}
@@ -82,7 +85,9 @@ export default function ModalAddingNewAppointment({
             onClick={onClose}
             className="mt-4 px-4 py-2 border border-gray-700 bg-purple-600 text-white rounded hover:bg-purple-700"
           >
-            Закрити
+             {t(
+              "reception.calendar.modal.adding_appointment.close",
+            )}
           </button>
         </div>
       </div>

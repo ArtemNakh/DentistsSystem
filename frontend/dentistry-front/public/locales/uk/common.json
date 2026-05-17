@@ -247,7 +247,13 @@
     "main": {
       "upcomins_entires": {
         "nearest_record": " Найближчі записи",
-        "no_upcoming_entries": "На сьогодні немає найближчих операцій"
+        "no_upcoming_entries": "На сьогодні немає найближчих операцій",
+        "table_name": {
+          "doctor": "Доктор",
+          "client": "Клієнт",
+          "date": "Дата",
+          "notes": "Замітки"
+        }
       },
       "patient_without_paid": {
         "patient_without_paid_info": "Пацієнти без оплати",
@@ -306,7 +312,9 @@
       "add_new_client": "Add client",
       "records_on": "Записи на",
       "no_records_day": "Немає записів на цей день",
-      "appointment": {
+      "appointments_adaptive_view": "Записи",
+      "full_appointment": {
+        "detail_appointment": "Деталі запису",
         "patient": "Пацієнт",
         "doctor": "Лікар",
         "date": "Дата",
@@ -319,13 +327,36 @@
           "close": "Закрити"
         },
         "adding_appointment": {
-          "notes": { "name": "Заметки", "placeholder": "Додайте заметки" },
-          "appointment_date": {
-            "name": "Дата записи",
-            "placeholder": "Введіть дату записі"
+          "adding_new_appointment": "Додавання нового запису",
+          "notes": {
+            "name": "Заметки",
+            "placeholder": "Додайте заметки"
           },
-          "client": { "name": "Клієнт" },
-          "dentist": "Лікар"
+          "appointment_date": {
+            "title": "Дата записи",
+            "unworking_day":"Цей працівник не працює у обраний день",
+            "time_operation":"Час операції",
+            "choose_time":"Оберіть час"
+          },
+          "client": {
+            "title": "Ім'я клієнта",
+            "placeholder": "Анатолій Артем Вікторовіч",
+            "find": "Пошук",
+            "find_client": "Пошук клієнта",
+            "enter_fio": "Введіть ФІО",
+            "close": "Закрити"
+          },
+          "worker": {
+            "title": "Ім'я працівника",
+            "placeholder": "Анатолій Артем Вікторовіч",
+            "find": "Пошук",
+            "find_worker": "Пошук працівника",
+            "enter_fio": "Введіть ФІО",
+            "close": "Закрити"
+          },
+          "add":"Додати",
+          "dentist": "Лікар",
+          "close": "Закрити"
         }
       }
     },

@@ -82,7 +82,7 @@ export default function AppointmentDateField() {
     <>
       <div className="mx-5 text-gray-500">
         <label className="block mb-1 text-lg text-gray-200">
-          {t("Дата операції")}
+          {t("reception.calendar.modal.adding_appointment.appointment_date.title")}
         </label>
         <Field
           id="appointment_date"
@@ -102,7 +102,7 @@ export default function AppointmentDateField() {
             );
             return isValid ? undefined : (
               <div className="mt-2 w-auto h-auto text-red-500">
-                Цей працівник не працює у вибраний день
+                {t("reception.calendar.modal.adding_appointment.appointment_day.unworking_day")}
               </div>
             );
           }}
@@ -117,7 +117,7 @@ export default function AppointmentDateField() {
       {selectedDate && (
         <div className="mx-5 mt-4 text-gray-400 hover:border-gray-900">
           <label className="block mb-1 text-lg text-gray-200">
-            {t("Час операції")}
+           {t("reception.calendar.modal.adding_appointment.appointment_day.time_operation")}
           </label>
           <select
             className="w-full p-2 border border-gray-400 rounded"
@@ -132,7 +132,7 @@ export default function AppointmentDateField() {
               setFieldValue("appointment_date", dateObj);
             }}
           >
-            <option value="">{t("Оберіть час")}</option>
+            <option value="">{t("reception.calendar.modal.adding_appointment.appointment_day.choose_time")}</option>
             {availableTimes.map((time) => (
               <option key={time} value={time}>
                 {time}

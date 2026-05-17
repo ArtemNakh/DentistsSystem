@@ -6,7 +6,8 @@ import {
   IAppointment,
   StatusAppointment,
 } from "@/lib/redux/modules/Appointments/Appointment.interface";
-import { t } from "i18next";
+
+import { useTranslation } from "react-i18next";
 
 interface AppointmentModalProps {
   appointment: IAppointment | null;
@@ -17,6 +18,7 @@ export default function AppointmentModal({
   appointment,
   onClose,
 }: AppointmentModalProps) {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   if (!appointment) return null;
 
@@ -27,32 +29,34 @@ export default function AppointmentModal({
         status: StatusAppointment.CANCELLED,
       }),
     );
-    
-    onClose(); 
+
+    onClose();
   };
   return (
     <div className="text-base absolute top-20 right-80  bg-linear-to-r from-[#874FD1] to-[#7562A5] p-4 rounded shadow-lg w-80 z-50 border border-gray-300">
-      <h3 className="text-base font-bold mb-2">Деталі запису</h3>
+      <h3 className="text-base font-bold mb-2">
+        {t("reception.calendar.full_appointment.detail_appointment")}
+      </h3>
       <p className="mb-2">
-        <strong>{t("reception.calendar.appointment.patient")}:</strong>{" "}
+        <strong>{t("reception.calendar.full_appointment.patient")}:</strong>{" "}
         {appointment.client?.surname} {appointment.client?.name}{" "}
         {appointment.client?.middle_name}
       </p>
       <p className="mb-2">
-        <strong>{t("reception.calendar.appointment.doctor")}:</strong>{" "}
+        <strong>{t("reception.calendar.full_appointment.doctor")}:</strong>{" "}
         {appointment.dentist?.surname} {appointment.dentist?.name}{" "}
         {appointment.dentist?.middle_name}
       </p>
       <p className="mb-2">
-        <strong>{t("reception.calendar.appointment.date")}:</strong>
+        <strong>{t("reception.calendar.full_appointment.date")}:</strong>
         {new Date(appointment.appointment_date).toLocaleString()}
       </p>
       <p className="mb-2">
-        <strong>{t("reception.calendar.appointment.status")}:</strong>{" "}
+        <strong>{t("reception.calendar.full_appointment.status")}:</strong>{" "}
         {appointment.status}
       </p>
       <p className="mb-2">
-        <strong>{t("reception.calendar.appointment.notes")}:</strong>{" "}
+        <strong>{t("reception.calendar.full_appointment.notes")}:</strong>{" "}
         {appointment.notes}
       </p>
 
@@ -66,7 +70,7 @@ export default function AppointmentModal({
         onClick={handleCancel}
         className="ml-3 px-4 py-2 bg-[#7D5BB9] text-white rounded hover:bg-red-600 border border-gray-400"
       >
-        {t("cancelled")}
+        {t("reception.calendar.appointment.close")}
       </button>
     </div>
   );

@@ -638,9 +638,16 @@
 
     "main": {
       "upcomins_entires": {
-        "nearest_record": "Upcoming Records",
-        "no_upcoming_entries": "No upcoming operations today"
+        "nearest_record": "Nearest Records",
+        "no_upcoming_entries": "No upcoming operations today",
+        "table_name": {
+          "doctor": "Doctor",
+          "client": "Client",
+          "date": "Date",
+          "notes": "Notes"
+        }
       },
+
       "patient_without_paid": {
         "patient_without_paid_info": "Patients Without Payment",
         "today_without_unpaid": "No unpaid operations today",
@@ -698,6 +705,7 @@
       "add_new_client": "Add client",
       "records_on": "Records on",
       "no_records_day": "No records for this day",
+      "appointments_adaptive_view": "Appointments",
       "appointment": {
         "patient": "Patient",
         "doctor": "Doctor",
@@ -711,13 +719,36 @@
           "close": "Закрити"
         },
         "adding_appointment": {
-          "notes": { "name": "Заметки", "placeholder": "Додайте заметки" },
-          "appointment_date": {
-            "name": "Дата записи",
-            "placeholder": "Введіть дату записі"
+          "adding_new_appointment": "Adding New Appointment",
+          "notes": {
+            "name": "Notes",
+            "placeholder": "Add notes"
           },
-          "client": { "name": "Клієнт" },
-          "dentist": "Лікар"
+          "appointment_date": {
+            "title": "Appointment Date",
+            "unworking_day": "This worker is not available on the selected day",
+            "time_operation": "Operation Time",
+            "choose_time": "Choose time"
+          },
+          "client": {
+            "title": "Client Name",
+            "placeholder": "Anatolii Artem Viktorovych",
+            "find": "Search",
+            "find_client": "Search client",
+            "enter_fio": "Enter full name",
+            "close": "Close"
+          },
+          "worker": {
+            "title": "Worker Name",
+            "placeholder": "Anatolii Artem Viktorovych",
+            "find": "Search",
+            "find_worker": "Search worker",
+            "enter_fio": "Enter full name",
+            "close": "Close"
+          },
+          "add": "Add",
+          "dentist": "Dentist",
+          "close": "Close"
         }
       }
     },

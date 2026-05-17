@@ -23,9 +23,10 @@ export class FindingWorkerEntity extends BaseEntity {
 static schema = new FindingWorkerEntity(null).getSchema();
   
   *GetWorkersByFullNameSaga(action: GetWorkersByFullName) {
+    const{dentistryId,fullName}=action.payload
     yield call(
       this.xRead.bind(this), // для GET краще xRead
-      `/workers/search?search=${action.payload.fullName}`,
+      `/workers/search?search=${fullName}&dentistryId=${dentistryId}`,
       ActionReducer.Get,
     );
   }
