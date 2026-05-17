@@ -1,6 +1,15 @@
-import { Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  BadRequestException,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { NotificationService } from './notification.service';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { INotification } from './entity/notification.interface';
 
 @ApiTags('Notifications')
 @Controller('notification')
@@ -9,7 +18,7 @@ export class NotificationController {
 
   @Get('test/all')
   findAll() {
-    return this.notificationService.findAll();
+    return this.notificationService.findAll({});
   }
 
   @Post(':dentistryId/remind-appointment')
@@ -26,5 +35,50 @@ export class NotificationController {
     });
   }
 
-  async sendUpdaydReminder() {}
+  @Get('all')
+  @ApiOperation({
+    summary:
+      'Отримати всі сповіщення для певної стоматології та для певного дня',
+    description: `Повертає список сповіщень. 
+    Можна викликати без параметрів (отримати всі), або з параметрами date та dentistryId для фільтрації.`,
+  })
+  @ApiQuery({
+    name: 'date',
+    required: true,
+    type: String,
+    example: '2026-05-17',
+    description: 'Дата у форматі yyyy-MM-dd ',
+  })
+  @ApiQuery({
+    name: 'dentistryId',
+    required: true,
+    type: Number,
+    example: 1,
+    description: 'ID стоматології ',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Список нотифікацій',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Некоректний формат дати',
+  })
+  async getNearest(
+    @Query('date') date: string,
+    @Query('dentistryId', ParseIntPipe) dentistryId: number,
+  ): Promise<INotification[]> {
+    const parsedDate = new Date(date);
+    if (isNaN(parsedDate.getTime())) {
+      throw new BadRequestException('Некоректний формат дати');
+    }
+
+    const notifications = await this.notificationService.findAll({
+      date: parsedDate,
+      dentistryId: dentistryId,
+    });
+
+    console.log('notif', notifications);
+    return notifications;
+  }
 }

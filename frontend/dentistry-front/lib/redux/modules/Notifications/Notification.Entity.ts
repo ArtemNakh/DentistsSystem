@@ -1,8 +1,17 @@
 import BaseEntity, { EntitiesRedux } from "../BaseEntity";
 import { EntityReducer } from "../EntityReducer";
 import { schema } from "normalizr";
+import {
+  getAllNotificationTodayAction,
+  GetAllNotificationTodayPayload,
+} from "./actions/GetAllToday/GetAllToday";
+import { format } from "date-fns";
+import { ActionReducer } from "../../rootReducer";
+import { call, takeLatest } from "redux-saga/effects";
 
-export enum NotificationActionSaga {}
+export enum NotificationActionSaga {
+  "getAllToday" = "notification/getAllToday",
+}
 
 @EntityReducer(EntitiesRedux.Notifications)
 export class NotificationEntity extends BaseEntity {
@@ -27,5 +36,21 @@ export class NotificationEntity extends BaseEntity {
   }
   static schema = new NotificationEntity(null).getSchema();
 
-  *watch() {}
+  *GetAllTodaySaga(action: getAllNotificationTodayAction) {
+    const { dentistryId } = action.payload;
+    const today = format(new Date(), "yyyy-MM-dd");
+
+    yield call(
+      this.xRead.bind(this),
+      `/notification/all?date=${today}&dentistryId=${dentistryId}`,
+      ActionReducer.Get,
+    );
+  }
+
+  *watch() {
+    yield takeLatest(
+      NotificationActionSaga.getAllToday,
+      this.GetAllTodaySaga.bind(this),
+    );
+  }
 }

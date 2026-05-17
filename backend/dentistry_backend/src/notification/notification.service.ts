@@ -6,7 +6,7 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Between, Repository } from 'typeorm';
 import { INotification, TypeRemaind } from './entity/notification.interface';
 import { Notification } from './entity/notification.entity';
 import {
@@ -29,8 +29,47 @@ export class NotificationService {
     private readonly smsService: SmsService,
   ) {}
 
-  findAll(): Promise<INotification[]> {
-    return this.notificationRepo.find({ relations: ['appointment'] });
+ async  findAll({
+    date,
+    dentistryId,
+  }: {
+    date?: Date;
+    dentistryId?: number;
+  }): Promise<INotification[]> {
+    const where: any = {};
+
+      if (date) {
+    const startOfDay = new Date(date);
+    startOfDay.setHours(0, 0, 0, 0);
+
+    const endOfDay = new Date(date);
+    endOfDay.setHours(23, 59, 59, 999);
+
+    where.updated_at = Between(startOfDay, endOfDay);
+  }
+
+    if (dentistryId) {
+      where.appointment = {
+        ...(where.appointment ?? {}),
+        dentist: { dentistry: { id: dentistryId } },
+      };
+    }
+
+    console.log('whrere', where);
+    const notifications = this.notificationRepo.find({
+      where: Object.keys(where).length > 0 ? where : undefined,
+      relations: [
+        'appointment',
+        'appointment.dentist',
+        'appointment.dentist.specialty',
+        'appointment.dentist.dentistry',
+        'appointment.payment',
+        'appointment.client',
+      ],
+      order: { id: 'ASC' }, // можна додати сортування
+    });
+    
+    return notifications;
   }
 
   async informPlannedAppointment({
@@ -168,13 +207,13 @@ export class NotificationService {
       //   ),
       // });
 
-      console.log("test")
+      console.log('test');
       // Оновлення notification після успішних відправок
       newNotification.is_send = true;
       await this.notificationRepo.save(newNotification);
     }
   }
-  
+
   // @Cron('0 9 * * *')
   // @Cron('0 * * * * *')
   // async handleDailyReminder() {
@@ -216,7 +255,7 @@ export class NotificationService {
         // якщо вже є відправлене повідомлення — пропускаємо
         continue;
       }
-      
+
       if (diffInDays >= 2) {
         const messagePaymentReminder =
           'Reminder: Please complete the payment for your appointment with Dr. ' +

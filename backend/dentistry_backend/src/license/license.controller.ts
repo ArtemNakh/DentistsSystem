@@ -1,17 +1,21 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { LicenseService } from './license.service';
 import {
   ApiBody,
   ApiOperation,
   ApiParam,
+  ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -92,5 +96,79 @@ export class LicenseController {
     @Param('workerId') workerId: number,
   ): Promise<License[]> {
     return this.licenseService.getLicensesByWorkerId(workerId);
+  }
+
+
+  @Get('expiring-licenses-worker')
+   @ApiOperation({
+    summary: 'Отримати ліцензії лікаря, що закінчуються',
+    description: `Повертає список ліцензій для конкретного лікаря, у яких термін дії закінчується протягом заданої кількості днів.`,
+  })
+  @ApiQuery({
+    name: 'workerId',
+    required: true,
+    type: Number,
+    example: 5,
+    description: 'ID лікаря (обовʼязковий параметр)',
+  })
+  @ApiQuery({
+    name: 'maxDays',
+    required: true,
+    type: Number,
+    example: 30,
+    description: 'Максимальний діапазон у днях (обовʼязковий параметр)',
+  })
+  async getExpiringLicenses(
+    @Query('workerId', ParseIntPipe) workerId: number,
+    @Query('maxDays', ParseIntPipe) maxDays: number,
+  ): Promise<ILicense[]> {
+    if (!workerId || !maxDays) {
+      throw new BadRequestException(
+        'workerId та maxDays є обовʼязковими параметрами',
+      );
+    }
+
+    return this.licenseService.findExpiringLicensesByWorker(workerId, maxDays);
+  }
+
+
+  @Get('expiring-licenses-dentistry')
+  @ApiOperation({
+    summary: 'Отримати ліцензії стоматології, що закінчуються',
+    description:
+      'Повертає всі ліцензії лікарів у конкретній стоматології, термін дії яких закінчується протягом заданої кількості днів.',
+  })
+  @ApiQuery({
+    name: 'dentistryId',
+    required: true,
+    type: Number,
+    example: 3,
+    description: 'ID стоматології (обовʼязковий параметр)',
+  })
+  @ApiQuery({
+    name: 'maxDays',
+    required: true,
+    type: Number,
+    example: 30,
+    description: 'Максимальний діапазон у днях (обовʼязковий параметр)',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Некоректні параметри (dentistryId або maxDays відсутні)',
+  })
+  async getExpiringLicensesByDentistry(
+    @Query('dentistryId', ParseIntPipe) dentistryId: number,
+    @Query('maxDays', ParseIntPipe) maxDays: number,
+  ): Promise<ILicense[]> {
+    if (!dentistryId || !maxDays) {
+      throw new BadRequestException(
+        'dentistryId та maxDays є обовʼязковими параметрами',
+      );
+    }
+
+    return this.licenseService.findExpiringLicensesByDentistry(
+      dentistryId,
+      maxDays,
+    );
   }
 }

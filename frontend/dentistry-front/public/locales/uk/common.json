@@ -338,6 +338,19 @@
         "workers": "Працівники",
         "history_operation": "Історія операцій"
       }
+    },
+    "notification": {
+      "notification": "Сповіщення",
+      "no_notification": "Немає сповіщень",
+      "hide": "Згорнути",
+      "full": "Переглянути повне сповіщення",
+      "text_notif": "Текст повідомлення для клієнта",
+      "type": {
+        "remind_appointment": "Нагадування про запис",
+        "remind_payment": "Нагадування про оплату",
+        "planned_appointment": "Запланований прийом у",
+        "general": "Загальне сповіщення"
+      }
     }
   },
   "admins": {
@@ -704,6 +717,32 @@
         "save": "Зберегти",
         "cancel": "Скасувати"
       }
+    },
+    "notification": {
+      "licenses": {
+        "licenses": "Ліцензії",
+        "no_licenses": "Немає ліцензій",
+        "license_number": "Номер ліцензії",
+        "expiration_date": "Дата закінчення",
+        "worker": "Працівник",
+        "hide_block": "Спрятати",
+        "show_block": "Показати"
+      },
+      "notifications": {
+        "notification": "Сповіщення",
+        "no_notification": "Немає сповіщень",
+        "hide": "Згорнути",
+        "full": "Переглянути повне сповіщення",
+        "text_notif": "Текст повідомлення для клієнта",
+        "type": {
+          "remind_appointment": "Нагадування про запис",
+          "remind_payment": "Нагадування про оплату",
+          "planned_appointment": "Запланований прийом у",
+          "general": "Загальне сповіщення"
+        },
+        "hide_block": "Спрятати",
+        "show_block": "Показати"
+      }
     }
   },
   "doctor": {
@@ -962,6 +1001,18 @@
         "action_more_0": "Має бути хоча б одна дія",
         "method_pay_must": "Метод оплати є обов’язковим",
         "method_pay_way": "Метод оплати має бути CARD, CASH або TRANSFER"
+      }
+    },
+    "notification": {
+      "licenses": {
+        "issued_by": "Видана ким",
+        "licenses": "Ліцензії",
+        "no_licenses": "Немає ліцензій",
+        "license_number": "Номер ліцензії",
+        "expiration_date": "Дата закінчення",
+        "worker": "Працівник",
+        "hide_block": "Спрятати",
+        "show_block": "Показати"
       }
     }
   }

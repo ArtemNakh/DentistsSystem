@@ -10,12 +10,16 @@ import {
   RemoveLicensePayload,
 } from "./actions/RemoveLicense/RemoveLicense";
 import { GetLicensesWorker } from "./actions/GetLicensesWorker/GetLicensesWorker";
+import { GetExpirationByDentistryAction } from "./actions/GetExpirationByDentistry/GetExpirationByDentistry";
+import { GetExpirationByWorkerAction } from "./actions/GetExpirationByWorker/GetExpirationByWorker";
 
 export enum LicensesActionSaga {
   GetLicensesWorkers = "licenses/getToWorkers",
   CreateLicense = "licenses/create",
   RemoveLicense = "licenses/remove",
   GetByIdWorker = "licenses/GetLicensesWorker",
+  GetExpirationByDentistry = "licenses/GetExpirationDentistry",
+  GetExpirationLicensesWorker = "licenses/GetExpirationWorker",
 }
 
 @EntityReducer(EntitiesRedux.Licenses)
@@ -68,6 +72,26 @@ export class LicensesEntity extends BaseEntity {
       ActionReducer.Get,
     );
   }
+
+  *getExpiringLicensesDentistrySaga(action: GetExpirationByDentistryAction) {
+    const { dentistryId, maxDays } = action.payload;
+
+    yield call(
+      this.xRead.bind(this),
+      `/license/expiring-licenses-dentistry?dentistryId=${dentistryId}&maxDays=${maxDays}`,
+      ActionReducer.Get,
+    );
+  }
+  *getExpiringLicensesWorkerSaga(action: GetExpirationByWorkerAction) {
+    const { workerId, maxDays } = action.payload;
+
+    yield call(
+      this.xRead.bind(this),
+      `/license/expiring-licenses-worker?dentistryId=${workerId}&maxDays=${maxDays}`,
+      ActionReducer.Get,
+    );
+  }
+
   *watch() {
     yield takeLatest(
       LicensesActionSaga.GetLicensesWorkers,
@@ -87,6 +111,16 @@ export class LicensesEntity extends BaseEntity {
     yield takeLatest(
       LicensesActionSaga.GetByIdWorker,
       this.GetLicencesWorkerByIdSaga.bind(this),
+    );
+
+    yield takeLatest(
+      LicensesActionSaga.GetExpirationByDentistry,
+      this.getExpiringLicensesDentistrySaga.bind(this),
+    );
+
+    yield takeLatest(
+      LicensesActionSaga.GetExpirationLicensesWorker,
+      this.getExpiringLicensesWorkerSaga.bind(this),
     );
   }
 }

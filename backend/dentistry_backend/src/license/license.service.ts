@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { License } from './entities/license.entity';
-import { Repository } from 'typeorm';
+import { Between, LessThanOrEqual, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ILicense } from './entities/license.interface';
 import { CreateLicenseDto } from './dto/CreateLicense.dto';
@@ -50,10 +50,9 @@ export class LicenseService {
     };
   }
 
-
   async getLicensesByDentistry(dentistryId: number): Promise<ILicense[]> {
     return this.licenseRepo.find({
-      relations: ['worker', 'worker.dentistry','worker.specialty'],
+      relations: ['worker', 'worker.dentistry', 'worker.specialty'],
       where: {
         worker: {
           dentistry: { id: dentistryId },
@@ -62,7 +61,7 @@ export class LicenseService {
     });
   }
 
-   async getLicensesByWorkerId(workerId: number): Promise<License[]> {
+  async getLicensesByWorkerId(workerId: number): Promise<License[]> {
     const worker = await this.workerRepo.findOne({ where: { id: workerId } });
     if (!worker) {
       throw new NotFoundException(`Працівника з id=${workerId} не знайдено`);
@@ -70,9 +69,47 @@ export class LicenseService {
 
     const licenses = await this.licenseRepo.find({
       where: { worker: { id: workerId } },
-      relations: ['worker'], 
+      relations: ['worker'],
     });
 
     return licenses;
   }
+
+  async findExpiringLicensesByWorker(
+    workerId: number,
+    maxDays: number,
+  ): Promise<ILicense[]> {
+    const today = new Date();
+    const maxDate = new Date();
+    maxDate.setDate(today.getDate() + maxDays);
+
+    return this.licenseRepo.find({
+      where: {
+        worker: { id: workerId },
+        expiration_date: Between(today, maxDate),
+      },
+      relations: ['worker', 'worker.specialty','worker.dentistry'],
+      order: { expiration_date: 'ASC' },
+    });
+  }
+
+
+
+async findExpiringLicensesByDentistry(
+  dentistryId: number,
+  maxDays: number,
+): Promise<ILicense[]> {
+  const today = new Date();
+  const maxDate = new Date();
+  maxDate.setDate(today.getDate() + maxDays);
+
+  return this.licenseRepo.find({
+    where: {
+      worker: { dentistry: { id: dentistryId } },
+      expiration_date: LessThanOrEqual(maxDate),
+    },
+    relations: ['worker', 'worker.specialty', 'worker.dentistry'],
+    order: { expiration_date: 'ASC' },
+  });
+}
 }

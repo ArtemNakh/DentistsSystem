@@ -8,11 +8,12 @@ import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
 import { getAuthWorker } from "@/lib/redux/modules/AuthUser/actions/GetAuthWorker/GetAuthWorker";
 import { useTranslation } from "react-i18next";
 import { logoutWorker } from "@/lib/redux/modules/AuthUser/actions/logoutAuthWorker/LogoutAuthWorker";
+import { NotificationPopup } from "./NotificationPopup";
 
 export default function HeaderDoctor() {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-
+  const [showPopup, setShowPopup] = useState(false);
   const [profileModule, setProfileModule] = useState(false);
   const [leftSideBar, setLeftSideBar] = useState(false);
   // const authUser = useSelector((state: RootState) => state.auth.user);
@@ -96,21 +97,28 @@ export default function HeaderDoctor() {
           {/* розклад із переглядок текущих та додаваня нових та видалення записів,сповіщення що було зроблено для цієї стоматології */}
           <div className=" ml-auto flex  space-x-2 ">
             <div className="flex items-center space-x-2">
-              {/* Іконка сповіщень */}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 text-gray-700"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-                />
-              </svg>
+              <div className="relative">
+                {" "}
+                {/* Іконка сповіщень */}
+                <button onClick={() => setShowPopup(!showPopup)}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 text-gray-700"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                    />
+                  </svg>
+                </button>
+                {/* Поп‑ап */}
+                {showPopup && <NotificationPopup />}
+              </div>
             </div>
 
             {/* у випадаючому вікні додати можливість виходу */}
@@ -133,7 +141,7 @@ export default function HeaderDoctor() {
                     dropdownClassName="absolute bg-[#7D5ABB]  border-2 border-gray-600 "
                     activeItemClassName="bg-[#6D4FA3]"
                   />
-                  
+
                   <button
                     onClick={() => dispatch(logoutWorker({}))}
                     className="border border-gray-600 px-2 py-1 rounded hover:bg-gray-200 transition"

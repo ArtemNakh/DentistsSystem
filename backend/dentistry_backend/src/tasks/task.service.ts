@@ -29,7 +29,7 @@ export class TasksService {
   //   @Cron('0 */10 * * * *')
 
   //   кожна хвилина
-  //   @Cron('0 * * * * *')
+    // @Cron('0 * * * * *')
 //   об 9 годині
   @Cron('0 9 * * *')
   async handleDailyReminder() {

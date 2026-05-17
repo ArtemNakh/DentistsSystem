@@ -501,48 +501,73 @@
         "status_pay": "Payment status"
       }
     },
-  "license": {
-  "worker_dentistry": "Dental Clinic Workers",
-  "table_head": {
-    "name": "First Name",
-    "middle_name": "Middle Name",
-    "surname": "Last Name",
-    "specialization": "Specialization",
-    "birthday": "Date of Birth",
-    "phone": "Phone",
-    "status_acc": "Account Status"
-  },
-  "status_type": { "active": "Active", "no_active": "Inactive" },
-  "list_license": {
-    "licenses": "Licenses",
-    "no_licenses": "No licenses",
-    "issued_by": "Issued By",
-    "issue_date": "Issue Date",
-    "expiration_date": "Expiration Date",
-    "add_license": "Add License",
-    "delete": "Delete"
-  },
-  "create_license": {
-    "placeholder": {
-      "issued_by": "Example: Ministry of Health of Ukraine",
-      "number_license": "Example: LIC-2026-001"
+    "license": {
+      "worker_dentistry": "Dental Clinic Workers",
+      "table_head": {
+        "name": "First Name",
+        "middle_name": "Middle Name",
+        "surname": "Last Name",
+        "specialization": "Specialization",
+        "birthday": "Date of Birth",
+        "phone": "Phone",
+        "status_acc": "Account Status"
+      },
+      "status_type": { "active": "Active", "no_active": "Inactive" },
+      "list_license": {
+        "licenses": "Licenses",
+        "no_licenses": "No licenses",
+        "issued_by": "Issued By",
+        "issue_date": "Issue Date",
+        "expiration_date": "Expiration Date",
+        "add_license": "Add License",
+        "delete": "Delete"
+      },
+      "create_license": {
+        "placeholder": {
+          "issued_by": "Example: Ministry of Health of Ukraine",
+          "number_license": "Example: LIC-2026-001"
+        },
+        "schema": {
+          "issue_date_must": "Issue date is required",
+          "issued_by_must": "Issuing authority is required",
+          "number_license_must": "License number is required",
+          "expiration_date_must": "Expiration date is required"
+        },
+        "new_license": "New License",
+        "number_license": "License Number",
+        "issued_by": "Issued By",
+        "issue_date": "Issue Date",
+        "expiration_date": "Expiration Date",
+        "save": "Save",
+        "cancel": "Cancel"
+      }
     },
-    "schema": {
-      "issue_date_must": "Issue date is required",
-      "issued_by_must": "Issuing authority is required",
-      "number_license_must": "License number is required",
-      "expiration_date_must": "Expiration date is required"
-    },
-    "new_license": "New License",
-    "number_license": "License Number",
-    "issued_by": "Issued By",
-    "issue_date": "Issue Date",
-    "expiration_date": "Expiration Date",
-    "save": "Save",
-    "cancel": "Cancel"
-  }
-}
-
+    "notification": {
+      "licenses": {
+        "licenses": "Licenses",
+        "no_licenses": "No licenses",
+        "license_number": "License number",
+        "expiration_date": "Expiration date",
+        "worker": "Worker",
+        "hide_block": "Hide",
+        "show_block": "Show"
+      },
+      "notifications": {
+        "notification": "Notifications",
+        "no_notification": "No notifications",
+        "hide": "Collapse",
+        "full": "View full notification",
+        "text_notif": "Notification text for client",
+        "type": {
+          "remind_appointment": "Appointment reminder",
+          "remind_payment": "Payment reminder",
+          "planned_appointment": "Planned appointment with",
+          "general": "General notification"
+        },
+        "hide_block": "Hide",
+        "show_block": "Show"
+      }
+    }
   },
   "reception": {
     "workers": {
@@ -704,6 +729,19 @@
         "payment": "Payment",
         "workers": "Workers",
         "history_operation": "Operation History"
+      }
+    },
+    "notification": {
+      "notification": "Notifications",
+      "no_notification": "No notifications",
+      "hide": "Collapse",
+      "full": "View full notification",
+      "text_notif": "Notification text for client",
+      "type": {
+        "remind_appointment": "Appointment reminder",
+        "remind_payment": "Payment reminder",
+        "planned_appointment": "Planned appointment with",
+        "general": "General notification"
       }
     }
   },
@@ -965,6 +1003,18 @@
         "action_more_0": "There must be at least one action",
         "method_pay_must": "Payment method is required",
         "method_pay_way": "Payment method must be CARD, CASH, or TRANSFER"
+      }
+    },
+    "notification": {
+      "licenses": {
+        "issued_by": "Issued by",
+        "licenses": "Licenses",
+        "no_licenses": "No licenses",
+        "license_number": "License number",
+        "expiration_date": "Expiration date",
+        "worker": "Worker",
+        "hide_block": "Hide",
+        "show_block": "Show"
       }
     }
   }
