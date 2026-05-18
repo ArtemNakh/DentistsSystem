@@ -30,7 +30,7 @@ export default function FilterPanelPayments({
      <div className="w-full">
       <div className="mx-4 text-base border border-gray-600 flex flex-wrap gap-4 p-2">
         {/* ФІО */}
-        <div className="flex flex-col flex-1 min-w-[200px]">
+        <div className="flex flex-col flex-1 min-w-50">
           <label className="text-gray-200">
             {t("reception.payments.filters.fio_worker")}
           </label>
@@ -44,7 +44,7 @@ export default function FilterPanelPayments({
         </div>
 
         {/* Сума */}
-        <div className="flex flex-col flex-1 min-w-[140px]">
+        <div className="flex flex-col flex-1 min-w-35">
           <label className="text-gray-200">
             {t("reception.payments.filters.amount")}
           </label>
@@ -59,7 +59,7 @@ export default function FilterPanelPayments({
         </div>
 
         {/* Статус оплати */}
-        <div className="flex flex-col flex-1 min-w-[160px]">
+        <div className="flex flex-col flex-1 min-w-40">
           <label className="text-gray-200">
             {t("reception.payments.filters.status_paid.name")}
           </label>
@@ -87,7 +87,7 @@ export default function FilterPanelPayments({
         </div>
 
         {/* Метод оплати */}
-        <div className="flex flex-col flex-1 min-w-[160px]">
+        <div className="flex flex-col flex-1 min-w-40">
           <label className="text-gray-200">
             {t("reception.payments.filters.method_paid.name")}
           </label>
@@ -118,7 +118,7 @@ export default function FilterPanelPayments({
         </div>
 
         {/* Статус прийому */}
-        <div className="flex flex-col flex-1 min-w-[180px]">
+        <div className="flex flex-col flex-1 min-w-45">
           <label className="text-gray-200">
             {t("reception.payments.filters.status_appointment.name")}
           </label>
@@ -152,7 +152,7 @@ export default function FilterPanelPayments({
         </div>
 
         {/* Дата початку */}
-        <div className="flex flex-col flex-1 min-w-[160px]">
+        <div className="flex flex-col flex-1 min-w-40">
           <label className="text-gray-200">
             {t("reception.payments.filters.date_begin")}
           </label>
@@ -167,7 +167,7 @@ export default function FilterPanelPayments({
         </div>
 
         {/* Дата завершення */}
-        <div className="flex flex-col flex-1 min-w-[160px]">
+        <div className="flex flex-col flex-1 min-w-40">
           <label className="text-gray-200">
             {t("reception.payments.filters.date_end")}
           </label>

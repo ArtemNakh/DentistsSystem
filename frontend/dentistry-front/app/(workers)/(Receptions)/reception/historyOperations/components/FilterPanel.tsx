@@ -24,7 +24,7 @@ export default function FilterPanelHistory({
       <div className="w-full">
         <div className="mx-4 text-base border border-gray-600 flex flex-wrap gap-4 p-2">
           {/* Client */}
-          <div className="flex flex-col flex-1 min-w-[200px]">
+          <div className="flex flex-col flex-1 min-w-50">
             <label className="text-gray-200">
               {t("reception.history_operation.filters.fio_client")}
             </label>
@@ -38,7 +38,7 @@ export default function FilterPanelHistory({
           </div>
 
           {/* Worker */}
-          <div className="flex flex-col flex-1 min-w-[200px]">
+          <div className="flex flex-col flex-1 min-w-50">
             <label className="text-gray-200">
               {t("reception.history_operation.filters.fio_worker")}
             </label>
@@ -52,7 +52,7 @@ export default function FilterPanelHistory({
           </div>
 
           {/* Specialty */}
-          <div className="flex flex-col flex-1 min-w-[160px]">
+          <div className="flex flex-col flex-1 min-w-40">
             <label className="text-gray-200">
               {t("reception.history_operation.filters.specialty")}
             </label>
@@ -66,7 +66,7 @@ export default function FilterPanelHistory({
           </div>
 
           {/* Status Paid */}
-          <div className="flex flex-col flex-1 min-w-[120px]">
+          <div className="flex flex-col flex-1 min-w-30">
             <label className="text-gray-200">
               {t("reception.history_operation.filters.status_paid")}
             </label>
@@ -80,7 +80,7 @@ export default function FilterPanelHistory({
           </div>
 
           {/* Appointment Date */}
-          <div className="flex flex-col flex-1 min-w-[140px]">
+          <div className="flex flex-col flex-1 min-w-35">
             <label className="text-gray-200">
               {t("reception.history_operation.filters.appointment_date")}
             </label>
