@@ -320,7 +320,8 @@
         "date": "Дата",
         "status": "Статус",
         "notes": "Нотатки",
-        "close": "Закрити"
+        "close": "Закрити",
+        "cancelled": "Скасувати"
       },
       "modal": {
         "RegistrationClient": {
@@ -334,9 +335,9 @@
           },
           "appointment_date": {
             "title": "Дата записи",
-            "unworking_day":"Цей працівник не працює у обраний день",
-            "time_operation":"Час операції",
-            "choose_time":"Оберіть час"
+            "unworking_day": "Цей працівник не працює у обраний день",
+            "time_operation": "Час операції",
+            "choose_time": "Оберіть час"
           },
           "client": {
             "title": "Ім'я клієнта",
@@ -354,9 +355,20 @@
             "enter_fio": "Введіть ФІО",
             "close": "Закрити"
           },
-          "add":"Додати",
+          "add": "Додати",
           "dentist": "Лікар",
-          "close": "Закрити"
+          "close": "Закрити",
+          "schema": {
+            "client_id_must": "ID клієнта є обов’язковим",
+            "client_id_addition": "ID клієнта має бути додатним",
+            "client_id_whole": "ID клієнта має бути цілим числом",
+            "dentist_id_must": "ID лікаря є обов’язковим",
+            "dentist_id_addition": "ID лікаря має бути додатним",
+            "dentist_id_whole": "ID лікаря має бути цілим числом",
+            "data_must": "Дата прийому є обов’язковою",
+            "data_not_past": "Дата прийому не може бути в минулому",
+            "notes_max": "Нотатки не можуть перевищувати 500 символів"
+          }
         }
       }
     },

@@ -64,13 +64,13 @@ export default function AppointmentModal({
         onClick={() => onClose()}
         className="mt-4 px-4 py-2 bg-[#7D5BB9] text-white rounded hover:bg-[#8657C9] border border-gray-400"
       >
-        {t("reception.calendar.appointment.close")}
+        {t("reception.calendar.full_appointment.close")}
       </button>
       <button
         onClick={handleCancel}
         className="ml-3 px-4 py-2 bg-[#7D5BB9] text-white rounded hover:bg-red-600 border border-gray-400"
       >
-        {t("reception.calendar.appointment.close")}
+        {t("reception.calendar.full_appointment.cancelled")}
       </button>
     </div>
   );

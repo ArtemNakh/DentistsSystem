@@ -55,7 +55,7 @@ export default function ModalAddingNewAppointment({
   return (
     <>
       <div className="fixed inset-0  backdrop-brightness-30 flex items-center justify-center z-50">
-        <div className="bg-linear-to-r from-[#874FD1] to-[#7562A5]  p-6 rounded shadow-lg w-2/3 h-2/3 overflow-auto">
+        <div className="bg-linear-to-r from-[#874FD1] to-[#7562A5]  p-6 rounded shadow-lg w-2/3 h-10/12 overflow-auto">
           <h2 className="text-base font-bold mb-4">
             {t(
               "reception.calendar.modal.adding_appointment.adding_new_appointment",

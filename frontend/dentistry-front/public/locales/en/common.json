@@ -706,17 +706,21 @@
       "records_on": "Records on",
       "no_records_day": "No records for this day",
       "appointments_adaptive_view": "Appointments",
-      "appointment": {
+      "full_appointment": {
+        "detail_appointment": "Detail appointment",
         "patient": "Patient",
         "doctor": "Doctor",
         "date": "Date",
         "status": "Status",
         "notes": "Notes",
-        "close": "Close"
+        "close": "Close",
+        "cancelled": "Cancelled"
       },
-      "modal": {
+      "modal": {"RegistrationClient": {
+          "close": "Close"
+        },
         "registration_client": {
-          "close": "Закрити"
+          "close": "Close"
         },
         "adding_appointment": {
           "adding_new_appointment": "Adding New Appointment",
@@ -748,7 +752,18 @@
           },
           "add": "Add",
           "dentist": "Dentist",
-          "close": "Close"
+          "close": "Close",
+          "schema": {
+            "client_id_must": "Client ID is required",
+            "client_id_addition": "Client ID must be positive",
+            "client_id_whole": "Client ID must be an integer",
+            "dentist_id_must": "Dentist ID is required",
+            "dentist_id_addition": "Dentist ID must be positive",
+            "dentist_id_whole": "Dentist ID must be an integer",
+            "data_must": "Appointment date is required",
+            "data_not_past": "Appointment date cannot be in the past",
+            "notes_max": "Notes cannot exceed 500 characters"
+          }
         }
       }
     },

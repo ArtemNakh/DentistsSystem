@@ -97,7 +97,7 @@ export default function RegistrationClientView({
             onClick={onClose}
             className="mt-4 px-4 py-2 bg-purple-800 border-2 border-gray-900 text-white rounded hover:bg-purple-700"
           >
-            {t("reception.calendar.modal.registration_client.close")}
+            {t("reception.calendar.modal.RegistrationClient.close")}
           </button>
         </div>
       </div>
