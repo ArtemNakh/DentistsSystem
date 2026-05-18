@@ -3,7 +3,7 @@ import TableHeaderHistoryAppointment from "./TableHeader";
 import TableBodyHistoryAppointment from "./TableBody";
 import { useState } from "react";
 import ShowAppointmentActions from "../ModalView/ShowAppointmentActions";
-import { useTranslation } from "react-i18next";
+
 
 interface TableHistoryAppointmentsProps{
 

@@ -1,9 +1,10 @@
 import { HistoryFilters } from "./FilterPanel";
-import { useAppSelector } from "@/lib/redux/hooks";
-import { DenormalizeAppointments } from "../page";
+import { UseDenormalizeSelector } from "@/lib/redux/hooks";
 import { format } from "date-fns";
 import TableHistoryAppointments from "./TableHistoryAppointments/TableHistoryAppointments";
 import { useTranslation } from "react-i18next";
+import { IAppointment } from "@/lib/redux/modules/Appointments/Appointment.interface";
+import { RootState } from "@/lib/redux/store";
 
 interface HistoryAppointmentsWorkerProps {
   filters: HistoryFilters;
@@ -13,8 +14,13 @@ export default function HistoryAppointmentsWorker({
   filters,
 }: HistoryAppointmentsWorkerProps) {
   const { t } = useTranslation();
-  const appointments = useAppSelector(DenormalizeAppointments);
 
+  const appointments = Object.values(
+    UseDenormalizeSelector<IAppointment[]>(
+      (state: RootState) => state.appointments,
+    ),
+  );
+  
   const filteredAppointments = appointments.filter((ap) => {
     const fioClientMatch =
       !filters.fioClient ||

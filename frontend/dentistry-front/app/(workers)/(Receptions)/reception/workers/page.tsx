@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
 import FilterPanelWorkers from "./components/FilterPanel";
 import ListWorkersWorker from "./components/ListWorkers";
 

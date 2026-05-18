@@ -1,4 +1,8 @@
-import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
+import {
+  useAppDispatch,
+  useAppSelector,
+  UseDenormalizeSelector,
+} from "@/lib/redux/hooks";
 import { IDentistry } from "@/lib/redux/modules/Dentistries/Dentistry.interface";
 import { ISpecialty } from "@/lib/redux/modules/Specialties/Entities/Specialties/Specialties.interface";
 import { IWorker } from "@/lib/redux/modules/Workers/Workers.interface";
@@ -12,26 +16,26 @@ import { getWorkersDentistry } from "@/lib/redux/modules/Workers/actions/GetWork
 import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
 import { getAuthWorker } from "@/lib/redux/modules/AuthUser/actions/GetAuthWorker/GetAuthWorker";
 
-export const DenormalizeWorkers = createSelector(
-  [
-    (state: RootState) => state.workers,
-    (state: RootState) => state.specialties,
-    (state: RootState) => state.dentistries,
-  ],
-  (workersObj, specialtiesObj, dentistriesObj) => {
-    const workers: IWorker[] = Object.values(workersObj ?? {});
-    const specialties: ISpecialty[] = Object.values(specialtiesObj ?? {});
-    const dentistries: IDentistry[] = Object.values(dentistriesObj ?? {});
+// export const DenormalizeWorkers = createSelector(
+//   [
+//     (state: RootState) => state.workers,
+//     (state: RootState) => state.specialties,
+//     (state: RootState) => state.dentistries,
+//   ],
+//   (workersObj, specialtiesObj, dentistriesObj) => {
+//     const workers: IWorker[] = Object.values(workersObj ?? {});
+//     const specialties: ISpecialty[] = Object.values(specialtiesObj ?? {});
+//     const dentistries: IDentistry[] = Object.values(dentistriesObj ?? {});
 
-    return workers.map((w) => {
-      const specialty = specialties.find((s) => s.id === (w.specialty as any))!;
+//     return workers.map((w) => {
+//       const specialty = specialties.find((s) => s.id === (w.specialty as any))!;
 
-      const dentistry = dentistries.find((d) => d.id === (w.dentistry as any))!;
+//       const dentistry = dentistries.find((d) => d.id === (w.dentistry as any))!;
 
-      return { ...w, specialty, dentistry };
-    });
-  },
-);
+//       return { ...w, specialty, dentistry };
+//     });
+//   },
+// );
 
 interface ListWorkersWorkerProps {
   filters: WorkerFilters;
@@ -54,7 +58,11 @@ export default function ListWorkersWorker({ filters }: ListWorkersWorkerProps) {
     if (!authUser.user) return;
     dispatch(getWorkersDentistry({ idDentistry: authUser.user?.dentistry.id }));
   }, [authUser]);
-  const workers = useAppSelector(DenormalizeWorkers);
+
+  const workers = Object.values(
+    UseDenormalizeSelector<IWorker[]>((state: RootState) => state.workers),
+  );
+  // const workers = useAppSelector(DenormalizeWorkers);
 
   const filteredWorkers = workers.filter((w) => {
     const fioMatch =
