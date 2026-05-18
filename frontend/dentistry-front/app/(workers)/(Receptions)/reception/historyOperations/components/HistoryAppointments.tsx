@@ -58,7 +58,7 @@ export default function HistoryAppointmentsWorker({
   return (
     <>
       <div className="w-full  ">
-        <div className="mx-4 text-base">
+        <div className="mx-4 text-base overflow-scroll">
           <TableHistoryAppointments appointments={filteredAppointments} />
         </div>
       </div>

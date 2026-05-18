@@ -16,26 +16,6 @@ import { getWorkersDentistry } from "@/lib/redux/modules/Workers/actions/GetWork
 import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
 import { getAuthWorker } from "@/lib/redux/modules/AuthUser/actions/GetAuthWorker/GetAuthWorker";
 
-// export const DenormalizeWorkers = createSelector(
-//   [
-//     (state: RootState) => state.workers,
-//     (state: RootState) => state.specialties,
-//     (state: RootState) => state.dentistries,
-//   ],
-//   (workersObj, specialtiesObj, dentistriesObj) => {
-//     const workers: IWorker[] = Object.values(workersObj ?? {});
-//     const specialties: ISpecialty[] = Object.values(specialtiesObj ?? {});
-//     const dentistries: IDentistry[] = Object.values(dentistriesObj ?? {});
-
-//     return workers.map((w) => {
-//       const specialty = specialties.find((s) => s.id === (w.specialty as any))!;
-
-//       const dentistry = dentistries.find((d) => d.id === (w.dentistry as any))!;
-
-//       return { ...w, specialty, dentistry };
-//     });
-//   },
-// );
 
 interface ListWorkersWorkerProps {
   filters: WorkerFilters;
@@ -81,8 +61,8 @@ export default function ListWorkersWorker({ filters }: ListWorkersWorkerProps) {
 
   return (
     <>
-      <div className="w-full  ">
-        <div className="mx-4">
+      <div className="w-full   ">
+        <div className="mx-4 overflow-scroll">
           <TableWorkers workers={filteredWorkers} />
         </div>
       </div>

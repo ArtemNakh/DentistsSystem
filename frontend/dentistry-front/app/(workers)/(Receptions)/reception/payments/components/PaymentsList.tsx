@@ -161,7 +161,7 @@ export default function PaymentsList({ filters }: PaymentsListProps) {
 
   return (
     <>
-      <div>
+      <div className="mx-4 overflow-scroll">
         <TablePayments payments={filteredPayments} />
       </div>
     </>

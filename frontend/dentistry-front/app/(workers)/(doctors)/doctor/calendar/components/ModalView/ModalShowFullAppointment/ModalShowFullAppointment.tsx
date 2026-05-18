@@ -33,7 +33,9 @@ export default function AppointmentModal({
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
       <div className="bg-linear-to-r from-[#874FD1] to-[#7562A5] p-4 rounded shadow-lg w-[90%] max-w-md border border-gray-300 text-base">
-        <h3 className="text-base font-bold mb-2">{t("doctor.calendar.appointment.title")}</h3>
+        <h3 className="text-base font-bold mb-2">
+          {t("doctor.calendar.appointment.title")}
+        </h3>
         <p className="mb-2">
           <strong>{t("doctor.calendar.appointment.patient")}:</strong>{" "}
           {appointment.client?.surname} {appointment.client?.name}{" "}

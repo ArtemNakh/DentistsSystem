@@ -20,11 +20,12 @@ export default function FilterPanelHistory({
   const { t } = useTranslation();
   return (
     <>
-      <div className=" w-full">
-        <div className="mx-4  text-base  border border-gray-600  flex items-center gap-4 p-2  ">
-          <div className="flex flex-col">
-            <label className=" text-gray-200">
-              {" "}
+    
+      <div className="w-full">
+        <div className="mx-4 text-base border border-gray-600 flex flex-wrap gap-4 p-2">
+          {/* Client */}
+          <div className="flex flex-col flex-1 min-w-[200px]">
+            <label className="text-gray-200">
               {t("reception.history_operation.filters.fio_client")}
             </label>
             <input
@@ -32,11 +33,13 @@ export default function FilterPanelHistory({
               onChange={(e) =>
                 setFilters({ ...filters, fioClient: e.target.value })
               }
-              className="h-10 w-80  border border-gray-600 rounded px-2 focus:outline-none"
+              className="h-10 border border-gray-600 rounded px-2 focus:outline-none w-full"
             />
           </div>
-          <div className="flex flex-col">
-            <label className=" text-gray-200">
+
+          {/* Worker */}
+          <div className="flex flex-col flex-1 min-w-[200px]">
+            <label className="text-gray-200">
               {t("reception.history_operation.filters.fio_worker")}
             </label>
             <input
@@ -44,12 +47,13 @@ export default function FilterPanelHistory({
               onChange={(e) =>
                 setFilters({ ...filters, fioWorker: e.target.value })
               }
-              className="h-10 w-80 border border-gray-600 rounded px-2 focus:outline-none"
+              className="h-10 border border-gray-600 rounded px-2 focus:outline-none w-full"
             />
           </div>
 
-          <div className="flex flex-col">
-            <label className=" text-gray-200">
+          {/* Specialty */}
+          <div className="flex flex-col flex-1 min-w-[160px]">
+            <label className="text-gray-200">
               {t("reception.history_operation.filters.specialty")}
             </label>
             <input
@@ -57,42 +61,43 @@ export default function FilterPanelHistory({
               onChange={(e) =>
                 setFilters({ ...filters, specialty: e.target.value })
               }
-              className="h-10 w-60  border border-gray-600 rounded px-2 focus:outline-none"
+              className="h-10 border border-gray-600 rounded px-2 focus:outline-none w-full"
             />
           </div>
 
-          <div className="flex flex-col">
-            <label className=" text-gray-200">
-              {t("reception.history_operation.filters.status_paid")}{" "}
+          {/* Status Paid */}
+          <div className="flex flex-col flex-1 min-w-[120px]">
+            <label className="text-gray-200">
+              {t("reception.history_operation.filters.status_paid")}
             </label>
             <input
               value={filters.statusPaid}
               onChange={(e) =>
                 setFilters({ ...filters, statusPaid: e.target.value })
               }
-              className="h-10 w-30  border border-gray-600 rounded px-2 focus:outline-none"
+              className="h-10 border border-gray-600 rounded px-2 focus:outline-none w-full"
             />
           </div>
 
-          <div className="flex flex-col">
-            <label className=" text-gray-200">
+          {/* Appointment Date */}
+          <div className="flex flex-col flex-1 min-w-[140px]">
+            <label className="text-gray-200">
               {t("reception.history_operation.filters.appointment_date")}
             </label>
-            <div className="flex items-center gap-2">
-              <input
-                type="text"
-                placeholder="dd.mm.yyyy"
-                value={filters.appointment_date}
-                onChange={(e) =>
-                  setFilters({ ...filters, appointment_date: e.target.value })
-                }
-                className="h-10 w-40  border border-gray-600 rounded px-2 focus:outline-none"
-                pattern="\d{2}\.\d{2}\.\d{4}"
-              />
-            </div>
+            <input
+              type="text"
+              placeholder="dd.mm.yyyy"
+              value={filters.appointment_date}
+              onChange={(e) =>
+                setFilters({ ...filters, appointment_date: e.target.value })
+              }
+              className="h-10 border border-gray-600 rounded px-2 focus:outline-none w-full"
+              pattern="\d{2}\.\d{2}\.\d{4}"
+            />
           </div>
         </div>
       </div>
+      
     </>
   );
 }
