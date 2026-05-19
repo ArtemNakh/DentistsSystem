@@ -32,13 +32,13 @@ export class WorkerAuthGuard implements CanActivate {
     const request: Request = context.switchToHttp().getRequest();
 
     if (!request.session?.workerId) {
-      throw new ForbiddenException('Працівник не авторизований');
+      throw new UnauthorizedException('Працівник не авторизований');
     }
 
     const worker = await this.workerService.findById(Number(request.session.workerId));
-    if (!worker) {
-      throw new UnauthorizedException('Працівника не знайдено');
-    }
+    // if (!worker) {
+    //   throw new UnauthorizedException('Працівника не знайдено');
+    // }
 
     (request as any).user = worker;
     return true;

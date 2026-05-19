@@ -32,7 +32,7 @@ export class WorkersService {
   public async getWorkerById(id: number): Promise<IWorker> {
     const worker = await this.workerRepo.findOne({
       where: { id },
-      relations: ['dentistry', 'specialty', 'licenses'], 
+      relations: ['dentistry', 'specialty', 'licenses'],
     });
 
     if (!worker) {
@@ -81,11 +81,10 @@ export class WorkersService {
     return worker;
   }
 
-  public async GetDoctorsDentistry(dentistryId: number) {
+  public async GetWorkersDentistry(dentistryId: number) {
     const doctors = this.workerRepo.find({
       where: {
         dentistry: { id: dentistryId },
-        // specialty: { type: SpecialtyType.DOCTOR },
       },
       relations: ['specialty', 'dentistry'],
     });
@@ -101,11 +100,20 @@ export class WorkersService {
       where: { id: dto.dentistryId },
     });
 
+    const hashedPassword = await argon2.hash(dto.password);
+    const isValid = await this.checkLoginPassword(dto.login, hashedPassword);
+
+    if (isValid) {
+      throw new ConflictException(
+        'Пароль не може співпадати з логіном існуючого працівника',
+      );
+    }
+
     const worker = this.workerRepo.create({
       ...dto,
       specialty,
       dentistry,
-
+      password: hashedPassword,
       birthday: new Date(dto.birthday),
     } as Partial<IWorker>); // <-- підказуємо TS, що це Partial<Worker>
 
@@ -115,7 +123,7 @@ export class WorkersService {
   async UpdateWorker(id: number, dto: UpdateWorkerDto): Promise<Worker> {
     const worker = await this.workerRepo.findOne({ where: { id } });
     if (!worker) {
-      throw new Error(`Worker with id ${id} not found`);
+      throw new NotFoundException(`Worker with id ${id} not found`);
     }
 
     const specialty = await this.specialtyRepo.findOneBy({
@@ -124,8 +132,19 @@ export class WorkersService {
     const dentistry = await this.dentistryRepo.findOneBy({
       id: dto.dentistryId,
     });
+    const hashedPassword = await argon2.hash(dto.password);
+    const isValid = await this.checkLoginPassword(dto.login, hashedPassword);
 
-    Object.assign(worker, { ...dto, specialty, dentistry });
+    if (isValid) {
+      throw new ConflictException('Логін чи пароль вже існує ');
+    }
+
+    Object.assign(worker, {
+      ...dto,
+      specialty,
+      dentistry,
+      password: hashedPassword,
+    });
     return this.workerRepo.save(worker);
   }
 
@@ -196,5 +215,34 @@ export class WorkersService {
       where,
       relations: ['specialty', 'dentistry'],
     });
+  }
+
+  public async checkLoginPassword(
+    login: string,
+    password: string,
+  ): Promise<boolean> {
+    // шукаємо працівника за логіном
+    const worker = await this.workerRepo.findOne({ where: { login } });
+
+    if (worker) {
+      // якщо логін вже існує — кидаємо помилку
+      throw new ConflictException(
+        'Логін вже використовується іншим працівником',
+      );
+    }
+
+    // додатково можна перевірити, чи пароль співпадає з логіном
+    if (login === password) {
+      throw new ConflictException('Пароль не може співпадати з логіном');
+    }
+
+    // якщо треба перевіряти збіг пароля з існуючим хешем (наприклад, при оновленні)
+    // то робимо так:
+    // const isMatch = await argon2.verify(worker.password, password);
+    // if (isMatch) {
+    //   throw new ConflictException('Пароль вже використовується');
+    // }
+
+    return true; // якщо перевірки пройдені
   }
 }

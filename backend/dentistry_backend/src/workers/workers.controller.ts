@@ -1,19 +1,20 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   Post,
   Put,
   Query,
   Req,
-  UnauthorizedException,
-  UseGuards,
 } from '@nestjs/common';
 import { WorkersService } from './workers.service';
 import {
   ApiBody,
+  ApiOkResponse,
   ApiOperation,
   ApiParam,
   ApiQuery,
@@ -24,31 +25,26 @@ import { IWorker } from './entities/workers.interface';
 import { Request } from 'express';
 import { CreateWorkerDto } from './dto/CreateWorker.dto';
 import { UpdateWorkerDto } from './dto/UpdateWorker.dto';
-import { WorkerResponseDto } from './dto/Response/CreateWorker.response.dto';
-import { ErrorResponseDto } from './dto/Response/ErrorWorker.response.dto';
+import { CreateWorkerResponseDto } from './dto/Response/CreateWorker.response.dto';
 import { WorkerUpdateResponseDto } from './dto/Response/UpdateWorker.response.dto';
+import { SpecialtyType } from '@/specialty/entities/specialty.interface';
+import { Authorization } from '@/auth/decorators/auth.decorator';
+import { Authorized } from '@/auth/decorators/authorized.decorator';
+import { GetWorkersByDentistry } from './dto/Query/GetWorkersByDentistry.query.dto';
+import { WorkerResponseDto } from './dto/Response/Worker.response.dto';
+import { SearchWorkersQueryDto } from './dto/Query/SearchWorkers.query.dto';
+import { SearchWorkerResponseDto } from './dto/Response/SearchWorker.response.dto';
+import { WorkerIdParamDto } from './dto/Param/WorkerIdParam.param.dto';
 @ApiTags('Worker')
 @Controller('workers')
 export class WorkersController {
   constructor(private readonly workersService: WorkersService) {}
 
-  @Get('test/all')
-  findAll() {
-    return this.workersService.findAll();
-  }
-
-
   @Get('all')
   @ApiOperation({
-    summary: 'Отримання усіх докторів стоматології',
+    summary: 'Отримання усіх працівників стоматології',
     description:
-      'Використовувати для отримання усіх працівників(докторів) у певній стоматології',
-  })
-  @ApiQuery({
-    name: 'dentistry',
-    type: Number,
-    required: true,
-    description: 'Ідентифікатор стоматології',
+      'Використовується для отримання усіх працівників у певній стоматології',
   })
   @ApiResponse({
     status: 200,
@@ -63,16 +59,16 @@ export class WorkersController {
           surname: { type: 'string', example: 'Leuschke' },
           middle_name: { type: 'string', example: 'Gray' },
           birthday: { type: 'string', format: 'date', example: '1973-05-23' },
-          phone: { type: 'string', example: '263-154-6799' },
+          phone: { type: 'string', example: '2631546799' },
           specialty: {
             type: 'object',
             properties: {
               id: { type: 'number', example: 11 },
-              name: { type: 'string', example: 'Dynamic Factors Strategist' },
+              name: { type: 'string', example: 'Orthodontist' },
               description: {
                 type: 'string',
                 example:
-                  'Rem pariatur reiciendis nostrum qui totam eaque repellat autem nulla.',
+                  'Specialist in diagnosing, preventing, and correcting misaligned teeth and jaws using braces, aligners, and other orthodontic treatments.',
               },
               type: { type: 'string', example: 'doctor' },
               created_at: {
@@ -103,58 +99,276 @@ export class WorkersController {
       },
     },
   })
-  async GetDoctorsByDentistry(
-    @Query('dentistry') dentistryId: number,
+  @ApiResponse({
+    status: 400,
+    description: 'Некоректний параметр dentistryId',
+    schema: {
+      type: 'object',
+      properties: {
+        message: {
+          type: 'array',
+          items: { type: 'string' },
+          example: ['dentistryId must be a positive number'],
+        },
+        error: { type: 'string', example: 'Bad Request' },
+        statusCode: { type: 'number', example: 400 },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Працівник не авторизований',
+    schema: {
+      type: 'object',
+      properties: {
+        message: { type: 'string', example: 'Працівник не авторизований' },
+        error: { type: 'string', example: 'Unauthorized' },
+        statusCode: { type: 'number', example: 401 },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'Доступ заборонено',
+    schema: {
+      type: 'object',
+      properties: {
+        message: {
+          type: 'string',
+          example:
+            'Недостатньо прав. Ваша професія (Global Operations Administrator) типу (doctor) не має доступу',
+        },
+        error: { type: 'string', example: 'Forbidden' },
+        statusCode: { type: 'number', example: 403 },
+      },
+    },
+  })
+  @Authorization(SpecialtyType.ADMIN, SpecialtyType.RECEPTION)
+  async GetWorkersByDentistry(
+    @Query() query: GetWorkersByDentistry,
   ): Promise<IWorker[]> {
+    const { dentistryId } = query;
     const workersByDentistry =
-      this.workersService.GetDoctorsDentistry(dentistryId);
+      this.workersService.GetWorkersDentistry(dentistryId);
     return workersByDentistry;
   }
 
   @Get('me')
+  @ApiOperation({
+    summary: 'Отримання поточного авторизованого працівника',
+    description: 'Повертає дані працівника з поточної сесії',
+  })
+  @ApiOkResponse({
+    description: 'Поточний працівник',
+    type: WorkerResponseDto,
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Працівник не авторизований',
+    schema: {
+      type: 'object',
+      properties: {
+        message: { type: 'string', example: 'Працівник не авторизований' },
+        error: { type: 'string', example: 'Unauthorized' },
+        statusCode: { type: 'number', example: 401 },
+      },
+    },
+  })
+  @Authorization()
   async getCurrentWorker(@Req() req: Request) {
-    if (!req.session.workerId) {
-      throw new UnauthorizedException('No worker session');
-    }
     const worker = await this.workersService.findById(
       Number(req.session.workerId),
     );
-    return { ...worker };
+    if (!worker) {
+      throw new NotFoundException('Worker not found');
+    }
+
+    const { password, ...safeWorker } = worker;
+    return safeWorker as WorkerResponseDto;
   }
 
   @Get('search')
-  async searchWorkers(
-    @Query('search') search: string,
-    @Query('dentistryId') dentistryId: number,
-  ) {
+  @ApiOperation({
+    summary: 'Пошук працівників',
+    description: 'Пошук працівників за ПІБ у межах конкретної стоматології',
+  })
+  @ApiOkResponse({
+    description: 'Список знайдених працівників',
+    type: SearchWorkerResponseDto,
+    isArray: true,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Некоректні параметри пошуку',
+    schema: {
+      type: 'object',
+      properties: {
+        message: {
+          type: 'array',
+          items: { type: 'string' },
+          example: ['dentistryId must be a positive number'],
+        },
+        error: { type: 'string', example: 'Bad Request' },
+        statusCode: { type: 'number', example: 400 },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Працівник не авторизований',
+    schema: {
+      type: 'object',
+      properties: {
+        message: { type: 'string', example: 'Працівник не авторизований' },
+        error: { type: 'string', example: 'Unauthorized' },
+        statusCode: { type: 'number', example: 401 },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'Доступ заборонено',
+    schema: {
+      type: 'object',
+      properties: {
+        message: {
+          type: 'string',
+          example:
+            'Недостатньо прав. Ваша професія (Global Operations Administrator) типу (doctor) не має доступу',
+        },
+        error: { type: 'string', example: 'Forbidden' },
+        statusCode: { type: 'number', example: 403 },
+      },
+    },
+  })
+  @Authorization(SpecialtyType.ADMIN, SpecialtyType.RECEPTION)
+  async searchWorkers(@Query() query: SearchWorkersQueryDto) {
+    const { search, dentistryId } = query;
     return this.workersService.findByFullName(search, dentistryId);
   }
 
   @Post('create')
-  @ApiOperation({ summary: 'Створити нового працівника' })
+  @ApiOperation({ summary: 'Створення нового працівника' })
   @ApiBody({ type: CreateWorkerDto })
   @ApiResponse({
     status: 201,
     description: 'Працівника успішно створено',
-    type: WorkerResponseDto,
+    type: CreateWorkerResponseDto,
   })
   @ApiResponse({
     status: 400,
     description: 'Некоректні дані для створення',
-    type: ErrorResponseDto,
+    schema: {
+      type: 'object',
+      properties: {
+        message: {
+          type: 'array',
+          items: { type: 'string' },
+          example: [
+            'dentistryId must be a number conforming to the specified constraints',
+          ],
+        },
+        error: { type: 'string', example: 'Bad Request' },
+        statusCode: { type: 'number', example: 400 },
+      },
+    },
   })
+  @ApiResponse({
+    status: 401,
+    description: 'Працівник не авторизований',
+    schema: {
+      type: 'object',
+      properties: {
+        message: { type: 'string', example: 'Працівник не авторизований' },
+        error: { type: 'string', example: 'Unauthorized' },
+        statusCode: { type: 'number', example: 401 },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'Недостатньо прав для створення працівника',
+    schema: {
+      type: 'object',
+      properties: {
+        message: {
+          type: 'string',
+          example:
+            'Недостатньо прав. Ваша професія (Global Operations Administrator) типу (doctor) не має доступу',
+        },
+        error: { type: 'string', example: 'Forbidden' },
+        statusCode: { type: 'number', example: 403 },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 409,
+    description: 'Логін чи пароль вже існує',
+    schema: {
+      type: 'object',
+      properties: {
+        message: { type: 'string', example: 'Логін чи пароль вже існує' },
+        error: { type: 'string', example: 'Conflict' },
+        statusCode: { type: 'number', example: 409 },
+      },
+    },
+  })
+  @Authorization(SpecialtyType.ADMIN)
   CreateWorker(@Body() dto: CreateWorkerDto): Promise<IWorker> {
     return this.workersService.CreateWorker(dto);
   }
 
   @Put(':id')
-  @ApiOperation({ summary: 'Оновити дані працівника' })
+  @ApiOperation({ summary: 'Оновлення даних працівника' })
   @ApiParam({ name: 'id', description: 'ID працівника', type: Number })
   @ApiBody({ type: UpdateWorkerDto })
-  @ApiResponse({
-    status: 200,
+  @ApiOkResponse({
     description: 'Працівника успішно оновлено',
     type: WorkerUpdateResponseDto,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Некоректні дані для оновлення',
+    schema: {
+      type: 'object',
+      properties: {
+        message: {
+          type: 'array',
+          items: { type: 'string' },
+          example: ['phone must be a valid string'],
+        },
+        error: { type: 'string', example: 'Bad Request' },
+        statusCode: { type: 'number', example: 400 },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Працівник не авторизований',
+    schema: {
+      type: 'object',
+      properties: {
+        message: { type: 'string', example: 'Працівник не авторизований' },
+        error: { type: 'string', example: 'Unauthorized' },
+        statusCode: { type: 'number', example: 401 },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'Недостатньо прав для оновлення працівника',
+    schema: {
+      type: 'object',
+      properties: {
+        message: {
+          type: 'string',
+          example:
+            'Недостатньо прав. Ваша професія (Global Operations Administrator) типу (doctor) не має доступу',
+        },
+        error: { type: 'string', example: 'Forbidden' },
+        statusCode: { type: 'number', example: 403 },
+      },
+    },
   })
   @ApiResponse({
     status: 404,
@@ -167,28 +381,156 @@ export class WorkersController {
       },
     },
   })
+  @ApiResponse({
+    status: 409,
+    description: 'Логін чи пароль вже існує',
+    schema: {
+      type: 'object',
+      properties: {
+        message: { type: 'string', example: 'Логін чи пароль вже існує' },
+        error: { type: 'string', example: 'Conflict' },
+        statusCode: { type: 'number', example: 409 },
+      },
+    },
+  })
+  @Authorization(SpecialtyType.ADMIN)
   UpdateWorker(
-    @Param('id') id: number,
+    @Param() params: WorkerIdParamDto,
     @Body() dto: UpdateWorkerDto,
   ): Promise<IWorker> {
+    const { id } = params;
     return this.workersService.UpdateWorker(id, dto);
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'Деактивувати працівника (active = false)' })
+  @ApiOperation({ summary: 'Деактивувати працівника' })
   @ApiParam({ name: 'id', description: 'ID працівника', type: Number })
-  @ApiResponse({ status: 200, description: 'Працівника успішно деактивовано' })
-  @ApiResponse({ status: 404, description: 'Працівника не знайдено' })
-  RemoveWorker(@Param('id') id: number): Promise<void> {
+  @ApiOkResponse({ description: 'Працівника успішно деактивовано' })
+  @ApiResponse({
+    status: 400,
+    description: 'Некоректний параметр id',
+    schema: {
+      type: 'object',
+      properties: {
+        message: {
+          type: 'array',
+          items: { type: 'string' },
+          example: ['id must be a positive integer'],
+        },
+        error: { type: 'string', example: 'Bad Request' },
+        statusCode: { type: 'number', example: 400 },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Працівник не авторизований',
+    schema: {
+      type: 'object',
+      properties: {
+        message: { type: 'string', example: 'Працівник не авторизований' },
+        error: { type: 'string', example: 'Unauthorized' },
+        statusCode: { type: 'number', example: 401 },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'Недостатньо прав для деактивації працівника',
+    schema: {
+      type: 'object',
+      properties: {
+        message: {
+          type: 'string',
+          example:
+            'Недостатньо прав. Ваша професія (Global Operations Administrator) типу (doctor) не має доступу',
+        },
+        error: { type: 'string', example: 'Forbidden' },
+        statusCode: { type: 'number', example: 403 },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Працівника не знайдено',
+    schema: {
+      example: {
+        statusCode: 404,
+        message: 'Worker not found',
+        error: 'Not Found',
+      },
+    },
+  })
+  @Authorization(SpecialtyType.ADMIN)
+  RemoveWorker(@Param() params: WorkerIdParamDto): Promise<void> {
+    const { id } = params;
     return this.workersService.RemoveWorker(id);
   }
-  
-@Get('by-id/:id')
+
+  @Get('by-id/:id')
   @ApiOperation({ summary: 'Отримати працівника за ID' })
-  @ApiParam({ name: 'id', description: 'ID працівника', type: Number })
-  @ApiResponse({ status: 200, description: 'Працівника знайдено' })
-  @ApiResponse({ status: 404, description: 'Працівника не знайдено' })
-  async getWorkerById(@Param('id') id: number): Promise<IWorker> {
+  @ApiOkResponse({
+    description: 'Працівника знайдено',
+    type: WorkerResponseDto,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Некоректний параметр id',
+    schema: {
+      type: 'object',
+      properties: {
+        message: {
+          type: 'array',
+          items: { type: 'string' },
+          example: ['id must be a positive number'],
+        },
+        error: { type: 'string', example: 'Bad Request' },
+        statusCode: { type: 'number', example: 400 },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Працівник не авторизований',
+    schema: {
+      type: 'object',
+      properties: {
+        message: { type: 'string', example: 'Працівник не авторизований' },
+        error: { type: 'string', example: 'Unauthorized' },
+        statusCode: { type: 'number', example: 401 },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'Недостатньо прав для перегляду працівника',
+    schema: {
+      type: 'object',
+      properties: {
+        message: {
+          type: 'string',
+          example:
+            'Недостатньо прав. Ваша професія (Global Operations Administrator) типу (doctor) не має доступу',
+        },
+        error: { type: 'string', example: 'Forbidden' },
+        statusCode: { type: 'number', example: 403 },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Працівника не знайдено',
+    schema: {
+      example: {
+        statusCode: 404,
+        message: 'Працівника з id=69 не знайден',
+        error: 'Not Found',
+      },
+    },
+  })
+  @Authorization(SpecialtyType.ADMIN, SpecialtyType.RECEPTION)
+  async getWorkerById(@Param() params: WorkerIdParamDto): Promise<IWorker> {
+    const { id } = params;
     return this.workersService.getWorkerById(id);
   }
   //   // Check autorization

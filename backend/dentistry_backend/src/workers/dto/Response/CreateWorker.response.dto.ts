@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Dentistry } from '@/dentistry/entities/dentistry.entity';
 import { Specialty } from '@/specialty/entities/specialty.entity';
 
-export class WorkerResponseDto {
+export class CreateWorkerResponseDto {
   @ApiProperty({ example: 91 })
   id: number;
 

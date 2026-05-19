@@ -1,12 +1,9 @@
 import { useAppSelector } from "@/lib/redux/hooks";
-import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
-import { GetClientsByFullName } from "@/lib/redux/modules/Clients/actions/GetClientsByFullName/GetClientsByFullName";
-import { IClient } from "@/lib/redux/modules/Clients/clients.interface";
 import { RootState } from "@/lib/redux/store";
 import { ErrorMessage, Field, useFormikContext } from "formik";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 export default function ClientField() {
   const { t } = useTranslation();
