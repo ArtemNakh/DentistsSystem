@@ -89,7 +89,6 @@ export class DentistryController {
       },
     },
   })
-  @Authorization()
   async searchDentistries(@Query() query: SearchDentistryDto) {
     const { city } = query;
     console.log('quest', city);

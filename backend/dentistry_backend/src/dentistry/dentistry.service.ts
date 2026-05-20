@@ -175,4 +175,34 @@ export class DentistryService {
       },
     });
   }
+
+  async getDentistryById(id: number): Promise<Dentistry> {
+    //  Перевірка — id передано
+    if (id === undefined || id === null) {
+      throw new BadRequestException('Dentistry ID is required');
+    }
+
+    //  Перевірка — id є числом
+    if (typeof id !== 'number' || Number.isNaN(id)) {
+      throw new BadRequestException('Dentistry ID must be a valid number');
+    }
+
+    //  Перевірка — id має бути додатним
+    if (id <= 0) {
+      throw new BadRequestException('Dentistry ID must be a positive number');
+    }
+
+    //  Пошук стоматології
+    const dentistry = await this.dentistryRepository.findOne({
+      where: { id },
+      relations: ['workers', 'workers.specialty'], // додай свої relations, якщо треба
+    });
+
+    // Перевірка — чи знайдено
+    if (!dentistry) {
+      throw new NotFoundException(`Dentistry with id ${id} not found`);
+    }
+
+    return dentistry;
+  }
 }
