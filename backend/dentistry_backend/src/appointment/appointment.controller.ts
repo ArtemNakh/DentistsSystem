@@ -1,14 +1,15 @@
 import {
   BadRequestException,
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Get,
   Param,
-  ParseEnumPipe,
   ParseIntPipe,
   Patch,
   Post,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
 import { AppointmentService } from './appointment.service';
 import {
@@ -63,6 +64,7 @@ export class AppointmentController {
   })
   @ApiResponse({ status: 400, description: 'Некоректний формат дати або ID' })
   @ApiResponse({ status: 500, description: 'Внутрішня помилка сервера' })
+  @UseInterceptors(ClassSerializerInterceptor)
   async getNearest(
     @Query('date') date: string,
     @Query('dentistryId', ParseIntPipe) dentistryId: number,
@@ -75,13 +77,17 @@ export class AppointmentController {
     return this.appointmentService.findNearest(parsedDate, dentistryId);
   }
 
-  @Get('today') async getTodayAppointments(
+  @Get('today')
+  @UseInterceptors(ClassSerializerInterceptor)
+  async getTodayAppointments(
     @Query('dentistry') dentistryId: number,
   ): Promise<IAppointment[]> {
     return this.appointmentService.getTodayAppointmentsByDentistry(dentistryId);
   }
 
-  @Get('all') async getAppointmentsDentistry(
+  @Get('all')
+  @UseInterceptors(ClassSerializerInterceptor)
+  async getAppointmentsDentistry(
     @Query('dentistry') dentistryId: number,
   ): Promise<IAppointment[]> {
     if (!dentistryId || isNaN(dentistryId)) {
@@ -93,6 +99,7 @@ export class AppointmentController {
   }
 
   @Get('history')
+  @UseInterceptors(ClassSerializerInterceptor)
   async getHistoryByDentistry(
     @Query('dentistry') dentistryId: number,
   ): Promise<IAppointment[]> {
@@ -121,11 +128,11 @@ export class AppointmentController {
     description: 'Некоректні дані або відсутні обов’язкові параметри',
   })
   @ApiResponse({ status: 500, description: 'Внутрішня помилка сервера' })
+  @UseInterceptors(ClassSerializerInterceptor)
   async createAppointment(
     @Body() createAppointmentDto: CreateAppointmentDto,
   ): Promise<IAppointment> {
     try {
-      
       const newAppointment =
         await this.appointmentService.createAppointment(createAppointmentDto);
       return newAppointment;
@@ -136,15 +143,17 @@ export class AppointmentController {
 
   // Ендпоінт для отримання appointment на 3 місяці
   @Get(':id/appointments/next/3month')
+  @UseInterceptors(ClassSerializerInterceptor)
   async getAppointments(@Param('id') id: number) {
     return this.appointmentService.findAppointmentsForWorkerToNext3Month(id);
   }
 
   @Get(':workerId/appointments')
+  @UseInterceptors(ClassSerializerInterceptor)
   async getAppointmentsByWorker(
     @Param('workerId') workerId: number,
   ): Promise<IAppointment[]> {
-    console.log("workerid test",workerId)
+    console.log('workerid test', workerId);
     return this.appointmentService.findAppointmentsForWorker(workerId);
   }
 
@@ -176,6 +185,7 @@ export class AppointmentController {
       },
     },
   })
+  @UseInterceptors(ClassSerializerInterceptor)
   async updateStatus(
     @Param('appointmentId') appointmentId: number,
     @Body() dto: UpdateAppointmentStatusDto,
@@ -184,6 +194,7 @@ export class AppointmentController {
   }
 
   @Get('workers-stats/:dentistryId')
+  @UseInterceptors(ClassSerializerInterceptor)
   async getWorkersStatsByDentistry(@Param('dentistryId') dentistryId: number) {
     return this.appointmentService.getWorkerAppointmentsStatsByDentistry(
       dentistryId,
@@ -274,11 +285,13 @@ export class AppointmentController {
   })
   @ApiResponse({ status: 404, description: 'Запис не знайдено' })
   @ApiResponse({ status: 500, description: 'Внутрішня помилка сервера' })
+  @UseInterceptors(ClassSerializerInterceptor)
   async getAppointment(@Param('id') id: number): Promise<IAppointment> {
     return this.appointmentService.getAppointmentById(id);
   }
 
   @Get('client/:id')
+  @UseInterceptors(ClassSerializerInterceptor)
   async getAppointmentsByClient(@Param('id') id: number) {
     return this.appointmentService.findByClientId(id);
   }

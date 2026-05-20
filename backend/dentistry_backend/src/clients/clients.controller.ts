@@ -1,14 +1,11 @@
 import {
   Controller,
   Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
   Req,
   UnauthorizedException,
   Query,
+  ClassSerializerInterceptor,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ClientService } from './clients.service';
 import { ApiTags } from '@nestjs/swagger';
@@ -24,6 +21,7 @@ export class ClientsController {
   }
 
   @Get('me')
+    @UseInterceptors(ClassSerializerInterceptor)
   async getCurrentClient(@Req() req: Request) {
     console.log('se', req.session);
     if (!req.session.clientId) {
@@ -36,6 +34,7 @@ export class ClientsController {
   }
 
   @Get('search')
+    @UseInterceptors(ClassSerializerInterceptor)
   async searchClients(@Query('search') search: string) {
     return this.clientsService.findByFullName(search);
   }

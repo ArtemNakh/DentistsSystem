@@ -1,5 +1,6 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
@@ -7,6 +8,7 @@ import {
   Post,
   Put,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
 import { SpecialtyService } from './specialty.service';
 import { Request } from 'express';
@@ -142,6 +144,7 @@ export class SpecialtyController {
       },
     },
   })
+  @UseInterceptors(ClassSerializerInterceptor)
   @Authorization(SpecialtyType.ADMIN)
   CreateSpecialty(@Body() dto: CreateSpecialtyDto): Promise<Specialty> {
     return this.specialtyService.CreateSpecialty(dto);
@@ -262,6 +265,7 @@ export class SpecialtyController {
       },
     },
   })
+  @UseInterceptors(ClassSerializerInterceptor)
   @Authorization(SpecialtyType.ADMIN)
   UpdateSpecialty(
     @Param('id') id: number,
@@ -362,6 +366,7 @@ export class SpecialtyController {
       },
     },
   })
+  @UseInterceptors(ClassSerializerInterceptor)
   @Authorization(SpecialtyType.ADMIN)
   RemoveSpecialty(
     @Param('id') id: number,
@@ -457,6 +462,7 @@ export class SpecialtyController {
       },
     },
   })
+    @UseInterceptors(ClassSerializerInterceptor)
   async searchWorkers(
     @Query('search') search: string,
     @Query('dentistry') dentistry: number,

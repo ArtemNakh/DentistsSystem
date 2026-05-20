@@ -9,6 +9,8 @@ import {
   Put,
   UseGuards,
   Query,
+  UseInterceptors,
+  ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { OperationListService } from './operation-list.service';
 import {
@@ -50,6 +52,7 @@ export class OperationListController {
     description: 'Операцію успішно створено',
     type: OperationResponseDto,
   })
+    @UseInterceptors(ClassSerializerInterceptor)
   createOperation(
     @Body() dto: CreateOperationDto,
     @Req() req,
@@ -71,6 +74,7 @@ export class OperationListController {
     type: OperationResponseDto,
   })
   @ApiResponse({ status: 404, description: 'Операцію не знайдено' })
+    @UseInterceptors(ClassSerializerInterceptor)
   updateOperation(
     @Param('id') id: number,
     @Body() dto: UpdateOperationDto,
@@ -85,6 +89,7 @@ export class OperationListController {
   @ApiParam({ name: 'id', description: 'ID операції', type: Number })
   @ApiResponse({ status: 200, description: 'Операцію успішно видалено' })
   @ApiResponse({ status: 404, description: 'Операцію не знайдено' })
+    @UseInterceptors(ClassSerializerInterceptor)
   removeOperation(
     @Param('id') id: number,
   ): Promise<{ success: boolean; message: string }> {
@@ -92,6 +97,7 @@ export class OperationListController {
   }
 
   @Get('search')
+    @UseInterceptors(ClassSerializerInterceptor)
   async searchOperations(
     @Query('search') search: string,
     @Query('dentistryId') dentistryId?: number, // приймаємо dentistryId

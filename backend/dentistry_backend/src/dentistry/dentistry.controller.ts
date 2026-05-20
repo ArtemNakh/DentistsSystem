@@ -1,5 +1,6 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Get,
   Param,
@@ -7,6 +8,7 @@ import {
   Patch,
   Post,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
 
 import {
@@ -89,6 +91,7 @@ export class DentistryController {
       },
     },
   })
+    @UseInterceptors(ClassSerializerInterceptor)
   async searchDentistries(@Query() query: SearchDentistryDto) {
     const { city } = query;
     console.log('quest', city);
@@ -163,6 +166,7 @@ export class DentistryController {
     },
   })
   @Authorization()
+    @UseInterceptors(ClassSerializerInterceptor)
   async create(@Body() dto: CreateDentistryDto): Promise<IDentistry> {
     return this.dentistryService.create(dto);
   }
@@ -236,6 +240,7 @@ export class DentistryController {
     },
   })
   @Authorization()
+    @UseInterceptors(ClassSerializerInterceptor)
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: UpdateDentistryDto,
@@ -334,6 +339,7 @@ export class DentistryController {
     },
   })
   @Authorization()
+    @UseInterceptors(ClassSerializerInterceptor)
   async updateStatus(
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: UpdateDentistryStatusDto,

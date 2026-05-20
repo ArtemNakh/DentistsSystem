@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { ClassSerializerInterceptor, Controller, Get, Query, UseInterceptors } from '@nestjs/common';
 import { PaymentService } from './payment.service';
 import { ApiTags } from '@nestjs/swagger';
 import { Payment } from './entity/payment.entity';
@@ -14,6 +14,7 @@ export class PaymentController {
   }
 
   @Get('allByWorker')
+    @UseInterceptors(ClassSerializerInterceptor)
   async getPaymentsByDentist(
     @Query('dentist') dentistId: number,
   ): Promise<Payment[]> {
@@ -21,6 +22,7 @@ export class PaymentController {
   }
 
   @Get('allByDentistry')
+    @UseInterceptors(ClassSerializerInterceptor)
   async getPaymentsByDentistry(
     @Query('dentistry') dentistryId: number,
   ): Promise<Payment[]> {

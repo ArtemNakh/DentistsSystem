@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Get, Post, UseInterceptors } from '@nestjs/common';
 import { AppointmentActionService } from './appointment-action.service';
 import { CreateAppointmentActionsDto } from './dto/CreateAppointmentActionsDto';
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
@@ -12,7 +12,7 @@ export class AppointmentActionController {
   findAll() {
     return this.appointmentActionService.findAll();
   }
-    
+
   @Post('CompleteOperation')
   @ApiOperation({
     summary: 'Додати операції до запису',
@@ -63,6 +63,7 @@ export class AppointmentActionController {
       },
     },
   })
+  @UseInterceptors(ClassSerializerInterceptor)
   async addActionsAndPayment(@Body() dto: CreateAppointmentActionsDto) {
     return this.appointmentActionService.addActionsAndPayment(dto);
   }

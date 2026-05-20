@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
@@ -9,6 +10,7 @@ import {
   Post,
   Put,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
 import { LicenseService } from './license.service';
 import {
@@ -43,6 +45,7 @@ export class LicenseController {
     description: 'Ліцензію успішно створено',
     type: LicenseResponseDto,
   })
+    @UseInterceptors(ClassSerializerInterceptor)
   createLicense(@Body() dto: CreateLicenseDto): Promise<ILicense> {
     return this.licenseService.createLicense(dto);
   }
@@ -51,6 +54,7 @@ export class LicenseController {
   @ApiOperation({ summary: 'Оновити ліцензію' })
   @ApiParam({ name: 'id', description: 'ID ліцензії', type: Number })
   @ApiBody({ type: UpdateLicenseDto })
+    @UseInterceptors(ClassSerializerInterceptor)
   @ApiResponse({
     status: 200,
     description: 'Ліцензію успішно оновлено',
@@ -69,6 +73,7 @@ export class LicenseController {
   @ApiParam({ name: 'id', description: 'ID ліцензії', type: Number })
   @ApiResponse({ status: 200, description: 'Ліцензію успішно видалено' })
   @ApiResponse({ status: 404, description: 'Ліцензію не знайдено' })
+    @UseInterceptors(ClassSerializerInterceptor)
   removeLicense(
     @Param('id') id: number,
   ): Promise<{ success: boolean; message: string }> {
@@ -83,6 +88,7 @@ export class LicenseController {
     type: Number,
   })
   @ApiResponse({ status: 200, description: 'Список ліцензій стоматології' })
+    @UseInterceptors(ClassSerializerInterceptor)
   async getLicensesByDentistry(@Param('dentistryId') dentistryId: number) {
     return this.licenseService.getLicensesByDentistry(dentistryId);
   }
@@ -92,6 +98,7 @@ export class LicenseController {
   @ApiParam({ name: 'workerId', description: 'ID працівника', type: Number })
   @ApiResponse({ status: 200, description: 'Ліцензії знайдено' })
   @ApiResponse({ status: 404, description: 'Працівника не знайдено' })
+    @UseInterceptors(ClassSerializerInterceptor)
   async getLicensesByWorkerId(
     @Param('workerId') workerId: number,
   ): Promise<License[]> {
@@ -118,6 +125,7 @@ export class LicenseController {
     example: 30,
     description: 'Максимальний діапазон у днях (обовʼязковий параметр)',
   })
+    @UseInterceptors(ClassSerializerInterceptor)
   async getExpiringLicenses(
     @Query('workerId', ParseIntPipe) workerId: number,
     @Query('maxDays', ParseIntPipe) maxDays: number,
@@ -156,6 +164,7 @@ export class LicenseController {
     status: 400,
     description: 'Некоректні параметри (dentistryId або maxDays відсутні)',
   })
+    @UseInterceptors(ClassSerializerInterceptor)
   async getExpiringLicensesByDentistry(
     @Query('dentistryId', ParseIntPipe) dentistryId: number,
     @Query('maxDays', ParseIntPipe) maxDays: number,

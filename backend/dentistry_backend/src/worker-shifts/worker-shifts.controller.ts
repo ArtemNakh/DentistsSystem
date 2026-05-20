@@ -1,5 +1,6 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
@@ -7,6 +8,7 @@ import {
   ParseIntPipe,
   Post,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
 import { WorkerShiftsService } from './worker-shifts.service';
 import {
@@ -33,6 +35,7 @@ export class WorkerShiftsController {
 
   // Ендпоінт для отримання розкладу на 3 місяці
   @Get(':id/shifts')
+    @UseInterceptors(ClassSerializerInterceptor)
   async getShifts(@Param('id') id: number) {
     return this.workerShiftsService.findShiftsForWorker(id);
   }
@@ -42,6 +45,7 @@ export class WorkerShiftsController {
    * Повертає список лікарів з кількістю неробочих днів за період
    */
   @Get(':dentistryId')
+    @UseInterceptors(ClassSerializerInterceptor)
   async getWorkersWeekend(
     @Param('dentistryId') dentistryId: number,
     @Query('start') start: string,
@@ -61,6 +65,7 @@ export class WorkerShiftsController {
    * Повертає кількість неробочих днів для конкретного лікаря за період
    */
   @Get('worker/:workerId')
+    @UseInterceptors(ClassSerializerInterceptor)
   async getWeekendByWorker(
     @Param('workerId') workerId: number,
     @Query('start') start: string,
@@ -84,6 +89,7 @@ export class WorkerShiftsController {
     type: WorkerShiftResponseDto,
   })
   @ApiResponse({ status: 404, description: 'Працівника не знайдено' })
+    @UseInterceptors(ClassSerializerInterceptor)
   createShift(@Body() dto: CreateWorkerShiftDto): Promise<IWorkerShifts> {
     return this.workerShiftsService.createShift(dto);
   }
@@ -93,6 +99,7 @@ export class WorkerShiftsController {
   @ApiParam({ name: 'id', description: 'ID зміни', type: Number })
   @ApiResponse({ status: 200, description: 'Зміну успішно видалено' })
   @ApiResponse({ status: 404, description: 'Зміну не знайдено' })
+    @UseInterceptors(ClassSerializerInterceptor)
   removeShift(
     @Param('id') id: number,
   ): Promise<{ success: boolean; message: string }> {
@@ -112,6 +119,7 @@ export class WorkerShiftsController {
     status: 404,
     description: 'Стоматологію не знайдено або немає змін',
   })
+    @UseInterceptors(ClassSerializerInterceptor)
   async getShiftsByClinic(
     @Param('clinicId', ParseIntPipe) clinicId: number,
   ): Promise<IWorkerShifts[]> {

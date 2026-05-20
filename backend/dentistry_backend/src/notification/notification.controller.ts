@@ -1,11 +1,13 @@
 import {
   BadRequestException,
+  ClassSerializerInterceptor,
   Controller,
   Get,
   Param,
   ParseIntPipe,
   Post,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
 import { NotificationService } from './notification.service';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -22,6 +24,7 @@ export class NotificationController {
   }
 
   @Post(':dentistryId/remind-appointment')
+    @UseInterceptors(ClassSerializerInterceptor)
   async sendAppointmentsRemind(@Param('dentistryId') dentistryId: number) {
     return await this.notificationService.remindAboutAppointment({
       dentistryId,
@@ -29,6 +32,7 @@ export class NotificationController {
   }
 
   @Post(':dentistryId/remind-pay')
+    @UseInterceptors(ClassSerializerInterceptor)
   async sendPayRemind(@Param('dentistryId') dentistryId: number) {
     return await this.notificationService.remindAboutPay({
       dentistryId,
@@ -64,6 +68,7 @@ export class NotificationController {
     status: 400,
     description: 'Некоректний формат дати',
   })
+    @UseInterceptors(ClassSerializerInterceptor)
   async getNearest(
     @Query('date') date: string,
     @Query('dentistryId', ParseIntPipe) dentistryId: number,
