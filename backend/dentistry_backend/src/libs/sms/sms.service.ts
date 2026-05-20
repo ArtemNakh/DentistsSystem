@@ -13,26 +13,19 @@ export class SmsService {
     );
   }
 
-  async sendSmsForClient(
-    phoneNumber: string,
-    textNotification: string,
-  ) {
+  async sendSmsForClient(phoneNumber: string, textNotification: string) {
     try {
-      const message = await this.twilioClient.messages.create({
-        body: textNotification,
-        from: this.configService.get('TWILIO_SENDER_PHONE_NUMBER'),
-        to: phoneNumber,
-      });
-      return { sid: message.sid, status: message.status };
-    return{}
+      // const message = await this.twilioClient.messages.create({
+      //   body: textNotification,
+      //   from: this.configService.get('TWILIO_SENDER_PHONE_NUMBER'),
+      //   to: phoneNumber,
+      // });
+      // return { sid: message.sid, status: message.status };
+      return {};
     } catch (error: any) {
       throw new InternalServerErrorException(
         `Failed to send SMS: ${error.message}`,
       );
     }
   }
-
-  
-  
-
 }

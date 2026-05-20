@@ -186,28 +186,28 @@ export class NotificationService {
 
       await this.notificationRepo.save(newNotification);
 
-      // Надсилання повідомлень
-      // Надсилання sms
-      await this.smsService.sendSmsForClient(
-        appointment.client.phone,
-        messageRemindAboutAppointment,
-      );
+      // // Надсилання повідомлень
+      // // Надсилання sms
+      // await this.smsService.sendSmsForClient(
+      //   appointment.client.phone,
+      //   messageRemindAboutAppointment,
+      // );
 
-      // Надсилання email
-      await this.emailService.sendRemaindAboutAppointment({
-        email: appointment.client.email,
-        doctorName:
-          appointment.dentist.surname +
-          ' ' +
-          appointment.dentist.name +
-          ' ' +
-          appointment.dentist.middle_name,
-        appointmentDate: new Date(appointment.appointment_date).toLocaleString(
-          'uk-UA',
-        ),
-      });
+      // // Надсилання email
+      // await this.emailService.sendRemaindAboutAppointment({
+      //   email: appointment.client.email,
+      //   doctorName:
+      //     appointment.dentist.surname +
+      //     ' ' +
+      //     appointment.dentist.name +
+      //     ' ' +
+      //     appointment.dentist.middle_name,
+      //   appointmentDate: new Date(appointment.appointment_date).toLocaleString(
+      //     'uk-UA',
+      //   ),
+      // });
 
-      console.log('test');
+      console.log('notification service sms and email');
       // Оновлення notification після успішних відправок
       newNotification.is_send = true;
       await this.notificationRepo.save(newNotification);
