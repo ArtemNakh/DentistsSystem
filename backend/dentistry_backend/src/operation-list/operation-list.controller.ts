@@ -26,7 +26,7 @@ import {
 } from './dto/CreateOperation-list.dto';
 import { OperationResponseDto } from './dto/Response/CreateOperation-list.response.dto';
 import { IOperationList } from './entities/operation-list.interface';
-import { Authorization } from '../auth/decorators/auth.decorator';
+import { Authorization } from '../auth/decorators/Authorization.decorator';
 import { WorkerAuthGuard } from '../auth/guards/workerAuth.guard';
 import { SpecialtyType } from '../specialty/entities/specialty.interface';
 import { IWorker } from '../workers/entities/workers.interface';

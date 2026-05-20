@@ -2,7 +2,7 @@ import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { Worker } from '../../workers/entities/workers.entity';
 
 /**
- * Призначення: кастомний декоратор для отримання даних про авторизованого працівника (Worker).
+ * Призначення: кастомний декоратор для отримання даних про авторизованого працівника (Worker) та клієнта.
  * Як працює:
  * - request.user — сюди NestJS кладе користувача після проходження AuthGuard.
  * - Якщо передати data (наприклад, Authorized('login')), то повернеться конкретне поле працівника.

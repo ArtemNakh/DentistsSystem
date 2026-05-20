@@ -30,7 +30,7 @@ import { UpdateWorkerDto } from './dto/UpdateWorker.dto';
 import { CreateWorkerResponseDto } from './dto/Response/CreateWorker.response.dto';
 import { WorkerUpdateResponseDto } from './dto/Response/UpdateWorker.response.dto';
 import { SpecialtyType } from '@/specialty/entities/specialty.interface';
-import { Authorization } from '@/auth/decorators/auth.decorator';
+import { Authorization } from '@/auth/decorators/Authorization.decorator';
 import { Authorized } from '@/auth/decorators/authorized.decorator';
 import { GetWorkersByDentistry } from './dto/Query/GetWorkersByDentistry.query.dto';
 import { WorkerResponseDto } from './dto/Response/Worker.response.dto';
@@ -545,6 +545,27 @@ export class WorkersController {
     const { id } = params;
     return this.workersService.getWorkerById(id);
   }
+
+  // way to used auth decorators
+  // allow only client auth
+  // @UseGuards(ClientAuthGuard)
+  // allow only worker auth (any type)
+  //  @Authorization()
+  // allow only worker auth for type
+  // @Authorization(SpecialtyType.ADMIN)
+  // allow client and worker(any type) auth
+  //  @ClientOrWorker()
+  // allow client and worker (by type) auth
+  // @ClientOrWorker(SpecialtyType.ADMIN, SpecialtyType.RECEPTION)\
+
+  // Check Client and Worker  auth
+  // @ClientOrWorker(SpecialtyType.ADMIN, SpecialtyType.RECEPTION)
+  // async getPaymentsByDentistry(
+  //   @Query() query: GetPaymentsByDentistryDto,
+  // ): Promise<Payment[]> {
+  //   const { dentistryId } = query;
+  //   return this.paymentService.getPaymentsByDentistry(dentistryId);
+  // }
   //   // Check autorization
   // // доступ для всіх авторизованих працівників
   // @Get('worker/profile') @Authorization() getWorkerProfile(

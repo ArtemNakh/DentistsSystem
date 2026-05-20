@@ -38,7 +38,7 @@ export class PaymentEntity extends BaseEntity {
     const { dentistId } = action.payload;
     yield call(
       this.xRead.bind(this),
-      `/payment/allByWorker?dentist=${dentistId}`,
+      `/payment/allByWorker?dentistId=${dentistId}`,
       ActionReducer.Get,
     );
   }
@@ -47,7 +47,7 @@ export class PaymentEntity extends BaseEntity {
     const { dentistryId } = action.payload;
     yield call(
       this.xRead.bind(this),
-      `/payment/allByDentistry?dentistry=${dentistryId}`,
+      `/payment/allByDentistry?dentistryId=${dentistryId}`,
       ActionReducer.Get,
     );
   }

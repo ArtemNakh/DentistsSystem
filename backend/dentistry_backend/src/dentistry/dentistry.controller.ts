@@ -20,7 +20,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { DentistryService } from './dentistry.service';
-import { Authorization } from '@/auth/decorators/auth.decorator';
+import { Authorization } from '@/auth/decorators/Authorization.decorator';
 import { SearchDentistryDto } from './dto/Query/SearchDentistriesByCity.query.dto';
 import { DentistryResponseDto } from './dto/Response/Dentistry.response.dto';
 import { CreateDentistryDto } from './dto/create-dentistry.dto';

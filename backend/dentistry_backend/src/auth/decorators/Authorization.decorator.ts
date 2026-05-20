@@ -11,6 +11,14 @@ import { WorkerAuthGuard } from '../guards/workerAuth.guard';
  * - Якщо ролі не передані → перевіряє лише авторизацію.
  */
 
+/**
+ * methods use
+ * allow only worker auth (any type)
+ * - @Authorization()
+ * allow only worker auth for type
+ * - @Authorization(SpecialtyType.ADMIN)
+ */
+
 export function Authorization(...roles: SpecialtyType[]) {
   if (roles.length > 0) {
     const roleConfig: RoleConfig = { type: roles as string[] };

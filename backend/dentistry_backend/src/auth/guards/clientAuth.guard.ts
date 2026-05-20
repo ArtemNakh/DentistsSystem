@@ -23,6 +23,10 @@ import { ClientService } from '@/clients/clients.service';
 // //   return worker;
 // // }
 
+// method of using
+// allow only client auth
+// -  @UseGuards(ClientAuthGuard)
+
 @Injectable()
 export class ClientAuthGuard implements CanActivate {
   constructor(private readonly clientService: ClientService) {}
@@ -34,7 +38,9 @@ export class ClientAuthGuard implements CanActivate {
       throw new ForbiddenException('Клієнт не авторизований');
     }
 
-    const client = await this.clientService.findById(Number(request.session.clientId));
+    const client = await this.clientService.findById(
+      Number(request.session.clientId),
+    );
     if (!client) {
       throw new UnauthorizedException('Клієнта не знайдено');
     }

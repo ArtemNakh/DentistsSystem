@@ -25,7 +25,7 @@ import { SpecialtyResponseDto } from './dto/Response/CreateSpecialty.response.dt
 import { Specialty } from './entities/specialty.entity';
 import { UpdateSpecialtyDto } from './dto/UpdateSpecialty.dto';
 import { ErrorSpecialtyResponseDto } from './dto/Response/Error.response.dto';
-import { Authorization } from '@/auth/decorators/auth.decorator';
+import { Authorization } from '@/auth/decorators/Authorization.decorator';
 import { SpecialtyType } from './entities/specialty.interface';
 
 @ApiTags('Specialties')
