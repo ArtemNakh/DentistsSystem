@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { AppointmentActions } from './entity/appointment-action.entity';
 import { DataSource, In, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -30,62 +34,88 @@ export class AppointmentActionService {
     });
   }
 
-  
   async addActionsAndPayment(dto: CreateAppointmentActionsDto) {
-  return await this.dataSource.transaction(async (manager) => {
-    const appointmentRepo = manager.getRepository(Appointment);
-    const operationRepo = manager.getRepository(OperationList);
-    const appointmentActionRepo = manager.getRepository(AppointmentActions);
-    const paymentRepo = manager.getRepository(Payment);
+    return await this.dataSource.transaction(async (manager) => {
+      const appointmentRepo = manager.getRepository(Appointment);
+      const operationRepo = manager.getRepository(OperationList);
+      const appointmentActionRepo = manager.getRepository(AppointmentActions);
+      const paymentRepo = manager.getRepository(Payment);
 
-    // 1. Отримуємо appointment
-    const appointment = await appointmentRepo.findOne({
-      where: { id: dto.appointmentId },
-    });
-    if (!appointment) throw new NotFoundException('Appointment not found');
-
-    // 2. Отримуємо всі операції
-    const operations = await operationRepo.findBy({ id: In(dto.actions) });
-    if (operations.length !== dto.actions.length) {
-      throw new NotFoundException('Some operations not found');
-    }
-
-    // 3. Створюємо appointment_actions
-    const appointmentActions = operations.map((operation) =>
-      appointmentActionRepo.create({ appointment, operation }),
-    );
-    await appointmentActionRepo.save(appointmentActions);
-
-    // 4. Рахуємо суму
-    const totalAmount = operations.reduce((sum, op) => sum + op.price, 0);
-
-    // 5. Створюємо або оновлюємо payment
-    let payment: Payment;
-    const existingPayment = await paymentRepo.findOne({
-      where: { appointment: { id: appointment.id } },
-    });
-    if (existingPayment) {
-      existingPayment.amount = totalAmount;
-      existingPayment.method_pay = dto.method_pay;
-      existingPayment.status_paid = StatusPayment.NOT_PAID;
-      existingPayment.payment_date = new Date();
-      payment = await paymentRepo.save(existingPayment);
-    } else {
-      payment = paymentRepo.create({
-        appointment,
-        amount: totalAmount,
-        status_paid: StatusPayment.NOT_PAID,
-        method_pay: dto.method_pay,
-        payment_date: new Date(),
+      // 1. Отримуємо appointment
+      const appointment = await appointmentRepo.findOne({
+        where: { id: dto.appointmentId },
+        relations: ['dentist', 'dentist.dentistry'],
       });
-      payment = await paymentRepo.save(payment);
-    }
+      if (!appointment) throw new NotFoundException('Appointment not found');
 
-    // 6. Оновлюємо статус appointment
-    appointment.status = StatusAppointment.WAIT_PAID;
-    await appointmentRepo.save(appointment);
+      // 2. Перевірка: чи вже існують appointment_actions для цього appointment
+      const existingActions = await appointmentActionRepo.find({
+        where: { appointment: { id: appointment.id } },
+        relations: ['operation'],
+      });
 
-    return { appointment, actions: appointmentActions, payment };
-  });
+      if (existingActions.length > 0) {
+        throw new BadRequestException(
+          'Appointment already has assigned operations',
+        );
+      }
+
+      // 3. Отримуємо всі операції
+      const operations = await operationRepo.findBy({ id: In(dto.actions) });
+      if (operations.length !== dto.actions.length) {
+        throw new NotFoundException('Some operations not found');
+      }
+
+      // 3.1 Перевірка: операції повинні належати стоматології лікаря
+    const invalidOperations = operations.filter(
+  (op) => op.dental_clinic?.id !== appointment.dentist.dentistry.id,
+);
+
+if (invalidOperations.length > 0) {
+  throw new BadRequestException(
+    `Some operations do not belong to this dentistry: ${invalidOperations
+      .map((o) => o.id)
+      .join(', ')}`
+  );
 }
+
+
+      // 4. Перевірка: чи існує payment для цього appointment
+      const existingPayment = await paymentRepo.findOne({
+        where: { appointment: { id: appointment.id } },
+      });
+
+      if (existingPayment) {
+        throw new BadRequestException(
+          'Payment for this appointment already exists',
+        );
+      }
+
+      // 5. Створюємо appointment_actions
+      const appointmentActions = operations.map((operation) =>
+        appointmentActionRepo.create({ appointment, operation }),
+      );
+      await appointmentActionRepo.save(appointmentActions);
+
+      // 6. Рахуємо суму
+      const totalAmount = operations.reduce((sum, op) => sum + op.price, 0);
+
+      // 7. Створюємо payment
+      const payment = await paymentRepo.save(
+        paymentRepo.create({
+          appointment,
+          amount: totalAmount,
+          status_paid: StatusPayment.NOT_PAID,
+          method_pay: dto.method_pay,
+          payment_date: new Date(),
+        }),
+      );
+
+      // 6. Оновлюємо статус appointment
+      appointment.status = StatusAppointment.WAIT_PAID;
+      await appointmentRepo.save(appointment);
+
+      return { appointment, actions: appointmentActions, payment };
+    });
+  }
 }

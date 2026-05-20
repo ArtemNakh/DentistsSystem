@@ -6,6 +6,7 @@ import { AppointmentActions } from './entity/appointment-action.entity';
 import { OperationList } from '@/operation-list/entities/operation-list.entity';
 import { Payment } from '@/payment/entity/payment.entity';
 import { Appointment } from '@/appointment/entity/appointment.entity';
+import { WorkersModule } from '@/workers/workers.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { Appointment } from '@/appointment/entity/appointment.entity';
       OperationList,
       Payment,
     ]),
+    WorkersModule,
   ],
   controllers: [AppointmentActionController],
   providers: [AppointmentActionService],
