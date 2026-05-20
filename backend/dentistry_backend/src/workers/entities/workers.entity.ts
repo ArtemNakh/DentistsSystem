@@ -14,6 +14,7 @@ import { Dentistry } from '../../dentistry/entities/dentistry.entity';
 import { License } from '../../license/entities/license.entity';
 import { WorkerShifts } from '../../worker-shifts/entities/worker-shifts.entity';
 import { Appointment } from '../../appointment/entity/appointment.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity({ name: 'workers' })
 export class Worker implements IWorker {
@@ -46,6 +47,7 @@ export class Worker implements IWorker {
   @Column({ type: 'varchar', length: 100, nullable: false, unique: true })
   login: string;
 
+  @Exclude()
   @Column({ type: 'varchar', length: 100, nullable: false })
   password: string;
 

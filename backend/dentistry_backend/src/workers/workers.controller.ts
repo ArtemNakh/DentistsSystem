@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
@@ -10,6 +11,7 @@ import {
   Put,
   Query,
   Req,
+  UseInterceptors,
 } from '@nestjs/common';
 import { WorkersService } from './workers.service';
 import {
@@ -143,6 +145,7 @@ export class WorkersController {
       },
     },
   })
+  @UseInterceptors(ClassSerializerInterceptor)
   @Authorization(SpecialtyType.ADMIN, SpecialtyType.RECEPTION)
   async GetWorkersByDentistry(
     @Query() query: GetWorkersByDentistry,
@@ -174,6 +177,7 @@ export class WorkersController {
       },
     },
   })
+  @UseInterceptors(ClassSerializerInterceptor)
   @Authorization()
   async getCurrentWorker(@Req() req: Request) {
     const worker = await this.workersService.findById(
@@ -241,6 +245,7 @@ export class WorkersController {
       },
     },
   })
+  @UseInterceptors(ClassSerializerInterceptor)
   @Authorization(SpecialtyType.ADMIN, SpecialtyType.RECEPTION)
   async searchWorkers(@Query() query: SearchWorkersQueryDto) {
     const { search, dentistryId } = query;
@@ -313,6 +318,7 @@ export class WorkersController {
       },
     },
   })
+  @UseInterceptors(ClassSerializerInterceptor)
   @Authorization(SpecialtyType.ADMIN)
   CreateWorker(@Body() dto: CreateWorkerDto): Promise<IWorker> {
     return this.workersService.CreateWorker(dto);
@@ -393,6 +399,7 @@ export class WorkersController {
       },
     },
   })
+  @UseInterceptors(ClassSerializerInterceptor)
   @Authorization(SpecialtyType.ADMIN)
   UpdateWorker(
     @Param() params: WorkerIdParamDto,
@@ -533,6 +540,7 @@ export class WorkersController {
     SpecialtyType.DOCTOR,
     SpecialtyType.RECEPTION,
   )
+  @UseInterceptors(ClassSerializerInterceptor)
   async getWorkerById(@Param() params: WorkerIdParamDto): Promise<IWorker> {
     const { id } = params;
     return this.workersService.getWorkerById(id);

@@ -38,8 +38,9 @@ export class WorkersService {
     if (!worker) {
       throw new NotFoundException(`Працівника з id=${id} не знайдено`);
     }
-
+    
     return worker;
+
   }
 
   public async findById(id: number): Promise<IWorker> {
