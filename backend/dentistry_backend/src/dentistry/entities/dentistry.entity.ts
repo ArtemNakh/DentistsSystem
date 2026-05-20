@@ -24,9 +24,12 @@ export class Dentistry implements IDentistry {
   @Column({ type: 'varchar', nullable: false })
   region: string;
 
+  @Column({ type: 'boolean', default: true })
+  is_active: boolean;
+
   @OneToMany(() => Worker, (worker) => worker.dentistry)
   workers: Worker[];
-  
+
   @OneToMany(() => OperationList, (operation) => operation.dental_clinic)
   operation_lists: OperationList[];
 

@@ -18,7 +18,7 @@ static schema = new FindingDentistryEntity(null).getSchema();
  *GetDentistriesByCitySaga(action: GetDentistriesByCityAction) {
   yield call(
     this.xRead.bind(this), // для GET краще xRead
-    `/dental_clinics/search?search=${action.payload.city}`,
+    `/dental_clinics/search?city=${action.payload.city}`,
     ActionReducer.Get
   );
 }

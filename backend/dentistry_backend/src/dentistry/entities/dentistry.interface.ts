@@ -6,7 +6,7 @@ export interface IDentistry {
   street: string;
   city: string;
   region: string;
-
+  is_active: boolean;
   worker?: IWorker[];
   operation_lists?: IOperationList[];
   created_at: Date;

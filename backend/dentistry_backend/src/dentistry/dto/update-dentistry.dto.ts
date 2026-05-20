@@ -1,4 +1,15 @@
-// import { PartialType } from '@nestjs/mapped-types';
-// import { CreateDentistryDto } from './create-dentistry.dto';
+import { IsOptional, IsString } from 'class-validator';
 
-// export class UpdateDentistryDto extends PartialType(CreateDentistryDto) {}
+export class UpdateDentistryDto {
+  @IsString()
+  @IsOptional()
+  street?: string;
+
+  @IsString()
+  @IsOptional()
+  city?: string;
+
+  @IsString()
+  @IsOptional()
+  region?: string;
+}

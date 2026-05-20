@@ -1,34 +1,14 @@
-// import { Module } from '@nestjs/common';
-// import { DentistryService } from './dentistry.service';
-// import { DentistryController } from './dentistry.controller';
-// import { SequelizeModule } from '@nestjs/sequelize';
-// import { Dentistry } from './entities/dentistry.entity';
-
-import { Module } from "@nestjs/common";
-
-import { DentistryService } from "./dentistry.service";
-
-import { Dentistry } from "./entities/dentistry.entity";
-import { TypeOrmModule } from "@nestjs/typeorm";
-import { DentistryController } from "./dentistry.controller";
-
-// @Module({
-//   imports:[SequelizeModule.forFeature([Dentistry])],
-//   controllers: [DentistryController],
-//   providers: [DentistryService],
-// })
-// export class DentistryModule {}
-
-
+import { Module } from '@nestjs/common';
+import { DentistryService } from './dentistry.service';
+import { Dentistry } from './entities/dentistry.entity';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { DentistryController } from './dentistry.controller';
+import { WorkersModule } from '@/workers/workers.module';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Dentistry])],
+  imports: [TypeOrmModule.forFeature([Dentistry]), WorkersModule],
   providers: [DentistryService],
   controllers: [DentistryController],
-  exports:[DentistryService]
-
+  exports: [DentistryService],
 })
-
-export class DentistryModule{
-
-}
+export class DentistryModule {}
