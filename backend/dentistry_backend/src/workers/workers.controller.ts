@@ -528,7 +528,11 @@ export class WorkersController {
       },
     },
   })
-  @Authorization(SpecialtyType.ADMIN, SpecialtyType.RECEPTION)
+  @Authorization(
+    SpecialtyType.ADMIN,
+    SpecialtyType.DOCTOR,
+    SpecialtyType.RECEPTION,
+  )
   async getWorkerById(@Param() params: WorkerIdParamDto): Promise<IWorker> {
     const { id } = params;
     return this.workersService.getWorkerById(id);
