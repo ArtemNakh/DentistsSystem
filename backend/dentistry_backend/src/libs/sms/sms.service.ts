@@ -18,12 +18,12 @@ export class SmsService {
     textNotification: string,
   ) {
     try {
-      // const message = await this.twilioClient.messages.create({
-      //   body: textNotification,
-      //   from: this.configService.get('TWILIO_SENDER_PHONE_NUMBER'),
-      //   to: phoneNumber,
-      // });
-      // return { sid: message.sid, status: message.status };
+      const message = await this.twilioClient.messages.create({
+        body: textNotification,
+        from: this.configService.get('TWILIO_SENDER_PHONE_NUMBER'),
+        to: phoneNumber,
+      });
+      return { sid: message.sid, status: message.status };
     return{}
     } catch (error: any) {
       throw new InternalServerErrorException(

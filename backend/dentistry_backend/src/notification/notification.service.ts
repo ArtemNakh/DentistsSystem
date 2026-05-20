@@ -188,24 +188,24 @@ export class NotificationService {
 
       // Надсилання повідомлень
       // Надсилання sms
-      // await this.smsService.sendSmsForClient(
-      //   appointment.client.phone,
-      //   messageRemindAboutAppointment,
-      // );
+      await this.smsService.sendSmsForClient(
+        appointment.client.phone,
+        messageRemindAboutAppointment,
+      );
 
       // Надсилання email
-      // await this.emailService.sendRemaindAboutAppointment({
-      //   email: appointment.client.email,
-      //   doctorName:
-      //     appointment.dentist.surname +
-      //     ' ' +
-      //     appointment.dentist.name +
-      //     ' ' +
-      //     appointment.dentist.middle_name,
-      //   appointmentDate: new Date(appointment.appointment_date).toLocaleString(
-      //     'uk-UA',
-      //   ),
-      // });
+      await this.emailService.sendRemaindAboutAppointment({
+        email: appointment.client.email,
+        doctorName:
+          appointment.dentist.surname +
+          ' ' +
+          appointment.dentist.name +
+          ' ' +
+          appointment.dentist.middle_name,
+        appointmentDate: new Date(appointment.appointment_date).toLocaleString(
+          'uk-UA',
+        ),
+      });
 
       console.log('test');
       // Оновлення notification після успішних відправок
