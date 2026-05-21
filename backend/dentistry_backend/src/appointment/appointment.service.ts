@@ -25,6 +25,9 @@ import { CreateAppointmentDto } from './dto/createAppointment.dto';
 import { Worker } from '@/workers/entities/workers.entity';
 import { SpecialtyType } from '@/specialty/entities/specialty.interface';
 import { NotificationService } from '@/notification/notification.service';
+import { DentistryService } from '@/dentistry/dentistry.service';
+import { ClientService } from '@/clients/clients.service';
+import { WorkersService } from '@/workers/workers.service';
 
 @Injectable()
 export class AppointmentService {
@@ -36,21 +39,24 @@ export class AppointmentService {
     private readonly workerRepo: Repository<Worker>,
     @Inject(forwardRef(() => NotificationService))
     private readonly notificationService: NotificationService,
+
+    private readonly clientService: ClientService,
+    private readonly workerService: WorkersService,
+    private readonly dentistryService: DentistryService,
   ) {}
 
   findAll(): Promise<IAppointment[]> {
     return this.appointmentRepo.find({ relations: ['client', 'dentist'] });
   }
 
-  findNearest(date: Date, dentistryId: number): Promise<IAppointment[]> {
+  async findNearest(date: Date, dentistryId: number): Promise<IAppointment[]> {
     const formatted = date.toISOString().split('T')[0];
 
     this.logger.log(
       `findNearest called with date=${formatted}, dentistryId=${dentistryId}`,
     );
-    if (isNaN(dentistryId)) {
-      throw new BadRequestException('Invalid id');
-    }
+    await this.dentistryService.getDentistryById(dentistryId);
+
     return this.appointmentRepo.find({
       relations: ['client', 'dentist'],
       where: {
@@ -71,6 +77,9 @@ export class AppointmentService {
     const today = new Date();
     const startOfDay = new Date(today.setHours(0, 0, 0, 0));
     const endOfDay = new Date(today.setHours(23, 59, 59, 999));
+
+    await this.dentistryService.getDentistryById(dentistryId);
+
     return this.appointmentRepo.find({
       where: {
         dentist: { dentistry: { id: dentistryId } },
@@ -94,6 +103,8 @@ export class AppointmentService {
     if (!dentistryId || isNaN(dentistryId)) {
       throw new BadRequestException('Invalid dentistryId provided');
     }
+
+    await this.dentistryService.getDentistryById(dentistryId);
 
     try {
       const appointments = this.appointmentRepo.find({
@@ -125,6 +136,8 @@ export class AppointmentService {
       throw new BadRequestException('Invalid dentistryId provided');
     }
 
+    await this.dentistryService.getDentistryById(dentistryId);
+
     try {
       const now = new Date();
       const appointments = this.appointmentRepo.find({
@@ -137,10 +150,9 @@ export class AppointmentService {
           'dentist.dentistry',
           'client',
           'appointment_actions',
-          // ось тут додаєш
-          'appointment_actions.operation', // якщо треба підтягнути операцію
-          'payment', // якщо потрібна оплата
-        ], // якщо потрібні зв’язки
+          'appointment_actions.operation',
+          'payment',
+        ],
       });
 
       if (!appointments || (await appointments).length === 0) {
@@ -169,6 +181,9 @@ export class AppointmentService {
       if (!createAppointmentDto) {
         throw new Error('Dto without values');
       }
+
+      await this.clientService.findById(createAppointmentDto.clientId);
+      await this.workerService.findById(createAppointmentDto.dentistId);
 
       const newAppointment = this.appointmentRepo.create({
         client: { id: createAppointmentDto.clientId },
@@ -229,6 +244,8 @@ export class AppointmentService {
 
   // Отримати всі appointment для працівника
   async findAppointmentsForWorker(workerId: number): Promise<IAppointment[]> {
+    await this.workerService.findById(workerId);
+
     return this.appointmentRepo.find({
       where: {
         dentist: { id: workerId },
@@ -262,6 +279,8 @@ export class AppointmentService {
   }
 
   async getWorkerAppointmentsStatsByDentistry(dentistryId: number) {
+    await this.dentistryService.getDentistryById(dentistryId);
+
     const workers = await this.workerRepo.find({
       where: {
         dentistry: { id: dentistryId },
@@ -326,7 +345,7 @@ export class AppointmentService {
   }
 
   async findByClientId(clientId: number): Promise<Appointment[]> {
-    return this.appointmentRepo.find({
+    const appointments = this.appointmentRepo.find({
       where: { client: { id: clientId } },
       relations: [
         'client',
@@ -337,6 +356,13 @@ export class AppointmentService {
         'appointment_actions.operation',
       ],
     });
+    if (!appointments) {
+      throw new NotFoundException(
+        `Appointments for client id ${clientId} not found`,
+      );
+    }
+
+    return appointments;
   }
 
   /**
@@ -414,6 +440,4 @@ export class AppointmentService {
       );
     }
   }
-
-  
 }

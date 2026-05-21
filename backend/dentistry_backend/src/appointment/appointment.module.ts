@@ -6,12 +6,17 @@ import { Appointment } from './entity/appointment.entity';
 import { Worker } from '@/workers/entities/workers.entity';
 import { NotificationModule } from '@/notification/notification.module';
 import { EmailModule } from '@/libs/email/email.module';
+import { DentistryModule } from '@/dentistry/dentistry.module';
+import { WorkersModule } from '@/workers/workers.module';
+import { ClientsModule } from '@/clients/clients.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Appointment, Worker]),
     NotificationModule,
-    EmailModule
+    WorkersModule,
+    DentistryModule,
+    ClientsModule,
   ],
   controllers: [AppointmentController],
   providers: [AppointmentService],

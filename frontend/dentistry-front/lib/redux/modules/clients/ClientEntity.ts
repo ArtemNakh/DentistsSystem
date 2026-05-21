@@ -21,8 +21,8 @@ export class ClientEntity extends BaseEntity {
     super(ctx, EntitiesRedux.Clients, {});
   }
 
-static schema = new ClientEntity(null).getSchema();
-  
+  static schema = new ClientEntity(null).getSchema();
+
   /**Get and save videos */
   *getClientSaga(action: GetClientAction) {
     yield call(this.xRead.bind(this), `/clients/test/all`, ActionReducer.Get);
@@ -38,20 +38,21 @@ static schema = new ClientEntity(null).getSchema();
     );
   }
 
- *GetClientsByFullNameSaga(action: GetClientsByFullName) {
-  yield call(
-    this.xRead.bind(this), // для GET краще xRead
-    `/clients/search?search=${action.payload.fullName}`,
-    ActionReducer.Get
-  );
-}
-
+  *GetClientsByFullNameSaga(action: GetClientsByFullName) {
+    yield call(
+      this.xRead.bind(this), // для GET краще xRead
+      `/clients/search?search=${action.payload.fullName}`,
+      ActionReducer.Get,
+    );
+  }
 
   /**Listener saga actions */
   *watch() {
     yield takeLatest(ClientActionSaga.GetClient, this.getClientSaga.bind(this));
     yield takeLatest(ClientActionSaga.AddClient, this.addClientSaga.bind(this));
-      yield takeLatest(ClientActionSaga.GetClientsByFullName, this.GetClientsByFullNameSaga.bind(this));
-    
+    yield takeLatest(
+      ClientActionSaga.GetClientsByFullName,
+      this.GetClientsByFullNameSaga.bind(this),
+    );
   }
 }
