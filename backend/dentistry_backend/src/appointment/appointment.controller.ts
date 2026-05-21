@@ -171,6 +171,11 @@ export class AppointmentController {
   }
 
   @Get('today')
+  @ApiOperation({
+    summary: 'Отримати записи на сьогодні',
+    description:
+      'Повертає список записів (appointments), у яких дата вказана сьогодні',
+  })
   @ApiResponse({
     status: 200,
     description: 'Список сьогоднішніх записів',
@@ -336,6 +341,11 @@ export class AppointmentController {
   }
 
   @Get('all')
+  @ApiOperation({
+    summary: 'Отримання усіх записів для стоматології',
+    description:
+      'Повертає список записів (appointments), для певної стоматології',
+  })
   @ApiResponse({
     status: 200,
     description: 'Список сьогоднішніх записів',
@@ -1234,6 +1244,9 @@ export class AppointmentController {
   }
 
   @Get('workers-stats/:dentistryId')
+  @ApiOperation({
+    summary: 'Отримання статистики для стоматології',
+  })
   @ApiResponse({
     status: 200,
     description: 'Статистика працівників стоматології отримана успішно',
