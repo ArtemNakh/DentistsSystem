@@ -6,11 +6,17 @@ import { ILicense } from './entities/license.interface';
 import { CreateLicenseDto } from './dto/CreateLicense.dto';
 import { Worker } from '@/workers/entities/workers.entity';
 import { UpdateLicenseDto } from './dto/UpdateLicense.dto';
+import { DentistryModule } from '@/dentistry/dentistry.module';
+import { DentistryService } from '@/dentistry/dentistry.service';
+import { WorkersService } from '@/workers/workers.service';
 @Injectable()
 export class LicenseService {
   constructor(
     @InjectRepository(License) private licenseRepo: Repository<License>,
     @InjectRepository(Worker) private readonly workerRepo: Repository<Worker>,
+
+    private readonly dentistryService: DentistryService,
+    private readonly workerService: WorkersService,
   ) {}
   findAll(): Promise<ILicense[]> {
     return this.licenseRepo.find({ relations: ['worker'] });
@@ -51,6 +57,7 @@ export class LicenseService {
   }
 
   async getLicensesByDentistry(dentistryId: number): Promise<ILicense[]> {
+    await this.dentistryService.getDentistryById(dentistryId);
     return this.licenseRepo.find({
       relations: ['worker', 'worker.dentistry', 'worker.specialty'],
       where: {
@@ -82,34 +89,32 @@ export class LicenseService {
     const today = new Date();
     const maxDate = new Date();
     maxDate.setDate(today.getDate() + maxDays);
-
+    await this.workerService.findById(workerId);
     return this.licenseRepo.find({
       where: {
         worker: { id: workerId },
         expiration_date: Between(today, maxDate),
       },
-      relations: ['worker', 'worker.specialty','worker.dentistry'],
+      relations: ['worker', 'worker.specialty', 'worker.dentistry'],
       order: { expiration_date: 'ASC' },
     });
   }
 
-
-
-async findExpiringLicensesByDentistry(
-  dentistryId: number,
-  maxDays: number,
-): Promise<ILicense[]> {
-  const today = new Date();
-  const maxDate = new Date();
-  maxDate.setDate(today.getDate() + maxDays);
-
-  return this.licenseRepo.find({
-    where: {
-      worker: { dentistry: { id: dentistryId } },
-      expiration_date: LessThanOrEqual(maxDate),
-    },
-    relations: ['worker', 'worker.specialty', 'worker.dentistry'],
-    order: { expiration_date: 'ASC' },
-  });
-}
+  async findExpiringLicensesByDentistry(
+    dentistryId: number,
+    maxDays: number,
+  ): Promise<ILicense[]> {
+    const today = new Date();
+    const maxDate = new Date();
+    maxDate.setDate(today.getDate() + maxDays);
+    await this.dentistryService.getDentistryById(dentistryId);
+    return this.licenseRepo.find({
+      where: {
+        worker: { dentistry: { id: dentistryId } },
+        expiration_date: LessThanOrEqual(maxDate),
+      },
+      relations: ['worker', 'worker.specialty', 'worker.dentistry'],
+      order: { expiration_date: 'ASC' },
+    });
+  }
 }
