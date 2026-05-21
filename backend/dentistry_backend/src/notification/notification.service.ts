@@ -4,6 +4,7 @@ import {
   Inject,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Between, Repository } from 'typeorm';
@@ -16,7 +17,8 @@ import {
 import { EmailService } from '@/libs/email/email.service';
 import { SmsService } from '@/libs/sms/sms.service';
 import { AppointmentService } from '@/appointment/appointment.service';
-
+import { DentistryService } from '@/dentistry/dentistry.service';
+import { NotFoundError } from 'rxjs';
 
 @Injectable()
 export class NotificationService {
@@ -25,11 +27,12 @@ export class NotificationService {
     private notificationRepo: Repository<Notification>,
     @Inject(forwardRef(() => AppointmentService))
     private readonly appointmentService: AppointmentService,
+    private readonly dentistryService: DentistryService,
     private readonly emailService: EmailService,
     private readonly smsService: SmsService,
   ) {}
 
- async  findAll({
+  async findAll({
     date,
     dentistryId,
   }: {
@@ -38,17 +41,19 @@ export class NotificationService {
   }): Promise<INotification[]> {
     const where: any = {};
 
-      if (date) {
-    const startOfDay = new Date(date);
-    startOfDay.setHours(0, 0, 0, 0);
+    if (date) {
+      const startOfDay = new Date(date);
+      startOfDay.setHours(0, 0, 0, 0);
 
-    const endOfDay = new Date(date);
-    endOfDay.setHours(23, 59, 59, 999);
+      const endOfDay = new Date(date);
+      endOfDay.setHours(23, 59, 59, 999);
 
-    where.updated_at = Between(startOfDay, endOfDay);
-  }
+      where.updated_at = Between(startOfDay, endOfDay);
+    }
 
     if (dentistryId) {
+      await this.dentistryService.getDentistryById(dentistryId);
+
       where.appointment = {
         ...(where.appointment ?? {}),
         dentist: { dentistry: { id: dentistryId } },
@@ -68,7 +73,7 @@ export class NotificationService {
       ],
       order: { id: 'ASC' }, // можна додати сортування
     });
-    
+
     return notifications;
   }
 
@@ -106,16 +111,16 @@ export class NotificationService {
 
       try {
         // Повідомлення про додавання запису до стоматолога на телефон (twilio)
-        await this.smsService.sendSmsForClient(
-          appointment.client.phone,
-          messageAboutPlannedAppointment,
-        );
+        // await this.smsService.sendSmsForClient(
+        //   appointment.client.phone,
+        //   messageAboutPlannedAppointment,
+        // );
 
-        //Відправка повідомлення на пошту
-        await this.emailService.sendInformPlannedAppointment({
-          email: appointment.client.email,
-          textMessage: messageAboutPlannedAppointment,
-        });
+        // //Відправка повідомлення на пошту
+        // await this.emailService.sendInformPlannedAppointment({
+        //   email: appointment.client.email,
+        //   textMessage: messageAboutPlannedAppointment,
+        // });
 
         // Якщо відправка успішна — оновлюємо статус
         savedNotification.is_send = true;
@@ -136,6 +141,12 @@ export class NotificationService {
   async remindAboutAppointment({ dentistryId }: { dentistryId: number }) {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
+    const existDentistry =
+      await this.dentistryService.getDentistryById(dentistryId);
+
+    if (!existDentistry) {
+      throw new BadRequestException('Invalid dentistry ID');
+    }
 
     // отримання усі записів для стоматлогії на завтра
     const tomorrowAppointments =
@@ -224,6 +235,15 @@ export class NotificationService {
   // повідомлення про неоплачену операцію після н-кількості днів
   async remindAboutPay({ dentistryId }: { dentistryId: number }) {
     const now = new Date();
+
+    const existDentistry =
+      await this.dentistryService.getDentistryById(dentistryId);
+
+    if (!existDentistry) {
+      throw new NotFoundException(
+        'Стоматології із id ' + dentistryId + ' не знайдено',
+      );
+    }
     // отримання усіх записів для стоматології
     const appointments =
       await this.appointmentService.findNearestClientsAppoinment({
