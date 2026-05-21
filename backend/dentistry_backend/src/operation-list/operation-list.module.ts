@@ -6,8 +6,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Dentistry } from '@/dentistry/entities/dentistry.entity';
 import { Worker } from '@/workers/entities/workers.entity';
 import { WorkersModule } from '@/workers/workers.module';
+import { DentistryModule } from '@/dentistry/dentistry.module';
 @Module({
-  imports:[WorkersModule,TypeOrmModule.forFeature([OperationList,Dentistry,Worker])],
+  imports: [
+    WorkersModule,
+    TypeOrmModule.forFeature([OperationList, Dentistry, Worker]),
+    DentistryModule,
+  ],
   controllers: [OperationListController],
   providers: [OperationListService],
 })

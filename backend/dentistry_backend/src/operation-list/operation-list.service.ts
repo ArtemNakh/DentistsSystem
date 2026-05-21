@@ -8,6 +8,7 @@ import {
   UpdateOperationDto,
 } from './dto/CreateOperation-list.dto';
 import { Dentistry } from '../dentistry/entities/dentistry.entity';
+import { DentistryService } from '@/dentistry/dentistry.service';
 
 @Injectable()
 export class OperationListService {
@@ -16,6 +17,8 @@ export class OperationListService {
     private operationListRepo: Repository<OperationList>,
     @InjectRepository(Dentistry)
     private readonly dentistryRepo: Repository<Dentistry>,
+
+    private readonly dentistryService: DentistryService,
   ) {}
 
   findAll(): Promise<IOperationList[]> {
@@ -39,11 +42,11 @@ export class OperationListService {
   }
 
   async updateOperation(
-    id: number,
+    operationId: number,
     dto: UpdateOperationDto,
   ): Promise<OperationList> {
     const operation = await this.operationListRepo.findOne({
-      where: { id },
+      where: { id: operationId },
       relations: ['dental_clinic'],
     });
     if (!operation) throw new NotFoundException('Operation not found');
@@ -69,8 +72,11 @@ export class OperationListService {
 
   async findByName(
     search: string,
-    dentistryId?: number,
+    dentistryId: number,
   ): Promise<IOperationList[]> {
+
+    await this.dentistryService.getDentistryById(dentistryId);
+
     let qb = this.operationListRepo
       .createQueryBuilder('operation')
       .leftJoinAndSelect('operation.dental_clinic', 'dental_clinic');
