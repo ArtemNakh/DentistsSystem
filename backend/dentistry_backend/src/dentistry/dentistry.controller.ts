@@ -27,6 +27,7 @@ import { CreateDentistryDto } from './dto/create-dentistry.dto';
 import { IDentistry } from './entities/dentistry.interface';
 import { UpdateDentistryDto } from './dto/update-dentistry.dto';
 import { UpdateDentistryStatusDto } from './dto/update-dentistry-status.dto';
+import { ClientOrWorker } from '@/auth/decorators/ClientOrWorker.decorator';
 
 
 @ApiTags('Dental_clinics')
@@ -40,7 +41,7 @@ export class DentistryController {
   }
 
   @Get('search')
-  @Authorization()
+  @ClientOrWorker()
   @ApiOperation({ summary: 'Пошук стоматологій за містом' })
   @ApiOkResponse({
     description: 'Список знайдених стоматологій',
