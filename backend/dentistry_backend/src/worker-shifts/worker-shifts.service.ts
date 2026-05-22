@@ -1,10 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { WorkerShifts } from './entities/worker-shifts.entity';
 import { Between, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Worker } from '@/workers/entities/workers.entity';
 import { CreateWorkerShiftDto } from './dto/CreateWorker-shift.dto';
 import { IWorkerShifts } from './entities/worker-shifts.interface';
+import { WorkersService } from '@/workers/workers.service';
 @Injectable()
 export class WorkerShiftsService {
   constructor(
@@ -12,6 +13,8 @@ export class WorkerShiftsService {
     private workerShiftsRepo: Repository<WorkerShifts>,
     @InjectRepository(Worker)
     private readonly workerRepo: Repository<Worker>,
+
+    private readonly workerService: WorkersService,
   ) {}
 
   findAll(): Promise<WorkerShifts[]> {
@@ -22,6 +25,8 @@ export class WorkerShiftsService {
 
   // Отримати розклад на 3 місяці наперед
   async findShiftsForWorker(workerId: number): Promise<WorkerShifts[]> {
+    await this.workerService.findById(workerId);
+
     return this.workerShiftsRepo.find({
       where: {
         worker: { id: workerId },
@@ -127,20 +132,37 @@ export class WorkerShiftsService {
     });
     if (!worker) throw new NotFoundException('Worker not found');
 
+    // Перевірка на існування такого ж графіку
+    const existingShift = await this.workerShiftsRepo.findOne({
+      where: {
+        worker: { id: dto.workerId },
+        shift_date: dto.shift_date,
+        start_time: dto.start_time,
+        end_time: dto.end_time,
+      },
+    });
+
+    if (existingShift) {
+      throw new ConflictException(
+        `Shift for worker ${dto.workerId} on ${dto.shift_date} from ${dto.start_time} to ${dto.end_time} already exists`,
+      );
+    }
     const shift = this.workerShiftsRepo.create({ ...dto, worker });
     return this.workerShiftsRepo.save(shift);
   }
 
   async removeShift(
-    id: number,
+    shiftId: number,
   ): Promise<{ success: boolean; message: string }> {
-    const shift = await this.workerShiftsRepo.findOne({ where: { id } });
+    const shift = await this.workerShiftsRepo.findOne({
+      where: { id: shiftId },
+    });
     if (!shift) throw new NotFoundException('Shift not found');
 
     await this.workerShiftsRepo.remove(shift);
     return {
       success: true,
-      message: `Shift with id ${id} has been deleted successfully`,
+      message: `Shift with id ${shiftId} has been deleted successfully`,
     };
   }
 

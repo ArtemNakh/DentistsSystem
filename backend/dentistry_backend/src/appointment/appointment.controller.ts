@@ -5,24 +5,19 @@ import {
   Controller,
   Get,
   Param,
-  ParseIntPipe,
   Patch,
   Post,
   Query,
-  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { AppointmentService } from './appointment.service';
 import {
   ApiBody,
   ApiOperation,
-  ApiParam,
-  ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
 import { IAppointment } from './entity/appointment.interface';
-import { AppointmentDto } from './dto/gettingNearectAppointment.dto';
 
 import { CreateAppointmentDto } from './dto/createAppointment.dto';
 import { UpdateAppointmentStatusDto } from './dto/updateAppointmentStatus.dto';
