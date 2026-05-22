@@ -3,7 +3,7 @@
 
 
 
-  export type AuthUser = IWorker //| IClient;
+  export type AuthUser = IWorker | IClient;
   export interface AuthState {
     user: AuthUser | null;
   }
