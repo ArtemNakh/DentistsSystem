@@ -21,7 +21,7 @@ export default function ClientMain() {
 
         {/* Recommendations Section */}
         <section className="grid lg:grid-cols-3 gap-8 mb-20 w-full items-stretch">
-          <div className="bg-white border-2 border-gray-100 rounded-xl shadow-xl p-8 hover:scale-105 transition-transform">
+          <div className="  bg-white border-2 border-gray-300 rounded-xl shadow-xl p-8 hover:scale-105 transition-transform">
             <h3 className="text-2xl font-bold text-yellow-600 mb-4">
               Економте час
             </h3>
@@ -32,7 +32,7 @@ export default function ClientMain() {
             </p>
           </div>
 
-          <div className="bg-white  border-2 border-gray-100 rounded-xl shadow-xl p-8 hover:scale-105 transition-transform">
+          <div className="bg-white  border-2 border-gray-300 rounded-xl shadow-xl p-8 hover:scale-105 transition-transform">
             <h3 className="text-2xl font-bold text-yellow-600 mb-4">
               Безпека даних
             </h3>
@@ -43,7 +43,7 @@ export default function ClientMain() {
             </p>
           </div>
 
-          <div className="bg-white border-2 border-gray-100 rounded-xl shadow-xl p-8 hover:scale-105 transition-transform">
+          <div className="bg-white border-2 border-gray-300 rounded-xl shadow-xl p-8 hover:scale-105 transition-transform">
             <h3 className="text-2xl font-bold text-yellow-600 mb-4">
               Прозора інформація
             </h3>
@@ -56,7 +56,7 @@ export default function ClientMain() {
 
           {/* Extra cards */}
           <div className="col-span-3 flex justify-center gap-8">
-            <div className="bg-white  border-2 border-gray-100 rounded-xl shadow-xl p-8 hover:scale-105 transition-transform">
+            <div className="bg-white  border-2 border-gray-300 rounded-xl shadow-xl p-8 hover:scale-105 transition-transform">
               <h3 className="text-2xl font-bold text-yellow-600 mb-4">
                 Зручні платежі
               </h3>
@@ -67,7 +67,7 @@ export default function ClientMain() {
               </p>
             </div>
 
-            <div className="bg-white  border-2 border-gray-100 rounded-xl shadow-xl p-8 hover:scale-105 transition-transform">
+            <div className="bg-white  border-2 border-gray-300 rounded-xl shadow-xl p-8 hover:scale-105 transition-transform">
               <h3 className="text-2xl font-bold text-yellow-600 mb-4">
                 Турбота про вас
               </h3>

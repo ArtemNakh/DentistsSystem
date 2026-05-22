@@ -1058,5 +1058,16 @@
         "show_block": "Показати"
       }
     }
+  },
+  "client": {
+    "header": {
+      "pages": {
+        "history_operation": "Історія операцій",
+        "create_appointment": "Запис на операцію"
+        ,"main":"Головна"
+      },
+      "main": "Головна",
+      "about_us": "Про нас"
+    }
   }
 }

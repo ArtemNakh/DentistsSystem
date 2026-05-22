@@ -716,7 +716,8 @@
         "close": "Close",
         "cancelled": "Cancelled"
       },
-      "modal": {"RegistrationClient": {
+      "modal": {
+        "RegistrationClient": {
           "close": "Close"
         },
         "registration_client": {
@@ -1063,5 +1064,6 @@
         "show_block": "Show"
       }
     }
-  }
+  },
+  "client": {}
 }

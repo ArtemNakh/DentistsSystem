@@ -6,7 +6,6 @@ import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-// список публічних маршрутів
 const publicRoutes = ["/client/main", "/client/about"];
 
 export default function ProtectedRoute({

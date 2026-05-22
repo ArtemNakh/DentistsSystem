@@ -17,15 +17,15 @@ export default function SideBarAdmins({ items, onClose }: SideBarAdminsProps) {
   return (
     <>
       {/* Сайдбар */}
-    <div className="fixed top-0 left-0 w-72 h-full bg-white text-gray-900 shadow-2xl z-10 rounded-r-3xl border-r-4 border-yellow-500">
+      <div className="fixed top-0 left-0 w-72 h-full bg-white text-gray-900 shadow-2xl z-10 rounded-r-3xl border-r-4 border-yellow-500">
         {/* Верхній блок */}
         <div className="p-4 flex justify-between items-center border-b-2 border-yellow-500">
           <div className="w-full h-full mr-5">
             <Link
               className="block w-full h-full text-lg font-bold text-yellow-600"
-              href="/reception/main"
+              href="/client/main"
             >
-              {t("reception.header_side.pages.menu")}
+              {t("client.header.pages.main")}
             </Link>
           </div>
           <button
@@ -40,7 +40,7 @@ export default function SideBarAdmins({ items, onClose }: SideBarAdminsProps) {
           {items.map((item, idx) => (
             <li
               key={idx}
-              className="hover:bg-yellow-100 border border-yellow-400 p-3 rounded-xl cursor-pointer transition-colors"
+              className="hover:bg-yellow-400 active:bg-yellow-600 border border-yellow-400 p-3 rounded-xl cursor-pointer transition-colors"
             >
               <Link
                 className="block w-full h-full text-base font-medium text-gray-800"
@@ -55,11 +55,10 @@ export default function SideBarAdmins({ items, onClose }: SideBarAdminsProps) {
 
       {/* Напівпрозорий фон */}
 
-    <div
-  onClick={onClose}
-  className="fixed inset-0 backdrop-brightness-50 z-0"
-></div>
-
+      <div
+        onClick={onClose}
+        className="fixed inset-0 backdrop-brightness-50 z-0"
+      ></div>
     </>
   );
 }

@@ -10,11 +10,13 @@ import { LoginClient } from "./services/LoginClient.services";
 import { ILoginClient } from "./interfaces/LoginClient.interface";
 import { useTranslation } from "react-i18next";
 import LanguageSwitch from "@/app/components/LanguageSwitch";
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 export default function ClientLogin() {
   const { t } = useTranslation();
   const loginClientValidation = useMemo(() => loginClientValidationSchema, []);
-
+  const router = useRouter();
   const [error, setError] = useState<string | null>(null);
 
   const onSubmit = useCallback(async (values: ILoginClient) => {
@@ -22,7 +24,10 @@ export default function ClientLogin() {
       setError(null);
       const data = await LoginClient(values);
       localStorage.setItem("authToken", data.authToken);
+      Cookies.set("auth_token", data.authToken, { path: "/" });
+      router.push("/client/main");
     } catch (e: any) {
+      console.log("err")
       setError(e.message);
     }
   }, []);
