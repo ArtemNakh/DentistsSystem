@@ -16,6 +16,7 @@ export default function ClientFooter() {
       (state: RootState) => state.dentistries,
     ),
   );
+  
   // отримання стоматологій по місту
   useEffect(() => {
     if (city) {

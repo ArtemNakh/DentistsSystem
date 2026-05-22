@@ -38,11 +38,11 @@ export default function ProtectedRoute({
       setLoading(false);
       return;
     }
-    // if (loading) {
-    //   if (!authUser?.user) {
-    //     router.push("/c-auth/login");
-    //   }
-    // }
+    if (loading) {
+      if (!authUser?.user) {
+        router.push("/c-auth/login");
+      }
+    }
   }, [authUser?.user, router, allowedRoles, isPublic]);
 
   if (loading) {
