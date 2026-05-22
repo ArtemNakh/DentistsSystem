@@ -1067,7 +1067,12 @@
         "main": "Головна"
       },
       "main": "Головна",
-      "about_us": "Про нас"
+      "about_us": "Про нас",
+      "settings": {
+        "setting_profile": "Налаштуваня профілю",
+        "profile":"Профіль",
+        "exit": "Вийти"
+      }
     },
     "footer": {
       "our_dentistry": "Наша стоматологія",
@@ -1126,6 +1131,44 @@
       "invite": {
         "title": " Запишіться на прийом зараз",
         "description": "Не відкладайте турботу про своє здоров’я. Наша команда готова допомогти вам зробити перший крок."
+      }
+    },
+    "history_operation": {
+      "filters": {
+        "fio_client": " ФІО Клієнта",
+        "fio_worker": "ФІО Працівника",
+        "specialty": "Спеціалізація",
+        "status_paid": "Статус оплати",
+        "appointment_date": "Дата записи"
+      },
+      "table": {
+        "header": {
+          "client": "Клієнт",
+          "worker": "Працівник",
+          "operation_date": "Дата операції",
+          "status_operation": "Статус операції",
+          "notes": "Заметки",
+          "payment": "Оплата",
+          "actions": "Дія"
+        },
+        "noValue": "Немає історій операції",
+        "payment_modal": {
+          "title": "Деталі оплати",
+          "amount": "Сума",
+          "method_pay": "Спосіб оплати",
+          "payment_day": "День оплати",
+          "status_pay": "Статус оплати",
+          "open": "Деталі оплати",
+          "close": "Закрити"
+        },
+        "show_appointment_actions": {
+          "title": "Дії операції",
+          "action": "Дія",
+          "name": "Назва",
+          "price": "Ціна",
+          "no_actions": "Дії відсутні",
+          "close": "Закрити"
+        }
       }
     }
   }

@@ -22,7 +22,7 @@ export default function ClientLayout({
           </div>
 
           {/* Content */}
-          <div className="relative z-10 flex justify-center py-20">
+          <div className="relative z-10 flex justify-center ">
             <div className="w-full max-w-full rounded-lg p-6">{children}</div>
           </div>
 

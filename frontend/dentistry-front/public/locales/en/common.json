@@ -1065,5 +1065,117 @@
       }
     }
   },
-  "client": {}
+  "client": {
+    "header": {
+      "pages": {
+        "history_operation": "Operation History",
+        "create_appointment": "Create Appointment",
+        "main": "Home"
+      },
+      "main": "Home",
+      "about_us": "About Us",
+      "settings": {
+        "setting_profile": "Profile Settings",
+        "profile": "Profile",
+        "exit": "Logout"
+      }
+    },
+    "footer": {
+      "our_dentistry": "Our Dentistry",
+      "description": "We combine modern technologies and professional experience to provide comfortable treatment and a healthy smile for every patient.",
+      "navigation": "Navigation",
+      "about_us": "About Us",
+      "services": "Services",
+      "contacts": {
+        "contacts": "Contacts",
+        "loading": "Loading...",
+        "city_short": "City",
+        "your_city": {
+          "in_city": "In your city",
+          "no_exist_dentistry": "No dentistry available"
+        }
+      },
+      "social": {
+        "we_in_social": "We are on social media"
+      },
+      "devider": {
+        "defend_rules": "Our Dentistry. All rights reserved.",
+        "wish": " Developed with care for patients"
+      }
+    },
+    "main": {
+      "text": {
+        "why_choose_dentistry": "Why Choose Our Dentistry",
+        "description_reason": "We combine doctors' professionalism with modern clinic management to ensure comfort, safety, and quality treatment. Our approach is based on transparency, trust, and care for every patient."
+      },
+      "recomendation": {
+        "time_saving": {
+          "title": "Save Time",
+          "description": "Online booking and automatic reminders help avoid missed visits. You can easily plan appointments without unnecessary calls."
+        },
+        "data_security": {
+          "title": "Data Security",
+          "description": "Your data is protected by modern authentication and encryption technologies. We guarantee confidentiality and a safe environment."
+        },
+        "transparent_info": {
+          "title": "Transparent Information",
+          "description": "View treatment history, service costs, and doctor profiles in a convenient format."
+        },
+        "comfortable_payment": {
+          "title": "Convenient Payments",
+          "description": "Pay online or at the clinic without queues. We offer flexible payment options."
+        },
+        "care_for_you": {
+          "title": "Care for You",
+          "description": "Reminder and communication systems help you stay connected with the clinic."
+        }
+      },
+      "advanteges": {
+        "title": "Your Advantages with Us",
+        "description": "By choosing our dentistry, you receive modern service that increases comfort, saves your time, and guarantees treatment quality."
+      },
+      "invite": {
+        "title": "Book an Appointment Now",
+        "description": "Don't postpone caring for your health. Our team is ready to help you take the first step."
+      }
+    },
+    "history_operation": {
+      "filters": {
+        "fio_client": "Client Full Name",
+        "fio_worker": "Worker Full Name",
+        "specialty": "Specialty",
+        "status_paid": "Payment Status",
+        "appointment_date": "Appointment Date"
+      },
+      "table": {
+        "header": {
+          "client": "Client",
+          "worker": "Worker",
+          "operation_date": "Operation Date",
+          "status_operation": "Operation Status",
+          "notes": "Notes",
+          "payment": "Payment",
+          "actions": "Action"
+        },
+        "noValue": "No operation history",
+        "payment_modal": {
+          "title": "Payment Details",
+          "amount": "Amount",
+          "method_pay": "Payment Method",
+          "payment_day": "Payment Date",
+          "status_pay": "Payment Status",
+          "open": "Payment Details",
+          "close": "Close"
+        },
+        "show_appointment_actions": {
+          "title": "Appointment Actions",
+          "action": "Action",
+          "name": "Name",
+          "price": "Price",
+          "no_actions": "No actions available",
+          "close": "Close"
+        }
+      }
+    }
+  }
 }
