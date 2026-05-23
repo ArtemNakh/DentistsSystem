@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import ProfileDropdown from "./modal/ProfileModule";
 import { RootState } from "@/lib/redux/store";
 import { getAuthClient } from "@/lib/redux/modules/AuthUser/actions/GetAuthClient/GetAuthClient";
+import Link from "next/link";
 
 export default function HeaderClient() {
   const { t } = useTranslation();
@@ -68,18 +69,18 @@ export default function HeaderClient() {
         )}
         {/* Навігація справа */}
         <nav className="flex items-center space-x-6">
-          <a
+          <Link
             href="/client/main"
             className="text-gray-900 font-medium hover:text-yellow-600 transition-colors"
           >
             {t("client.header.main")}
-          </a>
-          <a
-            href="/client/about"
+          </Link>
+          <Link
+            href="/client/about_us"
             className="text-gray-900 font-medium hover:text-yellow-600 transition-colors"
           >
             {t("client.header.about_us")}
-          </a>
+          </Link>
 
           {/* Фото користувача */}
           {authUser.user && (

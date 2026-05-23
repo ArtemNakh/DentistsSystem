@@ -1,6 +1,5 @@
 import ClientFooter from "./components/footer";
 import HeaderClient from "./components/header";
-import ProtectedRoute from "./ProtectedRoute";
 
 export default function ClientLayout({
   children,
@@ -9,7 +8,6 @@ export default function ClientLayout({
 }) {
   return (
     <>
-      <ProtectedRoute>
         <div className="relative bg-white min-h-screen flex flex-col">
           {/* Yellow background */}
           <div className="absolute inset-0 flex justify-end pointer-events-none z-0">
@@ -31,7 +29,6 @@ export default function ClientLayout({
             <ClientFooter />
           </div>
         </div>
-      </ProtectedRoute>
     </>
   );
 }

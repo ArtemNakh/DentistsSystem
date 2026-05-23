@@ -1176,6 +1176,26 @@
           "close": "Close"
         }
       }
+    },
+    "about_us": {
+      "text": {
+        "about": "About Us",
+        "description_about_us": "We created a dental service to make dental care as convenient, safe, and accessible as possible. Our goal is to combine modern technologies with a human-centered approach so that every patient feels confident and comfortable.",
+        "our_mission": "Our Mission",
+        "description_our_mission": "We strive to provide every patient with high-quality treatment, modern diagnostic methods, and comfortable conditions. Our priority is health and trust.",
+        "our_values": "Our Values",
+        "description_our_values": "Professionalism, innovation, honesty, and patient care are the foundation of our work. We create an atmosphere of trust and comfort.",
+        "our_services": "Our Services",
+        "description_our_services": "We offer a wide range of dental services: therapeutic treatment, prosthodontics, orthodontics, surgery, and pediatric dentistry. Each patient receives an individual treatment plan."
+      },
+      "team": {
+        "expierence": "Experience",
+        "description_expierence": "Our team consists of doctors with many years of experience who continuously improve their skills.",
+        "professionalizm": "Professionalism",
+        "description_professionalizm": "We adhere to high standards in treatment and service to ensure the best results.",
+        "care": "Care",
+        "description_care": "We create comfortable conditions for every patient so that treatment is stress-free and painless."
+      }
     }
   }
 }
