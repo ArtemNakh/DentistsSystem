@@ -14,6 +14,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
 import { getAuthWorker } from "@/lib/redux/modules/AuthUser/actions/GetAuthWorker/GetAuthWorker";
 import Cookies from "js-cookie";
+import { IWorker } from "@/lib/redux/modules/Workers/Workers.interface";
 
 export default function WorkerLogin() {
   const { t } = useTranslation();
@@ -28,12 +29,13 @@ export default function WorkerLogin() {
   // 🔑 Перевірка авторизації при завантаженні сторінки
   useEffect(() => {
     const checkAuth = async () => {
-      if (!authUser.user) {
+      const worker = authUser.user as IWorker;
+      if (!worker) {
         console.log("get worker");
         await dispatch(getAuthWorker({}));
       }
-      if (authUser.user) {
-        switch (authUser.user.specialty.type) {
+      if (worker) {
+        switch (worker.specialty.type ) {
           case SpecialtyType.ADMIN:
             router.push("/admins/main");
             break;
