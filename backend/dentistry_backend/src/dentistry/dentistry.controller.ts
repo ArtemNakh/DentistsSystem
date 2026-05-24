@@ -41,7 +41,6 @@ export class DentistryController {
   }
 
   @Get('search')
-  @ClientOrWorker()
   @ApiOperation({ summary: 'Пошук стоматологій за містом' })
   @ApiOkResponse({
     description: 'Список знайдених стоматологій',

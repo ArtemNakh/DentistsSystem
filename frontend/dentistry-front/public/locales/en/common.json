@@ -1074,6 +1074,7 @@
       },
       "main": "Home",
       "about_us": "About Us",
+      "contacts": "Contacts",
       "settings": {
         "setting_profile": "Profile Settings",
         "profile": "Profile",
@@ -1196,6 +1197,22 @@
         "care": "Care",
         "description_care": "We create comfortable conditions for every patient so that treatment is stress-free and painless."
       }
+    },
+    "contacts": {
+      "contacts": "Contacts",
+      "find_nearest_dentistry": "Choose the nearest dentistry and book an appointment at a convenient time.",
+      "dentistry": {
+        "dentistry": "Dentistry",
+        "placeholder_find": "Enter the city name"
+      },
+      "table": {
+        "dentistry": "Dentistry",
+        "city": "City",
+        "street": "Street",
+        "region": "Region"
+      },
+      "make_appointment": "Make an appointment",
+      "description_make_appointments": "Choose a clinic and get quality dental care today."
     }
   }
 }

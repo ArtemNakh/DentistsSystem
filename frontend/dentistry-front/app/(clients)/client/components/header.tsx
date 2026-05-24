@@ -7,6 +7,7 @@ import ProfileDropdown from "./modal/ProfileModule";
 import { RootState } from "@/lib/redux/store";
 import { getAuthClient } from "@/lib/redux/modules/AuthUser/actions/GetAuthClient/GetAuthClient";
 import Link from "next/link";
+import LanguageSwitch from "@/app/components/LanguageSwitch";
 
 export default function HeaderClient() {
   const { t } = useTranslation();
@@ -14,7 +15,9 @@ export default function HeaderClient() {
   const authUser = useAppSelector((state: { auth: RootState }) => state.auth);
   const [leftSideBar, setLeftSideBar] = useState(false);
   const [profileModule, setProfileModule] = useState(false);
-  // список кнопок для сайдбару
+  
+  
+  
   const sidebarItems = [
     {
       label: t("client.header.pages.history_operation"),
@@ -25,6 +28,13 @@ export default function HeaderClient() {
       path: "/client/create-appointment",
     },
   ];
+
+  const headerLinks = [
+    { label: t("client.header.main"), path: "/client/main" },
+    { label: t("client.header.about_us"), path: "/client/about_us" },
+    { label: t("client.header.contacts"), path: "/client/contacts" },
+  ];
+
   useEffect(() => {
     if (authUser.user) {
       console.log("work");
@@ -69,18 +79,15 @@ export default function HeaderClient() {
         )}
         {/* Навігація справа */}
         <nav className="flex items-center space-x-6">
-          <Link
-            href="/client/main"
-            className="text-gray-900 font-medium hover:text-yellow-600 transition-colors"
-          >
-            {t("client.header.main")}
-          </Link>
-          <Link
-            href="/client/about_us"
-            className="text-gray-900 font-medium hover:text-yellow-600 transition-colors"
-          >
-            {t("client.header.about_us")}
-          </Link>
+          {headerLinks.map((link) => (
+            <Link
+              key={link.path}
+              href={link.path}
+              className="text-gray-900 font-medium hover:text-yellow-500 transition-colors"
+            >
+              {link.label}
+            </Link>
+          ))}
 
           {/* Фото користувача */}
           {authUser.user && (
@@ -99,6 +106,14 @@ export default function HeaderClient() {
                 <ProfileDropdown profileModule={profileModule} />
               )}
             </div>
+          )}
+          {!authUser.user && (
+            <LanguageSwitch
+              buttonClassName="border border-gray-500 rounded px-1 py-1  w-full text-gray-700 hover:text-yellow-500 transition"
+              itemClassName="hover:bg-yellow-400 active:bg-yellow-200 border border-gray-500 p-1 mb-1 mx-1 rounded text-gray-700"
+              dropdownClassName="absolute bg-gray-300 border-2 border-gray-200 rounded shadow-md"
+              activeItemClassName="bg-yellow-200"
+            />
           )}
         </nav>
       </div>
