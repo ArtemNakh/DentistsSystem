@@ -78,18 +78,19 @@ export default function HeaderClient() {
         )}
 
         {/* Навігація справа */}
-        <nav className=":flex items-center space-x-6">
-          
-          <div className="hidden md:visible">
-          {headerLinks.map((link) => (
-            <Link
-              key={link.path}
-              href={link.path}
-              className="text-gray-900 font-medium hover:text-yellow-500 transition-colors"
-            >
-              {link.label}
-            </Link>
-          ))}</div>
+        <nav className="flex items-center space-x-6">
+          {/* Посилання показуються тільки на екранах md і більше */}
+          <div className="hidden md:flex space-x-6">
+            {headerLinks.map((link) => (
+              <Link
+                key={link.path}
+                href={link.path}
+                className="text-gray-900 font-medium hover:text-yellow-500 transition-colors"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
 
           {authUser.user && (
             <div className="relative">
