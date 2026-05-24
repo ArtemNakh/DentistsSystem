@@ -12,7 +12,8 @@
       "hide": "Hide password"
     },
     "submit": { "default": "Sign in", "loading": "Wait..." },
-    "noAccount": "No account?"
+    "noAccount": "No account?",
+    "reset_password": "Fogotten password?"
   },
   "registrationClient": {
     "title": "Registraiton",

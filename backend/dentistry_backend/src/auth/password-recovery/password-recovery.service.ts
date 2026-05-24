@@ -29,7 +29,7 @@ export class PasswordRecoveryService {
 
     if (!existingClient) {
       throw new NotFoundException(
-        'Token doesn`t found. Please, check corrects input token or request new ',
+        'client doesn`t found. Please, check corrects input token or request new ',
       );
     }
 

@@ -94,7 +94,6 @@ export class DentistryController {
     @UseInterceptors(ClassSerializerInterceptor)
   async searchDentistries(@Query() query: SearchDentistryDto) {
     const { city } = query;
-    console.log('quest', city);
     return this.dentistryService.findByCity(city);
   }
 

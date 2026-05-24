@@ -135,7 +135,6 @@ export default class BaseEntity extends ClientContextDI {
     data?: any,
   ): Promise<any> {
     const methodsCheck = [HTTPMethod.PUT, HTTPMethod.POST, HTTPMethod.PATCH];
-
     const res = await fetch(`${apiUrl}${endpoint}`, {
       method,
       credentials: "include",
@@ -187,14 +186,9 @@ export default class BaseEntity extends ClientContextDI {
         data,
       )) as IQueryResult<any>;
 
-      //   if (result.message.code === CodePurpose.toast)
-      //     toast.success(i18n.t(result.message.text));
-
       return result;
     } catch (error: any) {
       console.log("error xFetch", error);
-
-      //   if (error.code === CodePurpose.toast) toast.error(i18n.t(error.message));
     }
   }
 

@@ -12,7 +12,8 @@
       "hide": "Приховати пароль"
     },
     "submit": { "default": "Увійти", "loading": "Зачекайте..." },
-    "noAccount": "Немає акаунта?"
+    "noAccount": "Немає акаунта?",
+    "reset_password": "Забули пароль?"
   },
   "registrationClient": {
     "title": "Реєстрація",

@@ -12,6 +12,7 @@ import { useTranslation } from "react-i18next";
 import LanguageSwitch from "@/app/components/LanguageSwitch";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
+import ResetPasswordLink from "./components/ResetPassword";
 
 export default function ClientLogin() {
   const { t } = useTranslation();
@@ -27,7 +28,7 @@ export default function ClientLogin() {
       Cookies.set("auth_token", data.authToken, { path: "/" });
       router.push("/client/main");
     } catch (e: any) {
-      console.log("err")
+      console.log("err");
       setError(e.message);
     }
   }, []);
@@ -59,8 +60,10 @@ export default function ClientLogin() {
             <SubmitClientLoginButton />
 
             {error && <div className="text-red-500 text-center">{error}</div>}
-
-            <NoAccountLink />
+            <div className="ml-5 flex justify-between items-center">
+              <ResetPasswordLink />
+              <NoAccountLink />
+            </div>
           </Form>
         </Formik>
       </div>

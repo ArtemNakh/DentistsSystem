@@ -90,6 +90,7 @@ export class PasswordRecoveryController {
   })
   @UseInterceptors(ClassSerializerInterceptor)
   public async resetPassword(@Body() dto: ResetPasswordDto) {
+   
     return this.passwordRecoveryService.resetPassword(dto);
   }
 
