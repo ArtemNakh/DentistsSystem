@@ -15,9 +15,7 @@ export default function HeaderClient() {
   const authUser = useAppSelector((state: { auth: RootState }) => state.auth);
   const [leftSideBar, setLeftSideBar] = useState(false);
   const [profileModule, setProfileModule] = useState(false);
-  
-  
-  
+
   const sidebarItems = [
     {
       label: t("client.header.pages.history_operation"),
@@ -72,13 +70,17 @@ export default function HeaderClient() {
             {leftSideBar && (
               <SideBarAdmins
                 items={sidebarItems}
+                headerLinks={headerLinks}
                 onClose={() => setLeftSideBar(false)}
               />
             )}
           </div>
         )}
+
         {/* Навігація справа */}
-        <nav className="flex items-center space-x-6">
+        <nav className=":flex items-center space-x-6">
+          
+          <div className="hidden md:visible">
           {headerLinks.map((link) => (
             <Link
               key={link.path}
@@ -87,13 +89,12 @@ export default function HeaderClient() {
             >
               {link.label}
             </Link>
-          ))}
+          ))}</div>
 
-          {/* Фото користувача */}
           {authUser.user && (
             <div className="relative">
               <div
-                className="w-10 h-10 rounded-full overflow-hidden border-2 border-yellow-500"
+                className="w-10 h-10 rounded-full overflow-hidden border-2 border-yellow-500 cursor-pointer"
                 onClick={() => setProfileModule(!profileModule)}
               >
                 <img
@@ -109,7 +110,7 @@ export default function HeaderClient() {
           )}
           {!authUser.user && (
             <LanguageSwitch
-              buttonClassName="border border-gray-500 rounded px-1 py-1  w-full text-gray-700 hover:text-yellow-500 transition"
+              buttonClassName="border border-gray-500 rounded px-1 py-1 w-full text-gray-700 hover:text-yellow-500 transition"
               itemClassName="hover:bg-yellow-400 active:bg-yellow-200 border border-gray-500 p-1 mb-1 mx-1 rounded text-gray-700"
               dropdownClassName="absolute bg-gray-300 border-2 border-gray-200 rounded shadow-md"
               activeItemClassName="bg-yellow-200"

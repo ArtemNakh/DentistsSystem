@@ -8,10 +8,15 @@ interface SidebarItem {
 
 interface SideBarAdminsProps {
   items: SidebarItem[];
+  headerLinks?: SidebarItem[];
   onClose: () => void;
 }
 
-export default function SideBarAdmins({ items, onClose }: SideBarAdminsProps) {
+export default function SideBarAdmins({
+  items,
+  headerLinks = [],
+  onClose,
+}: SideBarAdminsProps) {
   const { t } = useTranslation();
 
   return (
@@ -35,6 +40,24 @@ export default function SideBarAdmins({ items, onClose }: SideBarAdminsProps) {
             ✕
           </button>
         </div>
+
+        {/* Навігаційні посилання з header (тільки на мобільних) */}
+        <ul className="p-6 space-y-4 block md:hidden border-b border-gray-300">
+          {headerLinks.map((link, idx) => (
+            <li
+              key={idx}
+              className="border border-yellow-400 hover:bg-yellow-200 active:bg-yellow-400 p-3 rounded-lg cursor-pointer transition-colors"
+            >
+              <Link
+                className="block w-full h-full text-base font-medium text-gray-800"
+                href={link.path}
+              >
+                {link.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+
         {/* Пункти меню */}
         <ul className="p-6 space-y-4">
           {items.map((item, idx) => (

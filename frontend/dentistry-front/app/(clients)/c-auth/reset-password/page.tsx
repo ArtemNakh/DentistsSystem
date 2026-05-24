@@ -27,7 +27,7 @@ export default function ResetPasswordPage() {
     <div className="flex items-center justify-center  bg-gray-100 px-4">
       <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
         <h2 className="text-2xl font-bold text-center text-yellow-600 mb-6">
-          {t("Відновлення паролю")}
+          {t("reset-password.reset-password")}
         </h2>{" "}
         <LanguageSwitch
           buttonClassName="my-2 rounded p-1 text-gray-700 hover:bg-gray-300 border border-gray-400"
@@ -41,7 +41,7 @@ export default function ResetPasswordPage() {
               htmlFor="email"
               className="block text-sm font-medium text-gray-700 mb-2"
             >
-              {t("Введіть ваш email")}
+              {t("reset-password.enter_email")}
             </label>
             <input
               id="email"
@@ -59,7 +59,7 @@ export default function ResetPasswordPage() {
             className="w-full py-3 rounded-full font-semibold text-white shadow-md transition-transform duration-200 hover:scale-105"
             style={{ background: "linear-gradient(90deg,#FACC15,#EAB308)" }}
           >
-            {t("Надіслати запит")}
+            {t("reset-password.send_request")}
           </button>
         </form>
         {statusMessage && (

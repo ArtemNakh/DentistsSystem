@@ -70,6 +70,23 @@
 
     "haveAccount": "Already have account?"
   },
+  "reset-password": {
+    "reset-password": "Password Recovery",
+    "enter_email": "Enter your email address",
+    "send_request": "Send Request"
+  },
+  "new-password": {
+    "create_new_password": "Create a new password",
+    "new_password": "New password",
+    "placeholder_new_password": "Enter new password",
+    "verify_password": "Confirm password",
+    "repeat_password": "Repeat password",
+    "change_password": "Change password",
+    "token_not_found": "Token not found in URL",
+    "not_match": "Passwords do not match",
+    "change_pass_successfuly": "Password successfully changed. You can now log in",
+    "error_change_pass": "Error: Failed to change password."
+  },
   "loginWorker": {
     "title": "Login",
     "login": {
@@ -1214,6 +1231,19 @@
       },
       "make_appointment": "Make an appointment",
       "description_make_appointments": "Choose a clinic and get quality dental care today."
+    },
+    "profile": {
+      "loading_profile": "Loading profile",
+      "information": "Profile Information",
+      "name": "Name",
+      "surname": "Surname",
+      "middle_name": "Middle name",
+      "birthday": "Birthday",
+      "blood_group": "Blood group",
+      "rh_factor": "Rh Factor",
+      "phone": "Phone",
+      "email": "email",
+      "allergies": "Allergies"
     }
   }
 }

@@ -69,6 +69,24 @@
     "submit": { "default": "Зареєструватися", "loading": "Зачекайте..." },
     "haveAccount": "Вже маєте акаунт?"
   },
+  "reset-password": {
+    "reset-password": "Відновлення паролю",
+    "enter_email": "Введіть вашу електронну пошту",
+    "send_request": "Надіслати запит"
+  },
+  "new-password": {
+    "create_new_password": "Створіть новий пароль",
+    "new_password": "Новий пароль",
+    "placeholder_new_password": "Введіть новий пароль",
+    "verify_password": "Підтвердить пароль",
+    "repeat_password": "Повторіть пароль",
+    "change_password":"Змінити пароль",
+    "token_not_found":"Токен не знайдено у URL",
+    "not_match":"Паролі не співпадають",
+    "change_pass_successfuly":"Пароль успішно змінено. Теперь ви можете увійти"
+    
+  ,"error_change_pass":"Помилка: не вдалося змінити пароль."
+  },
   "loginWorker": {
     "title": "Вхід",
     "login": {
@@ -1208,6 +1226,19 @@
       },
       "make_appointment": "Записатися на прийом",
       "description_make_appointments": " Виберіть клініку та отримайте якісну стоматологічну допомогу вже сьогодні."
+    },
+    "profile": {
+      "loading_profile": "Завантаження профілю",
+      "information": "Інформація профілю",
+      "name": "Ім'я",
+      "surname": "Прізвище",
+      "middle_name": "По батькові",
+      "birthday": "Дата народження",
+      "blood_group": "Група крові",
+      "rh_factor": "Резус-фактор",
+      "phone": "Телефон",
+      "email": "Електронна пошта",
+      "allergies": "Алергії"
     }
   }
 }
