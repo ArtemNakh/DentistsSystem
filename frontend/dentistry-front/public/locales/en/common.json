@@ -85,7 +85,11 @@
     "token_not_found": "Token not found in URL",
     "not_match": "Passwords do not match",
     "change_pass_successfuly": "Password successfully changed. You can now log in",
-    "error_change_pass": "Error: Failed to change password."
+    "error_change_pass": "Error: Failed to change password.",
+    "validation_min_length": "Password must be at least 6 characters long",
+     "validation_max_length": "Password must be less 100 characters long",
+   "validation_required": "Password is required",
+    "validation_confirm_required": "Password confirmation is required"
   },
   "loginWorker": {
     "title": "Login",

@@ -80,12 +80,16 @@
     "placeholder_new_password": "Введіть новий пароль",
     "verify_password": "Підтвердить пароль",
     "repeat_password": "Повторіть пароль",
-    "change_password":"Змінити пароль",
-    "token_not_found":"Токен не знайдено у URL",
-    "not_match":"Паролі не співпадають",
-    "change_pass_successfuly":"Пароль успішно змінено. Теперь ви можете увійти"
-    
-  ,"error_change_pass":"Помилка: не вдалося змінити пароль."
+    "change_password": "Змінити пароль",
+    "token_not_found": "Токен не знайдено у URL",
+    "not_match": "Паролі не співпадають",
+    "change_pass_successfuly": "Пароль успішно змінено. Теперь ви можете увійти",
+
+    "error_change_pass": "Помилка: не вдалося змінити пароль.",
+    "validation_min_length": "Пароль має містити щонайменше 6 символів",
+    "validation_max_length": "Пароль має містити не більше 100 символів",
+    "validation_required": "Пароль є обов'язковим",
+    "validation_confirm_required": "Підтвердження паролю є обов'язковим"
   },
   "loginWorker": {
     "title": "Вхід",
