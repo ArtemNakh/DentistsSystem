@@ -7,6 +7,7 @@ import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
 import { format } from "date-fns";
 import { IClient } from "@/lib/redux/modules/Clients/clients.interface";
 import { useTranslation } from "react-i18next";
+import Link from "next/link";
 
 export default function ClientProfile() {
   const { t } = useTranslation();
@@ -37,45 +38,72 @@ export default function ClientProfile() {
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 text-gray-700 text-sm sm:text-base">
           <div>
-            <span className="font-medium text-amber-700">{t("client.profile.name")}:</span>{" "}
+            <span className="font-medium text-amber-700">
+              {t("client.profile.name")}:
+            </span>{" "}
             {client.name}
           </div>
           <div>
-            <span className="font-medium text-amber-700">{t("client.profile.surname")}:</span>{" "}
+            <span className="font-medium text-amber-700">
+              {t("client.profile.surname")}:
+            </span>{" "}
             {client.surname}
           </div>
           {client.middle_name && (
             <div>
-              <span className="font-medium text-amber-700">{t("client.profile.middle_name")}:</span>{" "}
+              <span className="font-medium text-amber-700">
+                {t("client.profile.middle_name")}:
+              </span>{" "}
               {client.middle_name}
             </div>
           )}
           <div>
-            <span className="font-medium text-amber-700">{t("client.profile.birthday")}:</span>{" "}
+            <span className="font-medium text-amber-700">
+              {t("client.profile.birthday")}:
+            </span>{" "}
             {format(new Date(client.birthdate), "dd.MM.yyyy")}
           </div>
           <div>
-            <span className="font-medium text-amber-700">{t("client.profile.blood_group")}:</span>{" "}
+            <span className="font-medium text-amber-700">
+              {t("client.profile.blood_group")}:
+            </span>{" "}
             {client.blood_group}
           </div>
           <div>
-            <span className="font-medium text-amber-700">{t("client.profile.rh_factor")}:</span>{" "}
+            <span className="font-medium text-amber-700">
+              {t("client.profile.rh_factor")}:
+            </span>{" "}
             {client.blood_resus === "plus" ? "+" : "-"}
           </div>
           <div>
-            <span className="font-medium text-amber-700">{t("client.profile.phone")}:</span>{" "}
+            <span className="font-medium text-amber-700">
+              {t("client.profile.phone")}:
+            </span>{" "}
             {client.phone}
           </div>
           <div>
-            <span className="font-medium text-amber-700">{t("client.profile.email")}:</span>{" "}
+            <span className="font-medium text-amber-700">
+              {t("client.profile.email")}:
+            </span>{" "}
             {client.email}
           </div>
           {client.allergic_diseases && (
             <div className="sm:col-span-2">
-              <span className="font-medium text-amber-700">{t("client.profile.allergies")}:</span>{" "}
+              <span className="font-medium text-amber-700">
+                {t("client.profile.allergies")}:
+              </span>{" "}
               {client.allergic_diseases}
             </div>
           )}
+        </div>
+        {/* Кнопка переходу на оновлення */}
+        <div className="mt-6 flex justify-center sm:justify-end">
+          <Link
+            href="/client/update-client"
+            className="px-5 py-2 bg-yellow-500 hover:bg-yellow-600 text-white font-medium rounded-lg shadow transition-colors"
+          >
+            {t("client.profile.update_button")}
+          </Link>
         </div>
       </div>
     </div>

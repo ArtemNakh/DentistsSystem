@@ -5,6 +5,7 @@ import { call, takeLatest } from "redux-saga/effects";
 import { GetClientAction } from "./actions/GetClients/GetClients";
 import { AddClientAction } from "./actions/AddClient.ts/AddClient";
 import { GetClientsByFullName } from "./actions/GetClientsByFullName/GetClientsByFullName";
+import { UpdateClientAction } from "./actions/UpdateClient.ts/UpdateClient";
 
 export enum ClientActionSaga {
   /**Додавання та зберігання нового відео */
@@ -13,6 +14,7 @@ export enum ClientActionSaga {
   GetClient = "client/fetchClientSaga",
 
   GetClientsByFullName = "client/getAllByFullName",
+  UpdateClient = "client/updateClient",
 }
 
 @EntityReducer(EntitiesRedux.Clients)
@@ -45,7 +47,15 @@ export class ClientEntity extends BaseEntity {
       ActionReducer.Get,
     );
   }
-
+  /**Add and save video */
+  *updateClientSaga(action: UpdateClientAction) {
+    yield call(
+      this.xUpdate.bind(this),
+      `/clients/` + action.payload.id,
+      action.payload,
+      ActionReducer.Update,
+    );
+  }
   /**Listener saga actions */
   *watch() {
     yield takeLatest(ClientActionSaga.GetClient, this.getClientSaga.bind(this));
@@ -53,6 +63,10 @@ export class ClientEntity extends BaseEntity {
     yield takeLatest(
       ClientActionSaga.GetClientsByFullName,
       this.GetClientsByFullNameSaga.bind(this),
+    );
+    yield takeLatest(
+      ClientActionSaga.UpdateClient,
+      this.updateClientSaga.bind(this),
     );
   }
 }

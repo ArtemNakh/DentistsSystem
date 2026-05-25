@@ -5,6 +5,7 @@ import { ILike, Repository } from 'typeorm';
 import { IClient } from './entities/client.interface';
 import { CreateClientInput } from './dto/CreateClientInput.dto';
 import * as argon2 from 'argon2';
+import { UpdateClientDto } from './dto/UpdateClient.dto';
 
 @Injectable()
 export class ClientService {
@@ -82,4 +83,13 @@ export class ClientService {
 
 
   
+  async update(id: number, dto: UpdateClientDto): Promise<Client> {
+    const client = await this.clientRepo.findOne({ where: { id } });
+    if (!client) {
+      throw new NotFoundException(`Client with id ${id} not found`);
+    }
+
+    Object.assign(client, dto);
+    return await this.clientRepo.save(client);
+  }
 }

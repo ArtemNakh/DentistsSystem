@@ -87,8 +87,8 @@
     "change_pass_successfuly": "Password successfully changed. You can now log in",
     "error_change_pass": "Error: Failed to change password.",
     "validation_min_length": "Password must be at least 6 characters long",
-     "validation_max_length": "Password must be less 100 characters long",
-   "validation_required": "Password is required",
+    "validation_max_length": "Password must be less 100 characters long",
+    "validation_required": "Password is required",
     "validation_confirm_required": "Password confirmation is required"
   },
   "loginWorker": {
@@ -1247,7 +1247,61 @@
       "rh_factor": "Rh Factor",
       "phone": "Phone",
       "email": "email",
-      "allergies": "Allergies"
+      "allergies": "Allergies",
+      "update_button":"Update profile"
+    },
+    "update-profile": {
+      "update": "Update profile",
+      "allergicDiseases": {
+        "title": "Allergic Diseases",
+        "placeholder": "Enter allergic diseases"
+      },
+      "birthday": {
+        "title": "Birthday",
+        "placeholder": "Enter birthdate"
+      },
+      "bloodGroup": {
+        "title": "Blood Group",
+        "placeholder": "Enter blood group (1–4)"
+      },
+      "email": {
+        "title": "Email",
+        "placeholder": "Enter email"
+      },
+      "middleName": {
+        "title": "Middle name",
+        "placeholder": "Enter middle name"
+      },
+      "modalInfo": {
+        "success": "Registration successful",
+        "nextStep": "Please, check your email and verify your account",
+        "close": "Close"
+      },
+      "name": {
+        "title": "Name",
+        "placeholder": "Enter name"
+      },
+      "password": {
+        "title": "Password",
+        "placeholder": "Enter password",
+        "show": "Show password",
+        "hide": "Hide password"
+      },
+      "passwordRepeat": {
+        "title": "Repeat password ",
+        "placeholder": "Enter password",
+        "show": "Show password",
+        "hide": "Hide password"
+      },
+      "phone": {
+        "title": "Phone",
+        "placeholder": "Enter phone number"
+      },
+      "surname": {
+        "title": "Surname",
+        "placeholder": "Enter surname"
+      },
+      "submit": { "default": "Update profile", "loading": "Wait..." }
     }
   }
 }

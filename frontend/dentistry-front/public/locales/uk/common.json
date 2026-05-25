@@ -1242,7 +1242,61 @@
       "rh_factor": "Резус-фактор",
       "phone": "Телефон",
       "email": "Електронна пошта",
-      "allergies": "Алергії"
+      "allergies": "Алергії",
+      "update_button": "Оновити профіль"
+    },
+    "update-profile": {
+      "update": "Оновлення профілю",
+      "allergicDiseases": {
+        "title": "Алергічні захворювання",
+        "placeholder": "Введіть алергічні захворювання"
+      },
+      "birthday": {
+        "title": "Дата народження",
+        "placeholder": "Введіть дату народження"
+      },
+      "bloodGroup": {
+        "title": "Група крові",
+        "placeholder": "Введіть групу крові (1–4)"
+      },
+      "email": {
+        "title": "Електронна пошта",
+        "placeholder": "Введіть електронну пошту"
+      },
+      "middleName": {
+        "title": "По батькові",
+        "placeholder": "Введіть по батькові"
+      },
+      "modalInfo": {
+        "success": "Реєстрація успішна",
+        "nextStep": "Будь ласка, перевірте вашу пошту та підтвердьте акаунт",
+        "close": "Закрити"
+      },
+      "name": {
+        "title": "Ім’я",
+        "placeholder": "Введіть ім’я"
+      },
+      "password": {
+        "title": "Пароль",
+        "placeholder": "Введіть пароль",
+        "show": "Показати пароль",
+        "hide": "Приховати пароль"
+      },
+      "passwordRepeat": {
+        "title": "Повторіть пароль",
+        "placeholder": "Введіть пароль",
+        "show": "Показати пароль",
+        "hide": "Приховати пароль"
+      },
+      "phone": {
+        "title": "Телефон",
+        "placeholder": "Введіть номер телефону"
+      },
+      "surname": {
+        "title": "Прізвище",
+        "placeholder": "Введіть прізвище"
+      },
+      "submit": { "default": "Оновити", "loading": "Зачекайте..." }
     }
   }
 }
