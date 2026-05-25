@@ -1316,6 +1316,59 @@
         "search_placeholder": "Введіть місто або адресу",
         "close_button": "Закрити"
       }
+    },
+    "create_appointment": {
+      "title": "Створення записи",
+      "error": "Помилка при додаванні нового запису",
+      "dentistry": {
+        "title": "Стоматологія",
+        "placeholder_enter_city_name": "Введіть назву міста",
+        "find": "Пошук",
+        "find_dentistry": "Пошук стоматології",
+        "placeholder_city_name": "Назву міста",
+        "close": "Закрити"
+      },
+      "worker": {
+        "name_worker": "Ім'я працівника",
+        "fio_worker": "ФІО Працівника",
+        "find": "Знайти",
+        "find_worker": "Пошук працівника",
+        "enter_fio": "Введіть ФІО",
+        "close": "Закрити",
+        "search_results": "Результат пошуку",
+        "all_workers": "Усі лікарі стоматології"
+      },
+      "date": {
+        "date_operation": "Дата операції",
+        "choose_date": "Оберіть дату",
+        "worker_not_work": "Цей працівник не працює у цей день",
+        "time_operation": "Час операції",
+        "choose_time": "Оберіть час"
+      },
+      "add": "Додати",
+      "notes": {
+        "name": "Заметки",
+        "placeholder": "Додайте заметки"
+      },
+      "validation": {
+        "clientId": {
+          "required": "ID клієнта є обов’язковим",
+          "positive": "ID клієнта має бути додатнім",
+          "integer": "ID клієнта має бути цілим числом"
+        },
+        "dentistId": {
+          "required": "ID лікаря є обов’язковим",
+          "positive": "ID лікаря має бути додатнім",
+          "integer": "ID лікаря має бути цілим числом"
+        },
+        "appointment_date": {
+          "required": "Дата прийому є обов’язковою",
+          "min": "Дата прийому не може бути в минулому"
+        },
+        "notes": {
+          "max": "Нотатки не можуть перевищувати 500 символів"
+        }
+      }
     }
   }
 }

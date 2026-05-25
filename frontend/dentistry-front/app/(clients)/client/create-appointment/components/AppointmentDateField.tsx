@@ -1,10 +1,12 @@
 import { useAppSelector } from "@/lib/redux/hooks";
 import { IWorkerShifts } from "@/lib/redux/modules/WorkerShifts/WorkerShifts.interface";
 import { RootState } from "@/lib/redux/store";
-import { ErrorMessage, Field, useFormikContext } from "formik";
+import { ErrorMessage, useFormikContext } from "formik";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-
+import DatePicker from "react-datepicker";
+import { uk, enUS, Locale } from "date-fns/locale";
+import i18n from "@/i18next.config";
 function generateHourlySlots(start: string, end: string) {
   const slots: string[] = [];
   const [startHour] = start.split(":").map(Number);
@@ -19,6 +21,11 @@ function generateHourlySlots(start: string, end: string) {
 
   return slots;
 }
+
+const localeMap: Record<string, Locale> = {
+  uk: uk,
+  en: enUS,
+};
 
 export default function AppointmentDateField() {
   const { t } = useTranslation();
@@ -38,7 +45,13 @@ export default function AppointmentDateField() {
     : Object.values(appointmentsObj ?? {});
 
   const { setFieldValue } = useFormikContext<any>();
-  const [selectedDate, setSelectedDate] = useState<string>("");
+
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  // Масив робочих днів
+  const workingDays = useMemo(
+    () => workerShifts.map((s: IWorkerShifts) => new Date(s.shift_date)),
+    [workerShifts],
+  );
 
   const availableTimes = useMemo(() => {
     if (!selectedDate) return [];
@@ -82,27 +95,26 @@ export default function AppointmentDateField() {
     <>
       <div className="mx-5 text-gray-500">
         <label className="block mb-1 text-lg text-gray-600">
-          {t("Дата операції")}
+          
+            {t("client.create_appointment.date.date_operation")}
         </label>
-        <Field
-          id="appointment_date"
-          name="appointment_date"
-          type="date"
-          className="placeholder-gray-400 text-gray-200 border border-gray-400 rounded px-2 py-1 focus:outline-none hover:border-gray-950"
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            setSelectedDate(e.target.value);
-            setFieldValue("appointment_date", new Date(e.target.value));
+
+        <DatePicker
+          selected={selectedDate}
+          onChange={(date: Date | null) => {
+            setSelectedDate(date);
+            if (date) setFieldValue("appointment_date", date);
           }}
-          validate={(value: string) => {
-            const isValid = workerShifts.some(
-              (s: IWorkerShifts) =>
-                new Date(s.shift_date).toDateString() ===
-                new Date(value).toDateString(),
-            );
-            return isValid
-              ? undefined
-              : "Цей працівник не працює у вибраний день";
-          }}
+          locale={localeMap[i18n.language]}
+          includeDates={workingDays}
+          inline
+          dayClassName={(date) =>
+            workingDays.some((d) => d.toDateString() === date.toDateString())
+              ? "bg-yellow-200 text-gray-900 rounded-full"
+              : "text-gray-400"
+          }
+          placeholderText=
+            {t("client.create_appointment.date.choose_date")}
         />
         <ErrorMessage
           name="appointment_date"
@@ -113,11 +125,11 @@ export default function AppointmentDateField() {
 
       {selectedDate && (
         <div className="mx-5 mt-4 text-gray-400 hover:border-gray-900">
-          <label className="block mb-1 text-lg text-gray-200">
-            {t("Час операції")}
+          <label className="block mb-1 text-lg text-gray-700">
+            {t("client.create_appointment.date.time_operation")}
           </label>
           <select
-            className="w-full p-2 border border-gray-400 rounded"
+            className="w-full p-2 border border-gray-400 rounded text-gray-600 "
             onChange={(e) => {
               const selectedTime = e.target.value;
               if (!selectedTime) return;
@@ -125,11 +137,10 @@ export default function AppointmentDateField() {
               const [hours, minutes] = selectedTime.split(":");
               const dateObj = new Date(selectedDate);
               dateObj.setHours(Number(hours), Number(minutes), 0, 0);
-
-              setFieldValue("appointment_date", dateObj);
+              setFieldValue("appointment_date", new Date(selectedDate));
             }}
           >
-            <option value="">{t("Оберіть час")}</option>
+            <option value=""> {t("client.create_appointment.date.choose_time")}</option>
             {availableTimes.map((time) => (
               <option key={time} value={time}>
                 {time}

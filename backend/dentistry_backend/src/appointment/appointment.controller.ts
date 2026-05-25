@@ -824,7 +824,7 @@ export class AppointmentController {
   })
   @ApiResponse({ status: 500, description: 'Внутрішня помилка сервера' })
   @UseInterceptors(ClassSerializerInterceptor)
-  @Authorization(SpecialtyType.ADMIN, SpecialtyType.RECEPTION)
+  // @Authorization(SpecialtyType.ADMIN, SpecialtyType.RECEPTION)
   async createAppointment(
     @Body() createAppointmentDto: CreateAppointmentDto,
   ): Promise<IAppointment> {
@@ -992,7 +992,6 @@ export class AppointmentController {
     },
   })
   @UseInterceptors(ClassSerializerInterceptor)
-  @Authorization()
   async getAppointments(@Param() params: GetWorkerAppointmentsDto) {
     const { workerId } = params;
     return this.appointmentService.findAppointmentsForWorkerToNext3Month(

@@ -1321,6 +1321,60 @@
         "search_placeholder": "Enter city or address",
         "close_button": "Close"
       }
+    },
+    "create_appointment": {
+      "title": "Create Appointment",
+      "error": "Error while adding new appointment",
+      "dentistry": {
+        "title": "Dentistry",
+        "placeholder_enter_city_name": "Enter city name",
+        "find": "Search",
+        "find_dentistry": "Search dentistry",
+        "placeholder_city_name": "City name",
+        "close": "Close"
+      },
+      "worker": {
+        "name_worker": "Worker's Name",
+        "fio_worker": "Worker's Full Name",
+        "find": "Find",
+        "find_worker": "Search worker",
+        "enter_fio": "Enter full name",
+        "close": "Close",
+        "search_result": "",
+        "search_results": "Search results",
+        "all_workers": "All workers in this clinic"
+      },
+      "date": {
+        "date_operation": "Operation Date",
+        "choose_date": "Choose date",
+        "worker_not_work": "This worker does not work on this day",
+        "time_operation": "Operation Time",
+        "choose_time": "Choose time"
+      },
+      "add": "Add",
+      "notes": {
+        "name": "Notes",
+        "placeholder": "Add notes"
+      },
+      "validation": {
+        "clientId": {
+          "required": "Client ID is required",
+          "positive": "Client ID must be positive",
+          "integer": "Client ID must be an integer"
+        },
+        "dentistId": {
+          "required": "Dentist ID is required",
+          "positive": "Dentist ID must be positive",
+          "integer": "Dentist ID must be an integer"
+        },
+        "appointment_date": {
+          "required": "Appointment date is required",
+          "min": "Appointment date cannot be in the past"
+        },
+        "notes": {
+          "max": "Notes cannot exceed 500 characters"
+        }
+      }
     }
   }
 }

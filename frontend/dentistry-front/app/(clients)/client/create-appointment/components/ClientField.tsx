@@ -7,7 +7,6 @@ import { useDispatch } from "react-redux";
 
 export default function ClientField() {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
 
   const { setFieldValue } = useFormikContext<any>();
   const { user, loading } = useAppSelector((state: RootState) => state.auth);

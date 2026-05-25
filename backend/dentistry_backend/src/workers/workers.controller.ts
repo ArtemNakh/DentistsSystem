@@ -365,7 +365,6 @@ export class WorkersController {
     },
   })
   @UseInterceptors(ClassSerializerInterceptor)
-  @Authorization(SpecialtyType.ADMIN, SpecialtyType.RECEPTION)
   async searchWorkers(@Query() query: SearchWorkersQueryDto) {
     const { search, dentistryId } = query;
     return this.workersService.findByFullName(search, dentistryId);

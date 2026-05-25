@@ -7,7 +7,7 @@ export default function NotesField() {
     <>
       <div className="mx-5 text-gray-500">
         <label className="block mb-1 text-lg text-gray-600">
-          {t("reception.calendar.modal.adding_appointment.notes.name")}
+          {t("client.create_appointment.notes.name")}
         </label>
         <Field
           id="notes"
@@ -16,7 +16,7 @@ export default function NotesField() {
           maxLength={100}
           className="w-full p-2 text-gray-600 border border-gray-400 placeholder-gray-400 rounded  focus:outline-none hover:border-gray-950 "
           placeholder={t(
-            "reception.calendar.modal.adding_appointment.notes.placeholder",
+            "client.create_appointment.notes.placeholder",
           )}
         />
         <ErrorMessage
