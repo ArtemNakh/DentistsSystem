@@ -17,8 +17,8 @@ export default function DentistryField({
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  const dentistries: IDentistry[] = useAppSelector((state: RootState) =>
-    Object.values(state.findingDentistries ?? {}),
+  const dentistries: IDentistry[] = Object.values(
+    useAppSelector((state: RootState) => state.findingDentistries),
   );
 
   const [showDentistryModal, setShowDentistryModal] = useState(false);
@@ -123,7 +123,7 @@ export default function DentistryField({
                 className="mt-4 sm:mt-6 w-full px-4 sm:px-6 py-2 rounded-lg font-semibold text-white shadow-md transition-transform hover:scale-105 text-sm sm:text-base"
                 style={{ background: "linear-gradient(90deg,#FACC15,#CA8A04)" }}
               >
-                   {t("client.doctors.dentistry_field.close_button")}
+                {t("client.doctors.dentistry_field.close_button")}
               </button>
             </div>
           </div>
