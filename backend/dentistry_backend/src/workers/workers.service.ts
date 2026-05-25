@@ -13,6 +13,7 @@ import { CreateWorkerDto } from './dto/CreateWorker.dto';
 import { Specialty } from '@/specialty/entities/specialty.entity';
 import { Dentistry } from '@/dentistry/entities/dentistry.entity';
 import { UpdateWorkerDto } from './dto/UpdateWorker.dto';
+import { SpecialtyType } from '@/specialty/entities/specialty.interface';
 
 @Injectable()
 export class WorkersService {
@@ -38,9 +39,8 @@ export class WorkersService {
     if (!worker) {
       throw new NotFoundException(`Працівника з id=${id} не знайдено`);
     }
-    
-    return worker;
 
+    return worker;
   }
 
   public async findById(id: number): Promise<IWorker> {
@@ -80,6 +80,35 @@ export class WorkersService {
     }
 
     return worker;
+  }
+
+  public async GetInfoWorkersByDentistry(dentistryId: number) {
+    const doctors = await this.workerRepo
+      .createQueryBuilder('worker')
+      .leftJoinAndSelect('worker.specialty', 'specialty')
+      .leftJoinAndSelect('worker.licenses', 'licenses')
+      .where('worker.dentistry_id = :dentistryId', { dentistryId })
+      .andWhere('worker.active = true')
+      .andWhere('specialty.type = :type', { type: SpecialtyType.DOCTOR }) // фільтр по ролі
+      .getMany();
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const filteredDoc = doctors.map((doctor) => ({
+      ...doctor,
+      licenses: (doctor.licenses ?? [])
+        .filter((lic) => {
+          const expDate = new Date(lic.expiration_date); // завжди створюємо Date
+          return expDate.getTime() >= today.getTime(); // порівнюємо числа
+        })
+        .sort(
+          (a, b) =>
+            new Date(a.expiration_date).getTime() -
+            new Date(b.expiration_date).getTime(),
+        ),
+    }));
+    return filteredDoc;
   }
 
   public async GetWorkersDentistry(dentistryId: number) {

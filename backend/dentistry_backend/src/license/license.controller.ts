@@ -26,7 +26,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { CreateLicenseDto } from './dto/CreateLicense.dto';
-import { LicenseResponseDto } from './dto/Response/CreateLicense.response.dto';
+import { LicenseResponseDto } from './dto/swagger/CreateLicense.response.dto';
 import { License } from './entities/license.entity';
 import { ILicense } from './entities/license.interface';
 import { UpdateLicenseDto } from './dto/UpdateLicense.dto';

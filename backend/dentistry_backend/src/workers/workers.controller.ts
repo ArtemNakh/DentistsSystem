@@ -27,20 +27,139 @@ import { IWorker } from './entities/workers.interface';
 import { Request } from 'express';
 import { CreateWorkerDto } from './dto/CreateWorker.dto';
 import { UpdateWorkerDto } from './dto/UpdateWorker.dto';
-import { CreateWorkerResponseDto } from './dto/Response/CreateWorker.response.dto';
-import { WorkerUpdateResponseDto } from './dto/Response/UpdateWorker.response.dto';
+import { CreateWorkerResponseDto } from './dto/swagger/CreateWorker.response.dto';
+import { WorkerUpdateResponseDto } from './dto/swagger/UpdateWorker.response.dto';
 import { SpecialtyType } from '@/specialty/entities/specialty.interface';
 import { Authorization } from '@/auth/decorators/Authorization.decorator';
 import { Authorized } from '@/auth/decorators/authorized.decorator';
 import { GetWorkersByDentistry } from './dto/Query/GetWorkersByDentistry.query.dto';
-import { WorkerResponseDto } from './dto/Response/Worker.response.dto';
+import { WorkerResponseDto } from './dto/swagger/Worker.response.dto';
 import { SearchWorkersQueryDto } from './dto/Query/SearchWorkers.query.dto';
-import { SearchWorkerResponseDto } from './dto/Response/SearchWorker.response.dto';
+import { SearchWorkerResponseDto } from './dto/swagger/SearchWorker.response.dto';
 import { WorkerIdParamDto } from './dto/Param/WorkerIdParam.param.dto';
+import { plainToInstance } from 'class-transformer';
+import { WorkerPublicDto } from './dto/Response/WorkersPublic.response.dto';
 @ApiTags('Worker')
 @Controller('workers')
 export class WorkersController {
   constructor(private readonly workersService: WorkersService) {}
+
+  @Get('all-info')
+  @ApiOperation({
+    summary:
+      'Отримання інформації про усіх працівників стоматології та їхні ліцензії',
+    description:
+      'Використовується для отримання усіх працівників у певній стоматології',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Список лікарів стоматології',
+    schema: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          id: { type: 'number', example: 9 },
+          name: { type: 'string', example: 'Monte' },
+          surname: { type: 'string', example: 'Leuschke' },
+          middle_name: { type: 'string', example: 'Gray' },
+          birthday: { type: 'string', format: 'date', example: '1973-05-23' },
+          phone: { type: 'string', example: '2631546799' },
+          specialty: {
+            type: 'object',
+            properties: {
+              id: { type: 'number', example: 11 },
+              name: { type: 'string', example: 'Orthodontist' },
+              description: {
+                type: 'string',
+                example:
+                  'Specialist in diagnosing, preventing, and correcting misaligned teeth and jaws using braces, aligners, and other orthodontic treatments.',
+              },
+              type: { type: 'string', example: 'doctor' },
+              created_at: {
+                type: 'string',
+                format: 'date-time',
+                example: '2026-02-21T17:08:02.000Z',
+              },
+              updated_at: {
+                type: 'string',
+                format: 'date-time',
+                example: '2026-02-21T17:08:02.000Z',
+              },
+            },
+          },
+          login: { type: 'string', example: 'Collin.Rodriguez25' },
+          password: { type: 'string', example: '7UZbXJfMOX' },
+          created_at: {
+            type: 'string',
+            format: 'date-time',
+            example: '2026-02-21T17:08:02.000Z',
+          },
+          updated_at: {
+            type: 'string',
+            format: 'date-time',
+            example: '2026-02-21T17:08:02.000Z',
+          },
+        },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Некоректний параметр dentistryId',
+    schema: {
+      type: 'object',
+      properties: {
+        message: {
+          type: 'array',
+          items: { type: 'string' },
+          example: ['dentistryId must be a positive number'],
+        },
+        error: { type: 'string', example: 'Bad Request' },
+        statusCode: { type: 'number', example: 400 },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Працівник не авторизований',
+    schema: {
+      type: 'object',
+      properties: {
+        message: { type: 'string', example: 'Працівник не авторизований' },
+        error: { type: 'string', example: 'Unauthorized' },
+        statusCode: { type: 'number', example: 401 },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'Доступ заборонено',
+    schema: {
+      type: 'object',
+      properties: {
+        message: {
+          type: 'string',
+          example:
+            'Недостатньо прав. Ваша професія (Global Operations Administrator) типу (doctor) не має доступу',
+        },
+        error: { type: 'string', example: 'Forbidden' },
+        statusCode: { type: 'number', example: 403 },
+      },
+    },
+  })
+  @UseInterceptors(ClassSerializerInterceptor)
+  async GetInfoWorkersByDentistry(
+    @Query() query: GetWorkersByDentistry,
+  ): Promise<WorkerPublicDto[]> {
+    const { dentistryId } = query;
+    const workersByDentistry =
+      await this.workersService.GetInfoWorkersByDentistry(dentistryId);
+   
+    return plainToInstance(WorkerPublicDto, workersByDentistry, {
+      excludeExtraneousValues: true,
+    });
+  }
 
   @Get('all')
   @ApiOperation({

@@ -1096,6 +1096,7 @@
       },
       "main": "Home",
       "about_us": "About Us",
+      "doctors": "Doctors",
       "contacts": "Contacts",
       "settings": {
         "setting_profile": "Profile Settings",
@@ -1248,7 +1249,7 @@
       "phone": "Phone",
       "email": "email",
       "allergies": "Allergies",
-      "update_button":"Update profile"
+      "update_button": "Update profile"
     },
     "update-profile": {
       "update": "Update profile",
@@ -1302,6 +1303,24 @@
         "placeholder": "Enter surname"
       },
       "submit": { "default": "Update profile", "loading": "Wait..." }
+    },
+    "doctors": {
+      "title": "Лікарі стоматології",
+      "choose_dentistry": "Оберіть стоматологію, щоб переглянути список лікарів",
+      "specialty": "Спеціалізація",
+      "phone": "Телефон",
+      "show_licenses": "Показати ліцензії",
+      "hide_licenses": "Приховати ліцензії",
+      "license_name": "Назва ліцензії",
+      "expiration": "Дата закінчення",
+      "dentistry_field": {
+        "label": "Dentistry",
+        "placeholder_selected_city": "Selected city",
+        "find_button": "Find",
+        "modal_title": "Clinic search",
+        "search_placeholder": "Enter city or address",
+        "close_button": "Close"
+      }
     }
   }
 }

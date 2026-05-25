@@ -20,7 +20,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { CreateSpecialtyDto } from './dto/CreateSpecialty.dto';
-import { SpecialtyResponseDto } from './dto/Response/CreateSpecialty.response.dto';
+import { SpecialtyResponseDto } from './dto/swagger/CreateSpecialty.response.dto';
 import { Specialty } from './entities/specialty.entity';
 import { UpdateSpecialtyDto } from './dto/UpdateSpecialty.dto';
 import { Authorization } from '@/auth/decorators/Authorization.decorator';

@@ -1091,6 +1091,7 @@
       },
       "main": "Головна",
       "about_us": "Про нас",
+      "doctors": "Лікарі",
       "contacts": "Контакти",
       "settings": {
         "setting_profile": "Налаштуваня профілю",
@@ -1297,6 +1298,24 @@
         "placeholder": "Введіть прізвище"
       },
       "submit": { "default": "Оновити", "loading": "Зачекайте..." }
+    },
+    "doctors": {
+      "title": "Лікарі стоматології",
+      "choose_dentistry": "Оберіть стоматологію, щоб переглянути список лікарів",
+      "specialty": "Спеціалізація",
+      "issue_date": "Дата видачі",
+      "expiration": "Дата закінчення",
+      "show_licenses": "Показати ліцензії",
+      "hide_licenses": "Приховати ліцензії",
+      "license_name": "Назва ліцензії",
+      "dentistry_field": {
+        "label": "Стоматологія",
+        "placeholder_selected_city": "Обране місто",
+        "find_button": "знайти",
+        "modal_title": "Пошук клініки",
+        "search_placeholder": "Введіть місто або адресу",
+        "close_button": "Закрити"
+      }
     }
   }
 }

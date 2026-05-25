@@ -59,7 +59,7 @@ export class Worker implements IWorker {
 
   @Column({ type: 'boolean', default: true })
   active: boolean;
-  //Foreign connection
+
   @OneToMany(() => License, (license) => license.worker)
   licenses: License[];
 

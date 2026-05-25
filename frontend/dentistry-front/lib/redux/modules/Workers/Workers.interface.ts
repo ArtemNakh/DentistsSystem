@@ -1,4 +1,5 @@
 import { IDentistry } from "../Dentistries/Dentistry.interface";
+import { ILicense } from "../Licenses/Licenses.interface";
 import { ISpecialty } from "../Specialties/Entities/Specialties/Specialties.interface";
 
 export interface IWorker {
@@ -8,16 +9,16 @@ export interface IWorker {
   middle_name: string;
   birthday: Date;
   phone: string;
-  specialty: ISpecialty; 
-  dentistry: IDentistry; 
+  specialty: ISpecialty;
+  dentistry: IDentistry;
   login: string;
   password: string;
- active: boolean; 
+  active: boolean;
   created_at: Date;
   updated_at: Date;
 
   //foreign connections
-  //   licenses?: ILicense[];
+  licenses?: ILicense[];
   //   appointments?: IAppointment[];
   //   shifts?: IWorkerShifts[];
 }

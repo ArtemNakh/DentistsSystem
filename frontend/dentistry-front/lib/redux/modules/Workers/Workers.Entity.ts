@@ -9,6 +9,7 @@ import { CreateWorkerAction } from "./actions/CreateWorker/CreateWorker";
 import { DeActiveWorkerAction } from "./actions/DeActiveWorker/DeActiveWorker";
 import { UpdateWorkerAction } from "./actions/UpdateWorker/UpdateWorker";
 import { GetWorkerByIdAction } from "./actions/GetWorkerById/getWorkerById";
+import { GetInfoWorkersByDentistryAction } from "./actions/GetInfoWorkersByDentistry/GetInfoWorkersByDentistry";
 
 export enum WorkerActionSaga {
   GetWorkersDentistry = "Worker/getByDentistry",
@@ -17,6 +18,7 @@ export enum WorkerActionSaga {
   UpdateWorker = "Worker/update",
   GetWorkerById = "Worker/getById",
   DeActive = "Worker/deActive",
+  GetInfoWorkersByDentistry="Worker/getInfoWorkersByDentistry"
 }
 
 @EntityReducer(EntitiesRedux.Workers)
@@ -39,6 +41,14 @@ export class WorkerEntity extends BaseEntity {
     );
   }
 
+ *getInfoWorkersByDentistrySaga(action:GetInfoWorkersByDentistryAction) {
+    const { idDentistry } = action.payload;
+    yield call(
+      this.xRead.bind(this),
+      `/workers/all-info?dentistryId=${idDentistry}`,
+      ActionReducer.Get,
+    );
+  }
   *saveWorkersSaga(action: SaveWorkersToReduxAction) {
     const { payload } = action; // Викликаємо ActionRedux напряму, щоб задиспатчити дані у Redux
     yield call(this.ActionRedux.bind(this), payload, ActionReducer.Get);
@@ -87,6 +97,9 @@ export class WorkerEntity extends BaseEntity {
     yield takeLatest(
       WorkerActionSaga.GetWorkersDentistry,
       this.getWorkersDentistrySaga.bind(this),
+    ); yield takeLatest(
+      WorkerActionSaga.GetInfoWorkersByDentistry,
+      this.getInfoWorkersByDentistrySaga.bind(this),
     );
     yield takeLatest(
       WorkerActionSaga.SaveWorkers,

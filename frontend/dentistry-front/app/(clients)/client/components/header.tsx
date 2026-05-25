@@ -30,6 +30,7 @@ export default function HeaderClient() {
   const headerLinks = [
     { label: t("client.header.main"), path: "/client/main" },
     { label: t("client.header.about_us"), path: "/client/about_us" },
+    { label: t("client.header.doctors"), path: "/client/doctors" },
     { label: t("client.header.contacts"), path: "/client/contacts" },
   ];
 
