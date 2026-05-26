@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   ClassSerializerInterceptor,
   Controller,
@@ -19,26 +18,28 @@ import {
   ApiOkResponse,
   ApiOperation,
   ApiParam,
-  ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
 import { IWorker } from './entities/workers.interface';
 import { Request } from 'express';
-import { CreateWorkerDto } from './dto/CreateWorker.dto';
+import { CreateWorkerBodyDto } from './dto/CreateWorker.dto';
 import { UpdateWorkerDto } from './dto/UpdateWorker.dto';
-import { CreateWorkerResponseDto } from './dto/swagger/CreateWorker.response.dto';
-import { WorkerUpdateResponseDto } from './dto/swagger/UpdateWorker.response.dto';
 import { SpecialtyType } from '@/specialty/entities/specialty.interface';
 import { Authorization } from '@/auth/decorators/Authorization.decorator';
-import { Authorized } from '@/auth/decorators/authorized.decorator';
-import { GetWorkersByDentistry } from './dto/Query/GetWorkersByDentistry.query.dto';
+import { GetWorkersByDentistryQuery } from './dto/Query/GetWorkersByDentistry.query.dto';
 import { WorkerResponseDto } from './dto/swagger/Worker.response.dto';
 import { SearchWorkersQueryDto } from './dto/Query/SearchWorkers.query.dto';
-import { SearchWorkerResponseDto } from './dto/swagger/SearchWorker.response.dto';
 import { WorkerIdParamDto } from './dto/Param/WorkerIdParam.param.dto';
 import { plainToInstance } from 'class-transformer';
-import { WorkerPublicDto } from './dto/Response/WorkersPublic.response.dto';
+import { WorkerPublicDto } from './dto/Response/BaseType/WorkersPublic.response.dto';
+import { GetPublicInfoDoctorsByDentistry } from './dto/Response/GetPublicInfoDoctorsByDentistry.response.dto';
+import { GetWorkersByDentistry } from './dto/Response/GetWorkersByDentistry.response.dto';
+import { GetCurrentWorkerDto } from './dto/Response/GetCurrentWorker.response.dto';
+import { SearchWorkersDto } from './dto/Response/SearchWorkers.response.dto';
+import { CreateWorkerResponseDto } from './dto/Response/CreateWorker.response.dto';
+import { UpdateWorkerResponseDto } from './dto/Response/UpdateWorker.response.dto';
+import { GetWorkerByIdResponseDto } from './dto/Response/GetWorkerById.response.dto';
 @ApiTags('Worker')
 @Controller('workers')
 export class WorkersController {
@@ -54,55 +55,7 @@ export class WorkersController {
   @ApiResponse({
     status: 200,
     description: 'Список лікарів стоматології',
-    schema: {
-      type: 'array',
-      items: {
-        type: 'object',
-        properties: {
-          id: { type: 'number', example: 9 },
-          name: { type: 'string', example: 'Monte' },
-          surname: { type: 'string', example: 'Leuschke' },
-          middle_name: { type: 'string', example: 'Gray' },
-          birthday: { type: 'string', format: 'date', example: '1973-05-23' },
-          phone: { type: 'string', example: '2631546799' },
-          specialty: {
-            type: 'object',
-            properties: {
-              id: { type: 'number', example: 11 },
-              name: { type: 'string', example: 'Orthodontist' },
-              description: {
-                type: 'string',
-                example:
-                  'Specialist in diagnosing, preventing, and correcting misaligned teeth and jaws using braces, aligners, and other orthodontic treatments.',
-              },
-              type: { type: 'string', example: 'doctor' },
-              created_at: {
-                type: 'string',
-                format: 'date-time',
-                example: '2026-02-21T17:08:02.000Z',
-              },
-              updated_at: {
-                type: 'string',
-                format: 'date-time',
-                example: '2026-02-21T17:08:02.000Z',
-              },
-            },
-          },
-          login: { type: 'string', example: 'Collin.Rodriguez25' },
-          password: { type: 'string', example: '7UZbXJfMOX' },
-          created_at: {
-            type: 'string',
-            format: 'date-time',
-            example: '2026-02-21T17:08:02.000Z',
-          },
-          updated_at: {
-            type: 'string',
-            format: 'date-time',
-            example: '2026-02-21T17:08:02.000Z',
-          },
-        },
-      },
-    },
+    type: GetPublicInfoDoctorsByDentistry,
   })
   @ApiResponse({
     status: 400,
@@ -149,13 +102,12 @@ export class WorkersController {
     },
   })
   @UseInterceptors(ClassSerializerInterceptor)
-  async GetInfoWorkersByDentistry(
-    @Query() query: GetWorkersByDentistry,
+  async GetPublicInfoWorkersByDentistry(
+    @Query() query: GetWorkersByDentistryQuery,
   ): Promise<WorkerPublicDto[]> {
     const { dentistryId } = query;
     const workersByDentistry =
       await this.workersService.GetInfoWorkersByDentistry(dentistryId);
-   
     return plainToInstance(WorkerPublicDto, workersByDentistry, {
       excludeExtraneousValues: true,
     });
@@ -170,55 +122,8 @@ export class WorkersController {
   @ApiResponse({
     status: 200,
     description: 'Список лікарів стоматології',
-    schema: {
-      type: 'array',
-      items: {
-        type: 'object',
-        properties: {
-          id: { type: 'number', example: 9 },
-          name: { type: 'string', example: 'Monte' },
-          surname: { type: 'string', example: 'Leuschke' },
-          middle_name: { type: 'string', example: 'Gray' },
-          birthday: { type: 'string', format: 'date', example: '1973-05-23' },
-          phone: { type: 'string', example: '2631546799' },
-          specialty: {
-            type: 'object',
-            properties: {
-              id: { type: 'number', example: 11 },
-              name: { type: 'string', example: 'Orthodontist' },
-              description: {
-                type: 'string',
-                example:
-                  'Specialist in diagnosing, preventing, and correcting misaligned teeth and jaws using braces, aligners, and other orthodontic treatments.',
-              },
-              type: { type: 'string', example: 'doctor' },
-              created_at: {
-                type: 'string',
-                format: 'date-time',
-                example: '2026-02-21T17:08:02.000Z',
-              },
-              updated_at: {
-                type: 'string',
-                format: 'date-time',
-                example: '2026-02-21T17:08:02.000Z',
-              },
-            },
-          },
-          login: { type: 'string', example: 'Collin.Rodriguez25' },
-          password: { type: 'string', example: '7UZbXJfMOX' },
-          created_at: {
-            type: 'string',
-            format: 'date-time',
-            example: '2026-02-21T17:08:02.000Z',
-          },
-          updated_at: {
-            type: 'string',
-            format: 'date-time',
-            example: '2026-02-21T17:08:02.000Z',
-          },
-        },
-      },
-    },
+    type: GetWorkersByDentistry,
+    isArray: true,
   })
   @ApiResponse({
     status: 400,
@@ -267,12 +172,15 @@ export class WorkersController {
   @UseInterceptors(ClassSerializerInterceptor)
   @Authorization(SpecialtyType.ADMIN, SpecialtyType.RECEPTION)
   async GetWorkersByDentistry(
-    @Query() query: GetWorkersByDentistry,
-  ): Promise<IWorker[]> {
+    @Query() query: GetWorkersByDentistryQuery,
+  ): Promise<GetWorkersByDentistry[]> {
     const { dentistryId } = query;
     const workersByDentistry =
-      this.workersService.GetWorkersDentistry(dentistryId);
-    return workersByDentistry;
+      await this.workersService.GetWorkersDentistry(dentistryId);
+
+    return plainToInstance(GetWorkersByDentistry, workersByDentistry, {
+      excludeExtraneousValues: true,
+    });
   }
 
   @Get('me')
@@ -282,7 +190,7 @@ export class WorkersController {
   })
   @ApiOkResponse({
     description: 'Поточний працівник',
-    type: WorkerResponseDto,
+    type: GetCurrentWorkerDto,
   })
   @ApiResponse({
     status: 401,
@@ -298,16 +206,16 @@ export class WorkersController {
   })
   @UseInterceptors(ClassSerializerInterceptor)
   @Authorization()
-  async getCurrentWorker(@Req() req: Request) {
+  async getCurrentWorker(@Req() req: Request): Promise<GetCurrentWorkerDto> {
     const worker = await this.workersService.findById(
       Number(req.session.workerId),
     );
     if (!worker) {
       throw new NotFoundException('Worker not found');
     }
-
-    const { password, ...safeWorker } = worker;
-    return safeWorker as WorkerResponseDto;
+    return plainToInstance(GetCurrentWorkerDto, worker, {
+      excludeExtraneousValues: true,
+    });
   }
 
   @Get('search')
@@ -317,7 +225,7 @@ export class WorkersController {
   })
   @ApiOkResponse({
     description: 'Список знайдених працівників',
-    type: SearchWorkerResponseDto,
+    type: SearchWorkersDto,
     isArray: true,
   })
   @ApiResponse({
@@ -365,14 +273,22 @@ export class WorkersController {
     },
   })
   @UseInterceptors(ClassSerializerInterceptor)
-  async searchWorkers(@Query() query: SearchWorkersQueryDto) {
+  async searchWorkers(
+    @Query() query: SearchWorkersQueryDto,
+  ): Promise<SearchWorkersDto[]> {
     const { search, dentistryId } = query;
-    return this.workersService.findByFullName(search, dentistryId);
+    const searchWorkers = await this.workersService.findByFullName(
+      search,
+      dentistryId,
+    );
+    return plainToInstance(SearchWorkersDto, searchWorkers, {
+      excludeExtraneousValues: true,
+    });
   }
 
   @Post('create')
   @ApiOperation({ summary: 'Створення нового працівника' })
-  @ApiBody({ type: CreateWorkerDto })
+  @ApiBody({ type: CreateWorkerBodyDto })
   @ApiResponse({
     status: 201,
     description: 'Працівника успішно створено',
@@ -438,8 +354,13 @@ export class WorkersController {
   })
   @UseInterceptors(ClassSerializerInterceptor)
   @Authorization(SpecialtyType.ADMIN)
-  CreateWorker(@Body() dto: CreateWorkerDto): Promise<IWorker> {
-    return this.workersService.CreateWorker(dto);
+  async CreateWorker(
+    @Body() dto: CreateWorkerBodyDto,
+  ): Promise<CreateWorkerResponseDto> {
+    const newWorker = await this.workersService.CreateWorker(dto);
+    return plainToInstance(CreateWorkerResponseDto, newWorker, {
+      excludeExtraneousValues: true,
+    });
   }
 
   @Put(':id')
@@ -448,7 +369,7 @@ export class WorkersController {
   @ApiBody({ type: UpdateWorkerDto })
   @ApiOkResponse({
     description: 'Працівника успішно оновлено',
-    type: WorkerUpdateResponseDto,
+    type: UpdateWorkerResponseDto,
   })
   @ApiResponse({
     status: 400,
@@ -519,12 +440,16 @@ export class WorkersController {
   })
   @UseInterceptors(ClassSerializerInterceptor)
   @Authorization(SpecialtyType.ADMIN)
-  UpdateWorker(
+  async UpdateWorker(
     @Param() params: WorkerIdParamDto,
     @Body() dto: UpdateWorkerDto,
-  ): Promise<IWorker> {
+  ): Promise<UpdateWorkerResponseDto> {
     const { id } = params;
-    return this.workersService.UpdateWorker(id, dto);
+    const updatedWorker = await this.workersService.UpdateWorker(id, dto);
+
+    return plainToInstance(CreateWorkerResponseDto, updatedWorker, {
+      excludeExtraneousValues: true,
+    });
   }
 
   @Delete(':id')
@@ -596,7 +521,7 @@ export class WorkersController {
   @ApiOperation({ summary: 'Отримати працівника за ID' })
   @ApiOkResponse({
     description: 'Працівника знайдено',
-    type: WorkerResponseDto,
+    type: GetWorkerByIdResponseDto,
   })
   @ApiResponse({
     status: 400,
@@ -659,9 +584,14 @@ export class WorkersController {
     SpecialtyType.RECEPTION,
   )
   @UseInterceptors(ClassSerializerInterceptor)
-  async getWorkerById(@Param() params: WorkerIdParamDto): Promise<IWorker> {
+  async getWorkerById(
+    @Param() params: WorkerIdParamDto,
+  ): Promise<GetWorkerByIdResponseDto> {
     const { id } = params;
-    return this.workersService.getWorkerById(id);
+    const findedWorker = await this.workersService.getWorkerById(id);
+    return plainToInstance(GetWorkerByIdResponseDto, findedWorker, {
+      excludeExtraneousValues: true,
+    });
   }
 
   // way to used auth decorators

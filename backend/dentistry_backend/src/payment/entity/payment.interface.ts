@@ -2,7 +2,6 @@ import { IAppointment } from '@/appointment/entity/appointment.interface';
 
 export enum StatusPayment {
   PAID = 'paid',
-  
   NOT_PAID = 'not_paid',
 }
 
@@ -19,7 +18,7 @@ export interface IPayment {
   status_paid: StatusPayment;
   method_pay: MethodPayment;
   payment_date: Date;
-  
+
   created_at: Date;
   updated_at: Date;
 

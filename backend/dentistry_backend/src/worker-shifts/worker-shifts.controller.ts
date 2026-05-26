@@ -20,8 +20,7 @@ import {
 } from '@nestjs/swagger';
 import { IWorkerShifts } from './entities/worker-shifts.interface';
 import { CreateWorkerShiftDto } from './dto/CreateWorker-shift.dto';
-import { WorkerShiftResponseDto } from './dto/response/Worker-shifts.response.dto';
-import { WorkerShifts } from './entities/worker-shifts.entity';
+import { WorkerShiftResponseDto } from './dto/Response/Worker-shifts.response.dto';
 import { GetShifstsByWorkerParamDto } from './dto/Params/GetShiftsByWorker.params.dto';
 import { GetWorkersWeekendParamDto } from './dto/Query/getWorkersWeekend.query.dto';
 import { GetWorkersWeekendQueryDto } from './dto/Params/getWorkersWeekend.param.dto';

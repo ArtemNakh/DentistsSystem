@@ -1,7 +1,7 @@
 import { IsDateString, IsNumber, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreateWorkerDto {
+export class CreateWorkerBodyDto {
   @ApiProperty({ example: 'Іван', description: 'Імʼя працівника' })
   @IsString()
   name: string;

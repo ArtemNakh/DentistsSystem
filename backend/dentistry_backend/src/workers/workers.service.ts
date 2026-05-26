@@ -9,7 +9,7 @@ import { Worker } from './entities/workers.entity';
 import { IWorker } from './entities/workers.interface';
 import * as argon2 from 'argon2';
 import { RegisterWorkerDto } from './dto/registerWorker.dto';
-import { CreateWorkerDto } from './dto/CreateWorker.dto';
+import { CreateWorkerBodyDto } from './dto/CreateWorker.dto';
 import { Specialty } from '@/specialty/entities/specialty.entity';
 import { Dentistry } from '@/dentistry/entities/dentistry.entity';
 import { UpdateWorkerDto } from './dto/UpdateWorker.dto';
@@ -122,7 +122,7 @@ export class WorkersService {
     return doctors;
   }
 
-  async CreateWorker(dto: CreateWorkerDto): Promise<IWorker> {
+  async CreateWorker(dto: CreateWorkerBodyDto): Promise<IWorker> {
     const specialty = await this.specialtyRepo.findOne({
       where: { id: dto.specialtyId },
     });
@@ -131,9 +131,9 @@ export class WorkersService {
     });
 
     const hashedPassword = await argon2.hash(dto.password);
-    const isValid = await this.checkLoginPassword(dto.login, hashedPassword);
+    const isValid = await this.checkLoginPassword(dto.login);
 
-    if (isValid) {
+    if (!isValid) {
       throw new ConflictException(
         'Пароль не може співпадати з логіном існуючого працівника',
       );
@@ -150,33 +150,55 @@ export class WorkersService {
     return this.workerRepo.save(worker);
   }
 
-  async UpdateWorker(id: number, dto: UpdateWorkerDto): Promise<Worker> {
-    const worker = await this.workerRepo.findOne({ where: { id } });
-    if (!worker) {
-      throw new NotFoundException(`Worker with id ${id} not found`);
-    }
-
-    const specialty = await this.specialtyRepo.findOneBy({
-      id: dto.specialtyId,
-    });
-    const dentistry = await this.dentistryRepo.findOneBy({
-      id: dto.dentistryId,
-    });
-    const hashedPassword = await argon2.hash(dto.password);
-    const isValid = await this.checkLoginPassword(dto.login, hashedPassword);
-
-    if (isValid) {
-      throw new ConflictException('Логін чи пароль вже існує ');
-    }
-
-    Object.assign(worker, {
-      ...dto,
-      specialty,
-      dentistry,
-      password: hashedPassword,
-    });
-    return this.workerRepo.save(worker);
+async UpdateWorker(id: number, dto: UpdateWorkerDto): Promise<Worker> {
+  const worker = await this.workerRepo.findOne({ where: { id } });
+  if (!worker) {
+    throw new NotFoundException(`Worker with id ${id} not found`);
   }
+
+  // Оновлюємо прості поля тільки якщо вони передані
+  if (dto.name !== undefined) worker.name = dto.name;
+  if (dto.surname !== undefined) worker.surname = dto.surname;
+  if (dto.middle_name !== undefined) worker.middle_name = dto.middle_name;
+  if (dto.birthday !== undefined) worker.birthday = dto.birthday as any;
+  if (dto.phone !== undefined) worker.phone = dto.phone;
+  if (dto.active !== undefined) worker.active = dto.active;
+
+  // Оновлення спеціальності
+  if (dto.specialtyId !== undefined) {
+    const specialty = await this.specialtyRepo.findOneBy({ id: dto.specialtyId });
+    if (!specialty) {
+      throw new NotFoundException(`Specialty with id ${dto.specialtyId} not found`);
+    }
+    worker.specialty = specialty;
+  }
+
+  // Оновлення стоматології
+  if (dto.dentistryId !== undefined) {
+    const dentistry = await this.dentistryRepo.findOneBy({ id: dto.dentistryId });
+    if (!dentistry) {
+      throw new NotFoundException(`Dentistry with id ${dto.dentistryId} not found`);
+    }
+    worker.dentistry = dentistry;
+  }
+
+  // Перевірка логіну
+  if (dto.login !== undefined) {
+    const exists = await this.checkLoginPassword(dto.login);
+    if (exists) {
+      throw new ConflictException('Логін чи пароль вже існує');
+    }
+    worker.login = dto.login;
+  }
+
+  // Хешування пароля
+  if (dto.password !== undefined) {
+    worker.password = await argon2.hash(dto.password);
+  }
+
+  return this.workerRepo.save(worker);
+}
+
 
   async RemoveWorker(idWorker: number): Promise<void> {
     const worker = await this.workerRepo.findOne({ where: { id: idWorker } });
@@ -247,10 +269,7 @@ export class WorkersService {
     });
   }
 
-  public async checkLoginPassword(
-    login: string,
-    password: string,
-  ): Promise<boolean> {
+  public async checkLoginPassword(login: string): Promise<boolean> {
     // шукаємо працівника за логіном
     const worker = await this.workerRepo.findOne({ where: { login } });
 
@@ -259,11 +278,6 @@ export class WorkersService {
       throw new ConflictException(
         'Логін вже використовується іншим працівником',
       );
-    }
-
-    // додатково можна перевірити, чи пароль співпадає з логіном
-    if (login === password) {
-      throw new ConflictException('Пароль не може співпадати з логіном');
     }
 
     // якщо треба перевіряти збіг пароля з існуючим хешем (наприклад, при оновленні)

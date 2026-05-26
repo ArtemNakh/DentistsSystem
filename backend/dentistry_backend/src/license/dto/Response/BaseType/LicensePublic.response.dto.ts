@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
-import { WorkerPublicDto } from '@/workers/dto/Response/WorkersPublic.response.dto';
+import { WorkerPublicDto } from '@/workers/dto/Response/BaseType/WorkersPublic.response.dto';
 
 export class LicensePublicDto {
   @Expose()
