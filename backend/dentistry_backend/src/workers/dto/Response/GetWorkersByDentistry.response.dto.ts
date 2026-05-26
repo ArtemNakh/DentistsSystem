@@ -5,7 +5,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { SpecialtyCommonDto } from '@/specialty/dto/Response/BaseType/SpecialtyCommon.response.dto';
 import { DentistryCommonDto } from '@/dentistry/dto/Response/BaseType/DentistryCommon.response.dto';
 
-export class GetWorkersByDentistry extends WorkerCommonDto {
+export class GetWorkersByDentistryResponseDto extends WorkerCommonDto {
   @Type(() => DentistryCommonDto)
   @Expose()
   @ApiProperty({

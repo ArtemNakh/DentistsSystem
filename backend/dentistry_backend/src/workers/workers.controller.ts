@@ -33,10 +33,10 @@ import { SearchWorkersQueryDto } from './dto/Query/SearchWorkers.query.dto';
 import { WorkerIdParamDto } from './dto/Param/WorkerIdParam.param.dto';
 import { plainToInstance } from 'class-transformer';
 import { WorkerPublicDto } from './dto/Response/BaseType/WorkersPublic.response.dto';
-import { GetPublicInfoDoctorsByDentistry } from './dto/Response/GetPublicInfoDoctorsByDentistry.response.dto';
-import { GetWorkersByDentistry } from './dto/Response/GetWorkersByDentistry.response.dto';
-import { GetCurrentWorkerDto } from './dto/Response/GetCurrentWorker.response.dto';
-import { SearchWorkersDto } from './dto/Response/SearchWorkers.response.dto';
+import { GetPublicInfoDoctorsByDentistryReponseDto } from './dto/Response/GetPublicInfoDoctorsByDentistry.response.dto';
+import { GetWorkersByDentistryResponseDto } from './dto/Response/GetWorkersByDentistry.response.dto';
+import { GetCurrentWorkerResponseDto } from './dto/Response/GetCurrentWorker.response.dto';
+import { SearchWorkersResponseDto } from './dto/Response/SearchWorkers.response.dto';
 import { CreateWorkerResponseDto } from './dto/Response/CreateWorker.response.dto';
 import { UpdateWorkerResponseDto } from './dto/Response/UpdateWorker.response.dto';
 import { GetWorkerByIdResponseDto } from './dto/Response/GetWorkerById.response.dto';
@@ -55,7 +55,7 @@ export class WorkersController {
   @ApiResponse({
     status: 200,
     description: 'Список лікарів стоматології',
-    type: GetPublicInfoDoctorsByDentistry,
+    type: GetPublicInfoDoctorsByDentistryReponseDto,
   })
   @ApiResponse({
     status: 400,
@@ -122,7 +122,7 @@ export class WorkersController {
   @ApiResponse({
     status: 200,
     description: 'Список лікарів стоматології',
-    type: GetWorkersByDentistry,
+    type: GetWorkersByDentistryResponseDto,
     isArray: true,
   })
   @ApiResponse({
@@ -173,12 +173,12 @@ export class WorkersController {
   @Authorization(SpecialtyType.ADMIN, SpecialtyType.RECEPTION)
   async GetWorkersByDentistry(
     @Query() query: GetWorkersByDentistryQuery,
-  ): Promise<GetWorkersByDentistry[]> {
+  ): Promise<GetWorkersByDentistryResponseDto[]> {
     const { dentistryId } = query;
     const workersByDentistry =
       await this.workersService.GetWorkersDentistry(dentistryId);
 
-    return plainToInstance(GetWorkersByDentistry, workersByDentistry, {
+    return plainToInstance(GetWorkersByDentistryResponseDto, workersByDentistry, {
       excludeExtraneousValues: true,
     });
   }
@@ -190,7 +190,7 @@ export class WorkersController {
   })
   @ApiOkResponse({
     description: 'Поточний працівник',
-    type: GetCurrentWorkerDto,
+    type: GetCurrentWorkerResponseDto,
   })
   @ApiResponse({
     status: 401,
@@ -206,14 +206,14 @@ export class WorkersController {
   })
   @UseInterceptors(ClassSerializerInterceptor)
   @Authorization()
-  async getCurrentWorker(@Req() req: Request): Promise<GetCurrentWorkerDto> {
+  async getCurrentWorker(@Req() req: Request): Promise<GetCurrentWorkerResponseDto> {
     const worker = await this.workersService.findById(
       Number(req.session.workerId),
     );
     if (!worker) {
       throw new NotFoundException('Worker not found');
     }
-    return plainToInstance(GetCurrentWorkerDto, worker, {
+    return plainToInstance(GetCurrentWorkerResponseDto, worker, {
       excludeExtraneousValues: true,
     });
   }
@@ -225,7 +225,7 @@ export class WorkersController {
   })
   @ApiOkResponse({
     description: 'Список знайдених працівників',
-    type: SearchWorkersDto,
+    type: SearchWorkersResponseDto,
     isArray: true,
   })
   @ApiResponse({
@@ -275,13 +275,13 @@ export class WorkersController {
   @UseInterceptors(ClassSerializerInterceptor)
   async searchWorkers(
     @Query() query: SearchWorkersQueryDto,
-  ): Promise<SearchWorkersDto[]> {
+  ): Promise<SearchWorkersResponseDto[]> {
     const { search, dentistryId } = query;
     const searchWorkers = await this.workersService.findByFullName(
       search,
       dentistryId,
     );
-    return plainToInstance(SearchWorkersDto, searchWorkers, {
+    return plainToInstance(SearchWorkersResponseDto, searchWorkers, {
       excludeExtraneousValues: true,
     });
   }

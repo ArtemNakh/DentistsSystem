@@ -7,7 +7,7 @@ import { LicenseCommonDto } from '@/license/dto/Response/BaseType/LicenseCommon.
 import { DentistryCommonDto } from '@/dentistry/dto/Response/BaseType/DentistryCommon.response.dto';
 import { AppointmentCommonDto } from '@/appointment/dto/Response/BaseType/AppointmentCommon.response.dto';
 
-export class GetCurrentWorkerDto extends WorkerCommonDto {
+export class GetCurrentWorkerResponseDto extends WorkerCommonDto {
   @Expose()
   @ApiProperty({
     example: true,
