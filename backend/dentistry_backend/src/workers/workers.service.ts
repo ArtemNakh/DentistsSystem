@@ -82,14 +82,14 @@ export class WorkersService {
     return worker;
   }
 
-  public async GetInfoWorkersByDentistry(dentistryId: number) {
+  public async GetInfoDoctorsByDentistry(dentistryId: number) {
     const doctors = await this.workerRepo
       .createQueryBuilder('worker')
       .leftJoinAndSelect('worker.specialty', 'specialty')
       .leftJoinAndSelect('worker.licenses', 'licenses')
       .where('worker.dentistry_id = :dentistryId', { dentistryId })
       .andWhere('worker.active = true')
-      .andWhere('specialty.type = :type', { type: SpecialtyType.DOCTOR }) // фільтр по ролі
+      .andWhere('specialty.type = :type', { type: SpecialtyType.DOCTOR }) 
       .getMany();
 
     const today = new Date();

@@ -38,6 +38,7 @@ import { SearchWorkersResponseDto } from './dto/Response/SearchWorkers.response.
 import { CreateWorkerResponseDto } from './dto/Response/CreateWorker.response.dto';
 import { UpdateWorkerResponseDto } from './dto/Response/UpdateWorker.response.dto';
 import { GetWorkerByIdResponseDto } from './dto/Response/GetWorkerById.response.dto';
+
 @ApiTags('Worker')
 @Controller('workers')
 export class WorkersController {
@@ -105,7 +106,7 @@ export class WorkersController {
   ): Promise<WorkerPublicDto[]> {
     const { dentistryId } = query;
     const workersByDentistry =
-      await this.workersService.GetInfoWorkersByDentistry(dentistryId);
+      await this.workersService.GetInfoDoctorsByDentistry(dentistryId);
     return plainToInstance(WorkerPublicDto, workersByDentistry, {
       excludeExtraneousValues: true,
     });
