@@ -1,6 +1,6 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
-import { IsInt, Min } from 'class-validator';
+import { ApiProperty } from "@nestjs/swagger";
+import { Type } from "class-transformer";
+import { IsInt, Min } from "class-validator";
 
 export class UpdateOperationParamDto {
   @ApiProperty({
@@ -8,8 +8,8 @@ export class UpdateOperationParamDto {
     example: 31,
     type: Number,
   })
-    @Type(() => Number)
-  @IsInt({ message: 'id має бути числом' })
-  @Min(1, { message: 'id має бути більше 0' })
-  operaitonId: number;
+  @Type(() => Number)
+  @IsInt({ message: 'operationId має бути числом' })
+  @Min(1, { message: 'operationId має бути більше 0' })
+  operationId: number;
 }

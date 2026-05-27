@@ -19,9 +19,6 @@ export class OperationListPublicDto {
   @Expose()
   dental_clinic: DentistryPublicDto;
 
-  @Expose()
-  active: boolean;
-
   @Type(() => AppointmentActionPublicDto)
   @Expose()
   appointment_action?: AppointmentActionPublicDto[];

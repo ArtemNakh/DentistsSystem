@@ -1,14 +1,16 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { OperationList } from './entities/operation-list.entity';
 import { Repository } from 'typeorm';
 import { IOperationList } from './entities/operation-list.interface';
-import {
-  CreateOperationDto,
-  UpdateOperationDto,
-} from './dto/CreateOperation-list.dto';
+import { CreateOperationDto } from './dto/CreateOperation-list.dto';
 import { Dentistry } from '../dentistry/entities/dentistry.entity';
 import { DentistryService } from '@/dentistry/dentistry.service';
+import { UpdateOperationDto } from './dto/Update-Operation-list.dto';
 
 @Injectable()
 export class OperationListService {
@@ -21,10 +23,23 @@ export class OperationListService {
     private readonly dentistryService: DentistryService,
   ) {}
 
+  /**
+   * Отримати список усіх операцій.
+   * @returns Масив операцій у форматі IOperationList[]
+   */
   findAll(): Promise<IOperationList[]> {
     return this.operationListRepo.find();
   }
 
+  /**
+   * Створити нову операцію для конкретної стоматології.
+   * Виконує перевірку на існування дубліката за назвою.
+   * @param dto - DTO з даними для створення операції
+   * @param dentistryId - ID стоматології
+   * @throws NotFoundException якщо стоматологію не знайдено
+   * @throws ConflictException якщо операція з такою назвою вже існує
+   * @returns Створена операція
+   */
   async createOperation(
     dto: CreateOperationDto,
     dentistryId: number,
@@ -34,6 +49,21 @@ export class OperationListService {
     });
     if (!dentistry) throw new NotFoundException('Dentistry not found');
 
+    // Перевірка: чи існує операція з такою ж назвою у цій стоматології
+    const existingOperation = await this.operationListRepo.findOne({
+      where: {
+        name: dto.name,
+        dental_clinic: { id: dentistryId },
+      },
+      relations: ['dental_clinic'],
+    });
+
+    if (existingOperation) {
+      throw new ConflictException(
+        `Operation with name "${dto.name}" already exists in this dentistry`,
+      );
+    }
+
     const operation = this.operationListRepo.create({
       ...dto,
       dental_clinic: dentistry,
@@ -41,6 +71,13 @@ export class OperationListService {
     return this.operationListRepo.save(operation);
   }
 
+  /**
+   * Оновити дані існуючої операції.
+   * @param operationId - ID операції
+   * @param dto - DTO з новими даними
+   * @throws NotFoundException якщо операцію не знайдено
+   * @returns Оновлена операція
+   */
   async updateOperation(
     operationId: number,
     dto: UpdateOperationDto,
@@ -55,6 +92,13 @@ export class OperationListService {
     return this.operationListRepo.save(operation);
   }
 
+  /**
+   * Деактивувати операцію (soft delete).
+   * Змінює прапорець active на false.
+   * @param id - ID операції
+   * @throws NotFoundException якщо операцію не знайдено
+   * @returns Об’єкт з success=true та повідомленням
+   */
   async removeOperation(
     id: number,
   ): Promise<{ success: boolean; message: string }> {
@@ -70,11 +114,18 @@ export class OperationListService {
     };
   }
 
+  /**
+   * Пошук операцій за назвою та стоматологією.
+   * Виконує фільтрацію по частинах рядка та ID стоматології.
+   * @param search - рядок пошуку (може бути порожнім)
+   * @param dentistryId - ID стоматології
+   * @throws NotFoundException якщо стоматологію не знайдено
+   * @returns Масив операцій, що відповідають критеріям
+   */
   async findByName(
     search: string,
     dentistryId: number,
   ): Promise<IOperationList[]> {
-
     await this.dentistryService.getDentistryById(dentistryId);
 
     let qb = this.operationListRepo

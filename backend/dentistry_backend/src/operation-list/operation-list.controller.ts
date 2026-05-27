@@ -5,7 +5,6 @@ import {
   Body,
   Param,
   Delete,
-  Req,
   Put,
   UseGuards,
   Query,
@@ -13,37 +12,26 @@ import {
   ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { OperationListService } from './operation-list.service';
-import {
-  ApiBody,
-  ApiOperation,
-  ApiParam,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
-import {
-  CreateOperationDto,
-  UpdateOperationDto,
-} from './dto/CreateOperation-list.dto';
-import { OperationResponseDto } from './dto/Response/CreateOperation-list.response.dto';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { CreateOperationDto } from './dto/CreateOperation-list.dto';
 import { IOperationList } from './entities/operation-list.interface';
 import { Authorization } from '../auth/decorators/Authorization.decorator';
 import { WorkerAuthGuard } from '../auth/guards/workerAuth.guard';
 import { SpecialtyType } from '../specialty/entities/specialty.interface';
 import { IWorker } from '../workers/entities/workers.interface';
-import { Authorized } from '../auth/decorators/authorized.decorator';
-import { Worker } from '@/workers/entities/workers.entity';
 import { UpdateOperationParamDto } from './dto/Params/UpdateOperation.params.dto';
 import { DeleteOperationParamDto } from './dto/Params/DeleteOperation.params.dto';
 import { SearchOperationByDentistryQuery } from './dto/Query/SearchOperationByDentistry.param.dto';
+import { CreateOperationListResponseDto } from './dto/Response/CreateOperationList.response.dto';
+import { plainToInstance } from 'class-transformer';
+import { UpdateOperationDto } from './dto/Update-Operation-list.dto';
+import { UpdateOperationListResponseDto } from './dto/Response/UpdateOperationList.response.dto';
+import { Authorized } from '@/auth/decorators/authorized.decorator';
+import { SearchOperationListByDentistryResponseDto } from './dto/Response/SearchByDentistryOperationList.response.dto';
 @ApiTags('Operation List')
 @Controller('operation-list')
 export class OperationListController {
   constructor(private readonly operationListService: OperationListService) {}
-
-  @Get('test/all')
-  findAll() {
-    return this.operationListService.findAll();
-  }
 
   @Post('create')
   @Authorization(SpecialtyType.ADMIN)
@@ -53,46 +41,7 @@ export class OperationListController {
   @ApiResponse({
     status: 201,
     description: 'Операцію успішно створено',
-    schema: {
-      type: 'object',
-      properties: {
-        id: { type: 'number', example: 31 },
-        name: { type: 'string', example: 'Видалення зуба' },
-        description: { type: 'string', example: 'Хірургічне видалення зуба' },
-        price: { type: 'number', example: 1500 },
-        active: { type: 'boolean', example: true },
-        created_at: {
-          type: 'string',
-          format: 'date-time',
-          example: '2026-05-21T15:59:03.000Z',
-        },
-        updated_at: {
-          type: 'string',
-          format: 'date-time',
-          example: '2026-05-21T15:59:03.000Z',
-        },
-        dental_clinic: {
-          type: 'object',
-          properties: {
-            id: { type: 'number', example: 1 },
-            street: { type: 'string', example: '55438 Heaney Island' },
-            city: { type: 'string', example: 'Beckerworth' },
-            region: { type: 'string', example: 'Florida' },
-            is_active: { type: 'boolean', example: true },
-            created_at: {
-              type: 'string',
-              format: 'date-time',
-              example: '2026-04-08T15:20:33.000Z',
-            },
-            updated_at: {
-              type: 'string',
-              format: 'date-time',
-              example: '2026-04-08T15:20:33.000Z',
-            },
-          },
-        },
-      },
-    },
+    type: CreateOperationListResponseDto,
   })
   @ApiResponse({
     status: 401,
@@ -157,25 +106,47 @@ export class OperationListController {
       },
     },
   })
+  @ApiResponse({
+    status: 409,
+    description: 'Операція з такою назвою вже існує у цій стоматології',
+    schema: {
+      type: 'object',
+      properties: {
+        message: {
+          type: 'string',
+          example:
+            'Operation with name "Видалення зуба" already exists in this dentistry',
+        },
+        error: { type: 'string', example: 'Conflict' },
+        statusCode: { type: 'number', example: 409 },
+      },
+    },
+  })
   @UseInterceptors(ClassSerializerInterceptor)
-  createOperation(
+  async createOperation(
     @Body() dto: CreateOperationDto,
     @Authorized() worker: IWorker,
-  ): Promise<IOperationList> {
+  ): Promise<CreateOperationListResponseDto> {
     const dentistry = worker.dentistry;
-    return this.operationListService.createOperation(dto, dentistry.id);
+    const createdOperation = await this.operationListService.createOperation(
+      dto,
+      dentistry.id,
+    );
+
+    return plainToInstance(CreateOperationListResponseDto, createdOperation, {
+      excludeExtraneousValues: true,
+    });
   }
 
-  @Put(':id')
+  @Put(':operationId')
   @Authorization(SpecialtyType.ADMIN)
   @UseGuards(WorkerAuthGuard)
   @ApiOperation({ summary: 'Оновити операцію' })
-  @ApiParam({ name: 'id', description: 'ID операції', type: Number })
   @ApiBody({ type: UpdateOperationDto })
   @ApiResponse({
     status: 200,
     description: 'Операцію успішно оновлено',
-    type: OperationResponseDto,
+    type: CreateOperationListResponseDto,
   })
   @ApiResponse({
     status: 401,
@@ -241,12 +212,19 @@ export class OperationListController {
     },
   })
   @UseInterceptors(ClassSerializerInterceptor)
-  updateOperation(
+  async updateOperation(
     @Param() params: UpdateOperationParamDto,
     @Body() dto: UpdateOperationDto,
-  ): Promise<IOperationList> {
-    const { operaitonId } = params;
-    return this.operationListService.updateOperation(operaitonId, dto);
+  ): Promise<UpdateOperationListResponseDto> {
+    const { operationId } = params;
+    const updatedOperation = await this.operationListService.updateOperation(
+      operationId,
+      dto,
+    );
+
+    return plainToInstance(UpdateOperationListResponseDto, updatedOperation, {
+      excludeExtraneousValues: true,
+    });
   }
 
   @Delete(':operationId')
@@ -347,53 +325,7 @@ export class OperationListController {
   @ApiResponse({
     status: 200,
     description: 'Операції отримано успішно',
-    schema: {
-      type: 'array',
-      items: {
-        type: 'object',
-        properties: {
-          id: { type: 'number', example: 1 },
-          name: { type: 'string', example: 'Intelligent Plastic Salad' },
-          description: {
-            type: 'string',
-            example:
-              "Boston's most advanced compression wear technology increases muscle oxygenation, stabilizes active muscles",
-          },
-          price: { type: 'number', example: 269 },
-          active: { type: 'boolean', example: true },
-          created_at: {
-            type: 'string',
-            format: 'date-time',
-            example: '2026-04-08T15:20:33.000Z',
-          },
-          updated_at: {
-            type: 'string',
-            format: 'date-time',
-            example: '2026-04-08T15:20:33.000Z',
-          },
-          dental_clinic: {
-            type: 'object',
-            properties: {
-              id: { type: 'number', example: 1 },
-              street: { type: 'string', example: '55438 Heaney Island' },
-              city: { type: 'string', example: 'Beckerworth' },
-              region: { type: 'string', example: 'Florida' },
-              is_active: { type: 'boolean', example: true },
-              created_at: {
-                type: 'string',
-                format: 'date-time',
-                example: '2026-04-08T15:20:33.000Z',
-              },
-              updated_at: {
-                type: 'string',
-                format: 'date-time',
-                example: '2026-04-08T15:20:33.000Z',
-              },
-            },
-          },
-        },
-      },
-    },
+    type: SearchOperationListByDentistryResponseDto,
   })
   @ApiResponse({
     status: 400,
@@ -462,8 +394,20 @@ export class OperationListController {
   @Authorization(SpecialtyType.ADMIN)
   async searchOperations(
     @Query() query: SearchOperationByDentistryQuery,
-  ): Promise<IOperationList[]> {
-    const { dentistryId, search } = query;
-    return this.operationListService.findByName(search, dentistryId);
+    @Authorized() worker: IWorker,
+  ): Promise<SearchOperationListByDentistryResponseDto[]> {
+    const { search } = query;
+    const dentistryId = worker.dentistry.id;
+    const operationList = await this.operationListService.findByName(
+      search,
+      dentistryId,
+    );
+    return plainToInstance(
+      SearchOperationListByDentistryResponseDto,
+      operationList,
+      {
+        excludeExtraneousValues: true,
+      },
+    );
   }
 }
