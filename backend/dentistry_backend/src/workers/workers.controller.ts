@@ -38,11 +38,14 @@ import { SearchWorkersResponseDto } from './dto/Response/SearchWorkers.response.
 import { CreateWorkerResponseDto } from './dto/Response/CreateWorker.response.dto';
 import { UpdateWorkerResponseDto } from './dto/Response/UpdateWorker.response.dto';
 import { GetWorkerByIdResponseDto } from './dto/Response/GetWorkerById.response.dto';
+import { DentistryService } from '@/dentistry/dentistry.service';
 
 @ApiTags('Worker')
 @Controller('workers')
 export class WorkersController {
-  constructor(private readonly workersService: WorkersService) {}
+  constructor(
+    private readonly workersService: WorkersService
+  ) {}
 
   @Get('all-info')
   @ApiOperation({
@@ -177,9 +180,13 @@ export class WorkersController {
     const workersByDentistry =
       await this.workersService.GetWorkersDentistry(dentistryId);
 
-    return plainToInstance(GetWorkersByDentistryResponseDto, workersByDentistry, {
-      excludeExtraneousValues: true,
-    });
+    return plainToInstance(
+      GetWorkersByDentistryResponseDto,
+      workersByDentistry,
+      {
+        excludeExtraneousValues: true,
+      },
+    );
   }
 
   @Get('me')
@@ -205,7 +212,9 @@ export class WorkersController {
   })
   @UseInterceptors(ClassSerializerInterceptor)
   @Authorization()
-  async getCurrentWorker(@Req() req: Request): Promise<GetCurrentWorkerResponseDto> {
+  async getCurrentWorker(
+    @Req() req: Request,
+  ): Promise<GetCurrentWorkerResponseDto> {
     const worker = await this.workersService.findById(
       Number(req.session.workerId),
     );

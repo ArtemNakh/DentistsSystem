@@ -13,11 +13,19 @@ export class ClientService {
     @InjectRepository(Client) private clientRepo: Repository<Client>,
   ) {}
 
+  /**
+   * Отримати список усіх клієнтів.
+   * @returns Масив клієнтів у форматі IClient[]
+   */
   findAll(): Promise<IClient[]> {
     return this.clientRepo.find();
   }
 
-  //new
+  /**
+   * Знайти клієнта за email.
+   * @param email - електронна пошта клієнта
+   * @returns Клієнт або null, якщо не знайдено
+   */
   public async findByEmail(email: string): Promise<Client | null> {
     const client = await this.clientRepo.findOne({
       where: { email },
@@ -25,6 +33,12 @@ export class ClientService {
     return client;
   }
 
+  /**
+   * Створити нового клієнта.
+   * Пароль хешується за допомогою argon2.
+   * @param data - DTO з даними для створення клієнта
+   * @returns Створений клієнт
+   */
   public async createClient(data: CreateClientInput): Promise<Client> {
     const client = await this.clientRepo.create({
       name: data.name,
@@ -42,6 +56,12 @@ export class ClientService {
     return client;
   }
 
+  /**
+   * Знайти клієнта за його ID.
+   * Якщо клієнта не знайдено — кидає NotFoundException.
+   * @param id - унікальний ідентифікатор клієнта
+   * @returns Клієнт з усіма зв’язаними прийомами
+   */
   public async findById(id: number): Promise<IClient> {
     const client = await this.clientRepo.findOne({
       where: { id },
@@ -56,7 +76,12 @@ export class ClientService {
     return client;
   }
 
-  
+  /**
+   * Пошук клієнтів за повним ім’ям.
+   * Пошук виконується по прізвищу, імені, по батькові та комбінації.
+   * @param search - рядок пошуку (може містити кілька слів)
+   * @returns Масив клієнтів, що відповідають критеріям
+   */
   async findByFullName(search: string): Promise<Client[]> {
     if (!search) {
       return this.clientRepo.find();
@@ -81,12 +106,18 @@ export class ClientService {
     return qb.getMany();
   }
 
-
-  
-  async update(id: number, dto: UpdateClientDto): Promise<Client> {
-    const client = await this.clientRepo.findOne({ where: { id } });
+  /**
+   * Оновити дані клієнта за його ID.
+   * Якщо клієнта не знайдено — кидає NotFoundException.
+   * @param clientId - унікальний ідентифікатор клієнта
+   * @param dto - DTO з новими даними для оновлення
+   * @returns Оновлений клієнт
+   */
+  async update(clientId: number, dto: UpdateClientDto): Promise<Client> {
+    
+    const client = await this.clientRepo.findOne({ where: { id: clientId } });
     if (!client) {
-      throw new NotFoundException(`Client with id ${id} not found`);
+      throw new NotFoundException(`Client with id ${clientId} not found`);
     }
 
     Object.assign(client, dto);

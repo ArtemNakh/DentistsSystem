@@ -7,6 +7,6 @@ export class SearchClientsQueryDto {
     example: 'Nathen Nader',
     required: false,
   })
-  @IsString({ message: 'search має бути рядком' })
-  search: string;
+  @IsString({ message: 'fio має бути рядком' })
+  fio: string;
 }

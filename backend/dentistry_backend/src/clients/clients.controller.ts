@@ -27,7 +27,15 @@ import { SpecialtyType } from '@/specialty/entities/specialty.interface';
 import { ClientAuthGuard } from '@/auth/guards/clientAuth.guard';
 import { SearchClientsQueryDto } from './dto/Query/SearchClients.query.dto';
 import { UpdateClientDto } from './dto/UpdateClient.dto';
-import { IClient } from './entities/client.interface';
+import { plainToInstance } from 'class-transformer';
+import { GetClientsResponseDto } from './dto/Response/GetClients.response.dto';
+import { GetCurrentClientResponseDto } from './dto/Response/GetCurrentClient.response.dto';
+import { SearchClientsByFioResponseDto } from './dto/Response/SearchClientsByFio.response.dto';
+import { UpdateClientResponseDto } from './dto/Response/UpdateClient.response.dto';
+import { Authorized } from '@/auth/decorators/authorized.decorator';
+import { Worker } from '@/workers/entities/workers.entity';
+import { Client } from './entities/client.entity';
+
 @ApiTags('Client')
 @Controller('clients')
 export class ClientsController {
@@ -42,43 +50,7 @@ export class ClientsController {
   @ApiResponse({
     status: 200,
     description: 'Список клієнтів успішно отримано',
-    schema: {
-      type: 'array',
-      items: {
-        type: 'object',
-        properties: {
-          id: { type: 'number', example: 1 },
-          name: { type: 'string', example: 'Nathen' },
-          surname: { type: 'string', example: 'Nader' },
-          middle_name: { type: 'string', example: 'Marlowe' },
-          birthdate: {
-            type: 'string',
-            format: 'date',
-            example: '2007-12-25',
-          },
-          blood_resus: { type: 'string', example: 'minus' },
-          blood_group: { type: 'number', example: 1 },
-          phone: { type: 'string', example: '+380681978291' },
-          allergic_diseases: {
-            type: 'string',
-            example: 'ex temporibus eligendi',
-          },
-          email: { type: 'string', example: 'cricetamarinus@gmail.com' },
-          password: { type: 'string', example: 'a2BECurUH6' },
-          isVerified: { type: 'boolean', example: false },
-          created_at: {
-            type: 'string',
-            format: 'date-time',
-            example: '2026-04-08T15:20:33.000Z',
-          },
-          updated_at: {
-            type: 'string',
-            format: 'date-time',
-            example: '2026-05-14T15:20:20.000Z',
-          },
-        },
-      },
-    },
+    type: GetClientsResponseDto,
   })
   @ApiResponse({
     status: 401,
@@ -109,8 +81,11 @@ export class ClientsController {
     },
   })
   @Authorization(SpecialtyType.ADMIN, SpecialtyType.RECEPTION)
-  findAll() {
-    return this.clientsService.findAll();
+  async findAll(): Promise<GetClientsResponseDto[]> {
+    const findedClients = await this.clientsService.findAll();
+    return plainToInstance(GetClientsResponseDto, findedClients, {
+      excludeExtraneousValues: true,
+    });
   }
 
   @Get('me')
@@ -122,40 +97,7 @@ export class ClientsController {
   @ApiResponse({
     status: 200,
     description: 'Дані клієнта успішно отримано',
-    schema: {
-      type: 'object',
-      properties: {
-        id: { type: 'number', example: 1 },
-        name: { type: 'string', example: 'Nathen' },
-        surname: { type: 'string', example: 'Nader' },
-        middle_name: { type: 'string', example: 'Marlowe' },
-        birthdate: {
-          type: 'string',
-          format: 'date',
-          example: '2007-12-25',
-        },
-        blood_resus: { type: 'string', example: 'minus' },
-        blood_group: { type: 'number', example: 1 },
-        phone: { type: 'string', example: '+380681978291' },
-        allergic_diseases: {
-          type: 'string',
-          example: 'ex temporibus eligendi',
-        },
-        email: { type: 'string', example: 'cricetamarinus@gmail.com' },
-        password: { type: 'string', example: 'a2BECurUH6' },
-        isVerified: { type: 'boolean', example: false },
-        created_at: {
-          type: 'string',
-          format: 'date-time',
-          example: '2026-04-08T15:20:33.000Z',
-        },
-        updated_at: {
-          type: 'string',
-          format: 'date-time',
-          example: '2026-05-14T15:20:20.000Z',
-        },
-      },
-    },
+    type: GetCurrentClientResponseDto,
   })
   @ApiResponse({
     status: 401,
@@ -183,15 +125,18 @@ export class ClientsController {
   })
   @UseGuards(ClientAuthGuard)
   @UseInterceptors(ClassSerializerInterceptor)
-  async getCurrentClient(@Req() req: Request) {
-    console.log('se', req.session);
+  async getCurrentClient(
+    @Req() req: Request,
+  ): Promise<GetCurrentClientResponseDto> {
     if (!req.session.clientId) {
       throw new UnauthorizedException('No client session');
     }
     const client = await this.clientsService.findById(
       Number(req.session.clientId),
     );
-    return { ...client };
+    return plainToInstance(GetCurrentClientResponseDto, client, {
+      excludeExtraneousValues: true,
+    });
   }
 
   @Get('search')
@@ -203,42 +148,7 @@ export class ClientsController {
   @ApiResponse({
     status: 200,
     description: 'Клієнти успішно знайдені',
-    schema: {
-      type: 'array',
-      items: {
-        type: 'object',
-        properties: {
-          id: { type: 'number', example: 1 },
-          name: { type: 'string', example: 'Nathen' },
-          surname: { type: 'string', example: 'Nader' },
-          middle_name: { type: 'string', example: 'Marlowe' },
-          birthdate: {
-            type: 'string',
-            format: 'date',
-            example: '2007-12-25',
-          },
-          blood_resus: { type: 'string', example: 'minus' },
-          blood_group: { type: 'number', example: 1 },
-          phone: { type: 'string', example: '+380681978291' },
-          allergic_diseases: {
-            type: 'string',
-            example: 'ex temporibus eligendi',
-          },
-          email: { type: 'string', example: 'cricetamarinus@gmail.com' },
-          isVerified: { type: 'boolean', example: false },
-          created_at: {
-            type: 'string',
-            format: 'date-time',
-            example: '2026-04-08T15:20:33.000Z',
-          },
-          updated_at: {
-            type: 'string',
-            format: 'date-time',
-            example: '2026-05-14T15:20:20.000Z',
-          },
-        },
-      },
-    },
+    type: SearchClientsByFioResponseDto,
   })
   @ApiResponse({
     status: 400,
@@ -286,21 +196,20 @@ export class ClientsController {
   })
   @Authorization()
   @UseInterceptors(ClassSerializerInterceptor)
-  async searchClients(@Query() query: SearchClientsQueryDto) {
-    const { search } = query;
-    return this.clientsService.findByFullName(search);
+  async searchClients(
+    @Query() query: SearchClientsQueryDto,
+  ): Promise<SearchClientsByFioResponseDto[]> {
+    const { fio } = query;
+    const findedClients = await this.clientsService.findByFullName(fio);
+    return plainToInstance(SearchClientsByFioResponseDto, findedClients, {
+      excludeExtraneousValues: true,
+    });
   }
 
-  @Put(':id')
+  @Put('update')
   @ApiOperation({ summary: 'Оновити дані клієнта' })
   @ApiConsumes('application/json')
   @ApiProduces('application/json')
-  @ApiParam({
-    name: 'id',
-    type: Number,
-    description: 'Унікальний ідентифікатор клієнта',
-    example: 12,
-  })
   @ApiBody({
     type: UpdateClientDto,
     description: 'Payload для оновлення клієнта',
@@ -333,24 +242,6 @@ export class ClientsController {
   @ApiResponse({
     status: 200,
     description: 'Клієнт успішно оновлений',
-    schema: {
-      type: 'object',
-      properties: {
-        id: { type: 'number', example: 12 },
-        name: { type: 'string', example: 'John' },
-        surname: { type: 'string', example: 'Doe' },
-        middle_name: { type: 'string', example: 'Michael' },
-        birthdate: { type: 'string', example: '1990-05-15' },
-        blood_resus: { type: 'string', example: 'plus' },
-        blood_group: { type: 'number', example: 2 },
-        phone: { type: 'string', example: '+1234567890' },
-        allergic_diseases: { type: 'string', example: 'Pollen' },
-        email: { type: 'string', example: 'john.doe@example.com' },
-        isVerified: { type: 'boolean', example: true },
-        created_at: { type: 'string', example: '2024-01-01T12:00:00Z' },
-        updated_at: { type: 'string', example: '2024-05-01T12:00:00Z' },
-      },
-    },
   })
   @ApiResponse({
     status: 400,
@@ -410,9 +301,9 @@ export class ClientsController {
   })
   @UseGuards(ClientAuthGuard)
   async updateClient(
-    @Param('id') id: number,
     @Body() dto: UpdateClientDto,
-  ): Promise<IClient> {
-    return this.clientsService.update(id, dto);
+    @Authorized() curClient: Client,
+  ): Promise<void> {
+    await this.clientsService.update(curClient.id, dto);
   }
 }

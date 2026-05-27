@@ -51,7 +51,7 @@ export class ClientEntity extends BaseEntity {
   *updateClientSaga(action: UpdateClientAction) {
     yield call(
       this.xUpdate.bind(this),
-      `/clients/` + action.payload.id,
+      `/clients/update`,
       action.payload,
       ActionReducer.Update,
     );
