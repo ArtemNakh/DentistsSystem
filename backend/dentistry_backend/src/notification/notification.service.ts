@@ -225,12 +225,6 @@ export class NotificationService {
     }
   }
 
-  // @Cron('0 9 * * *')
-  // @Cron('0 * * * * *')
-  // async handleDailyReminder() {
-  //   // тут викликаєш метод з потрібним dentistryId
-  //   await this.remindAboutAppointment({ dentistryId: 1 });
-  // }
 
   // повідомлення про неоплачену операцію після н-кількості днів
   async remindAboutPay({ dentistryId }: { dentistryId: number }) {

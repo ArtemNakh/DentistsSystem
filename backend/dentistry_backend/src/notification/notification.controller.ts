@@ -4,25 +4,20 @@ import {
   Controller,
   Get,
   Param,
-  ParseIntPipe,
   Post,
   Query,
   UseInterceptors,
 } from '@nestjs/common';
 import { NotificationService } from './notification.service';
-import {
-  ApiBody,
-  ApiOperation,
-  ApiQuery,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { INotification } from './entity/notification.interface';
 import { Authorization } from '@/auth/decorators/Authorization.decorator';
 import { SpecialtyType } from '@/specialty/entities/specialty.interface';
 import { RemindPaymentParamDto } from './dto/Params/RemindPayment.params.dto';
 import { RemindAppointmentParamDto } from './dto/Params/RemindAppointment.params.dto';
 import { GetNearestNotificationsDto } from './dto/Query/GetNearestNotifications.query.dto';
+import { GetAllNotificationsResponseDto } from './dto/Response/GetAllNotifications.response.dto';
+import { plainToInstance } from 'class-transformer';
 
 @ApiTags('Notifications')
 @Controller('notification')
@@ -191,90 +186,8 @@ export class NotificationController {
   @ApiResponse({
     status: 200,
     description: 'Нагадування успішно відправлені',
-    schema: {
-      type: 'array',
-      items: {
-        type: 'object',
-        properties: {
-          id: { type: 'number', example: 1 },
-          appointment: {
-            type: 'object',
-            properties: {
-              id: { type: 'number', example: 1 },
-              client: {
-                type: 'object',
-                properties: {
-                  id: { type: 'number', example: 1 },
-                  name: { type: 'string', example: 'Nathen' },
-                  surname: { type: 'string', example: 'Nader' },
-                  middle_name: { type: 'string', example: 'Marlowe' },
-                  birthdate: { type: 'string', example: '2007-12-25' },
-                  blood_resus: { type: 'string', example: 'minus' },
-                  blood_group: { type: 'number', example: 1 },
-                  phone: { type: 'string', example: '+380681978291' },
-                  allergic_diseases: {
-                    type: 'string',
-                    example: 'ex temporibus eligendi',
-                  },
-                  email: {
-                    type: 'string',
-                    example: 'cricetamarinus@gmail.com',
-                  },
-                  isVerified: { type: 'boolean', example: false },
-                },
-              },
-              dentist: {
-                type: 'object',
-                properties: {
-                  id: { type: 'number', example: 65 },
-                  name: { type: 'string', example: 'Іван' },
-                  surname: { type: 'string', example: 'Петренко' },
-                  middle_name: { type: 'string', example: 'Олегович' },
-                  specialty: {
-                    type: 'object',
-                    properties: {
-                      id: { type: 'number', example: 2 },
-                      name: {
-                        type: 'string',
-                        example: 'Global Operations Administrator',
-                      },
-                      type: { type: 'string', example: 'doctor' },
-                    },
-                  },
-                },
-              },
-              appointment_date: {
-                type: 'string',
-                example: '2026-05-14T08:00:00.000Z',
-              },
-              notes: {
-                type: 'string',
-                example: 'Accusamus omnis minus libero...',
-              },
-              status: { type: 'string', example: 'wait_paid' },
-              payment: {
-                type: 'object',
-                properties: {
-                  id: { type: 'number', example: 1 },
-                  amount: { type: 'number', example: 269 },
-                  status_paid: { type: 'string', example: 'not_paid' },
-                  method_pay: { type: 'string', example: 'card' },
-                },
-              },
-            },
-          },
-          message: {
-            type: 'string',
-            example:
-              'Нагадування: завтра у вас операція "Accusamus..." у лікаря O\'Reilly',
-          },
-          is_send: { type: 'boolean', example: false },
-          type_remaind: { type: 'string', example: 'appointment_reminder' },
-          created_at: { type: 'string', example: '2026-05-17T18:20:45.000Z' },
-          updated_at: { type: 'string', example: '2026-05-17T13:17:15.000Z' },
-        },
-      },
-    },
+    type: GetAllNotificationsResponseDto,
+    isArray: true,
   })
   @ApiResponse({
     status: 200,
@@ -344,7 +257,7 @@ export class NotificationController {
   @UseInterceptors(ClassSerializerInterceptor)
   async getNearest(
     @Query() query: GetNearestNotificationsDto,
-  ): Promise<INotification[]> {
+  ): Promise<GetAllNotificationsResponseDto[]> {
     const { date, dentistryId } = query;
     const parsedDate = new Date(date);
     if (isNaN(parsedDate.getTime())) {
@@ -356,7 +269,8 @@ export class NotificationController {
       dentistryId: dentistryId,
     });
 
-    console.log('notif', notifications);
-    return notifications;
+    return plainToInstance(GetAllNotificationsResponseDto, notifications, {
+      excludeExtraneousValues: true,
+    });
   }
 }
