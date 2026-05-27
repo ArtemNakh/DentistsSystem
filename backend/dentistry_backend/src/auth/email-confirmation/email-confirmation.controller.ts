@@ -12,6 +12,8 @@ import { EmailConfirmationService } from './email-confirmation.service';
 import { ConfirmationDto } from './dto/confirmation.dto';
 import { Request } from 'express';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { NewVerificationResponseDto } from './dto/Response/NewVerification.response.dto';
+import { plainToInstance } from 'class-transformer';
 
 @ApiTags('Email Confirmation')
 @Controller('email-confirmation')
@@ -41,26 +43,7 @@ export class EmailConfirmationController {
     status: 200,
     description:
       'Email успішно підтверджено, клієнт позначений як верифікований.',
-    schema: {
-      type: 'object',
-      properties: {
-        id: { type: 'number', example: 12 },
-        name: { type: 'string', example: 'Rosemarie' },
-        surname: { type: 'string', example: 'Powlowski-Bednar' },
-        email: { type: 'string', example: 'Jacques_Hackett@hotmail.com' },
-        isVerified: { type: 'boolean', example: true },
-        created_at: {
-          type: 'string',
-          format: 'date-time',
-          example: '2026-04-08T15:20:33.000Z',
-        },
-        updated_at: {
-          type: 'string',
-          format: 'date-time',
-          example: '2026-05-21T15:20:33.000Z',
-        },
-      },
-    },
+    type: NewVerificationResponseDto,
   })
   @ApiResponse({
     status: 400,
@@ -98,7 +81,13 @@ export class EmailConfirmationController {
   public async newVerification(
     @Req() req: Request,
     @Body() dto: ConfirmationDto,
-  ) {
-    return this.emailConfirmationService.newVerification(req, dto);
+  ): Promise<NewVerificationResponseDto> {
+    const client = await this.emailConfirmationService.newVerification(
+      req,
+      dto,
+    );
+    return plainToInstance(NewVerificationResponseDto, client, {
+      excludeExtraneousValues: true,
+    });
   }
 }
