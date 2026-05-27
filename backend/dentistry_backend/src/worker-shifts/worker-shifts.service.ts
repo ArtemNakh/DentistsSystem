@@ -1,6 +1,10 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { WorkerShifts } from './entities/worker-shifts.entity';
-import { Between, Repository } from 'typeorm';
+import { Between, LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Worker } from '@/workers/entities/workers.entity';
 import { CreateWorkerShiftDto } from './dto/CreateWorker-shift.dto';
@@ -16,14 +20,22 @@ export class WorkerShiftsService {
 
     private readonly workerService: WorkersService,
   ) {}
-
+  /**
+   * Отримати всі зміни працівників.
+   * @returns Масив змін з інформацією про працівників та їх спеціальність
+   */
   findAll(): Promise<WorkerShifts[]> {
     return this.workerShiftsRepo.find({
       relations: ['worker', 'worker.specialty'],
     });
   }
 
-  // Отримати розклад на 3 місяці наперед
+  /**
+   * Отримати всі зміни конкретного працівника.
+   * @param workerId - ID працівника
+   * @throws NotFoundException якщо працівника не знайдено
+   * @returns Масив змін цього працівника, відсортованих за датою
+   */
   async findShiftsForWorker(workerId: number): Promise<WorkerShifts[]> {
     await this.workerService.findById(workerId);
 
@@ -37,10 +49,11 @@ export class WorkerShiftsService {
   }
 
   /**
-   * Отримати кількість неробочих днів для всіх лікарів у стоматології
-   * @param dentistryId - стоматологія
+   * Отримати кількість неробочих днів для всіх лікарів у стоматології.
+   * @param dentistryId - ID стоматології
    * @param startDate - початок періоду
    * @param endDate - кінець періоду
+   * @returns Масив об’єктів { worker, weekendDays }
    */
   async getWorkersWeekendByDentistry(
     dentistryId: number,
@@ -86,7 +99,12 @@ export class WorkerShiftsService {
   }
 
   /**
-   * Отримати кількість неробочих днів для конкретного лікаря
+   * Отримати кількість неробочих днів для конкретного лікаря.
+   * @param workerId - ID працівника
+   * @param startDate - початок періоду
+   * @param endDate - кінець періоду
+   * @throws Error якщо працівника не знайдено
+   * @returns Об’єкт { worker, weekendDays }
    */
   async getWeekendByWorker(
     workerId: number,
@@ -126,6 +144,14 @@ export class WorkerShiftsService {
     return { worker, weekendDays };
   }
 
+  /**
+   * Створити нову зміну для працівника.
+   * Виконує перевірку на дублювання та перетин часу.
+   * @param dto - DTO з даними для створення зміни
+   * @throws NotFoundException якщо працівника не знайдено
+   * @throws ConflictException якщо зміна дублюється або перетинається з існуючою
+   * @returns Створена зміна
+   */
   async createShift(dto: CreateWorkerShiftDto): Promise<WorkerShifts> {
     const worker = await this.workerRepo.findOne({
       where: { id: dto.workerId },
@@ -147,10 +173,33 @@ export class WorkerShiftsService {
         `Shift for worker ${dto.workerId} on ${dto.shift_date} from ${dto.start_time} to ${dto.end_time} already exists`,
       );
     }
+
+    // Перевірка на перетин часу
+    const overlappingShift = await this.workerShiftsRepo.findOne({
+      where: {
+        worker: { id: dto.workerId },
+        shift_date: dto.shift_date,
+        // умова: новий інтервал перетинається з існуючим
+        start_time: LessThanOrEqual(dto.end_time),
+        end_time: MoreThanOrEqual(dto.start_time),
+      },
+    });
+
+    if (overlappingShift) {
+      throw new ConflictException(
+        `Shift for worker ${dto.workerId} on ${dto.shift_date} overlaps with existing shift (${overlappingShift.start_time} - ${overlappingShift.end_time})`,
+      );
+    }
     const shift = this.workerShiftsRepo.create({ ...dto, worker });
     return this.workerShiftsRepo.save(shift);
   }
 
+  /**
+   * Видалити зміну.
+   * @param shiftId - ID зміни
+   * @throws NotFoundException якщо зміну не знайдено
+   * @returns Об’єкт з success=true та повідомленням
+   */
   async removeShift(
     shiftId: number,
   ): Promise<{ success: boolean; message: string }> {
@@ -166,6 +215,11 @@ export class WorkerShiftsService {
     };
   }
 
+  /**
+   * Отримати всі зміни працівників конкретної стоматології.
+   * @param clinicId - ID стоматології
+   * @returns Масив змін з інформацією про працівників, їх стоматологію та спеціальність
+   */
   async getShiftsByClinicId(clinicId: number): Promise<IWorkerShifts[]> {
     return this.workerShiftsRepo.find({
       relations: ['worker', 'worker.dentistry', 'worker.specialty'],

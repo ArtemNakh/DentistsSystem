@@ -5,7 +5,6 @@ import {
   Delete,
   Get,
   Param,
-  ParseIntPipe,
   Post,
   Query,
   UseInterceptors,
@@ -31,18 +30,18 @@ import { GetShiftsByClinicParamDto } from './dto/Params/GetShiftsByClinic.params
 import { ClientOrWorker } from '@/auth/decorators/ClientOrWorker.decorator';
 import { Authorization } from '@/auth/decorators/Authorization.decorator';
 import { SpecialtyType } from '@/specialty/entities/specialty.interface';
+import { GetShiftsByWorkerResponseDto } from './dto/Response/GetShiftsByWorker.response.dto';
+import { plainToInstance } from 'class-transformer';
+import { GetWorkersWeekendResponseDto } from './dto/Response/GetWorkersWeekend.response.dto';
+import { GetWeekendByWorkerResponseDto } from './dto/Response/GetWeekendsByWorker.response.dto';
+import { CreateWorkerShiftResponseDto } from './dto/Response/CreateShift.response.dto';
+import { GetShiftsByDentistryResponseDto } from './dto/Response/GetShiftsByDentistry.response.dto';
 
 @ApiTags('Workers shifts')
 @Controller('worker-shifts')
 export class WorkerShiftsController {
   constructor(private readonly workerShiftsService: WorkerShiftsService) {}
 
-  @Get('test/all')
-  findAll() {
-    return this.workerShiftsService.findAll();
-  }
-
-  // Ендпоінт для отримання розкладу на 3 місяці
   @Get(':workerId/shifts')
   @ApiOperation({
     summary: 'Отримати розклад змін працівника',
@@ -58,47 +57,8 @@ export class WorkerShiftsController {
   @ApiResponse({
     status: 200,
     description: 'Список змін працівника',
-    schema: {
-      type: 'array',
-      items: {
-        type: 'object',
-        properties: {
-          id: { type: 'number', example: 12 },
-          worker: {
-            type: 'object',
-            properties: {
-              id: { type: 'number', example: 1 },
-              name: { type: 'string', example: 'Іван' },
-              surname: { type: 'string', example: 'Петренко' },
-              specialty: {
-                type: 'object',
-                properties: {
-                  id: { type: 'number', example: 3 },
-                  title: { type: 'string', example: 'Стоматолог-терапевт' },
-                },
-              },
-            },
-          },
-          shift_date: {
-            type: 'string',
-            format: 'date',
-            example: '2026-06-01',
-          },
-          start_time: { type: 'string', example: '09:00:00' },
-          end_time: { type: 'string', example: '17:00:00' },
-          created_at: {
-            type: 'string',
-            format: 'date-time',
-            example: '2026-05-20T12:00:00.000Z',
-          },
-          updated_at: {
-            type: 'string',
-            format: 'date-time',
-            example: '2026-05-20T12:00:00.000Z',
-          },
-        },
-      },
-    },
+    type: GetShiftsByWorkerResponseDto,
+    isArray: true,
   })
   @ApiResponse({
     status: 400,
@@ -157,15 +117,18 @@ export class WorkerShiftsController {
   })
   @ClientOrWorker()
   @UseInterceptors(ClassSerializerInterceptor)
-  async getShifts(@Param() params: GetShifstsByWorkerParamDto) {
+  async getShifts(
+    @Param() params: GetShifstsByWorkerParamDto,
+  ): Promise<GetShiftsByWorkerResponseDto[]> {
     const { workerId } = params;
-    return this.workerShiftsService.findShiftsForWorker(workerId);
+    const workerShifts =
+      await this.workerShiftsService.findShiftsForWorker(workerId);
+
+    return plainToInstance(GetShiftsByWorkerResponseDto, workerShifts, {
+      excludeExtraneousValues: true,
+    });
   }
 
-  /**
-   * GET /appointment/workers-weekend/:dentistryId?start=2026-03-01&end=2026-03-31
-   * Повертає список лікарів з кількістю неробочих днів за період
-   */
   @Get(':dentistryId')
   @ApiOperation({
     summary: 'Отримати кількість неробочих днів лікарів',
@@ -175,32 +138,8 @@ export class WorkerShiftsController {
   @ApiResponse({
     status: 200,
     description: 'Список лікарів з кількістю неробочих днів',
-    schema: {
-      type: 'array',
-      items: {
-        type: 'object',
-        properties: {
-          worker: {
-            type: 'object',
-            properties: {
-              id: { type: 'number', example: 1 },
-              name: { type: 'string', example: 'Іван' },
-              surname: { type: 'string', example: 'Петренко' },
-              middle_name: { type: 'string', example: 'Олегович' },
-              phone: { type: 'string', example: '+380671234567' },
-              specialty: {
-                type: 'object',
-                properties: {
-                  id: { type: 'number', example: 3 },
-                  title: { type: 'string', example: 'Стоматолог-терапевт' },
-                },
-              },
-            },
-          },
-          weekendDays: { type: 'number', example: 5 },
-        },
-      },
-    },
+    type: GetWorkersWeekendResponseDto,
+    isArray: true,
   })
   @ApiResponse({
     status: 400,
@@ -262,16 +201,20 @@ export class WorkerShiftsController {
   async getWorkersWeekend(
     @Param() params: GetWorkersWeekendParamDto,
     @Query() query: GetWorkersWeekendQueryDto,
-  ) {
+  ): Promise<GetWorkersWeekendResponseDto[]> {
     const { dentistryId } = params;
     const { start, end } = query;
     const startDate = new Date(start);
     const endDate = new Date(end);
-    return this.workerShiftsService.getWorkersWeekendByDentistry(
-      dentistryId,
-      startDate,
-      endDate,
-    );
+    const dentistryShifts =
+      await this.workerShiftsService.getWorkersWeekendByDentistry(
+        dentistryId,
+        startDate,
+        endDate,
+      );
+    return plainToInstance(GetWorkersWeekendResponseDto, dentistryShifts, {
+      excludeExtraneousValues: true,
+    });
   }
 
   /**
@@ -293,29 +236,7 @@ export class WorkerShiftsController {
   @ApiResponse({
     status: 200,
     description: 'Кількість неробочих днів лікаря',
-    schema: {
-      type: 'object',
-      properties: {
-        worker: {
-          type: 'object',
-          properties: {
-            id: { type: 'number', example: 5 },
-            name: { type: 'string', example: 'Іван' },
-            surname: { type: 'string', example: 'Петренко' },
-            middle_name: { type: 'string', example: 'Олегович' },
-            phone: { type: 'string', example: '+380671234567' },
-            specialty: {
-              type: 'object',
-              properties: {
-                id: { type: 'number', example: 3 },
-                title: { type: 'string', example: 'Стоматолог-терапевт' },
-              },
-            },
-          },
-        },
-        weekendDays: { type: 'number', example: 7 },
-      },
-    },
+    type: GetWeekendByWorkerResponseDto,
   })
   @ApiResponse({
     status: 400,
@@ -377,16 +298,20 @@ export class WorkerShiftsController {
   async getWeekendByWorker(
     @Param() params: GetWeekendsByWorkerParamDto,
     @Query() query: GetWeekendsByWorkerQueryDto,
-  ) {
+  ): Promise<GetWeekendByWorkerResponseDto> {
     const { workerId } = params;
     const { start, end } = query;
     const startDate = new Date(start);
     const endDate = new Date(end);
-    return this.workerShiftsService.getWeekendByWorker(
+    const weekendsByWorker = await this.workerShiftsService.getWeekendByWorker(
       workerId,
       startDate,
       endDate,
     );
+
+    return plainToInstance(GetWeekendByWorkerResponseDto, weekendsByWorker, {
+      excludeExtraneousValues: true,
+    });
   }
 
   @Post('create')
@@ -399,7 +324,7 @@ export class WorkerShiftsController {
   @ApiResponse({
     status: 201,
     description: 'Зміну успішно створено',
-    type: WorkerShiftResponseDto,
+    type: CreateWorkerShiftResponseDto,
   })
   @ApiResponse({
     status: 400,
@@ -457,8 +382,14 @@ export class WorkerShiftsController {
     },
   })
   @UseInterceptors(ClassSerializerInterceptor)
-  createShift(@Body() dto: CreateWorkerShiftDto): Promise<IWorkerShifts> {
-    return this.workerShiftsService.createShift(dto);
+  async createShift(
+    @Body() dto: CreateWorkerShiftDto,
+  ): Promise<CreateWorkerShiftResponseDto> {
+    const createdShift = await this.workerShiftsService.createShift(dto);
+
+    return plainToInstance(CreateWorkerShiftResponseDto, createdShift, {
+      excludeExtraneousValues: true,
+    });
   }
 
   @Delete(':shiftId')
@@ -547,11 +478,11 @@ export class WorkerShiftsController {
   })
   @Authorization(SpecialtyType.ADMIN)
   @UseInterceptors(ClassSerializerInterceptor)
-  removeShift(
+  async removeShift(
     @Param() params: RemoveShiftsParamDto,
   ): Promise<{ success: boolean; message: string }> {
     const { shiftId } = params;
-    return this.workerShiftsService.removeShift(shiftId);
+    return await this.workerShiftsService.removeShift(shiftId);
   }
 
   @Get('clinic/:clinicId')
@@ -569,56 +500,8 @@ export class WorkerShiftsController {
   @ApiResponse({
     status: 200,
     description: 'Список змін для стоматології успішно отримано',
-    schema: {
-      type: 'array',
-      items: {
-        type: 'object',
-        properties: {
-          id: { type: 'number', example: 101 },
-          worker: {
-            type: 'object',
-            properties: {
-              id: { type: 'number', example: 12 },
-              name: { type: 'string', example: 'Іван' },
-              surname: { type: 'string', example: 'Петренко' },
-              middle_name: { type: 'string', example: 'Олегович' },
-              phone: { type: 'string', example: '+380671234567' },
-              dentistry: {
-                type: 'object',
-                properties: {
-                  id: { type: 'number', example: 1 },
-                  name: { type: 'string', example: 'Стоматологія "Здоровʼя"' },
-                },
-              },
-              specialty: {
-                type: 'object',
-                properties: {
-                  id: { type: 'number', example: 3 },
-                  title: { type: 'string', example: 'Стоматолог-терапевт' },
-                },
-              },
-            },
-          },
-          shift_date: {
-            type: 'string',
-            format: 'date',
-            example: '2026-06-01',
-          },
-          start_time: { type: 'string', example: '09:00:00' },
-          end_time: { type: 'string', example: '17:00:00' },
-          created_at: {
-            type: 'string',
-            format: 'date-time',
-            example: '2026-05-20T12:00:00.000Z',
-          },
-          updated_at: {
-            type: 'string',
-            format: 'date-time',
-            example: '2026-05-20T12:00:00.000Z',
-          },
-        },
-      },
-    },
+    type: GetShiftsByDentistryResponseDto,
+    isArray: true,
   })
   @ApiResponse({
     status: 400,
@@ -691,8 +574,12 @@ export class WorkerShiftsController {
   @Authorization(SpecialtyType.ADMIN)
   async getShiftsByClinic(
     @Param() params: GetShiftsByClinicParamDto,
-  ): Promise<IWorkerShifts[]> {
+  ): Promise<GetShiftsByDentistryResponseDto[]> {
     const { clinicId } = params;
-    return this.workerShiftsService.getShiftsByClinicId(clinicId);
+    const shifts = await this.workerShiftsService.getShiftsByClinicId(clinicId);
+
+    return plainToInstance(GetShiftsByDentistryResponseDto, shifts, {
+      excludeExtraneousValues: true,
+    });
   }
 }
