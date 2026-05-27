@@ -25,6 +25,9 @@ import {
 } from '@nestjs/swagger';
 import { LoginWorkerDto } from './dto/loginWorker.dto';
 import { RegisterWorkerDto } from '@/workers/dto/registerWorker.dto';
+import { LoginClientResponseDto } from './dto/response/LoginClient.response.dto';
+import { plainToInstance } from 'class-transformer';
+import { LoginWorkerResponseDto } from './dto/response/LoginWorker.response.dto copy';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -166,24 +169,7 @@ export class AuthController {
   @ApiResponse({
     status: 200,
     description: 'Клієнт успішно авторизований та створена сесія',
-    schema: {
-      type: 'object',
-      properties: {
-        access_token: {
-          type: 'string',
-          example: 'jwt.token.here',
-        },
-        client: {
-          type: 'object',
-          properties: {
-            id: { type: 'number', example: 1 },
-            name: { type: 'string', example: 'John Doe' },
-            email: { type: 'string', example: 'john.doe@example.com' },
-            isVerified: { type: 'boolean', example: true },
-          },
-        },
-      },
-    },
+    type: LoginClientResponseDto,
   })
   @ApiResponse({
     status: 400,
@@ -249,8 +235,15 @@ export class AuthController {
     },
   })
   @UseInterceptors(ClassSerializerInterceptor)
-  public async login(@Req() req: Request, @Body() dto: LoginClientDto) {
-    return this.authService.loginClient(req, dto);
+  public async login(
+    @Req() req: Request,
+    @Body() dto: LoginClientDto,
+  ): Promise<LoginClientResponseDto> {
+    const authClient = await this.authService.loginClient(req, dto);
+
+    return plainToInstance(LoginClientResponseDto, authClient, {
+      excludeExtraneousValues: true,
+    });
   }
 
   @Post('logout')
@@ -354,37 +347,7 @@ export class AuthController {
   @ApiResponse({
     status: 200,
     description: 'Працівник успішно авторизований',
-    schema: {
-      type: 'object',
-      properties: {
-        authToken: {
-          type: 'string',
-          example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
-        },
-        worker: {
-          type: 'object',
-          properties: {
-            id: { type: 'number', example: 1 },
-            name: { type: 'string', example: 'Іван' },
-            surname: { type: 'string', example: 'Петренко' },
-            specialty: {
-              type: 'object',
-              properties: {
-                id: { type: 'number', example: 1 },
-                title: { type: 'string', example: 'Стоматолог-хірург' },
-              },
-            },
-            dentistry: {
-              type: 'object',
-              properties: {
-                id: { type: 'number', example: 2 },
-                name: { type: 'string', example: 'Dentistry Clinic №1' },
-              },
-            },
-          },
-        },
-      },
-    },
+    type: LoginWorkerResponseDto,
   })
   @ApiResponse({
     status: 400,
@@ -445,8 +408,15 @@ export class AuthController {
     },
   })
   @UseInterceptors(ClassSerializerInterceptor)
-  public async loginWorker(@Req() req: Request, @Body() dto: LoginWorkerDto) {
-    return await this.authService.loginWorker(req, dto);
+  public async loginWorker(
+    @Req() req: Request,
+    @Body() dto: LoginWorkerDto,
+  ): Promise<LoginWorkerResponseDto> {
+    const authWorker = await this.authService.loginWorker(req, dto);
+
+    return plainToInstance(LoginWorkerResponseDto, authWorker, {
+      excludeExtraneousValues: true,
+    });
   }
 
   @Post('logoutWorker')
