@@ -45,9 +45,9 @@ export class PaymentService {
         'appointment.client',
         'appointment.dentist',
         'appointment.dentist.specialty',
-        'appointment.dentistry',
-        'appointment.actions',
-        'appointment.operation_list',
+        'appointment.dentist.dentistry',
+        'appointment.appointment_actions',
+        'appointment.appointment_actions.operation',
       ],
       order: { created_at: 'DESC' },
     });

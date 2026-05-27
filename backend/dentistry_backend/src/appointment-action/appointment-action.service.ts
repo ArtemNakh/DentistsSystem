@@ -61,24 +61,26 @@ export class AppointmentActionService {
       }
 
       // 3. Отримуємо всі операції
-      const operations = await operationRepo.findBy({ id: In(dto.actions) });
+      const operations = await operationRepo.find({
+        where: { id: In(dto.actions) },
+        relations: ['dental_clinic'],
+      });
       if (operations.length !== dto.actions.length) {
         throw new NotFoundException('Some operations not found');
       }
 
       // 3.1 Перевірка: операції повинні належати стоматології лікаря
-    const invalidOperations = operations.filter(
-  (op) => op.dental_clinic?.id !== appointment.dentist.dentistry.id,
-);
-
-if (invalidOperations.length > 0) {
-  throw new BadRequestException(
-    `Some operations do not belong to this dentistry: ${invalidOperations
-      .map((o) => o.id)
-      .join(', ')}`
-  );
-}
-
+      const invalidOperations = operations.filter(
+        (op) => op.dental_clinic?.id !== appointment.dentist.dentistry.id,
+      );
+      console.log('invalidOperations', invalidOperations);
+      if (invalidOperations.length > 0) {
+        throw new BadRequestException(
+          `Some operations do not belong to this dentistry: ${invalidOperations
+            .map((o) => o.id)
+            .join(', ')}`,
+        );
+      }
 
       // 4. Перевірка: чи існує payment для цього appointment
       const existingPayment = await paymentRepo.findOne({

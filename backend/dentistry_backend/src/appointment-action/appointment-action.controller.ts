@@ -12,6 +12,9 @@ import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Authorization } from '@/auth/decorators/Authorization.decorator';
 import { SpecialtyType } from '@/specialty/entities/specialty.interface';
 
+import { plainToInstance } from 'class-transformer';
+import { CompleteOperationResponseDto } from './dto/Response/CompleteOperation.response.dto';
+
 @Controller('appointment-action')
 export class AppointmentActionController {
   constructor(
@@ -43,73 +46,7 @@ export class AppointmentActionController {
   @ApiResponse({
     status: 201,
     description: 'Повертає оновлений appointment з діями та створеним payment',
-    schema: {
-      type: 'object',
-      properties: {
-        appointment: {
-          type: 'object',
-          properties: {
-            id: { type: 'number', example: 12 },
-            status: { type: 'string', example: 'wait_paid' },
-            appointment_date: {
-              type: 'string',
-              format: 'date-time',
-              example: '2026-03-31T21:00:00Z',
-            },
-            client: {
-              type: 'object',
-              properties: {
-                id: { type: 'number', example: 1 },
-                surname: { type: 'string', example: 'Іваненко' },
-                name: { type: 'string', example: 'Іван' },
-              },
-            },
-            dentist: {
-              type: 'object',
-              properties: {
-                id: { type: 'number', example: 2 },
-                surname: { type: 'string', example: 'Петренко' },
-                name: { type: 'string', example: 'Петро' },
-              },
-            },
-          },
-        },
-
-        actions: {
-          type: 'array',
-          items: {
-            type: 'object',
-            properties: {
-              id: { type: 'number', example: 101 },
-              operation: {
-                type: 'object',
-                properties: {
-                  id: { type: 'number', example: 3 },
-                  name: { type: 'string', example: 'Пломбування' },
-                  price: { type: 'number', example: 500 },
-                },
-              },
-            },
-          },
-        },
-
-        payment: {
-          type: 'object',
-          properties: {
-            id: { type: 'number', example: 55 },
-            appointment: { type: 'number', example: 12 },
-            amount: { type: 'number', example: 800 },
-            status_paid: { type: 'string', example: 'not_paid' },
-            method_pay: { type: 'string', example: 'CARD' },
-            payment_date: {
-              type: 'string',
-              format: 'date-time',
-              example: '2026-03-31T22:00:00Z',
-            },
-          },
-        },
-      },
-    },
+    type: CompleteOperationResponseDto,
   })
   @ApiResponse({
     status: 400,
@@ -210,7 +147,14 @@ export class AppointmentActionController {
   })
   @UseInterceptors(ClassSerializerInterceptor)
   @Authorization(SpecialtyType.DOCTOR)
-  async addActionsAndPayment(@Body() dto: CreateAppointmentActionsDto) {
-    return this.appointmentActionService.addActionsAndPayment(dto);
+  async addActionsAndPayment(
+    @Body() dto: CreateAppointmentActionsDto,
+  ): Promise<CompleteOperationResponseDto> {
+    const completeAppointment =
+      await this.appointmentActionService.addActionsAndPayment(dto);
+
+    return plainToInstance(CompleteOperationResponseDto, completeAppointment, {
+      excludeExtraneousValues: true,
+    });
   }
 }
