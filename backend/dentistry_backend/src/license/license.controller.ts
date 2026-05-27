@@ -23,7 +23,6 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { CreateLicenseDto } from './dto/CreateLicense.dto';
-import { LicenseResponseDto } from './dto/swagger/CreateLicense.response.dto';
 import { License } from './entities/license.entity';
 import { ILicense } from './entities/license.interface';
 import { UpdateLicenseDto } from './dto/UpdateLicense.dto';
@@ -35,16 +34,18 @@ import { GetLicensesByDentistryParamDto } from './dto/Params/GetLicensesByDentis
 import { GetLicensesByWorkerParamDto } from './dto/Params/GetLicensesByWorker.param.dto';
 import { GetExpiringLicensesWorkerQueryDto } from './dto/Query/GetExpiringLicensesWorker.query.dto';
 import { GetExpiringLicensesDentistryQueryDto } from './dto/Query/GetExpiringLicensesDentistry.query.dto';
+import { CreateLicenseResponseDto } from './dto/Response/CreateLicense.response.dto';
+import { plainToInstance } from 'class-transformer';
+import { UpdateLicenseResponseDto } from './dto/Response/UpdateLicense.response.dto';
+import { GetLicensesByDentistryResponseDto } from './dto/Response/GetLicensesByDentistry.response.dto';
+import { GetLicensesByWorkerResponseDto } from './dto/Response/GetLicensesByWorker.response.dto';
+import { GetExpirationLicensesToWorkerResponseDto } from './dto/Response/GetExpirationLicensesToWorker.response.dto';
+import { GetExpirationLicensesToDentistryResponseDto } from './dto/Response/GetExpirationLicensesToDentistry.response.dto';
 
 @ApiTags('License')
 @Controller('license')
 export class LicenseController {
   constructor(private readonly licenseService: LicenseService) {}
-
-  @Get('test/all')
-  findAll() {
-    return this.licenseService.findAll();
-  }
 
   @Post('create')
   @HttpCode(HttpStatus.CREATED)
@@ -84,45 +85,7 @@ export class LicenseController {
   @ApiResponse({
     status: 201,
     description: 'Ліцензію успішно створено',
-    schema: {
-      type: 'object',
-      properties: {
-        id: { type: 'number', example: 1 },
-        worker: {
-          type: 'object',
-          properties: {
-            id: { type: 'number', example: 91 },
-            name: { type: 'string', example: 'Іван' },
-            surname: { type: 'string', example: 'Петренко' },
-          },
-        },
-        issue_date: {
-          type: 'string',
-          format: 'date',
-          example: '2026-03-17',
-        },
-        issued_by: {
-          type: 'string',
-          example: 'Міністерство охорони здоровʼя',
-        },
-        number_license: { type: 'string', example: 'LIC-2026-001' },
-        expiration_date: {
-          type: 'string',
-          format: 'date',
-          example: '2028-03-17',
-        },
-        created_at: {
-          type: 'string',
-          format: 'date-time',
-          example: '2026-03-17T12:00:00.000Z',
-        },
-        updated_at: {
-          type: 'string',
-          format: 'date-time',
-          example: '2026-03-17T12:00:00.000Z',
-        },
-      },
-    },
+    type: CreateLicenseResponseDto,
   })
   @ApiResponse({
     status: 400,
@@ -198,8 +161,14 @@ export class LicenseController {
   })
   @UseInterceptors(ClassSerializerInterceptor)
   @Authorization(SpecialtyType.ADMIN)
-  createLicense(@Body() dto: CreateLicenseDto): Promise<ILicense> {
-    return this.licenseService.createLicense(dto);
+  async createLicense(
+    @Body() dto: CreateLicenseDto,
+  ): Promise<CreateLicenseResponseDto> {
+    const newLicense = await this.licenseService.createLicense(dto);
+
+    return plainToInstance(CreateLicenseResponseDto, newLicense, {
+      excludeExtraneousValues: true,
+    });
   }
 
   @Put(':id')
@@ -208,18 +177,7 @@ export class LicenseController {
   @ApiResponse({
     status: 200,
     description: 'Ліцензію успішно оновлено',
-    schema: {
-      example: {
-        id: 12,
-        worker: { id: 91, name: 'Іван', surname: 'Петренко' },
-        issue_date: '2026-03-17',
-        issued_by: 'Міністерство охорони здоровʼя',
-        number_license: 'LIC-2026-001',
-        expiration_date: '2028-03-17',
-        created_at: '2026-03-17T12:00:00.000Z',
-        updated_at: '2026-05-21T12:00:00.000Z',
-      },
-    },
+    type: UpdateLicenseResponseDto,
   })
   @ApiResponse({
     status: 401,
@@ -262,11 +220,18 @@ export class LicenseController {
   })
   @UseInterceptors(ClassSerializerInterceptor)
   @Authorization(SpecialtyType.ADMIN)
-  updateLicense(
+  async updateLicense(
     @Param() params: UpdateLicenseParamDto,
     @Body() dto: UpdateLicenseDto,
-  ): Promise<ILicense> {
-    return this.licenseService.updateLicense(params.id, dto);
+  ): Promise<UpdateLicenseResponseDto> {
+    const updatedLicense = await this.licenseService.updateLicense(
+      params.id,
+      dto,
+    );
+
+    return plainToInstance(UpdateLicenseResponseDto, updatedLicense, {
+      excludeExtraneousValues: true,
+    });
   }
 
   @Delete(':id')
@@ -340,62 +305,8 @@ export class LicenseController {
   @ApiResponse({
     status: 200,
     description: 'Список ліцензій стоматології',
-    schema: {
-      type: 'array',
-      items: {
-        type: 'object',
-        properties: {
-          id: { type: 'number', example: 1 },
-          worker: {
-            type: 'object',
-            properties: {
-              id: { type: 'number', example: 91 },
-              name: { type: 'string', example: 'Іван' },
-              surname: { type: 'string', example: 'Петренко' },
-              dentistry: {
-                type: 'object',
-                properties: {
-                  id: { type: 'number', example: 5 },
-                  name: { type: 'string', example: 'Dentistry Clinic №1' },
-                },
-              },
-              specialty: {
-                type: 'object',
-                properties: {
-                  id: { type: 'number', example: 3 },
-                  title: { type: 'string', example: 'Стоматолог-хірург' },
-                },
-              },
-            },
-          },
-          issue_date: {
-            type: 'string',
-            format: 'date',
-            example: '2026-03-17',
-          },
-          issued_by: {
-            type: 'string',
-            example: 'Міністерство охорони здоровʼя',
-          },
-          number_license: { type: 'string', example: 'LIC-2026-001' },
-          expiration_date: {
-            type: 'string',
-            format: 'date',
-            example: '2028-03-17',
-          },
-          created_at: {
-            type: 'string',
-            format: 'date-time',
-            example: '2026-03-17T12:00:00.000Z',
-          },
-          updated_at: {
-            type: 'string',
-            format: 'date-time',
-            example: '2026-05-21T12:00:00.000Z',
-          },
-        },
-      },
-    },
+    type: GetLicensesByDentistryResponseDto,
+    isArray: true,
   })
   @ApiResponse({
     status: 401,
@@ -441,9 +352,14 @@ export class LicenseController {
   @Authorization()
   async getLicensesByDentistry(
     @Param() params: GetLicensesByDentistryParamDto,
-  ) {
+  ): Promise<GetLicensesByDentistryResponseDto[]> {
     const { dentistryId } = params;
-    return this.licenseService.getLicensesByDentistry(dentistryId);
+    const licenses =
+      await this.licenseService.getLicensesByDentistry(dentistryId);
+
+    return plainToInstance(GetLicensesByDentistryResponseDto, licenses, {
+      excludeExtraneousValues: true,
+    });
   }
 
   @Get('worker/:workerId')
@@ -455,48 +371,8 @@ export class LicenseController {
   @ApiResponse({
     status: 200,
     description: 'Ліцензії знайдено',
-    schema: {
-      type: 'array',
-      items: {
-        type: 'object',
-        properties: {
-          id: { type: 'number', example: 1 },
-          worker: {
-            type: 'object',
-            properties: {
-              id: { type: 'number', example: 91 },
-              name: { type: 'string', example: 'Іван' },
-              surname: { type: 'string', example: 'Петренко' },
-            },
-          },
-          issue_date: {
-            type: 'string',
-            format: 'date',
-            example: '2026-03-17',
-          },
-          issued_by: {
-            type: 'string',
-            example: 'Міністерство охорони здоровʼя',
-          },
-          number_license: { type: 'string', example: 'LIC-2026-001' },
-          expiration_date: {
-            type: 'string',
-            format: 'date',
-            example: '2028-03-17',
-          },
-          created_at: {
-            type: 'string',
-            format: 'date-time',
-            example: '2026-03-17T12:00:00.000Z',
-          },
-          updated_at: {
-            type: 'string',
-            format: 'date-time',
-            example: '2026-05-21T12:00:00.000Z',
-          },
-        },
-      },
-    },
+    type: GetLicensesByWorkerResponseDto,
+    isArray: true,
   })
   @ApiResponse({
     status: 401,
@@ -545,9 +421,14 @@ export class LicenseController {
   @UseInterceptors(ClassSerializerInterceptor)
   async getLicensesByWorkerId(
     @Param() params: GetLicensesByWorkerParamDto,
-  ): Promise<License[]> {
+  ): Promise<GetLicensesByWorkerResponseDto[]> {
     const { workerId } = params;
-    return this.licenseService.getLicensesByWorkerId(workerId);
+    const workerLicenses =
+      await this.licenseService.getLicensesByWorkerId(workerId);
+
+    return plainToInstance(GetLicensesByWorkerResponseDto, workerLicenses, {
+      excludeExtraneousValues: true,
+    });
   }
 
   @Get('expiring-licenses-worker')
@@ -559,52 +440,8 @@ export class LicenseController {
   @ApiResponse({
     status: 200,
     description: 'Список ліцензій лікаря',
-    schema: {
-      type: 'array',
-      items: {
-        type: 'object',
-        properties: {
-          id: { type: 'number', example: 1 },
-          worker: {
-            type: 'object',
-            properties: {
-              id: { type: 'number', example: 5 },
-              name: { type: 'string', example: 'Іван' },
-              surname: { type: 'string', example: 'Петренко' },
-              specialty: {
-                type: 'object',
-                properties: {
-                  id: { type: 'number', example: 3 },
-                  title: { type: 'string', example: 'Стоматолог-хірург' },
-                },
-              },
-              dentistry: {
-                type: 'object',
-                properties: {
-                  id: { type: 'number', example: 2 },
-                  name: { type: 'string', example: 'Dentistry Clinic №1' },
-                },
-              },
-            },
-          },
-          issue_date: {
-            type: 'string',
-            format: 'date',
-            example: '2024-05-17',
-          },
-          issued_by: {
-            type: 'string',
-            example: 'Міністерство охорони здоровʼя',
-          },
-          number_license: { type: 'string', example: 'LIC-2024-001' },
-          expiration_date: {
-            type: 'string',
-            format: 'date',
-            example: '2024-06-17',
-          },
-        },
-      },
-    },
+    type: GetExpirationLicensesToWorkerResponseDto,
+    isArray: true,
   })
   @ApiResponse({
     status: 400,
@@ -665,7 +502,7 @@ export class LicenseController {
   @Authorization(SpecialtyType.ADMIN, SpecialtyType.DOCTOR)
   async getExpiringLicenses(
     @Query() query: GetExpiringLicensesWorkerQueryDto,
-  ): Promise<ILicense[]> {
+  ): Promise<GetExpirationLicensesToWorkerResponseDto[]> {
     const { workerId, maxDays } = query;
     if (!workerId || !maxDays) {
       throw new BadRequestException(
@@ -673,7 +510,16 @@ export class LicenseController {
       );
     }
 
-    return this.licenseService.findExpiringLicensesByWorker(workerId, maxDays);
+    const expirationLicenses =
+      await this.licenseService.findExpiringLicensesByWorker(workerId, maxDays);
+
+    return plainToInstance(
+      GetExpirationLicensesToWorkerResponseDto,
+      expirationLicenses,
+      {
+        excludeExtraneousValues: true,
+      },
+    );
   }
 
   @Get('expiring-licenses-dentistry')
@@ -685,52 +531,7 @@ export class LicenseController {
   @ApiResponse({
     status: 200,
     description: 'Список ліцензій стоматології',
-    schema: {
-      type: 'array',
-      items: {
-        type: 'object',
-        properties: {
-          id: { type: 'number', example: 1 },
-          worker: {
-            type: 'object',
-            properties: {
-              id: { type: 'number', example: 12 },
-              name: { type: 'string', example: 'Олександр' },
-              surname: { type: 'string', example: 'Коваль' },
-              specialty: {
-                type: 'object',
-                properties: {
-                  id: { type: 'number', example: 3 },
-                  title: { type: 'string', example: 'Стоматолог-ортопед' },
-                },
-              },
-              dentistry: {
-                type: 'object',
-                properties: {
-                  id: { type: 'number', example: 5 },
-                  name: { type: 'string', example: 'Dentistry Clinic №2' },
-                },
-              },
-            },
-          },
-          issue_date: {
-            type: 'string',
-            format: 'date',
-            example: '2024-05-17',
-          },
-          issued_by: {
-            type: 'string',
-            example: 'Міністерство охорони здоровʼя',
-          },
-          number_license: { type: 'string', example: 'LIC-2024-002' },
-          expiration_date: {
-            type: 'string',
-            format: 'date',
-            example: '2024-06-17',
-          },
-        },
-      },
-    },
+    type: GetExpirationLicensesToDentistryResponseDto,isArray:true
   })
   @ApiResponse({
     status: 400,
@@ -791,7 +592,7 @@ export class LicenseController {
   @UseInterceptors(ClassSerializerInterceptor)
   async getExpiringLicensesByDentistry(
     @Query() query: GetExpiringLicensesDentistryQueryDto,
-  ): Promise<ILicense[]> {
+  ): Promise<GetExpirationLicensesToWorkerResponseDto[]> {
     const { dentistryId, maxDays } = query;
     if (!dentistryId || !maxDays) {
       throw new BadRequestException(
@@ -799,9 +600,18 @@ export class LicenseController {
       );
     }
 
-    return this.licenseService.findExpiringLicensesByDentistry(
-      dentistryId,
-      maxDays,
+    const expirationLicenses =
+      await this.licenseService.findExpiringLicensesByDentistry(
+        dentistryId,
+        maxDays,
+      );
+
+    return plainToInstance(
+      GetExpirationLicensesToDentistryResponseDto,
+      expirationLicenses,
+      {
+        excludeExtraneousValues: true,
+      },
     );
   }
 }
