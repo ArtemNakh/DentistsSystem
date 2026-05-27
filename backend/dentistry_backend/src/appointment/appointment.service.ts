@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ConflictException,
   forwardRef,
   HttpException,
   Inject,
@@ -182,9 +183,40 @@ export class AppointmentService {
         throw new Error('Dto without values');
       }
 
+      // Перевірка існування клієнта та лікаря
       await this.clientService.findById(createAppointmentDto.clientId);
       await this.workerService.findById(createAppointmentDto.dentistId);
 
+      // 🔍 Перевірка на дублювання: чи вже є прийом у цього лікаря на той самий час
+      const existingAppointment = await this.appointmentRepo.findOne({
+        where: {
+          dentist: { id: createAppointmentDto.dentistId },
+          appointment_date: createAppointmentDto.appointment_date,
+        },
+      });
+
+      if (existingAppointment) {
+        throw new ConflictException(
+          `Dentist with id=${createAppointmentDto.dentistId} already has an appointment at ${createAppointmentDto.appointment_date}`,
+        );
+      }
+
+      // 🔍 Перевірка на перетин часу (якщо у тебе є тривалість операції або часовий інтервал)
+      const overlappingAppointment = await this.appointmentRepo.findOne({
+        where: {
+          dentist: { id: createAppointmentDto.dentistId },
+          appointment_date: createAppointmentDto.appointment_date,
+          // Якщо є start_time / end_time — тут треба додати умови перетину
+        },
+      });
+
+      if (overlappingAppointment) {
+        throw new ConflictException(
+          `Dentist with id=${createAppointmentDto.dentistId} already has an overlapping appointment`,
+        );
+      }
+
+      // Створення нового прийому
       const newAppointment = this.appointmentRepo.create({
         client: { id: createAppointmentDto.clientId },
         dentist: { id: createAppointmentDto.dentistId },
@@ -213,9 +245,11 @@ export class AppointmentService {
         );
       }
 
+      // Надсилаємо повідомлення
       await this.notificationService.informPlannedAppointment({
         appointment: fullAppointment,
       });
+
       return savedAppointment;
     } catch (err) {
       throw new InternalServerErrorException(
