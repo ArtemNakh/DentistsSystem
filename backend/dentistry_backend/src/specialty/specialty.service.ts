@@ -82,14 +82,14 @@ export class SpecialtyService {
   }
 
   async UpdateSpecialty(
-    id: number,
+    specialtyId: number,
     dto: UpdateSpecialtyDto,
   ): Promise<Specialty> {
     //  Перевірка — чи існує спеціалізація
-    const specialty = await this.specialtyRepository.findOne({ where: { id } });
+    const specialty = await this.specialtyRepository.findOne({ where: { id: specialtyId } });
 
     if (!specialty) {
-      throw new NotFoundException(`Specialty with id ${id} not found`);
+      throw new NotFoundException(`Specialty with id ${specialtyId} not found`);
     }
 
     //  Перевірка — DTO не порожній
@@ -135,7 +135,7 @@ export class SpecialtyService {
         },
       });
 
-      if (exists && exists.id !== id) {
+      if (exists && exists.id !== specialtyId) {
         throw new ConflictException(
           `Specialty with name "${dto.name ?? specialty.name}" and type "${
             dto.type ?? specialty.type
@@ -168,32 +168,32 @@ export class SpecialtyService {
   }
 
   async RemoveSpecialty(
-    id: number,
+    specialtyId: number,
   ): Promise<{ success: boolean; message: string }> {
     // Перевірка — id передано
-    if (id === undefined || id === null) {
+    if (specialtyId === undefined || specialtyId === null) {
       throw new BadRequestException('Specialty ID is required');
     }
 
     // Перевірка — id є числом
-    if (typeof id !== 'number' || Number.isNaN(id)) {
+    if (typeof specialtyId !== 'number' || Number.isNaN(specialtyId)) {
       throw new BadRequestException('Specialty ID must be a valid number');
     }
 
     //  Перевірка — чи існує спеціалізація
     const specialty = await this.specialtyRepository.findOne({
-      where: { id },
+      where: { id: specialtyId },
       relations: ['workers'],
     });
 
     if (!specialty) {
-      throw new NotFoundException(`Specialty with id ${id} not found`);
+      throw new NotFoundException(`Specialty with id ${specialtyId} not found`);
     }
 
     //  Перевірка — чи спеціалізація використовується працівниками
     if (Array.isArray(specialty.workers) && specialty.workers.length > 0) {
       throw new BadRequestException(
-        `Cannot delete specialty with id ${id} because it is assigned to ${specialty.workers.length} worker(s)`,
+        `Cannot delete specialty with id ${specialtyId} because it is assigned to ${specialty.workers.length} worker(s)`,
       );
     }
 
@@ -202,13 +202,13 @@ export class SpecialtyService {
 
     return {
       success: true,
-      message: `Specialty with id ${id} has been deleted successfully`,
+      message: `Specialty with id ${specialtyId} has been deleted successfully`,
     };
   }
 
   async findByFullName(
-    search: string,
     idDentistry: number,
+    search?: string
   ): Promise<ISpecialty[]> {
     // Перевірка — idDentistry передано
     if (idDentistry === undefined || idDentistry === null) {

@@ -25,6 +25,13 @@ import { Specialty } from './entities/specialty.entity';
 import { UpdateSpecialtyDto } from './dto/UpdateSpecialty.dto';
 import { Authorization } from '@/auth/decorators/Authorization.decorator';
 import { SpecialtyType } from './entities/specialty.interface';
+import { plainToInstance } from 'class-transformer';
+import { CreateSpecialtyResponseDto } from './dto/Response/CreateSpecialty.response.dto';
+import { UpdateSpecialtyResponseDto } from './dto/Response/UpdateSpecialty.response.dto';
+import { UpdateSpecialtyParamsDto } from './dto/Params/UpdateSpecialty.param.dto';
+import { RemoveSpecialtyParamsDto } from './dto/Params/RemoveSpecialty.param.dto';
+import { SearchDentistryQueryDto } from './dto/Query/SearchSpecialty.query.dto';
+import { SearchSpecialtyResponseDto } from './dto/Response/SearchSpecialty.response.dto';
 
 @ApiTags('Specialties')
 @Controller('specialties')
@@ -59,7 +66,7 @@ export class SpecialtyController {
   @ApiResponse({
     status: 201,
     description: 'Спеціалізацію успішно створено',
-    type: SpecialtyResponseDto,
+    type: CreateSpecialtyResponseDto,
   })
   @ApiResponse({
     status: 400,
@@ -144,8 +151,13 @@ export class SpecialtyController {
   })
   @UseInterceptors(ClassSerializerInterceptor)
   @Authorization(SpecialtyType.ADMIN)
-  CreateSpecialty(@Body() dto: CreateSpecialtyDto): Promise<Specialty> {
-    return this.specialtyService.CreateSpecialty(dto);
+  async CreateSpecialty(
+    @Body() dto: CreateSpecialtyDto,
+  ): Promise<CreateSpecialtyResponseDto> {
+    const specialty = await this.specialtyService.CreateSpecialty(dto);
+    return plainToInstance(CreateSpecialtyResponseDto, specialty, {
+      excludeExtraneousValues: true,
+    });
   }
 
   @Put(':id')
@@ -153,12 +165,6 @@ export class SpecialtyController {
     summary: 'Оновити спеціалізацію',
     description:
       'Оновлює дані спеціалізації за ID. Можна змінити назву, опис та тип спеціалізації.',
-  })
-  @ApiParam({
-    name: 'id',
-    description: 'ID спеціалізації',
-    type: Number,
-    example: 3,
   })
   @ApiBody({
     description: 'Дані для оновлення спеціалізації',
@@ -193,7 +199,7 @@ export class SpecialtyController {
   @ApiResponse({
     status: 200,
     description: 'Спеціалізацію успішно оновлено',
-    type: SpecialtyResponseDto,
+    type: UpdateSpecialtyResponseDto,
   })
   @ApiResponse({
     status: 400,
@@ -265,11 +271,18 @@ export class SpecialtyController {
   })
   @UseInterceptors(ClassSerializerInterceptor)
   @Authorization(SpecialtyType.ADMIN)
-  UpdateSpecialty(
-    @Param('id') id: number,
+  async UpdateSpecialty(
+    @Param() params: UpdateSpecialtyParamsDto,
     @Body() dto: UpdateSpecialtyDto,
-  ): Promise<Specialty> {
-    return this.specialtyService.UpdateSpecialty(id, dto);
+  ): Promise<UpdateSpecialtyResponseDto> {
+    const { specialtyId } = params;
+    const updatedSpeciality = await this.specialtyService.UpdateSpecialty(
+      specialtyId,
+      dto,
+    );
+    return plainToInstance(UpdateSpecialtyResponseDto, updatedSpeciality, {
+      excludeExtraneousValues: true,
+    });
   }
 
   @Delete(':id')
@@ -367,9 +380,10 @@ export class SpecialtyController {
   @UseInterceptors(ClassSerializerInterceptor)
   @Authorization(SpecialtyType.ADMIN)
   RemoveSpecialty(
-    @Param('id') id: number,
+    @Param() params: RemoveSpecialtyParamsDto,
   ): Promise<{ success: boolean; message: string }> {
-    return this.specialtyService.RemoveSpecialty(id);
+    const { specialtyId } = params;
+    return this.specialtyService.RemoveSpecialty(specialtyId);
   }
 
   @Get('search')
@@ -377,29 +391,6 @@ export class SpecialtyController {
     summary: 'Пошук спеціалізацій за назвою',
     description:
       'Повертає список спеціалізацій, які належать працівникам певної стоматології. Якщо параметр search не передано — повертає всі спеціалізації стоматології.',
-  })
-  @ApiQuery({
-    name: 'search',
-    required: false,
-    type: String,
-    description: 'Рядок для пошуку за назвою спеціалізації',
-    examples: {
-      full: {
-        summary: 'Пошук за частиною назви',
-        value: 'хіру',
-      },
-      empty: {
-        summary: 'Порожній пошук — повертає всі спеціалізації',
-        value: '',
-      },
-    },
-  })
-  @ApiQuery({
-    name: 'dentistry',
-    required: true,
-    type: Number,
-    description: 'ID стоматології',
-    example: 3,
   })
   @ApiResponse({
     status: 200,
@@ -460,11 +451,17 @@ export class SpecialtyController {
       },
     },
   })
-    @UseInterceptors(ClassSerializerInterceptor)
-  async searchWorkers(
-    @Query('search') search: string,
-    @Query('dentistry') dentistry: number,
-  ) {
-    return this.specialtyService.findByFullName(search, dentistry);
+  @UseInterceptors(ClassSerializerInterceptor)
+  async searchSpecialty(
+    @Query() query: SearchDentistryQueryDto,
+  ): Promise<SearchSpecialtyResponseDto[]> {
+    const { search, dentistryId } = query;
+    const specialties = await this.specialtyService.findByFullName(
+      dentistryId,
+      search,
+    );
+    return plainToInstance(SearchSpecialtyResponseDto, specialties, {
+      excludeExtraneousValues: true,
+    });
   }
 }
