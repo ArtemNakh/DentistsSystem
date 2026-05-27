@@ -18,6 +18,13 @@ export class DentistryService {
     private dentistryRepository: Repository<Dentistry>,
   ) {}
 
+  /**
+   * Створює нову стоматологію.
+   *
+   * @param dto - DTO з даними клініки (street, city, region)
+   * @returns Створений об’єкт стоматології
+   * @throws BadRequestException якщо дані некоректні або клініка вже існує
+   */
   async create(dto: CreateDentistryDto): Promise<IDentistry> {
     // Перевірка на логічну коректність (захист від некоректного JSON або пустих значень)
     if (!dto.street?.trim() || !dto.city?.trim() || !dto.region?.trim()) {
@@ -45,7 +52,16 @@ export class DentistryService {
     return this.dentistryRepository.save(clinic);
   }
 
-  async update(id: number, dto: UpdateDentistryDto): Promise<Dentistry> {
+  /**
+   * Оновлює дані стоматології за її ID.
+   *
+   * @param id - Ідентифікатор клініки
+   * @param dto - DTO з новими даними
+   * @returns Оновлений об’єкт стоматології
+   * @throws NotFoundException якщо клініка не знайдена
+   * @throws BadRequestException якщо дані некоректні або створюється дублікат
+   */
+  async update(id: number, dto: UpdateDentistryDto): Promise<IDentistry> {
     // 1️⃣ Перевірка — чи існує клініка
     const clinic = await this.dentistryRepository.findOne({ where: { id } });
 
@@ -93,6 +109,14 @@ export class DentistryService {
     return this.dentistryRepository.save(clinic);
   }
 
+  /**
+   * Оновлює статус (isActive) стоматології.
+   *
+   * @param id - Ідентифікатор клініки
+   * @param dto - DTO зі статусом
+   * @throws NotFoundException якщо клініка не знайдена
+   * @throws BadRequestException якщо статус некоректний або не змінюється
+   */
   async updateStatus(id: number, dto: UpdateDentistryStatusDto): Promise<void> {
     //  Перевірка — чи існує клініка
     const clinic = await this.dentistryRepository.findOne({ where: { id } });
@@ -141,11 +165,23 @@ export class DentistryService {
     await this.dentistryRepository.save(clinic);
   }
 
+  /**
+   * Повертає список усіх стоматологій.
+   *
+   * @returns Масив стоматологій
+   */
   async findAll(): Promise<IDentistry[]> {
     return this.dentistryRepository.find();
   }
 
-  async findByCity(city: string): Promise<Dentistry[]> {
+  /**
+   * Пошук стоматологій за містом.
+   *
+   * @param city - Назва міста
+   * @returns Масив стоматологій у вказаному місті
+   * @throws BadRequestException якщо параметр некоректний
+   */
+  async findByCity(city: string): Promise<IDentistry[]> {
     //  Перевірка — чи передано параметр
     if (city === undefined || city === null) {
       throw new BadRequestException('City parameter is required');
@@ -163,7 +199,7 @@ export class DentistryService {
       throw new BadRequestException('City cannot be an empty string');
     }
 
-    // 4️Перевірка — мінімальна довжина (захист від шумових запитів)
+    // Перевірка — мінімальна довжина (захист від шумових запитів)
     if (normalized.length < 2) {
       throw new BadRequestException('City must contain at least 2 characters');
     }
@@ -176,6 +212,14 @@ export class DentistryService {
     });
   }
 
+  /**
+   * Отримати стоматологію за ID.
+   *
+   * @param id - Ідентифікатор клініки
+   * @returns Об’єкт стоматології з працівниками
+   * @throws NotFoundException якщо клініка не знайдена
+   * @throws BadRequestException якщо ID некоректний
+   */
   async getDentistryById(id: number): Promise<Dentistry> {
     //  Перевірка — id передано
     if (id === undefined || id === null) {

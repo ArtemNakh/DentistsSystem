@@ -10,7 +10,6 @@ import {
   Query,
   UseInterceptors,
 } from '@nestjs/common';
-
 import {
   ApiBody,
   ApiOkResponse,
@@ -21,30 +20,26 @@ import {
 } from '@nestjs/swagger';
 import { DentistryService } from './dentistry.service';
 import { Authorization } from '@/auth/decorators/Authorization.decorator';
-import { SearchDentistryDto } from './dto/Query/SearchDentistriesByCity.query.dto';
-import { DentistryResponseDto } from './dto/Response/Dentistry.response.dto';
+import { SearchDentistryQueryDto } from './dto/Query/SearchDentistriesByCity.query.dto';
 import { CreateDentistryDto } from './dto/create-dentistry.dto';
-import { IDentistry } from './entities/dentistry.interface';
 import { UpdateDentistryDto } from './dto/update-dentistry.dto';
 import { UpdateDentistryStatusDto } from './dto/update-dentistry-status.dto';
-import { ClientOrWorker } from '@/auth/decorators/ClientOrWorker.decorator';
-
+import { plainToInstance } from 'class-transformer';
+import { SearchDentistriesResponseDto } from './dto/Response/SearchDentistries.response.dto';
+import { CreateDentistryResponseDto } from './dto/Response/CreatedDentistry.response.dto';
+import { UpdateDentistryResponseDto } from './dto/Response/UpdateDentistry.response.dto';
+import { SpecialtyType } from '@/specialty/entities/specialty.interface';
 
 @ApiTags('Dental_clinics')
 @Controller('dental_clinics')
 export class DentistryController {
   constructor(private readonly dentistryService: DentistryService) {}
 
-  @Get('test/all')
-  GetAllValue() {
-    return this.dentistryService.findAll();
-  }
-
   @Get('search')
   @ApiOperation({ summary: 'Пошук стоматологій за містом' })
   @ApiOkResponse({
     description: 'Список знайдених стоматологій',
-    type: DentistryResponseDto,
+    type: SearchDentistriesResponseDto,
     isArray: true,
   })
   @ApiResponse({
@@ -91,10 +86,16 @@ export class DentistryController {
       },
     },
   })
-    @UseInterceptors(ClassSerializerInterceptor)
-  async searchDentistries(@Query() query: SearchDentistryDto) {
+  @UseInterceptors(ClassSerializerInterceptor)
+  async searchDentistries(
+    @Query() query: SearchDentistryQueryDto,
+  ): Promise<SearchDentistriesResponseDto[]> {
     const { city } = query;
-    return this.dentistryService.findByCity(city);
+    const findedDentistries = await this.dentistryService.findByCity(city);
+
+    return plainToInstance(SearchDentistriesResponseDto, findedDentistries, {
+      excludeExtraneousValues: true,
+    });
   }
 
   @Post('create')
@@ -118,7 +119,7 @@ export class DentistryController {
   @ApiResponse({
     status: 201,
     description: 'Стоматологія успішно створена.',
-    type: DentistryResponseDto,
+    type: CreateDentistryResponseDto,
   })
   @ApiResponse({
     status: 400,
@@ -164,10 +165,16 @@ export class DentistryController {
       },
     },
   })
-  @Authorization()
-    @UseInterceptors(ClassSerializerInterceptor)
-  async create(@Body() dto: CreateDentistryDto): Promise<IDentistry> {
-    return this.dentistryService.create(dto);
+  @Authorization(SpecialtyType.ADMIN)
+  @UseInterceptors(ClassSerializerInterceptor)
+  async create(
+    @Body() dto: CreateDentistryDto,
+  ): Promise<CreateDentistryResponseDto> {
+    const createdDentistry = await this.dentistryService.create(dto);
+
+    return plainToInstance(CreateDentistryResponseDto, createdDentistry, {
+      excludeExtraneousValues: true,
+    });
   }
 
   @Patch('update/:id')
@@ -196,7 +203,7 @@ export class DentistryController {
   @ApiResponse({
     status: 200,
     description: 'Стоматологія успішно оновлена.',
-    type: DentistryResponseDto,
+    type: UpdateDentistryResponseDto,
   })
   @ApiResponse({
     status: 404,
@@ -238,13 +245,17 @@ export class DentistryController {
       },
     },
   })
-  @Authorization()
-    @UseInterceptors(ClassSerializerInterceptor)
+  @Authorization(SpecialtyType.ADMIN)
+  @UseInterceptors(ClassSerializerInterceptor)
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: UpdateDentistryDto,
-  ): Promise<IDentistry> {
-    return this.dentistryService.update(id, dto);
+  ): Promise<UpdateDentistryResponseDto> {
+    const updatedDentistry = await this.dentistryService.update(id, dto);
+
+    return plainToInstance(UpdateDentistryResponseDto, updatedDentistry, {
+      excludeExtraneousValues: true,
+    });
   }
 
   @Patch('update/:id/status')
@@ -338,7 +349,7 @@ export class DentistryController {
     },
   })
   @Authorization()
-    @UseInterceptors(ClassSerializerInterceptor)
+  @UseInterceptors(ClassSerializerInterceptor)
   async updateStatus(
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: UpdateDentistryStatusDto,

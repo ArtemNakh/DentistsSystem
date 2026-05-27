@@ -1,12 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { IsString, MinLength } from 'class-validator';
 
-export class SearchDentistryDto {
+export class SearchDentistryQueryDto {
   @ApiProperty({
     description: 'Назва міста для пошуку стоматологій',
     example: 'Київ',
-    required: false,
+    required: true,
   })
-  @IsString({ message: 'search must be a string' })
+  @IsString({ message: 'city must be a string' })
+  @MinLength(2, { message: 'City must contain at least 2 characters' })
   city: string;
 }

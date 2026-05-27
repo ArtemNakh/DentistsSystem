@@ -21,14 +21,12 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { IWorker } from './entities/workers.interface';
 import { Request } from 'express';
 import { CreateWorkerBodyDto } from './dto/CreateWorker.dto';
 import { UpdateWorkerDto } from './dto/UpdateWorker.dto';
 import { SpecialtyType } from '@/specialty/entities/specialty.interface';
 import { Authorization } from '@/auth/decorators/Authorization.decorator';
 import { GetWorkersByDentistryQuery } from './dto/Query/GetWorkersByDentistry.query.dto';
-import { WorkerResponseDto } from './dto/swagger/Worker.response.dto';
 import { SearchWorkersQueryDto } from './dto/Query/SearchWorkers.query.dto';
 import { WorkerIdParamDto } from './dto/Param/WorkerIdParam.param.dto';
 import { plainToInstance } from 'class-transformer';
