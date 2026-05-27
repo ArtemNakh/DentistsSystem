@@ -28,7 +28,14 @@ export class AuthService {
   ) {}
 
   // ========================= CLIENT =========================
-
+  /**
+   * Реєстрація нового клієнта.
+   * Виконує перевірку на дублювання email, створює клієнта та надсилає токен підтвердження.
+   * @param req - HTTP Request
+   * @param dto - DTO з даними для реєстрації клієнта
+   * @throws ConflictException якщо клієнт з таким email вже існує
+   * @returns Повідомлення про успішну реєстрацію
+   */
   public async registerClient(req: Request, dto: RegisterClientDto) {
     const isExists = await this.clientService.findByEmail(dto.email);
     if (isExists) {
@@ -47,6 +54,15 @@ export class AuthService {
     };
   }
 
+  /**
+   * Авторизація клієнта.
+   * Перевіряє email, пароль та статус підтвердження пошти.
+   * @param req - HTTP Request
+   * @param dto - DTO з даними для входу
+   * @throws NotFoundException якщо клієнта не знайдено
+   * @throws UnauthorizedException якщо пароль некоректний або email не підтверджено
+   * @returns Об’єкт із клієнтом та authToken
+   */
   public async loginClient(req: Request, dto: LoginClientDto) {
     const client = await this.clientService.findByEmail(dto.email);
     if (!client || !client.password) {
@@ -65,6 +81,13 @@ export class AuthService {
     return this.saveClientSession(req, client);
   }
 
+  /**
+   * Вихід клієнта із системи.
+   * Завершує сесію та очищає cookie.
+   * @param req - HTTP Request
+   * @param res - HTTP Response
+   * @throws InternalServerErrorException якщо сесію не вдалося завершити
+   */
   public async logoutClient(req: Request, res: Response): Promise<void> {
     return new Promise((resolve, reject) => {
       req.session.destroy((err) => {
@@ -81,6 +104,13 @@ export class AuthService {
     });
   }
 
+  /**
+   * Збереження сесії клієнта.
+   * @param req - HTTP Request
+   * @param client - Об’єкт клієнта
+   * @throws InternalServerErrorException якщо сесію не вдалося зберегти
+   * @returns Об’єкт із клієнтом та authToken
+   */
   public async saveClientSession(req: Request, client: Client) {
     return new Promise((resolve, reject) => {
       req.session.workerId = undefined; // Видалити workerId якщо був
@@ -101,6 +131,15 @@ export class AuthService {
 
   // ========================= WORKER =========================
 
+  /**
+   * Авторизація працівника.
+   * Перевіряє логін та пароль.
+   * @param req - HTTP Request
+   * @param dto - DTO з даними для входу працівника
+   * @throws NotFoundException якщо працівника не знайдено
+   * @throws UnauthorizedException якщо пароль некоректний
+   * @returns Об’єкт із працівником та authToken
+   */
   public async loginWorker(req: Request, dto: LoginWorkerDto) {
     const worker = await this.workerService.findByLogin(dto.login);
     if (!worker || !worker.password) {
@@ -113,6 +152,13 @@ export class AuthService {
     return await this.saveWorkerSession(req, worker);
   }
 
+  /**
+   * Вихід працівника із системи.
+   * Завершує сесію та очищає cookie.
+   * @param req - HTTP Request
+   * @param res - HTTP Response
+   * @throws InternalServerErrorException якщо сесію не вдалося завершити
+   */
   public async logoutWorker(req: Request, res: Response): Promise<void> {
     console.log('a', req.session);
     console.log('b', req.sessionID);
@@ -129,6 +175,13 @@ export class AuthService {
     });
   }
 
+  /**
+   * Збереження сесії працівника.
+   * @param req - HTTP Request
+   * @param worker - Об’єкт працівника
+   * @throws InternalServerErrorException якщо сесію не вдалося зберегти
+   * @returns Об’єкт із працівником та authToken
+   */
   private async saveWorkerSession(req: Request, worker: Worker) {
     return new Promise((resolve, reject) => {
       req.session.clientId = undefined;
@@ -145,7 +198,14 @@ export class AuthService {
     });
   }
 
-  //temporary
+  /**
+   * Тимчасова реєстрація працівника.
+   * Виконує перевірку на дублювання логіна та створює нового працівника.
+   * @param req - HTTP Request
+   * @param dto - DTO з даними для реєстрації працівника
+   * @throws ConflictException якщо працівник з таким логіном вже існує
+   * @returns Повідомлення про успішну реєстрацію
+   */
   public async registerWorker(req: Request, dto: RegisterWorkerDto) {
     const isExists = await this.workerService.findByLoginTemp(dto.login);
     if (isExists) {

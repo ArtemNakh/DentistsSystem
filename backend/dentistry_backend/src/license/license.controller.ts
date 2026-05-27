@@ -8,7 +8,6 @@ import {
   HttpCode,
   HttpStatus,
   Param,
-  ParseIntPipe,
   Post,
   Put,
   Query,
@@ -19,9 +18,7 @@ import {
   ApiBody,
   ApiConsumes,
   ApiOperation,
-  ApiParam,
   ApiProduces,
-  ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';

@@ -18,12 +18,25 @@ export class SpecialtyService {
     @InjectRepository(Specialty)
     private specialtyRepository: Repository<Specialty>,
 
-    private readonly dentistryService: DentistryService, 
+    private readonly dentistryService: DentistryService,
   ) {}
+
+  /**
+   * Отримати список усіх спеціалізацій.
+   * @returns Масив спеціалізацій у форматі ISpecialty[]
+   */
   findAll(): Promise<ISpecialty[]> {
     return this.specialtyRepository.find();
   }
 
+  /**
+   * Створити нову спеціалізацію.
+   * Виконує перевірки на коректність даних та дублювання.
+   * @param dto - DTO з даними для створення спеціалізації
+   * @throws BadRequestException якщо дані некоректні або порожні
+   * @throws ConflictException якщо спеціалізація з такою назвою вже існує
+   * @returns Створена спеціалізація
+   */
   async CreateSpecialty(dto: CreateSpecialtyDto): Promise<Specialty> {
     // Перевірка — DTO не порожній
     if (!dto || Object.keys(dto).length === 0) {
@@ -81,12 +94,24 @@ export class SpecialtyService {
     return this.specialtyRepository.save(specialty);
   }
 
+  /**
+   * Оновити існуючу спеціалізацію.
+   * Виконує перевірки на коректність даних, дублювання та наявність змін.
+   * @param specialtyId - ID спеціалізації
+   * @param dto - DTO з новими даними
+   * @throws NotFoundException якщо спеціалізацію не знайдено
+   * @throws BadRequestException якщо дані некоректні або змін немає
+   * @throws ConflictException якщо дублюється name + type
+   * @returns Оновлена спеціалізація
+   */
   async UpdateSpecialty(
     specialtyId: number,
     dto: UpdateSpecialtyDto,
   ): Promise<Specialty> {
     //  Перевірка — чи існує спеціалізація
-    const specialty = await this.specialtyRepository.findOne({ where: { id: specialtyId } });
+    const specialty = await this.specialtyRepository.findOne({
+      where: { id: specialtyId },
+    });
 
     if (!specialty) {
       throw new NotFoundException(`Specialty with id ${specialtyId} not found`);
@@ -167,6 +192,14 @@ export class SpecialtyService {
     return this.specialtyRepository.save(specialty);
   }
 
+  /**
+   * Видалити спеціалізацію.
+   * Перевіряє, чи спеціалізація існує та чи не використовується працівниками.
+   * @param specialtyId - ID спеціалізації
+   * @throws BadRequestException якщо ID некоректний або спеціалізація використовується
+   * @throws NotFoundException якщо спеціалізацію не знайдено
+   * @returns Об’єкт з success=true та повідомленням
+   */
   async RemoveSpecialty(
     specialtyId: number,
   ): Promise<{ success: boolean; message: string }> {
@@ -206,9 +239,18 @@ export class SpecialtyService {
     };
   }
 
+  /**
+   * Знайти спеціалізації за назвою та стоматологією.
+   * Виконує пошук по назві (мінімум 2 символи) та ID стоматології.
+   * @param idDentistry - ID стоматології
+   * @param search - рядок пошуку (необов’язковий)
+   * @throws BadRequestException якщо параметри некоректні
+   * @throws NotFoundException якщо стоматологію не знайдено
+   * @returns Масив спеціалізацій, що відповідають критеріям
+   */
   async findByFullName(
     idDentistry: number,
-    search?: string
+    search?: string,
   ): Promise<ISpecialty[]> {
     // Перевірка — idDentistry передано
     if (idDentistry === undefined || idDentistry === null) {
@@ -219,8 +261,9 @@ export class SpecialtyService {
     if (typeof idDentistry !== 'number' || Number.isNaN(idDentistry)) {
       throw new BadRequestException('Dentistry ID must be a valid number');
     }
-    
-    const dentistryExists = await this.dentistryService.getDentistryById(idDentistry);
+
+    const dentistryExists =
+      await this.dentistryService.getDentistryById(idDentistry);
 
     if (!dentistryExists) {
       throw new NotFoundException(`Dentistry with id ${idDentistry} not found`);
