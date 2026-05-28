@@ -19,8 +19,8 @@ import { AppointmentModule } from './appointment/appointment.module';
 import { AppointmentActionModule } from './appointment-action/appointment-action.module';
 import { NotificationModule } from './notification/notification.module';
 import { PaymentModule } from './payment/payment.module';
-import { ScheduleModule } from '@nestjs/schedule';
 import { TasksModule } from './tasks/task.module';
+import { SetupModule } from './setup/setup.module';
 
 @Module({
   imports: [
@@ -47,6 +47,7 @@ import { TasksModule } from './tasks/task.module';
     NotificationModule,
     PaymentModule,
     TasksModule,
+    SetupModule,
   ],
 
   controllers: [],
