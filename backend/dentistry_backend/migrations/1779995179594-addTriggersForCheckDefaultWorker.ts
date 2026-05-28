@@ -101,37 +101,31 @@ END;
 
     // appointments_actions
     await queryRunner.query(`
-      CREATE TRIGGER prevent_fk_to_default_appointments_actions
-      BEFORE INSERT ON appointments_actions
-      FOR EACH ROW
-      BEGIN
-        -- Заборона використання базової клініки через operation_id
-        IF EXISTS (
-          SELECT 1 FROM dental_clinics dc
-          JOIN operation_list o ON o.dental_clinic_id = dc.id
-          WHERE o.id = NEW.operation_id AND dc.city = 'DEFAULTCITY'
-        ) THEN
-          SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cannot reference default dentistry (DEFAULTCITY)';
-        END IF;
+     CREATE TRIGGER prevent_fk_to_default_appointments_actions
+BEFORE INSERT ON appointments_actions
+FOR EACH ROW
+BEGIN
+  -- Заборона використання базової клініки через operation_id
+  IF EXISTS (
+    SELECT 1
+    FROM dental_clinics dc
+    JOIN operation_list o ON o.dental_clinic_id = dc.id
+    WHERE o.id = NEW.operation_id AND dc.city = 'DEFAULTCITY'
+  ) THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cannot reference default dentistry (DEFAULTCITY)';
+  END IF;
 
-        -- Заборона використання базової спеціальності через operation_id
-        IF EXISTS (
-          SELECT 1 FROM specialties s
-          JOIN operation_list o ON o.specialty_id = s.id
-          WHERE o.id = NEW.operation_id AND s.name = 'DEFAULTNAME'
-        ) THEN
-          SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cannot reference default specialty (DEFAULTNAME)';
-        END IF;
+  -- Заборона використання базового працівника через appointment_id
+  IF EXISTS (
+    SELECT 1
+    FROM workers w
+    JOIN appointments a ON a.worker_id = w.id
+    WHERE a.id = NEW.appointment_id AND w.name = 'DEFAULTNAME'
+  ) THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cannot reference default worker (DEFAULTNAME)';
+  END IF;
+END;
 
-        -- Заборона використання базового працівника через appointment_id
-        IF EXISTS (
-          SELECT 1 FROM workers w
-          JOIN appointments a ON a.worker_id = w.id
-          WHERE a.id = NEW.appointment_id AND w.name = 'DEFAULTNAME'
-        ) THEN
-          SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cannot reference default worker (DEFAULTNAME)';
-        END IF;
-      END;
     `);
 
     // clients

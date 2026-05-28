@@ -10,31 +10,40 @@ import { seedLicenses } from './seeders/6_seed-filling-license';
 import { seedWorkerShifts } from './seeders/7_seed-filling-workers-shifts';
 import { seedAppointments } from './seeders/8_seed-filling-appointments';
 import { seedAppointmentActions } from './seeders/9_seed-filling-appointments-actions';
+  //запуск
+    // npx ts-node ./seeds/ProdTestValue/runAllSeedsProd.ts
 
 async function runAllSeeds() {
   try {
-    //запуск
-    //    npx ts-node ./src/seeds/index.ts
+  
 
     await AppDataSource.initialize();
 
-    await seedDentistries(AppDataSource,5);
-    await seedSpecialties(AppDataSource, 50);
-    await seedOperationList(AppDataSource, 3, 15, 10, 1000);
-    await seedClients(AppDataSource, 50);
-    await seedWorkers(AppDataSource, 5, 30);
-    await seedLicenses(AppDataSource, 2, 14);
-    await seedWorkerShifts(AppDataSource, 10, 50);
-    await seedAppointments(AppDataSource, 1, 25, 20, 50);
-    await seedAppointmentActions(AppDataSource, 1, 10);
-    await seedNotifications(AppDataSource);
-    await seedPayments(AppDataSource);
+    const runSeed = async (fn: Function, ...args: any[]) => {
+      try {
+        await fn(AppDataSource, ...args);
+        console.log(`✅ ${fn.name} відпрацював успішно`);
+      } catch (error:any) {
+        console.error(`❌ Помилка у ${fn.name}:`, error.message || error);
+      }
+    };
 
-    console.log('✅ Усі сидери відпрацювали успішно');
+    await runSeed(seedDentistries, 5);
+    await runSeed(seedSpecialties, 50);
+    await runSeed(seedOperationList, 3, 15, 10, 1000);
+    await runSeed(seedClients, 50);
+    await runSeed(seedWorkers, 5, 30);
+    await runSeed(seedLicenses, 2, 14);
+    await runSeed(seedWorkerShifts, 10, 50);
+    await runSeed(seedAppointments, 1, 25, 20, 50);
+    await runSeed(seedAppointmentActions, 1, 10);
+    await runSeed(seedNotifications);
+    await runSeed(seedPayments);
 
-    await AppDataSource.destroy();
+    console.log('🎉 Усі сидери пройшли цикл виконання');
   } catch (error) {
-    console.error('❌ Помилка при запуску сидів:', error);
+    console.error('❌ Критична помилка при запуску сидів:', error);
+  } finally {
     await AppDataSource.destroy();
   }
 }
