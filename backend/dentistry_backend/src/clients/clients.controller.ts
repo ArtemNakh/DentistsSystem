@@ -8,7 +8,6 @@ import {
   UseInterceptors,
   UseGuards,
   Put,
-  Param,
   Body,
 } from '@nestjs/common';
 import { ClientService } from './clients.service';
@@ -16,7 +15,6 @@ import {
   ApiBody,
   ApiConsumes,
   ApiOperation,
-  ApiParam,
   ApiProduces,
   ApiResponse,
   ApiTags,
@@ -31,9 +29,7 @@ import { plainToInstance } from 'class-transformer';
 import { GetClientsResponseDto } from './dto/Response/GetClients.response.dto';
 import { GetCurrentClientResponseDto } from './dto/Response/GetCurrentClient.response.dto';
 import { SearchClientsByFioResponseDto } from './dto/Response/SearchClientsByFio.response.dto';
-import { UpdateClientResponseDto } from './dto/Response/UpdateClient.response.dto';
 import { Authorized } from '@/auth/decorators/authorized.decorator';
-import { Worker } from '@/workers/entities/workers.entity';
 import { Client } from './entities/client.entity';
 
 @ApiTags('Client')

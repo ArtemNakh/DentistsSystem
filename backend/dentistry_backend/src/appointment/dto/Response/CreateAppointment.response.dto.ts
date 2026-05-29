@@ -4,7 +4,7 @@ import { Expose, Type } from 'class-transformer';
 import { AppointmentCommonDto } from './BaseType/AppointmentCommon.response.dto';
 import { ClientCommonDto } from '@/clients/dto/Response/BaseType/ClientCommon.response.dto';
 import { WorkerPublicDto } from '@/workers/dto/Response/BaseType/WorkersPublic.response.dto';
-import { WorkersWithSpecialtyAndDentistryDto } from '@/workers/dto/Response/BaseType/partials/WorkersWithSpecialtyAndDentistry.response.dto';
+import { WorkerWithSpecialtyAndDentistryDto } from '@/workers/dto/Response/BaseType/partials/WorkersWithSpecialtyAndDentistry.response.dto';
 import { AppointmentActionCommonDto } from '@/appointment-action/dto/Response/BaseType/AppointmentActionCommon.response.dto';
 import { PaymentCommonDto } from '@/payment/dto/Response/BaseType/PaymentCommon.response.dto';
 
@@ -20,12 +20,12 @@ export class CreateAppointmentResponseDto extends AppointmentCommonDto {
 
   @ApiProperty({
     description: 'Працівник, який буде вести операцію',
-    type: WorkersWithSpecialtyAndDentistryDto,
+    type: WorkerWithSpecialtyAndDentistryDto,
   })
-  @ApiProperty({ type: () => WorkersWithSpecialtyAndDentistryDto })
-  @Type(() => WorkersWithSpecialtyAndDentistryDto)
+  @ApiProperty({ type: () => WorkerWithSpecialtyAndDentistryDto })
+  @Type(() => WorkerWithSpecialtyAndDentistryDto)
   @Expose()
-  dentist: WorkersWithSpecialtyAndDentistryDto;
+  dentist: WorkerWithSpecialtyAndDentistryDto;
 
   @ApiProperty({
     description: 'Дії які були зроблені',

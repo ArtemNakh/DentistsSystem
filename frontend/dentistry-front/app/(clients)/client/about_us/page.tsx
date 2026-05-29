@@ -65,7 +65,7 @@ export default function AboutUs() {
               {t("client.about_us.team.professionalizm")}
             </h3>
             <p className="text-gray-700 text-sm sm:text-base">
-              {t("client.about_us.team.description_proessionalizm")}
+              {t("client.about_us.team.description_professionalizm")}
             </p>
           </div>
 

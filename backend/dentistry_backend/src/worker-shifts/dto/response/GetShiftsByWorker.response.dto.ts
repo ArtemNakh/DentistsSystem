@@ -2,15 +2,16 @@ import { WorkerCommonDto } from "@/workers/dto/Response/BaseType/WorkersCommon.r
 import { ApiProperty } from "@nestjs/swagger";
 import { Expose, Type } from "class-transformer";
 import { WorkerShiftCommonDto } from "./BaseType/WorkerShiftCommon.response.dto";
+import { WorkerWithSpecialtyDto } from "@/workers/dto/Response/BaseType/partials/WorkerWithSpecialty.response.dto";
 
 export class GetShiftsByWorkerResponseDto extends WorkerShiftCommonDto {
 
     @ApiProperty({
         description: 'Працівник, у якого є розклад',
-        type: WorkerCommonDto,
+        type: WorkerWithSpecialtyDto,
       })
-      @ApiProperty({ type: () => WorkerCommonDto })
-      @Type(() => WorkerCommonDto)
+      @ApiProperty({ type: () => WorkerWithSpecialtyDto })
+      @Type(() => WorkerWithSpecialtyDto)
       @Expose()
-      worker: WorkerCommonDto;
+      worker: WorkerWithSpecialtyDto;
 }

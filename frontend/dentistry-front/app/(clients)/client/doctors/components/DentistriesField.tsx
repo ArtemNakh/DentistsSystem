@@ -2,7 +2,7 @@
 import { useAppSelector } from "@/lib/redux/hooks";
 import { RootState } from "@/lib/redux/store";
 import { IDentistry } from "@/lib/redux/modules/Dentistries/Dentistry.interface";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { GetDentistriesByCity } from "@/lib/redux/modules/FindingDentistries/actions/GetDentistriesByCity/GetDentistriesByCity";
@@ -23,24 +23,31 @@ export default function DentistryField({
 
   const [showDentistryModal, setShowDentistryModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredDentistries, setFilteredDentistries] = useState<IDentistry[]>(
-    [],
+  const filteredDentistries: IDentistry[] = useMemo(
+    () => (searchQuery.length > 2 ? dentistries : []),
+    [searchQuery, dentistries],
   );
+  // const [filteredDentistries, setFilteredDentistries] = useState<IDentistry[]>(
+  //   [],
+  // );
+
   const [selectedDentistryName, setSelectedDentistryName] = useState("");
+
+  {
+    console.log("dentis", dentistries, searchQuery, filteredDentistries);
+  }
 
   useEffect(() => {
     if (searchQuery.length > 2) {
       dispatch(GetDentistriesByCity({ city: searchQuery }));
     }
-  }, [searchQuery]);
+  }, [searchQuery, dispatch]);
 
-  useEffect(() => {
-    if (searchQuery.length > 2) {
-      setFilteredDentistries(dentistries);
-    } else {
-      setFilteredDentistries([]);
-    }
-  }, [searchQuery]); // прибери dentistries
+  // useEffect(() => {
+  //   if (searchQuery.length > 2) {
+  //     setFilteredDentistries(dentistries);
+  //   }
+  // }, [dentistries]);
 
   return (
     <>

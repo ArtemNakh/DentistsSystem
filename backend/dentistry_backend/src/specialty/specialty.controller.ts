@@ -15,13 +15,10 @@ import {
   ApiBody,
   ApiOperation,
   ApiParam,
-  ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
 import { CreateSpecialtyDto } from './dto/CreateSpecialty.dto';
-import { SpecialtyResponseDto } from './dto/swagger/CreateSpecialty.response.dto';
-import { Specialty } from './entities/specialty.entity';
 import { UpdateSpecialtyDto } from './dto/UpdateSpecialty.dto';
 import { Authorization } from '@/auth/decorators/Authorization.decorator';
 import { SpecialtyType } from './entities/specialty.interface';
@@ -395,12 +392,8 @@ export class SpecialtyController {
   @ApiResponse({
     status: 200,
     description: 'Список знайдених спеціалізацій',
-    schema: {
-      type: 'array',
-      items: {
-        $ref: '#/components/schemas/SpecialtyResponseDto',
-      },
-    },
+    type: SearchSpecialtyResponseDto,
+    isArray: true,
   })
   @ApiResponse({
     status: 400,

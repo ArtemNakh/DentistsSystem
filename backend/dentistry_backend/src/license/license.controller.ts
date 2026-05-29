@@ -23,8 +23,6 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { CreateLicenseDto } from './dto/CreateLicense.dto';
-import { License } from './entities/license.entity';
-import { ILicense } from './entities/license.interface';
 import { UpdateLicenseDto } from './dto/UpdateLicense.dto';
 import { Authorization } from '@/auth/decorators/Authorization.decorator';
 import { SpecialtyType } from '@/specialty/entities/specialty.interface';
@@ -592,7 +590,7 @@ export class LicenseController {
   @UseInterceptors(ClassSerializerInterceptor)
   async getExpiringLicensesByDentistry(
     @Query() query: GetExpiringLicensesDentistryQueryDto,
-  ): Promise<GetExpirationLicensesToWorkerResponseDto[]> {
+  ): Promise<GetExpirationLicensesToDentistryResponseDto[]> {
     const { dentistryId, maxDays } = query;
     if (!dentistryId || !maxDays) {
       throw new BadRequestException(

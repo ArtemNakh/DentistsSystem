@@ -10,7 +10,6 @@ import {
 } from '@nestjs/common';
 import { NotificationService } from './notification.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { INotification } from './entity/notification.interface';
 import { Authorization } from '@/auth/decorators/Authorization.decorator';
 import { SpecialtyType } from '@/specialty/entities/specialty.interface';
 import { RemindPaymentParamDto } from './dto/Params/RemindPayment.params.dto';

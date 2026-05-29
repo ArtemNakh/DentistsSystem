@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import DatePicker from "react-datepicker";
 import { uk, enUS, Locale } from "date-fns/locale";
 import i18n from "@/i18next.config";
+
 function generateHourlySlots(start: string, end: string) {
   const slots: string[] = [];
   const [startHour] = start.split(":").map(Number);
@@ -93,7 +94,7 @@ export default function AppointmentDateField() {
 
   return (
     <>
-      <div className="mx-5 text-gray-500">
+      <div className="mx-5 text-gray-500 overflow-y-auto">
         <label className="block mb-1 text-lg text-gray-600">
           
             {t("client.create_appointment.date.date_operation")}

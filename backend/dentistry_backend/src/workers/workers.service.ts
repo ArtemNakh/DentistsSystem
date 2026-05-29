@@ -89,7 +89,7 @@ export class WorkersService {
       .leftJoinAndSelect('worker.licenses', 'licenses')
       .where('worker.dentistry_id = :dentistryId', { dentistryId })
       .andWhere('worker.active = true')
-      .andWhere('specialty.type = :type', { type: SpecialtyType.DOCTOR }) 
+      .andWhere('specialty.type = :type', { type: SpecialtyType.DOCTOR })
       .getMany();
 
     const today = new Date();
@@ -150,55 +150,62 @@ export class WorkersService {
     return this.workerRepo.save(worker);
   }
 
-async UpdateWorker(id: number, dto: UpdateWorkerDto): Promise<Worker> {
-  const worker = await this.workerRepo.findOne({ where: { id } });
-  if (!worker) {
-    throw new NotFoundException(`Worker with id ${id} not found`);
-  }
-
-  // Оновлюємо прості поля тільки якщо вони передані
-  if (dto.name !== undefined) worker.name = dto.name;
-  if (dto.surname !== undefined) worker.surname = dto.surname;
-  if (dto.middle_name !== undefined) worker.middle_name = dto.middle_name;
-  if (dto.birthday !== undefined) worker.birthday = dto.birthday as any;
-  if (dto.phone !== undefined) worker.phone = dto.phone;
-  if (dto.active !== undefined) worker.active = dto.active;
-
-  // Оновлення спеціальності
-  if (dto.specialtyId !== undefined) {
-    const specialty = await this.specialtyRepo.findOneBy({ id: dto.specialtyId });
-    if (!specialty) {
-      throw new NotFoundException(`Specialty with id ${dto.specialtyId} not found`);
+  async UpdateWorker(id: number, dto: UpdateWorkerDto): Promise<Worker> {
+    const worker = await this.workerRepo.findOne({ where: { id } });
+    if (!worker) {
+      throw new NotFoundException(`Worker with id ${id} not found`);
     }
-    worker.specialty = specialty;
-  }
 
-  // Оновлення стоматології
-  if (dto.dentistryId !== undefined) {
-    const dentistry = await this.dentistryRepo.findOneBy({ id: dto.dentistryId });
-    if (!dentistry) {
-      throw new NotFoundException(`Dentistry with id ${dto.dentistryId} not found`);
+    // Оновлюємо прості поля тільки якщо вони передані
+    if (dto.name !== undefined) worker.name = dto.name;
+    if (dto.surname !== undefined) worker.surname = dto.surname;
+    if (dto.middle_name !== undefined) worker.middle_name = dto.middle_name;
+    if (dto.birthday !== undefined) worker.birthday = dto.birthday as any;
+    if (dto.phone !== undefined) worker.phone = dto.phone;
+    if (dto.active !== undefined) worker.active = dto.active;
+
+    // Оновлення спеціальності
+    if (dto.specialtyId !== undefined) {
+      const specialty = await this.specialtyRepo.findOneBy({
+        id: dto.specialtyId,
+      });
+      if (!specialty) {
+        throw new NotFoundException(
+          `Specialty with id ${dto.specialtyId} not found`,
+        );
+      }
+      worker.specialty = specialty;
     }
-    worker.dentistry = dentistry;
-  }
 
-  // Перевірка логіну
-  if (dto.login !== undefined) {
-    const exists = await this.checkLoginPassword(dto.login);
-    if (exists) {
-      throw new ConflictException('Логін чи пароль вже існує');
+    // Оновлення стоматології
+    if (dto.dentistryId !== undefined) {
+      const dentistry = await this.dentistryRepo.findOneBy({
+        id: dto.dentistryId,
+      });
+      if (!dentistry) {
+        throw new NotFoundException(
+          `Dentistry with id ${dto.dentistryId} not found`,
+        );
+      }
+      worker.dentistry = dentistry;
     }
-    worker.login = dto.login;
+
+    // Перевірка логіну
+    if (dto.login !== undefined) {
+      const exists = await this.checkLoginPassword(dto.login);
+      if (exists) {
+        throw new ConflictException('Логін чи пароль вже існує');
+      }
+      worker.login = dto.login;
+    }
+
+    // Хешування пароля
+    if (dto.password !== undefined) {
+      worker.password = await argon2.hash(dto.password);
+    }
+
+    return this.workerRepo.save(worker);
   }
-
-  // Хешування пароля
-  if (dto.password !== undefined) {
-    worker.password = await argon2.hash(dto.password);
-  }
-
-  return this.workerRepo.save(worker);
-}
-
 
   async RemoveWorker(idWorker: number): Promise<void> {
     const worker = await this.workerRepo.findOne({ where: { id: idWorker } });

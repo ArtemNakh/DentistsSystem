@@ -28,6 +28,7 @@ import { RegisterWorkerDto } from '@/workers/dto/registerWorker.dto';
 import { LoginClientResponseDto } from './dto/response/LoginClient.response.dto';
 import { plainToInstance } from 'class-transformer';
 import { LoginWorkerResponseDto } from './dto/response/LoginWorker.response.dto copy';
+import { RegistrationClientResponseDto } from './dto/response/RegistrationClient.response.dto';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -140,7 +141,7 @@ export class AuthController {
   public async registerClient(
     @Req() req: Request,
     @Body() dto: RegisterClientDto,
-  ) {
+  ): Promise<RegistrationClientResponseDto> {
     return this.authService.registerClient(req, dto);
   }
 

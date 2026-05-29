@@ -7,7 +7,6 @@ import {
 } from '@nestjs/common';
 import { PaymentService } from './payment.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Payment } from './entity/payment.entity';
 import { Authorization } from '@/auth/decorators/Authorization.decorator';
 import { SpecialtyType } from '@/specialty/entities/specialty.interface';
 import { GetPaymentsByDentistDto } from './dto/Query/GetPaymentsByDentist.dto';

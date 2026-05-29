@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
 import { AppointmentCommonDto } from './BaseType/AppointmentCommon.response.dto';
 import { ClientCommonDto } from '@/clients/dto/Response/BaseType/ClientCommon.response.dto';
-import { WorkersWithSpecialtyAndDentistryDto } from '@/workers/dto/Response/BaseType/partials/WorkersWithSpecialtyAndDentistry.response.dto';
+import { WorkerWithSpecialtyAndDentistryDto } from '@/workers/dto/Response/BaseType/partials/WorkersWithSpecialtyAndDentistry.response.dto';
 import { PaymentCommonDto } from '@/payment/dto/Response/BaseType/PaymentCommon.response.dto';
 import { AppointmentActionCommonDto } from '@/appointment-action/dto/Response/BaseType/AppointmentActionCommon.response.dto';
 
@@ -21,10 +21,10 @@ export class GetTodayAppointmentsResponseDto extends AppointmentCommonDto {
     description: 'Працівник',
     type: WorkerCommonDto,
   })
-  @ApiProperty({ type: () => WorkersWithSpecialtyAndDentistryDto })
-  @Type(() => WorkersWithSpecialtyAndDentistryDto)
+  @ApiProperty({ type: () => WorkerWithSpecialtyAndDentistryDto })
+  @Type(() => WorkerWithSpecialtyAndDentistryDto)
   @Expose()
-  dentist: WorkersWithSpecialtyAndDentistryDto;
+  dentist: WorkerWithSpecialtyAndDentistryDto;
 
   @Type(() => PaymentCommonDto)
     @Expose()

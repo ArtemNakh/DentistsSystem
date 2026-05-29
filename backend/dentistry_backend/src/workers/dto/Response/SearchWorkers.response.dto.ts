@@ -14,11 +14,4 @@ export class SearchWorkersResponseDto extends WorkerCommonDto {
   })
   specialty: SpecialtyCommonDto;
 
-  @Type(() => DentistryCommonDto)
-  @Expose()
-  @ApiProperty({
-    type: () => DentistryCommonDto,
-    description: 'Стоматолоігя працівника',
-  })
-  dentistry: DentistryCommonDto;
 }

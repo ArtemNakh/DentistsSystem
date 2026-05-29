@@ -14,7 +14,6 @@ import {
 import { OperationListService } from './operation-list.service';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateOperationDto } from './dto/CreateOperation-list.dto';
-import { IOperationList } from './entities/operation-list.interface';
 import { Authorization } from '../auth/decorators/Authorization.decorator';
 import { WorkerAuthGuard } from '../auth/guards/workerAuth.guard';
 import { SpecialtyType } from '../specialty/entities/specialty.interface';

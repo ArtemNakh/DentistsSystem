@@ -38,14 +38,12 @@ import { SearchWorkersResponseDto } from './dto/Response/SearchWorkers.response.
 import { CreateWorkerResponseDto } from './dto/Response/CreateWorker.response.dto';
 import { UpdateWorkerResponseDto } from './dto/Response/UpdateWorker.response.dto';
 import { GetWorkerByIdResponseDto } from './dto/Response/GetWorkerById.response.dto';
-import { DentistryService } from '@/dentistry/dentistry.service';
+import { WorkerWithSpecialtyAndDentistryDto } from './dto/Response/BaseType/partials/WorkersWithSpecialtyAndDentistry.response.dto';
 
 @ApiTags('Worker')
 @Controller('workers')
 export class WorkersController {
-  constructor(
-    private readonly workersService: WorkersService
-  ) {}
+  constructor(private readonly workersService: WorkersService) {}
 
   @Get('all-info')
   @ApiOperation({
@@ -106,7 +104,7 @@ export class WorkersController {
   @UseInterceptors(ClassSerializerInterceptor)
   async GetPublicInfoWorkersByDentistry(
     @Query() query: GetWorkersByDentistryQuery,
-  ): Promise<WorkerPublicDto[]> {
+  ): Promise<WorkerWithSpecialtyAndDentistryDto[]> {
     const { dentistryId } = query;
     const workersByDentistry =
       await this.workersService.GetInfoDoctorsByDentistry(dentistryId);

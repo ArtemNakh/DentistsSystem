@@ -1,16 +1,16 @@
-import { WorkerCommonDto } from '@/workers/dto/Response/BaseType/WorkersCommon.response.dto';
+import { WorkerWithSpecialtyDto } from '@/workers/dto/Response/BaseType/partials/WorkerWithSpecialty.response.dto';
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
 
 export class GetWorkersWeekendResponseDto {
   @ApiProperty({
-    description: 'Працівник, у якого є розклад',
-    type: WorkerCommonDto,
+    description: 'Працівник стоматології',
+    type: WorkerWithSpecialtyDto,
   })
-  @ApiProperty({ type: () => WorkerCommonDto })
-  @Type(() => WorkerCommonDto)
+  @ApiProperty({ type: () => WorkerWithSpecialtyDto })
+  @Type(() => WorkerWithSpecialtyDto)
   @Expose()
-  worker: WorkerCommonDto;
+  worker: WorkerWithSpecialtyDto;
 
   @ApiProperty({
     description: 'Кількість неробочихз днів',

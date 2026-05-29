@@ -46,8 +46,8 @@ export default function HeaderClient() {
     <div className="bg-gray-400 border border-gray-600 z-30">
       <div className="flex items-center justify-between h-16 px-6 shadow-md">
         {/* Ліва кнопка */}
-        {authUser.user && (
-          <div>
+        {(authUser.user || !authUser.user) && (
+          <div className="md:hidden">
             <button
               onClick={() => setLeftSideBar(true)}
               className="px-4 py-2 text-white rounded"
@@ -70,8 +70,8 @@ export default function HeaderClient() {
 
             {leftSideBar && (
               <SideBarAdmins
-                items={sidebarItems}
-                headerLinks={headerLinks}
+                items={authUser.user ? sidebarItems : []} // якщо авторизований → свої пункти
+                headerLinks={!authUser.user ? headerLinks : []} // якщо НЕ авторизований → головні сторінки
                 onClose={() => setLeftSideBar(false)}
               />
             )}
