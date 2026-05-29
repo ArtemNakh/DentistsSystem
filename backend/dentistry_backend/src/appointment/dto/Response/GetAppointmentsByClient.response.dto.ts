@@ -5,6 +5,7 @@ import { AppointmentCommonDto } from './BaseType/AppointmentCommon.response.dto'
 import { ClientCommonDto } from '@/clients/dto/Response/BaseType/ClientCommon.response.dto';
 import { PaymentCommonDto } from '@/payment/dto/Response/BaseType/PaymentCommon.response.dto';
 import { AppointmentActionWithOperationDto } from '@/appointment-action/dto/Response/partialType/AppointmentActionWithOperation.response.dto';
+import { WorkersWithSpecialtyAndDentistryDto } from '@/workers/dto/Response/BaseType/partials/WorkersWithSpecialtyAndDentistry.response.dto';
 
 export class GetAppointmentsByClientResponseDto extends AppointmentCommonDto {
   @ApiProperty({
@@ -23,7 +24,7 @@ export class GetAppointmentsByClientResponseDto extends AppointmentCommonDto {
   @ApiProperty({ type: () => WorkerCommonDto })
   @Type(() => WorkerCommonDto)
   @Expose()
-  dentist: WorkerCommonDto;
+  dentist: WorkersWithSpecialtyAndDentistryDto;
 
   @ApiProperty({
     description: 'Дії які були зроблені',

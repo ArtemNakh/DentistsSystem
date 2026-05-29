@@ -3,6 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
 import { AppointmentCommonDto } from './BaseType/AppointmentCommon.response.dto';
 import { ClientCommonDto } from '@/clients/dto/Response/BaseType/ClientCommon.response.dto';
+import { WorkerWithDentistryDto } from '@/workers/dto/Response/BaseType/partials/WorkerWithDentistry.response.dto copy';
 
 export class GetAllAppointmentsResponseDto extends AppointmentCommonDto {
   @ApiProperty({
@@ -15,11 +16,11 @@ export class GetAllAppointmentsResponseDto extends AppointmentCommonDto {
   client: ClientCommonDto;
 
   @ApiProperty({
-    description: 'Працівник, у якого є розклад',
-    type: WorkerCommonDto,
+    description: 'Працівник, який веде операцію',
+    type: WorkerWithDentistryDto,
   })
-  @ApiProperty({ type: () => WorkerCommonDto })
-  @Type(() => WorkerCommonDto)
+  @ApiProperty({ type: () => WorkerWithDentistryDto })
+  @Type(() => WorkerWithDentistryDto)
   @Expose()
-  worker: WorkerCommonDto;
+  dentist: WorkerWithDentistryDto;
 }

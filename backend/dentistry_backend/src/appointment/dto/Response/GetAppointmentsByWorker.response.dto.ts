@@ -28,13 +28,13 @@ export class GetAppointmentsByWorkerResponseDto extends AppointmentCommonDto {
 
   @ApiProperty({
     description: 'Дії які були зроблені',
-    type: AppointmentActionWithOperationDto,
+    type: AppointmentActionCommonDto,
     isArray: true,
   })
-  @ApiProperty({ type: () => AppointmentActionWithOperationDto })
-  @Type(() => AppointmentActionWithOperationDto)
+  @ApiProperty({ type: () => AppointmentActionCommonDto })
+  @Type(() => AppointmentActionCommonDto)
   @Expose()
-  appointment_actions: AppointmentActionWithOperationDto[];
+  appointment_actions: AppointmentActionCommonDto[];
 
   @ApiProperty({
     description: 'Оплата за операцію',

@@ -1,6 +1,7 @@
-import { WorkerCommonDto } from '@/workers/dto/Response/BaseType/WorkersCommon.response.dto';
+
 import { Expose, Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
+import { WorkerWithSpecialtyDto } from '@/workers/dto/Response/BaseType/partials/WorkerWithSpecialty.response.dto';
 
 export class LoginWorkerResponseDto {
   @ApiProperty({
@@ -12,7 +13,7 @@ export class LoginWorkerResponseDto {
 
   @ApiProperty({
     description: 'Базова інформація про працівника',
-    type: WorkerCommonDto,
+    type: WorkerWithSpecialtyDto,
     example: {
       id: 12,
       name: 'Іван',
@@ -25,6 +26,6 @@ export class LoginWorkerResponseDto {
     },
   })
   @Expose()
-  @Type(() => WorkerCommonDto)
-  worker: WorkerCommonDto;
+  @Type(() => WorkerWithSpecialtyDto)
+  worker: WorkerWithSpecialtyDto;
 }

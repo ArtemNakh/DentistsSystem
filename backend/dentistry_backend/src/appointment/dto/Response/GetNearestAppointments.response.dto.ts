@@ -21,5 +21,5 @@ export class GetNearestAppointmentsResponseDto extends AppointmentCommonDto {
   @ApiProperty({ type: () => WorkerCommonDto })
   @Type(() => WorkerCommonDto)
   @Expose()
-  worker: WorkerCommonDto;
+  dentist: WorkerCommonDto;
 }

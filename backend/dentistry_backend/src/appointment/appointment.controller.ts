@@ -12,7 +12,6 @@ import {
 } from '@nestjs/common';
 import { AppointmentService } from './appointment.service';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { IAppointment } from './entity/appointment.interface';
 
 import { CreateAppointmentDto } from './dto/createAppointment.dto';
 import { UpdateAppointmentStatusDto } from './dto/updateAppointmentStatus.dto';
@@ -548,7 +547,7 @@ export class AppointmentController {
     },
   })
   @UseInterceptors(ClassSerializerInterceptor)
-  async getAppointments(
+  async getAppointmentsForWorkerNext3Month(
     @Param() params: GetWorkerAppointmentsDto,
   ): Promise<GetAppointmentsNext3MonthResponseDto[]> {
     const { workerId } = params;

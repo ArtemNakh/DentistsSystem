@@ -3,6 +3,10 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
 import { AppointmentCommonDto } from './BaseType/AppointmentCommon.response.dto';
 import { ClientCommonDto } from '@/clients/dto/Response/BaseType/ClientCommon.response.dto';
+import { WorkerPublicDto } from '@/workers/dto/Response/BaseType/WorkersPublic.response.dto';
+import { WorkersWithSpecialtyAndDentistryDto } from '@/workers/dto/Response/BaseType/partials/WorkersWithSpecialtyAndDentistry.response.dto';
+import { AppointmentActionCommonDto } from '@/appointment-action/dto/Response/BaseType/AppointmentActionCommon.response.dto';
+import { PaymentCommonDto } from '@/payment/dto/Response/BaseType/PaymentCommon.response.dto';
 
 export class CreateAppointmentResponseDto extends AppointmentCommonDto {
   @ApiProperty({
@@ -15,12 +19,30 @@ export class CreateAppointmentResponseDto extends AppointmentCommonDto {
   client: ClientCommonDto;
 
   @ApiProperty({
-    description: 'Працівник, у якого є розклад',
-    type: WorkerCommonDto,
+    description: 'Працівник, який буде вести операцію',
+    type: WorkersWithSpecialtyAndDentistryDto,
   })
-  @ApiProperty({ type: () => WorkerCommonDto })
-  @Type(() => WorkerCommonDto)
+  @ApiProperty({ type: () => WorkersWithSpecialtyAndDentistryDto })
+  @Type(() => WorkersWithSpecialtyAndDentistryDto)
   @Expose()
-  dentist: WorkerCommonDto;
+  dentist: WorkersWithSpecialtyAndDentistryDto;
 
+  @ApiProperty({
+    description: 'Дії які були зроблені',
+    type: AppointmentActionCommonDto,
+  })
+  @ApiProperty({ type: () => AppointmentActionCommonDto })
+  @Type(() => AppointmentActionCommonDto)
+  @Expose()
+  appointment_actions: AppointmentActionCommonDto[];
+
+  
+  @ApiProperty({
+    description: 'Оплата запису',
+    type: PaymentCommonDto,
+  })
+  @ApiProperty({ type: () => PaymentCommonDto })
+  @Type(() => PaymentCommonDto)
+  @Expose()
+  payment: PaymentCommonDto[];
 }
