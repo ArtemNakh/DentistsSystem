@@ -1198,7 +1198,7 @@
           "price": "Price",
           "no_actions": "No actions available",
           "close": "Close"
-        }
+        },"load_more":"Loading more"
       }
     },
     "about_us": {

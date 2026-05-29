@@ -13,8 +13,6 @@ interface FilterPanelProps {
   setFilters: React.Dispatch<React.SetStateAction<HistoryFilters>>;
 }
 
-
-
 export default function FilterPanelHistory({
   filters,
   setFilters,
@@ -24,20 +22,6 @@ export default function FilterPanelHistory({
   return (
     <div className="w-full mb-8">
       <div className="mx-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {/* fioClient */}
-        <div className="bg-white border border-gray-300 rounded-lg shadow-md p-4 hover:shadow-lg transition">
-          <label className="text-yellow-600 font-semibold mb-2 block">
-            {t("client.history_operation.filters.fio_client")}
-          </label>
-          <input
-            value={filters.fioClient}
-            onChange={(e) =>
-              setFilters({ ...filters, fioClient: e.target.value })
-            }
-            className="h-10 w-full border border-gray-300 rounded px-3 focus:outline-none focus:ring-2 focus:ring-yellow-400 text-gray-700"
-          />
-        </div>
-
         {/* fioWorker */}
         <div className="bg-white border border-gray-300 rounded-lg shadow-md p-4 hover:shadow-lg transition">
           <label className="text-yellow-600 font-semibold mb-2 block">

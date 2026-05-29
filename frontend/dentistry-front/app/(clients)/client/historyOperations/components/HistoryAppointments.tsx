@@ -32,14 +32,29 @@ export default function HistoryAppointmentsClient({
   const authUser = useAppSelector((state: { auth: AuthState }) => state.auth);
 
   const [skip, setSkip] = useState(0);
-  const take = 2;
+  const take = 10;
   // перший запит
   useEffect(() => {
     if (appointments.length === 0) {
-      if(!authUser?.user?.id) return
-      dispatch(GetAppointmentsToClient({ clientId: authUser?.user?.id, take, skip })); // clientId бери з authUser
+      if (!authUser?.user?.id) return;
+      dispatch(
+        GetAppointmentsToClient({ clientId: authUser?.user?.id, take, skip }),
+      ); // clientId бери з authUser
     }
-  }, []);
+  }, [authUser]);
+
+  const onLoadMore = () => {
+    if (!authUser?.user?.id) return;
+    const newSkip = skip + take;
+    setSkip(newSkip);
+    dispatch(
+      GetAppointmentsToClient({
+        clientId: authUser.user.id,
+        take,
+        skip: newSkip,
+      }),
+    );
+  };
 
   const filteredAppointments = appointments.filter((ap) => {
     const fioClientMatch =
@@ -80,13 +95,9 @@ export default function HistoryAppointmentsClient({
       <div className="w-full  ">
         <div className="mx-4 text-base">
           <TableHistoryAppointments
-          appointments={filteredAppointments}
-          onLoadMore={() => {
-            const newSkip = skip + take;
-            setSkip(newSkip);
-            dispatch(GetAppointmentsToClient({ clientId: 1, take, skip: newSkip }));
-          }}
-        />
+            appointments={filteredAppointments}
+            onLoadMore={onLoadMore}
+          />
         </div>
       </div>
     </>

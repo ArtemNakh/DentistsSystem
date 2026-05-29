@@ -13,37 +13,13 @@ interface TableHistoryAppointmentsProps {
 }
 
 export default function TableHistoryAppointments({
-  appointments,onLoadMore
+  appointments,
+  onLoadMore,
 }: TableHistoryAppointmentsProps) {
   const { t } = useTranslation();
   const [selectedAppointment, setSelectedAppointment] =
     useState<IAppointment | null>(null);
   const [selectedPayment, setSelectedPayment] = useState<IPayment | null>(null);
-
-
-
-  const observerRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          onLoadMore();
-        }
-      },
-      { threshold: 1 }
-    );
-
-    if (observerRef.current) {
-      observer.observe(observerRef.current);
-    }
-
-    return () => {
-      if (observerRef.current) {
-        observer.unobserve(observerRef.current);
-      }
-    };
-  }, [onLoadMore]);
 
   return (
     <>
@@ -132,7 +108,17 @@ export default function TableHistoryAppointments({
           </div>
         ))}
       </div>
- <div ref={observerRef} className="h-1"></div>
+
+      {appointments.length > 0 && (
+        <div className="flex justify-center mt-6">
+          <button
+            onClick={onLoadMore}
+            className="px-6 py-2 bg-amber-500 text-white rounded hover:bg-amber-600 transition"
+          >
+            {t("client.history_operation.table.load_more")}
+          </button>
+        </div>
+      )}
 
       <ShowAppointmentActions
         appointment={selectedAppointment}
