@@ -1,6 +1,6 @@
 "use client";
 import { IAppointment } from "@/lib/redux/modules/Appointments/Appointment.interface";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ShowAppointmentActions from "./ModalView/ShowAppointmentActions";
 import { useTranslation } from "react-i18next";
 import { format } from "date-fns";
@@ -9,15 +9,41 @@ import ShowPaymentModal from "./ModalView/ShowPaymentModal";
 
 interface TableHistoryAppointmentsProps {
   appointments: IAppointment[];
+  onLoadMore: () => void;
 }
 
 export default function TableHistoryAppointments({
-  appointments,
+  appointments,onLoadMore
 }: TableHistoryAppointmentsProps) {
   const { t } = useTranslation();
   const [selectedAppointment, setSelectedAppointment] =
     useState<IAppointment | null>(null);
   const [selectedPayment, setSelectedPayment] = useState<IPayment | null>(null);
+
+
+
+  const observerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          onLoadMore();
+        }
+      },
+      { threshold: 1 }
+    );
+
+    if (observerRef.current) {
+      observer.observe(observerRef.current);
+    }
+
+    return () => {
+      if (observerRef.current) {
+        observer.unobserve(observerRef.current);
+      }
+    };
+  }, [onLoadMore]);
 
   return (
     <>
@@ -52,8 +78,7 @@ export default function TableHistoryAppointments({
             <p className="text-gray-700 mb-1">
               <span className="font-medium">
                 {" "}
-                {t("client.history_operation.table.header.status_operation")}
-                :
+                {t("client.history_operation.table.header.status_operation")}:
               </span>{" "}
               {appointment.status}
             </p>
@@ -75,9 +100,7 @@ export default function TableHistoryAppointments({
                   }
                   className="ml-2 text-amber-600 hover:underline text-sm"
                 >
-                  {t(
-                    "client.history_operation.table.payment_modal.open",
-                  )}
+                  {t("client.history_operation.table.payment_modal.open")}
                 </button>
               )}
             </p>
@@ -109,6 +132,7 @@ export default function TableHistoryAppointments({
           </div>
         ))}
       </div>
+ <div ref={observerRef} className="h-1"></div>
 
       <ShowAppointmentActions
         appointment={selectedAppointment}

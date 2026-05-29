@@ -26,7 +26,7 @@ import { UpdateAppointmentStatusParamDto } from './dto/Params/UpdateAppointmentS
 import { WorkersStatsByDentistry } from './dto/Params/GetWorkersStatsByDentistry.param.dto';
 import { GetClientsAppointmentParamDto } from './dto/Params/GetClientsAppointment.param.dto';
 import { ClientOrWorker } from '@/auth/decorators/ClientOrWorker.decorator';
-import { GetAppointmentsByClient } from './dto/Params/GetAppointmentsByClient.param.dto';
+import { GetAppointmentsByClientParams } from './dto/Params/GetAppointmentsByClient.param.dto';
 import { GetNearestAppointmentsResponseDto } from './dto/Response/GetNearestAppointments.response.dto';
 import { plainToInstance } from 'class-transformer';
 import { GetTodayAppointmentsResponseDto } from './dto/Response/GetTodayAppointments.response.dto';
@@ -39,6 +39,7 @@ import { UpdateStatusAppointmentResponseDto } from './dto/Response/UpdateStatusA
 import { GetWorkersStatsResponseDto } from './dto/Response/GetWorkersStats.response.dto';
 import { GetAppointmentResponseDto } from './dto/Response/GetAppointment.response.dto';
 import { GetAppointmentsByClientResponseDto } from './dto/Response/GetAppointmentsByClient.response.dto';
+import { GetAppointmentsByClientQuery } from './dto/Query/GetAppointmentsByClient.query.dto';
 
 @ApiTags('Appointment')
 @Controller('appointment')
@@ -919,10 +920,16 @@ export class AppointmentController {
   // @UseGuards(ClientAuthGuard)
   @UseInterceptors(ClassSerializerInterceptor)
   async getAppointmentsByClient(
-    @Param() params: GetAppointmentsByClient,
+    @Param() params: GetAppointmentsByClientParams,
+    @Query() query: GetAppointmentsByClientQuery,
   ): Promise<GetAppointmentsByClientResponseDto[]> {
     const { clientId } = params;
-    const appointments = await this.appointmentService.findByClientId(clientId);
+    const { take, skip } = query;
+    const appointments = await this.appointmentService.findByClientId(
+      clientId,
+      take,
+      skip,
+    );
 
     return plainToInstance(GetAppointmentsByClientResponseDto, appointments, {
       excludeExtraneousValues: true,

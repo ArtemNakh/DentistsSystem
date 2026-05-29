@@ -1,10 +1,17 @@
 import { HistoryFilters } from "./FilterPanel";
-import { UseDenormalizeSelector } from "@/lib/redux/hooks";
+import {
+  useAppDispatch,
+  useAppSelector,
+  UseDenormalizeSelector,
+} from "@/lib/redux/hooks";
 import { format } from "date-fns";
 import TableHistoryAppointments from "./TableHistoryAppointments";
 import { useTranslation } from "react-i18next";
 import { IAppointment } from "@/lib/redux/modules/Appointments/Appointment.interface";
 import { RootState } from "@/lib/redux/store";
+import { useEffect, useState } from "react";
+import { GetAppointmentsToClient } from "@/lib/redux/modules/Appointments/actions/GetAppointmentsByClient/GetAppointmentsByClient";
+import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
 
 interface HistoryAppointmentsClientProps {
   filters: HistoryFilters;
@@ -14,13 +21,26 @@ export default function HistoryAppointmentsClient({
   filters,
 }: HistoryAppointmentsClientProps) {
   const { t } = useTranslation();
+  const dispatch = useAppDispatch();
+
   const appointments: IAppointment[] = Object.values(
     UseDenormalizeSelector<IAppointment[]>(
       (state: RootState) => state.appointments,
     ) ?? {},
   );
 
-  
+  const authUser = useAppSelector((state: { auth: AuthState }) => state.auth);
+
+  const [skip, setSkip] = useState(0);
+  const take = 2;
+  // перший запит
+  useEffect(() => {
+    if (appointments.length === 0) {
+      if(!authUser?.user?.id) return
+      dispatch(GetAppointmentsToClient({ clientId: authUser?.user?.id, take, skip })); // clientId бери з authUser
+    }
+  }, []);
+
   const filteredAppointments = appointments.filter((ap) => {
     const fioClientMatch =
       !filters.fioClient ||
@@ -59,7 +79,14 @@ export default function HistoryAppointmentsClient({
     <>
       <div className="w-full  ">
         <div className="mx-4 text-base">
-          <TableHistoryAppointments appointments={filteredAppointments} />
+          <TableHistoryAppointments
+          appointments={filteredAppointments}
+          onLoadMore={() => {
+            const newSkip = skip + take;
+            setSkip(newSkip);
+            dispatch(GetAppointmentsToClient({ clientId: 1, take, skip: newSkip }));
+          }}
+        />
         </div>
       </div>
     </>

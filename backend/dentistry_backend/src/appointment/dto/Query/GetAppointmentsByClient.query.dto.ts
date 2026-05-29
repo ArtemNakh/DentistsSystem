@@ -2,18 +2,8 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsInt, IsOptional, Min } from 'class-validator';
 
-export class GetAppointmentsByClientParams {
-  @ApiProperty({
-    description: 'ID клієнта',
-    example: 12,
-    required: true,
-  })
-  @Type(() => Number)
-  @IsInt({ message: 'clientId має бути цілим числом' })
-  @Min(1, { message: 'clientId має бути більше 0' })
-  clientId: number;
-
-  ;
+export class GetAppointmentsByClientQuery {
+ 
 
   @ApiProperty({
     description: 'Кількість записів для отримання (take)',

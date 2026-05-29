@@ -8,9 +8,6 @@ import { getAuthClient } from "@/lib/redux/modules/AuthUser/actions/GetAuthClien
 import { GetAppointmentsToClient } from "@/lib/redux/modules/Appointments/actions/GetAppointmentsByClient/GetAppointmentsByClient";
 
 export default function HistoryOperationsClient() {
-  const dispatch = useAppDispatch();
-
-  const authUser = useAppSelector((state: { auth: AuthState }) => state.auth);
 
   const [filters, setFilters] = useState({
     fioClient: "",
@@ -20,20 +17,6 @@ export default function HistoryOperationsClient() {
     appointment_date: "",
   });
 
-  useEffect(() => {
-    if (authUser.user) {
-      console.log("Un authorized client");
-      return;
-    }
-    dispatch(getAuthClient({}));
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (!authUser.user) return;
-
-    //отримання усі  appointment які були плоть до сьогодні
-    dispatch(GetAppointmentsToClient({ clientId: authUser.user.id }));
-  }, [authUser]);
 
   return (
     <>

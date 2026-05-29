@@ -2,6 +2,8 @@ import { AppointmentActionSaga } from "../../Appointments.Entity";
 
 export interface GetAppointmentsToClientPayload {
   clientId: number;
+  take: number;
+  skip: number;
 }
 
 export const GetAppointmentsToClient = (

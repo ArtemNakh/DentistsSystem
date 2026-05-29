@@ -378,7 +378,11 @@ export class AppointmentService {
     return appointment;
   }
 
-  async findByClientId(clientId: number): Promise<Appointment[]> {
+  async findByClientId(
+    clientId: number,
+    limit = 10,
+    offset = 0,
+  ): Promise<Appointment[]> {
     const appointments = this.appointmentRepo.find({
       where: { client: { id: clientId } },
       relations: [
@@ -389,6 +393,9 @@ export class AppointmentService {
         'payment',
         'appointment_actions.operation',
       ],
+      skip: offset, 
+      take: limit, 
+      order: { appointment_date: 'DESC' }, 
     });
     if (!appointments) {
       throw new NotFoundException(

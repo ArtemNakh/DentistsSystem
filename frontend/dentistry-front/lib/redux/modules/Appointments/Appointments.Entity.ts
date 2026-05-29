@@ -89,7 +89,6 @@ export class AppointmentEntity extends BaseEntity {
       ActionReducer.Get,
     );
   }
-  
 
   *addNewAppointmentSaga(action: addNewAppointmentAction) {
     yield call(
@@ -120,10 +119,10 @@ export class AppointmentEntity extends BaseEntity {
     );
   }
   *getAppointmentsToClientSaga(action: GetAppointmentsToClientAction) {
-    const { clientId } = action.payload;
+    const { clientId, take, skip } = action.payload;
     yield call(
       this.xRead.bind(this),
-      `/appointment/client/${clientId}`,
+      `/appointment/client/${clientId}?take=${take}&skip=${skip}`,
       ActionReducer.Get,
     );
   }
@@ -168,7 +167,6 @@ export class AppointmentEntity extends BaseEntity {
       AppointmentActionSaga.GetHistoryByDentistry,
       this.getHistoryByDentistrySaga.bind(this),
     );
-    
 
     yield takeLatest(
       AppointmentActionSaga.CreateAppointment,
@@ -179,7 +177,7 @@ export class AppointmentEntity extends BaseEntity {
       AppointmentActionSaga.getAppointmentsToWorkerNext3Month,
       this.getAppointmentsToWorkerNewxt3monthSaga.bind(this),
     );
- yield takeLatest(
+    yield takeLatest(
       AppointmentActionSaga.getAppointmentsToWorker,
       this.getAppointmentsToWorkerSaga.bind(this),
     );
