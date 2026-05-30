@@ -405,6 +405,10 @@
         "history_operation": "Історія операцій"
       }
     },
+    "header":{
+      "registry":"Реєстратура",
+      "exit":"Вийти"
+    },
     "notification": {
       "notification": "Сповіщення",
       "no_notification": "Немає сповіщень",

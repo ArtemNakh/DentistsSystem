@@ -67,7 +67,7 @@ export class AppointmentEntity extends BaseEntity {
 
     yield call(
       this.xRead.bind(this),
-      `/appointment/today?dentistry=${dentistryId}`,
+      `/appointment/today?dentistryId=${Number(dentistryId)}`,
       ActionReducer.Get,
     );
   }

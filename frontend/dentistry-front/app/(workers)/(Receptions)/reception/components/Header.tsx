@@ -2,11 +2,8 @@
 import LanguageSwitch from "@/app/components/LanguageSwitch";
 import { useEffect, useState } from "react";
 import SideBarAdmins from "./Sidebar";
-import { RootState } from "@/lib/redux/store";
-import { useSelector } from "react-redux";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
-import { AuthActionSaga } from "@/lib/redux/modules/AuthUser/AuthUser.Entity";
 import { getAuthWorker } from "@/lib/redux/modules/AuthUser/actions/GetAuthWorker/GetAuthWorker";
 import { useTranslation } from "react-i18next";
 import { logoutWorker } from "@/lib/redux/modules/AuthUser/actions/logoutAuthWorker/LogoutAuthWorker";
@@ -49,15 +46,13 @@ export default function HeaderAdmin() {
       path: "/reception/historyOperations",
     },
   ];
+
   return (
     <>
       <div className="bg-[#7E5BBA] border border-gray-600 ">
-        {/* <div className="w-full h-8  ">
-          <div className="flex"> */}
         <div className="flex items-center justify-between h-8">
           {/* left */}
           <div>
-            {/* Кнопка */}
             <button
               onClick={() => setLeftSideBar(true)}
               className="px-4 py-2 text-white rounded"
@@ -77,7 +72,7 @@ export default function HeaderAdmin() {
                 />
               </svg>
             </button>
-            {/* <SideBarAdmins /> */}
+
             {/* сайдбар */}
             {leftSideBar && (
               <SideBarAdmins
@@ -87,16 +82,12 @@ export default function HeaderAdmin() {
             )}
           </div>
 
-          <div>Рецепція</div>
+          <div>{t("reception.header.registry")}</div>
 
           {/* right */}
-          {/* button */}
-
-          {/* розклад із переглядок текущих та додаваня нових та видалення записів,сповіщення що було зроблено для цієї стоматології */}
           <div className=" ml-auto flex  space-x-2 ">
             <div className="flex items-center space-x-2">
               <div className="relative">
-                {" "}
                 {/* Іконка сповіщень */}
                 <button onClick={() => setShowPopup(!showPopup)}>
                   <svg
@@ -144,7 +135,7 @@ export default function HeaderAdmin() {
                     onClick={() => dispatch(logoutWorker({}))}
                     className="border border-gray-600 px-2 py-1 rounded hover:bg-gray-200 transition"
                   >
-                    Exit
+                    {t("reception.header.exit")}
                   </button>
                 </div>
               )}

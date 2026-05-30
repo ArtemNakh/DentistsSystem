@@ -10,6 +10,6 @@ export class GetTodaytDto {
   })
   @Type(() => Number)
   @IsInt({ message: 'dentistryId має бути цілим числом' })
-  @Min(1, { message: 'dentistryId має бути більше 0' })
+  @Min(0, { message: 'dentistryId має бути більше 0' })
   dentistryId: number;
 }

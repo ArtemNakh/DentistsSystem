@@ -791,6 +791,10 @@
       }
     },
 
+    "header":{
+      "registry":"Registry",
+      "exit":"Exit"
+    },
     "header_side": {
       "pages": {
         "menu": "Menu",

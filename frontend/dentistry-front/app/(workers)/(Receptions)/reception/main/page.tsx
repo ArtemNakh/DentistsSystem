@@ -10,17 +10,17 @@ import { getPaymentsDentistry } from "@/lib/redux/modules/Payments/actions/getAl
 import { getAuthWorker } from "@/lib/redux/modules/AuthUser/actions/GetAuthWorker/GetAuthWorker";
 import { getAppointmentNearestTodayDentistry } from "@/lib/redux/modules/Appointments/actions/GetNearestTodayByDentistry/GetNearestTodayByDentistry";
 import { getAppointmentTodayDentistry } from "@/lib/redux/modules/Appointments/actions/GetTodayOperationByDentistry/GetTodayOperationByDentistry";
-
-
+import { IWorker } from "@/lib/redux/modules/Workers/Workers.interface";
 
 export function AdminsMain() {
-  const authUser = useAppSelector((state: { auth: AuthState }) => state.auth);
+  const authUser = useAppSelector(
+    (state: { auth: AuthState }) => state.auth.user,
+  ) as IWorker;
 
   const dispatch = useAppDispatch();
 
-  
   useEffect(() => {
-    if (authUser.user) {
+    if (authUser) {
       console.log("work");
       return;
     }
@@ -28,29 +28,27 @@ export function AdminsMain() {
   }, [dispatch]);
 
   useEffect(() => {
-    if (!authUser.user) return;
-
-    // тепер user гарантовано є
+    if (!authUser) return;
     dispatch(
       getAppointmentNearestTodayDentistry({
-        dentistryId: authUser.user.dentistry.id,
+        dentistryId: authUser.dentistry.id,
       }),
     );
 
-    if (authUser.user.dentistry?.id) {
+    if (authUser.dentistry?.id) {
       dispatch(
-        getPaymentsDentistry({ dentistryId: authUser.user.dentistry.id }),
+        getPaymentsDentistry({ dentistryId: authUser.dentistry.id }),
       );
     }
 
-    if (authUser.user.id) {
+    if (authUser.id) {
       dispatch(
         getAppointmentTodayDentistry({
-          dentistryId: authUser.user.dentistry.id,
+          dentistryId: authUser.dentistry.id,
         }),
       );
     }
-  }, [authUser.user, dispatch]);
+  }, [authUser, dispatch]);
 
   return (
     <>
@@ -59,16 +57,12 @@ export function AdminsMain() {
         <div>
           <div className=" flex ">
             {/* left part */}
-            {/* показування найближчих операцій
-             додати показ актуального по часу записів(якщо час 12 то показувати записі до 12) , додати фільри по часу,доктору, пошук пацієкнта */}
             <div className="w-1/2 relative">
               <TableUpcomingEntries />
             </div>
 
             {/* right patt */}
-            {/* змінити */}
-            {/* таблиця , хто не вніс ще оплату */}
-            {/* таблиця хто зараз проводить операцію */}
+           
             <div className="w-1/2">
               <div className=" mx-5 h-auto">
                 <div className="h-1/2 ">

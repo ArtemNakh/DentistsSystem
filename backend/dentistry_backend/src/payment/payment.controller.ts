@@ -128,7 +128,7 @@ export class PaymentController {
     },
   })
   @UseInterceptors(ClassSerializerInterceptor)
-  @Authorization(SpecialtyType.ADMIN)
+  @Authorization(SpecialtyType.ADMIN,SpecialtyType.RECEPTION)
   async getPaymentsByDentistry(
     @Query() query: GetPaymentsByDentistryDto,
   ): Promise<GetPaymentsByDentistryResponseDto[]> {
