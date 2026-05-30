@@ -43,7 +43,7 @@ export class ClientEntity extends BaseEntity {
   *GetClientsByFullNameSaga(action: GetClientsByFullName) {
     yield call(
       this.xRead.bind(this), // для GET краще xRead
-      `/clients/search?search=${action.payload.fullName}`,
+      `/clients/search?fio=${String(action.payload.fullName)}`,
       ActionReducer.Get,
     );
   }

@@ -298,6 +298,23 @@ export class AppointmentService {
       );
     }
 
+    const currentStatus = appointment.status;
+
+    
+    if (
+      (currentStatus === StatusAppointment.WAIT_PAID &&
+        newStatus !== StatusAppointment.COMPLETED) ||
+      (currentStatus === StatusAppointment.WAIT_PAID &&
+        newStatus === StatusAppointment.CANCELLED) ||
+      (currentStatus === StatusAppointment.COMPLETED &&
+        newStatus !== StatusAppointment.COMPLETED) ||
+      (currentStatus === StatusAppointment.COMPLETED &&
+        newStatus === StatusAppointment.CANCELLED)
+    ) {
+      throw new BadRequestException(
+        `Cannot change status from ${currentStatus} to ${newStatus}`,
+      );
+    }
     appointment.status = newStatus;
     appointment.updated_at = new Date();
 
@@ -393,9 +410,9 @@ export class AppointmentService {
         'payment',
         'appointment_actions.operation',
       ],
-      skip: offset, 
-      take: limit, 
-      order: { appointment_date: 'DESC' }, 
+      skip: offset,
+      take: limit,
+      order: { appointment_date: 'DESC' },
     });
     if (!appointments) {
       throw new NotFoundException(

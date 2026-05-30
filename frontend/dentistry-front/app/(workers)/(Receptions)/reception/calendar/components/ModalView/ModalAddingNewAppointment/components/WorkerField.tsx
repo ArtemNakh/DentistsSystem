@@ -1,11 +1,7 @@
 import { useAppSelector, UseDenormalizeSelector } from "@/lib/redux/hooks";
 import { GetAppointmentsByWorkerNext3Month } from "@/lib/redux/modules/Appointments/actions/GetAppointmentsByWorkerNext3Month/GetAppointmentsByWorkerNext3Month";
 import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
-import { GetClientsByFullName } from "@/lib/redux/modules/Clients/actions/GetClientsByFullName/GetClientsByFullName";
-import { IClient } from "@/lib/redux/modules/Clients/clients.interface";
-import { IDentistry } from "@/lib/redux/modules/Dentistries/Dentistry.interface";
 import { GetWorkersByFullName } from "@/lib/redux/modules/FindingWorkers/actions/GetWorkersByFIO/GetWorkersByFIO";
-import { ISpecialty } from "@/lib/redux/modules/Specialties/Entities/Specialties/Specialties.interface";
 import { IWorker } from "@/lib/redux/modules/Workers/Workers.interface";
 import { getShiftsWorker } from "@/lib/redux/modules/WorkerShifts/actions/GetShiftsToWorker/GetShiftsToWorker";
 import { RootState } from "@/lib/redux/store";
@@ -24,27 +20,56 @@ export default function WorkerField() {
     UseDenormalizeSelector<IWorker[]>(
       (state: RootState) => state.findingWorkers,
     ),
-  ); //useAppSelector(DenormalizeWorkers); //useSelector((state: RootState) => state.findingWorkers);
-  const authUser = useAppSelector((state: { auth: AuthState }) => state.auth);
+  );
+ 
+  const authUser: IWorker = useAppSelector(
+    (state: { auth: AuthState }) => state.auth.user,
+  ) as IWorker;
+
   const [showWorkerModal, setShowWorkerModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredWorkers, setFilteredWorkers] = useState<IWorker[]>([]);
   const [selectedWorkerName, setSelectedWorkerName] = useState("");
 
   useEffect(() => {
-    if (searchQuery.length > 2 && authUser?.user?.dentistry?.id) {
+    if (searchQuery.length > 1 && authUser?.dentistry?.id) {
       dispatch(
         GetWorkersByFullName({
           fullName: searchQuery,
-          dentistryId: authUser.user.dentistry.id,
+          dentistryId: authUser.dentistry.id,
         }),
       );
     }
   }, [searchQuery, dispatch, authUser]);
 
   useEffect(() => {
-    if (searchQuery.length > 2) {
+    if (searchQuery.length > 1) {
       setFilteredWorkers(workers);
+    } else {
+      setFilteredWorkers([]);
+    }
+  }, [searchQuery]);
+
+  // Фільтрація працівників щоб введене значення співпадало із ФІО
+  useEffect(() => {
+    if (searchQuery.length > 1) {
+      const arr = Array.isArray(workers)
+        ? workers
+        : (Object.values(workers || {}) as IWorker[]);
+      const q = searchQuery.toLowerCase();
+
+      const filtered = arr.filter((w: IWorker) => {
+        return (
+          w.name?.toLowerCase().includes(q) ||
+          w.surname?.toLowerCase().includes(q) ||
+          w.middle_name?.toLowerCase().includes(q) ||
+          `${w.surname} ${w.name} ${w.middle_name ?? ""}`
+            .toLowerCase()
+            .includes(q)
+        );
+      });
+
+      setFilteredWorkers(filtered);
     } else {
       setFilteredWorkers([]);
     }
@@ -88,7 +113,7 @@ export default function WorkerField() {
         </div>
 
         <ErrorMessage
-          name="workerName"
+          name="dentistId"
           component="div"
           className="text-red-500 text-lg"
         />

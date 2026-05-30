@@ -76,7 +76,7 @@ export class AppointmentEntity extends BaseEntity {
     const { dentistryId } = action.payload;
     yield call(
       this.xRead.bind(this),
-      `/appointment/all?dentistry=${dentistryId}`,
+      `/appointment/all?dentistryId=${dentistryId}`,
       ActionReducer.Get,
     );
   }
@@ -85,7 +85,7 @@ export class AppointmentEntity extends BaseEntity {
     const { dentistryId } = action.payload;
     yield call(
       this.xRead.bind(this),
-      `/appointment/history?dentistry=${dentistryId}`,
+      `/appointment/history?dentistryId=${dentistryId}`,
       ActionReducer.Get,
     );
   }

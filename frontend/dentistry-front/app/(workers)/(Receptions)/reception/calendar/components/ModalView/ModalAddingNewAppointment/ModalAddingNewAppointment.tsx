@@ -31,26 +31,40 @@ export default function ModalAddingNewAppointment({
 
   const dispatch = useAppDispatch();
   const [error, setError] = useState<string | null>(null);
-
-  const onSubmit = useCallback(
-    async (values: AddNewAppointmentPayload, { setSubmitting }: any) => {
-      try {
-        await dispatch(
-          AddNewAppointment({
-            ...values,
-            appointment_date: new Date(values.appointment_date).toISOString(),
-          }),
+ 
+ const onSubmit = useCallback(
+  async (values: AddNewAppointmentPayload, { setSubmitting }: any) => {
+    try {
+      // перевірка на час
+      const dateObj = new Date(values.appointment_date);
+      if (
+        !dateObj ||
+        (dateObj.getHours() === 0 && dateObj.getMinutes() === 0)
+      ) {
+        setError(
+          t("reception.calendar.modal.adding_appointment.appointment_date.choose_time")
         );
-
-        onClose();
-      } catch (err) {
-        setError("Помилка при додаванні appointment: " + err);
-      } finally {
         setSubmitting(false);
+        return; // блокуємо сабміт
       }
-    },
-    [dispatch, onClose],
-  );
+
+      console.log("send");
+      await dispatch(
+        AddNewAppointment({
+          ...values,
+          appointment_date: dateObj.toISOString(),
+        }),
+      );
+
+      onClose();
+    } catch (err) {
+      setError("Помилка при додаванні appointment: " + err);
+    } finally {
+      setSubmitting(false);
+    }
+  },
+  [dispatch, onClose, t],
+);
 
   return (
     <>
@@ -65,7 +79,10 @@ export default function ModalAddingNewAppointment({
           <Formik
             initialValues={initialValues}
             validationSchema={CreateAppointmentSchema}
-            onSubmit={onSubmit}
+            onSubmit={(values) => {
+              console.log("Formik submit values:", values);
+              onSubmit(values, { setSubmitting: () => {} });
+            }}
           >
             <Form>
               {/* Client full name */}
@@ -81,13 +98,19 @@ export default function ModalAddingNewAppointment({
               <SubmitAddingAppointment />
             </Form>
           </Formik>
+
+          {/* Поле для показу помилки */}
+          {error && (
+            <div className="mb-4 p-2 border border-red-500 bg-red-100 text-red-700 rounded">
+              {error}
+            </div>
+          )}
+
           <button
             onClick={onClose}
             className="mt-4 px-4 py-2 border border-gray-700 bg-purple-600 text-white rounded hover:bg-purple-700"
           >
-             {t(
-              "reception.calendar.modal.adding_appointment.close",
-            )}
+            {t("reception.calendar.modal.adding_appointment.close")}
           </button>
         </div>
       </div>

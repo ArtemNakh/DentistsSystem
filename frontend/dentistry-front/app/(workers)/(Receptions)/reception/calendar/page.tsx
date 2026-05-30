@@ -16,35 +16,44 @@ import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
 import { getAuthWorker } from "@/lib/redux/modules/AuthUser/actions/GetAuthWorker/GetAuthWorker";
 import { useTranslation } from "react-i18next";
 import i18n from "@/i18next.config";
+import { IWorker } from "@/lib/redux/modules/Workers/Workers.interface";
 
 export default function CalendarAdmin() {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const authUser = useAppSelector((state: { auth: AuthState }) => state.auth);
-  const appointments = Object.values(
+
+  const [value, setValue] = useState<Date>(new Date());
+  const [showSidebar, setShowSidebar] = useState(false);
+
+  const authUser: IWorker = useAppSelector(
+    (state: { auth: AuthState }) => state.auth.user,
+  ) as IWorker;
+
+  const appointments: IAppointment[] = Object.values(
     UseDenormalizeSelector<IAppointment[]>(
       (state: RootState) => state.appointments,
     ),
   );
 
+  // Отримуємо авторізованого користувача якщо немає
   useEffect(() => {
-    console.log("Auth effect triggered", authUser.user);
-    if (!authUser.user) {
+    if (!authUser) {
       dispatch(getAuthWorker({}));
     }
-  }, [dispatch, authUser.user]);
+  }, [dispatch, authUser]);
 
+  // Завантажуємо записи для стоматології
   useEffect(() => {
-    const dentistryId = authUser.user?.dentistry?.id;
-    console.log("Appointments effect triggered", dentistryId);
+    const dentistryId = authUser?.dentistry?.id;
     if (dentistryId) {
       dispatch(getAppointmentDentistry({ dentistryId }));
     }
-  }, [dispatch, authUser.user?.dentistry?.id]);
+  }, [dispatch, authUser?.dentistry?.id]);
 
-  const [value, setValue] = useState<Date>(new Date());
-
-  const [showSidebar, setShowSidebar] = useState(false);
+  /**
+   * Використовуємо matchMedia для відслідковування ширини екрану.
+   * Якщо екран >=768px (md breakpoint), сайдбар у мобільному режимі закривається.
+   */
   useEffect(() => {
     const mediaQuery = window.matchMedia("(min-width: 768px)");
     const handler = (e: MediaQueryListEvent | MediaQueryList) => {
@@ -55,9 +64,12 @@ export default function CalendarAdmin() {
     return () => mediaQuery.removeEventListener("change", handler);
   }, []);
 
+
+  // Контент сайдбару (список записів на день)
   const sidebarContent = (
     <AllDayRecords appointments={appointments} selectedDate={value} />
   );
+
   return (
     <>
       <div className=" flex  min-h-screen ">
@@ -73,9 +85,9 @@ export default function CalendarAdmin() {
                 appointments={appointments}
               />
             )}
-            tileClassName={({ date, view }) => {
+            tileClassName={({ date }) => {
               const isToday = date.toDateString() === new Date().toDateString();
-              return `relative h-30 border ${isToday ? "border-yellow-500" : "border-gray-300"} bg-linear-to-r from-[#7F59BD] to-[#795EAF] text-base`;
+              return `relative h-30 border ${isToday ?  "border-2 border-yellow-500": "border-gray-300"} bg-linear-to-r from-[#7F59BD] to-[#795EAF] text-base`;
             }}
             className="calendar-admin bg-linear-to-l from-[#874FD1] to-[#6F6697] w-full h-full text-base  "
             minDetail="month"
@@ -88,6 +100,7 @@ export default function CalendarAdmin() {
         <div className="hidden md:block  border-l border-gray-300">
           {sidebarContent}
         </div>
+        
         {/* Overlay sidebar для мобільних */}
         {showSidebar && (
           <div

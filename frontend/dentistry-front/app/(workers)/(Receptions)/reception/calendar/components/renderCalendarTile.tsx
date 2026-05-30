@@ -15,7 +15,6 @@ export default function RenderCalendarTile({
   const { t } = useTranslation();
   if (view !== "month") return null;
 
-  
   const dayAppointments = appointments.filter(
     (a) => new Date(a.appointment_date).toDateString() === date.toDateString(),
   );

@@ -157,7 +157,8 @@
         "invalid": "Invalid phone number"
       },
       "allergicDiseases": {
-        "max": "Allergic diseases description cannot exceed 255 characters"
+        "max": "Allergic diseases description cannot exceed 255 characters",
+        "required": "Please enter a value in illnesses (if none, put a dash)"
       },
       "email": {
         "required": "Email is required",
@@ -791,9 +792,9 @@
       }
     },
 
-    "header":{
-      "registry":"Registry",
-      "exit":"Exit"
+    "header": {
+      "registry": "Registry",
+      "exit": "Exit"
     },
     "header_side": {
       "pages": {
@@ -1202,7 +1203,8 @@
           "price": "Price",
           "no_actions": "No actions available",
           "close": "Close"
-        },"load_more":"Loading more"
+        },
+        "load_more": "Loading more"
       }
     },
     "about_us": {

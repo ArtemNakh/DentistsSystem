@@ -1,10 +1,18 @@
+import i18n from "@/i18next.config";
 import { useAppSelector } from "@/lib/redux/hooks";
 import { IWorkerShifts } from "@/lib/redux/modules/WorkerShifts/WorkerShifts.interface";
 import { RootState } from "@/lib/redux/store";
+import { Locale } from "date-fns";
+import { enUS, uk } from "date-fns/locale";
 import { ErrorMessage, Field, useFormikContext } from "formik";
 import { useMemo, useState } from "react";
+import DatePicker from "react-datepicker";
 import { useTranslation } from "react-i18next";
 
+const localeMap: Record<string, Locale> = {
+  uk: uk,
+  en: enUS,
+};
 function generateHourlySlots(start: string, end: string) {
   const slots: string[] = [];
   const [startHour] = start.split(":").map(Number);
@@ -22,10 +30,11 @@ function generateHourlySlots(start: string, end: string) {
 
 export default function AppointmentDateField() {
   const { t } = useTranslation();
-
+  const { setFieldValue, validateForm } = useFormikContext<any>();
   const workerShiftsObj = useAppSelector(
     (state: RootState) => state.workerShifts,
   );
+
   const workerShifts = Array.isArray(workerShiftsObj)
     ? workerShiftsObj
     : Object.values(workerShiftsObj ?? {});
@@ -37,38 +46,37 @@ export default function AppointmentDateField() {
     ? appointmentsObj
     : Object.values(appointmentsObj ?? {});
 
-  const { setFieldValue } = useFormikContext<any>();
-  const [selectedDate, setSelectedDate] = useState<string>("");
+  const [selectedTime, setSelectedTime] = useState<string>("");
+  const [timeError, setTimeError] = useState<string | null>(null);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
+  // Масив робочих днів
+  const workingDays = useMemo(
+    () => workerShifts.map((s: IWorkerShifts) => new Date(s.shift_date)),
+    [workerShifts],
+  );
+
+  // Доступні години для вибраної дати
   const availableTimes = useMemo(() => {
     if (!selectedDate) return [];
 
-    // знаходимо shift для цього дня
     const shift = workerShifts.find(
       (s: any) =>
-        new Date(s.shift_date).toDateString() ===
-        new Date(selectedDate).toDateString(),
+        new Date(s.shift_date).toDateString() === selectedDate.toDateString(),
     );
     if (!shift) return [];
 
-    // генеруємо всі години між start_time і end_time
     let times = generateHourlySlots(shift.start_time, shift.end_time);
 
-    // виключаємо зайняті години
     times = times.filter((time) => {
       const [slotHour] = time.split(":").map(Number);
 
       const isBusy = appointments.some((a: any) => {
         const appointmentDate = new Date(a.appointment_date);
-
-        const appointmentHour = appointmentDate.getHours();
-        const appointmentMinutes = appointmentDate.getMinutes();
-
         return (
-          appointmentDate.toDateString() ===
-            new Date(selectedDate).toDateString() &&
-          appointmentHour === slotHour &&
-          appointmentMinutes === 0
+          appointmentDate.toDateString() === selectedDate.toDateString() &&
+          appointmentDate.getHours() === slotHour &&
+          appointmentDate.getMinutes() === 0
         );
       });
 
@@ -78,35 +86,66 @@ export default function AppointmentDateField() {
     return times;
   }, [selectedDate, workerShifts, appointments]);
 
+  const handleTimeChange = (time: string) => {
+    setSelectedTime(time);
+
+    if (!time) {
+      setTimeError(
+        t(
+          "reception.calendar.modal.adding_appointment.appointment_date.choose_time",
+        ),
+      );
+      return;
+    }
+
+    setTimeError(null);
+
+    const [hours, minutes] = time.split(":");
+    const dateObj = new Date(selectedDate!);
+    dateObj.setHours(Number(hours), Number(minutes), 0, 0);
+
+    setFieldValue("appointment_date", dateObj);
+  };
+
   return (
     <>
       <div className="mx-5 text-gray-500">
         <label className="block mb-1 text-lg text-gray-200">
-          {t("reception.calendar.modal.adding_appointment.appointment_date.title")}
+          {t(
+            "reception.calendar.modal.adding_appointment.appointment_date.title",
+          )}
         </label>
-        <Field
-          id="appointment_date"
-          name="appointment_date"
-          type="date"
-          className="placeholder-gray-400 text-gray-200 border border-gray-400 rounded px-2 py-1  focus:outline-none hover:border-gray-950"
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            setSelectedDate(e.target.value);
 
-            setFieldValue("appointment_date", new Date(e.target.value));
+        <DatePicker
+          selected={selectedDate}
+          onChange={(date: Date | null) => {
+            setSelectedDate(date);
+            if (date) setFieldValue("appointment_date", date);
           }}
-          validate={(value: string) => {
-            const isValid = workerShifts.some(
-              (s: IWorkerShifts) =>
-                new Date(s.shift_date).toDateString() ===
-                new Date(value).toDateString(),
+          locale={localeMap[i18n.language]}
+          includeDates={workingDays}
+          inline
+          dayClassName={(date) => {
+            const isSelected =
+              selectedDate &&
+              date.toDateString() === selectedDate.toDateString();
+            const isWorkingDay = workingDays.some(
+              (d) => d.toDateString() === date.toDateString(),
             );
-            return isValid ? undefined : (
-              <div className="mt-2 w-auto h-auto text-red-500">
-                {t("reception.calendar.modal.adding_appointment.appointment_day.unworking_day")}
-              </div>
-            );
+
+             if (isSelected) {
+              return `!bg-purple-500 !text-gray-100 rounded-full  hover:!rounded-full 
+              hover:!bg-purple-200 hover:!text-gray-600 transition-colors !important`;
+            }
+
+            if (isWorkingDay) {
+              return `bg-purple-300 text-gray-900 rounded-full  hover:!rounded-full 
+              hover:!bg-purple-200 hover:!text-gray-600 transition-colors !important`;
+            }
+            return "text-gray-400 line-through hover:bg-gray-200 hover:text-black";
           }}
         />
+
         <ErrorMessage
           name="appointment_date"
           component="div"
@@ -117,28 +156,30 @@ export default function AppointmentDateField() {
       {selectedDate && (
         <div className="mx-5 mt-4 text-gray-400 hover:border-gray-900">
           <label className="block mb-1 text-lg text-gray-200">
-           {t("reception.calendar.modal.adding_appointment.appointment_day.time_operation")}
+            {t(
+              "reception.calendar.modal.adding_appointment.appointment_date.time_operation",
+            )}
           </label>
           <select
             className="w-full p-2 border border-gray-400 rounded"
-            onChange={(e) => {
-              const selectedTime = e.target.value;
-              if (!selectedTime) return;
-
-              const [hours, minutes] = selectedTime.split(":");
-              const dateObj = new Date(selectedDate);
-              dateObj.setHours(Number(hours), Number(minutes), 0, 0);
-
-              setFieldValue("appointment_date", dateObj);
-            }}
+            value={selectedTime}
+            onChange={(e) => handleTimeChange(e.target.value)}
           >
-            <option value="">{t("reception.calendar.modal.adding_appointment.appointment_day.choose_time")}</option>
+            <option value="">
+              {t(
+                "reception.calendar.modal.adding_appointment.appointment_date.choose_time",
+              )}
+            </option>
             {availableTimes.map((time) => (
               <option key={time} value={time}>
                 {time}
               </option>
             ))}
           </select>
+
+          {timeError && (
+            <div className="mt-2 text-red-500 text-lg">{timeError}</div>
+          )}
         </div>
       )}
     </>

@@ -45,7 +45,8 @@ export const RegisterClientSchema = Yup.object().shape({
 
   allergic_diseases: Yup.string()
     .max(255, () => i18n.t("error.registration_client.allergicDiseases.max"))
-    .nullable(),
+    .required(() => i18n.t("error.registration_client.allergicDiseases.required")),
+
 
   email: Yup.string()
     .email(() => i18n.t("error.registration_client.email.invalid"))

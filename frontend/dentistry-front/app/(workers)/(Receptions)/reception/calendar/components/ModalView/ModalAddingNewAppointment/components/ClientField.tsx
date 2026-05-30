@@ -16,13 +16,17 @@ export default function ClientField() {
   const [showClientModal, setShowClientModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredClients, setFilteredClients] = useState<IClient[]>([]);
-  const [selectedClientName, setSelectedClientName] = useState(""); // локальний стан для відображення
+  const [selectedClientName, setSelectedClientName] = useState("");
+  
+  // Отримання клієнта по ФІО
   useEffect(() => {
     if (searchQuery.length > 2) {
       dispatch(GetClientsByFullName({ fullName: searchQuery, }));
     }
   }, [searchQuery, dispatch]);
 
+
+  // Фільтрація клієнтів щоб введене значення співпадало із ФІО
   useEffect(() => {
     if (searchQuery.length > 2) {
       const arr = Array.isArray(clients)
@@ -85,11 +89,12 @@ export default function ClientField() {
           </button>
         </div>
 
-        <ErrorMessage
-          name="clientName"
-          component="div"
-          className="text-red-500 text-lg"
-        />
+       <ErrorMessage
+  name="clientId"
+  component="div"
+  className="text-red-500 text-lg"
+/>
+
       </div>
 
       {showClientModal && (
@@ -123,7 +128,7 @@ export default function ClientField() {
                       ); // у полі показується ПІБ + рік
                       setShowClientModal(false);
                     }}
-                    className="p-2 hover:bg-gray-200 cursor-pointer"
+                    className="p-2 hover:bg-[#793fc6] cursor-pointer"
                   >
                     {client.surname} {client.name} {client.middle_name} (
                     {new Date(client.birthdate).getFullYear()})
