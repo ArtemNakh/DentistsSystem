@@ -111,12 +111,18 @@ export class WorkersService {
     return filteredDoc;
   }
 
-  public async GetWorkersDentistry(dentistryId: number) {
+  public async GetWorkersDentistry(
+    dentistryId: number,
+    take?: number,
+    skip?: number,
+  ) {
     const doctors = this.workerRepo.find({
       where: {
         dentistry: { id: dentistryId },
       },
       relations: ['specialty', 'dentistry'],
+      take: take,
+      skip: skip,
     });
 
     return doctors;

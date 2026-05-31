@@ -87,7 +87,7 @@ export default function PaymentsList({ filters }: PaymentsListProps) {
           onClick={() => setSkip((prev) => prev + take)}
           className="px-4 py-2 mb-5 border border-gray-700 bg-[#6f3aaf] text-white rounded scale-100  hover:scale-105 hover:bg-[#7946b7] transition"
         >
-          {t("reception.payments.load_more")}
+          {t("reception.load_more")}
         </button>
       </div>{" "}
     </>

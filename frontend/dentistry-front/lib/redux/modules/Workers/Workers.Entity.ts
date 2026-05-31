@@ -18,7 +18,7 @@ export enum WorkerActionSaga {
   UpdateWorker = "Worker/update",
   GetWorkerById = "Worker/getById",
   DeActive = "Worker/deActive",
-  GetInfoWorkersByDentistry="Worker/getInfoWorkersByDentistry"
+  GetInfoWorkersByDentistry = "Worker/getInfoWorkersByDentistry",
 }
 
 @EntityReducer(EntitiesRedux.Workers)
@@ -33,15 +33,15 @@ export class WorkerEntity extends BaseEntity {
   static schema = new WorkerEntity(null).getSchema();
 
   *getWorkersDentistrySaga(action: WorkersDentistryAction) {
-    const { idDentistry } = action.payload;
+    const { idDentistry, take, skip } = action.payload;
     yield call(
       this.xRead.bind(this),
-      `/workers/all?dentistryId=${idDentistry}`,
+      `/workers/all?dentistryId=${idDentistry}&take=${take}&skip=${skip}`,
       ActionReducer.Get,
     );
   }
 
- *getInfoWorkersByDentistrySaga(action:GetInfoWorkersByDentistryAction) {
+  *getInfoWorkersByDentistrySaga(action: GetInfoWorkersByDentistryAction) {
     const { idDentistry } = action.payload;
     yield call(
       this.xRead.bind(this),
@@ -83,7 +83,7 @@ export class WorkerEntity extends BaseEntity {
     );
   }
 
-   *getDoctorByIdSaga(action: GetWorkerByIdAction) {
+  *getDoctorByIdSaga(action: GetWorkerByIdAction) {
     const { id } = action.payload;
     yield call(
       this.xRead.bind(this),
@@ -92,12 +92,12 @@ export class WorkerEntity extends BaseEntity {
     );
   }
 
-
   *watch() {
     yield takeLatest(
       WorkerActionSaga.GetWorkersDentistry,
       this.getWorkersDentistrySaga.bind(this),
-    ); yield takeLatest(
+    );
+    yield takeLatest(
       WorkerActionSaga.GetInfoWorkersByDentistry,
       this.getInfoWorkersByDentistrySaga.bind(this),
     );

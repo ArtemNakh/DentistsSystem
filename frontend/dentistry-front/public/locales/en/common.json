@@ -593,6 +593,7 @@
     }
   },
   "reception": {
+    "load_more": "Download more",
     "workers": {
       "filters": {
         "fio": "Full Name",
@@ -611,7 +612,6 @@
     },
 
     "payments": {
-      "load_more": "Download more",
       "filters": {
         "amount": "Amount",
         "status_paid": {
@@ -648,7 +648,7 @@
         "amount": "Amount",
         "status": "Payment Status",
         "method": "Payment Method",
-        "date_appointment":"Date appointment",
+        "date_appointment": "Date appointment",
         "status_appointment": "Status appointment",
         "payment_date": "Payment Date",
         "actions": "Actions"

@@ -174,9 +174,12 @@ export class WorkersController {
   async GetWorkersByDentistry(
     @Query() query: GetWorkersByDentistryQuery,
   ): Promise<GetWorkersByDentistryResponseDto[]> {
-    const { dentistryId } = query;
-    const workersByDentistry =
-      await this.workersService.GetWorkersDentistry(dentistryId);
+    const { dentistryId, take, skip } = query;
+    const workersByDentistry = await this.workersService.GetWorkersDentistry(
+      dentistryId,
+      take,
+      skip,
+    );
 
     return plainToInstance(
       GetWorkersByDentistryResponseDto,

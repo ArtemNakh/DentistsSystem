@@ -22,10 +22,7 @@ export default function TableHeaderWorker({}: TableHeaderWorkerProps) {
             
             {t("reception.workers.table_header.phone")}
           </th>
-          <th className="border border-gray-400 px-2 py-1">
-            
-            {t("reception.workers.table_header.actions")}
-          </th>
+        
         </tr>
       </thead>
     </>
