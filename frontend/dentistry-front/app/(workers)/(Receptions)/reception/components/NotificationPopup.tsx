@@ -8,14 +8,15 @@ import {
 import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
 import { GetAllNotificationToday } from "@/lib/redux/modules/Notifications/actions/GetAllToday/GetAllToday";
 import { useTranslation } from "react-i18next";
+import { IWorker } from "@/lib/redux/modules/Workers/Workers.interface";
 
 export const NotificationPopup: React.FC = () => {
   const { t } = useTranslation();
   const [expandedId, setExpandedId] = useState<number | null>(null);
   const dispatch = useAppDispatch();
-  const authUser: AuthState = UseDenormalizeSelector(
-    (state: { auth: AuthState }) => state.auth,
-  );
+  const authUser: IWorker = UseDenormalizeSelector(
+    (state: { auth: AuthState }) => state.auth.user,
+  ) as IWorker;
 
   // денормалізація масиву сповіщень
   const notifications: INotification[] = Object.values(
@@ -51,15 +52,15 @@ export const NotificationPopup: React.FC = () => {
 
   // отримання усі сповіщення для стоматології у текущий день
   useEffect(() => {
-    if (!authUser || !authUser?.user?.dentistry?.id) {
+    if (!authUser || !authUser?.dentistry?.id) {
       console.log("unauthorization user");
       return;
     }
 
     dispatch(
-      GetAllNotificationToday({ dentistryId: authUser.user?.dentistry.id }),
+      GetAllNotificationToday({ dentistryId: authUser?.dentistry.id }),
     );
-  });
+  },[authUser]);
 
   return (
     <div className="absolute top-0 -right-10 mt-10 mr-10 w-96 bg-white border border-gray-300 rounded shadow-lg p-4 z-50">

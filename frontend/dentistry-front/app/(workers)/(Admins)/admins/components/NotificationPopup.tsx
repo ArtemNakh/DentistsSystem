@@ -10,6 +10,7 @@ import { GetAllNotificationToday } from "@/lib/redux/modules/Notifications/actio
 import { useTranslation } from "react-i18next";
 import { ILicense } from "@/lib/redux/modules/Licenses/Licenses.interface";
 import { GetExpirationByDentistry } from "@/lib/redux/modules/Licenses/actions/GetExpirationByDentistry/GetExpirationByDentistry";
+import { IWorker } from "@/lib/redux/modules/Workers/Workers.interface";
 
 export const NotificationPopup: React.FC = () => {
   const { t } = useTranslation();
@@ -18,16 +19,16 @@ export const NotificationPopup: React.FC = () => {
   const [expandedNotifications, setExpandedNotifications] = useState(true);
   const [expandedLicenses, setExpandedLicenses] = useState(true);
   const dispatch = useAppDispatch();
-  const authUser: AuthState = UseDenormalizeSelector(
-    (state: { auth: AuthState }) => state.auth,
-  );
+  const authUser: IWorker = UseDenormalizeSelector(
+    (state: { auth: AuthState }) => state.auth.user,
+  ) as IWorker;
 
-  const licenses = Object.values(
+  const licenses: ILicense[] = Object.values(
     UseDenormalizeSelector<ILicense[]>((state: RootState) => state.licenses),
   ).filter((license) => {
     // умова по стоматології
     const dentistryMatch =
-      license.worker?.dentistry?.id === authUser.user?.dentistry.id;
+      license.worker?.dentistry?.id === authUser?.dentistry.id;
 
     // умова по даті (наприклад, закінчується протягом maxDays)
     const today = new Date();
@@ -73,22 +74,20 @@ export const NotificationPopup: React.FC = () => {
 
   // отримання усі сповіщення для стоматології у текущий день
   useEffect(() => {
-    if (!authUser || !authUser?.user?.dentistry?.id) {
+    if (!authUser || !authUser?.dentistry?.id) {
       console.log("unauthorization user");
       return;
     }
 
-    dispatch(
-      GetAllNotificationToday({ dentistryId: authUser.user?.dentistry.id }),
-    );
+    dispatch(GetAllNotificationToday({ dentistryId: authUser?.dentistry.id }));
 
     dispatch(
       GetExpirationByDentistry({
-        dentistryId: authUser.user.dentistry.id,
+        dentistryId: authUser.dentistry.id,
         maxDays: maxDays,
       }),
     );
-  });
+  },[]);
 
   return (
     <div className="absolute top-0 -right-10 mt-10 mr-10 w-96 bg-white border border-gray-300 rounded shadow-lg p-4 z-50">

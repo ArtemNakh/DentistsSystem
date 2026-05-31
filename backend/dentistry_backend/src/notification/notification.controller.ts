@@ -254,7 +254,7 @@ export class NotificationController {
   })
   @Authorization(SpecialtyType.ADMIN, SpecialtyType.RECEPTION)
   @UseInterceptors(ClassSerializerInterceptor)
-  async getNearest(
+  async getAll(
     @Query() query: GetNearestNotificationsDto,
   ): Promise<GetAllNotificationsResponseDto[]> {
     const { date, dentistryId } = query;

@@ -42,11 +42,19 @@ export class PaymentEntity extends BaseEntity {
 
   *getPaymentsDentistrySaga(action: PaymentsDentistryAction) {
     const { dentistryId, take, skip } = action.payload;
-    yield call(
-      this.xRead.bind(this),
-      `/payment/allByDentistry?dentistryId=${dentistryId}&take=${take}&skip=${skip}`,
-      ActionReducer.Get,
-    );
+
+    // базовий URL
+    let url = `/payment/allByDentistry?dentistryId=${dentistryId}`;
+
+    // додаємо параметри тільки якщо вони є
+    if (typeof take !== "undefined") {
+      url += `&take=${take}`;
+    }
+    if (typeof skip !== "undefined") {
+      url += `&skip=${skip}`;
+    }
+
+    yield call(this.xRead.bind(this), url, ActionReducer.Get);
   }
 
   *watch() {

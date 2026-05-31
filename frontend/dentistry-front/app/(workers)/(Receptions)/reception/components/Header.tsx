@@ -8,6 +8,8 @@ import { getAuthWorker } from "@/lib/redux/modules/AuthUser/actions/GetAuthWorke
 import { useTranslation } from "react-i18next";
 import { logoutWorker } from "@/lib/redux/modules/AuthUser/actions/logoutAuthWorker/LogoutAuthWorker";
 import { NotificationPopup } from "./NotificationPopup";
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 export default function HeaderAdmin() {
   const { t } = useTranslation();
@@ -19,6 +21,7 @@ export default function HeaderAdmin() {
   const [showPopup, setShowPopup] = useState(false);
   const auth = useAppSelector((state: { auth: AuthState }) => state.auth);
 
+  const router = useRouter();
   useEffect(() => {
     if (auth.user) {
       console.log("work");
@@ -46,6 +49,21 @@ export default function HeaderAdmin() {
       path: "/reception/historyOperations",
     },
   ];
+
+  const handleLogout = async () => {
+    await dispatch(logoutWorker({}));
+
+    // очищаємо cookies
+    document.cookie =
+      "auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    document.cookie = "role=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+
+    Cookies.remove("auth_token");
+    Cookies.remove("role");
+
+    // редірект на логін
+    router.push("/w-auth/login");
+  };
 
   return (
     <>
@@ -132,7 +150,7 @@ export default function HeaderAdmin() {
                   />
 
                   <button
-                    onClick={() => dispatch(logoutWorker({}))}
+                   onClick={handleLogout}
                     className="border border-gray-600 px-2 py-1 rounded hover:bg-gray-200 transition"
                   >
                     {t("reception.header.exit")}
