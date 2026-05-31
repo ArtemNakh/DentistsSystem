@@ -32,21 +32,21 @@ export const NotificationPopup: React.FC = () => {
     switch (n.type_remaind) {
       case TypeRemaind.APPOINTMENT_REMINDER:
         return (
-          t("admins.notification.type.remind_appointment") +
+          t("reception.notification.type.remind_appointment") +
           `: ${n.appointment?.client?.surname ?? ""} ${n.appointment?.client?.name ?? ""} ${n.appointment?.client?.middle_name ?? ""}`
         );
       case TypeRemaind.PAYMENT_REMINDER:
         return (
-          t("admins.notification.type.remind_payment") +
+          t("reception.notification.type.remind_payment") +
           `: ${n.appointment?.client?.surname ?? ""} ${n.appointment?.client?.name ?? ""} ${n.appointment?.client?.middle_name ?? ""}`
         );
       case TypeRemaind.PLANNED_APPOINTMENT:
         return (
-          t("admins.notification.type.planned_appointment") +
+          t("reception.notification.type.planned_appointment") +
           `: ${n.appointment?.dentist?.surname ?? ""}  ${n.appointment?.client?.name ?? ""} ${n.appointment?.client?.middle_name ?? ""}`
         );
       default:
-        return t("admins.notification.type.general");
+        return t("reception.notification.type.general");
     }
   };
 
@@ -65,12 +65,12 @@ export const NotificationPopup: React.FC = () => {
   return (
     <div className="absolute top-0 -right-10 mt-10 mr-10 w-96 bg-white border border-gray-300 rounded shadow-lg p-4 z-50">
       <h3 className="font-bold text-gray-800 mb-3">
-        {t("admins.notification.notification")}
+        {t("reception.notification.notification")}
       </h3>
       <ul className="space-y-3  max-h-120 overflow-y-auto">
         {notifications.length === 0 ? (
           <li className="text-center text-gray-500">
-            {t("admins.notification.no_notification")}
+            {t("reception.notification.no_notification")}
           </li>
         ) : (
           notifications.map((n) => (
@@ -99,8 +99,8 @@ export const NotificationPopup: React.FC = () => {
 
               <button className="text-blue-600 text-sm mt-2 hover:underline">
                 {expandedId === n.id
-                  ? t("admins.notification.hide")
-                  : t("admins.notification.full")}
+                  ? t("reception.notification.hide")
+                  : t("reception.notification.full")}
               </button>
             </li>
           ))

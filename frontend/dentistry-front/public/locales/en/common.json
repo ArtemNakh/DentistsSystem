@@ -578,7 +578,7 @@
       "notifications": {
         "notification": "Notifications",
         "no_notification": "No notifications",
-        "hide": "Collapse",
+        "hide": "Hide",
         "full": "View full notification",
         "text_notif": "Notification text for client",
         "type": {
@@ -811,7 +811,7 @@
     "notification": {
       "notification": "Notifications",
       "no_notification": "No notifications",
-      "hide": "Collapse",
+      "hide": "Hide",
       "full": "View full notification",
       "text_notif": "Notification text for client",
       "type": {
