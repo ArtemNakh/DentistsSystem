@@ -5,21 +5,22 @@ import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
 import { useTranslation } from "react-i18next";
 import { ILicense } from "@/lib/redux/modules/Licenses/Licenses.interface";
 import { GetExpirationByWorker } from "@/lib/redux/modules/Licenses/actions/GetExpirationByWorker/GetExpirationByWorker";
+import { IWorker } from "@/lib/redux/modules/Workers/Workers.interface";
 
 export const NotificationPopup: React.FC = () => {
   const { t } = useTranslation();
   const maxDays = 30;
   const [expandedLicenses, setExpandedLicenses] = useState(true);
   const dispatch = useAppDispatch();
-  const authUser: AuthState = UseDenormalizeSelector(
-    (state: { auth: AuthState }) => state.auth,
-  );
+  const authUser: IWorker = UseDenormalizeSelector(
+    (state: { auth: AuthState }) => state.auth.user,
+  ) as IWorker;
 
   const licenses = Object.values(
     UseDenormalizeSelector<ILicense[]>((state: RootState) => state.licenses),
   ).filter((license) => {
     // умова по стоматології
-    const workerMatch = license.worker.id === authUser.user?.id;
+    const workerMatch = license.worker.id === authUser?.id;
 
     // умова по даті (наприклад, закінчується протягом maxDays)
     const today = new Date();
@@ -33,18 +34,18 @@ export const NotificationPopup: React.FC = () => {
 
   // отримання усі сповіщення для стоматології у текущий день
   useEffect(() => {
-    if (!authUser || !authUser?.user?.dentistry?.id) {
+    if (!authUser || !authUser?.dentistry?.id) {
       console.log("unauthorization user");
       return;
     }
 
     dispatch(
       GetExpirationByWorker({
-        workerId: authUser.user.id,
+        workerId: authUser.id,
         maxDays: maxDays,
       }),
     );
-  });
+  },[]);
 
   return (
     <div className="absolute top-0 -right-10 mt-10 mr-10 w-96 bg-white border border-gray-300 rounded shadow-lg p-4 z-50">

@@ -7,7 +7,6 @@ import { ActionReducer } from "../../rootReducer";
 import { CreateLicense } from "./actions/CreateLicense/CreateLicense";
 import {
   RemoveLicense,
-  RemoveLicensePayload,
 } from "./actions/RemoveLicense/RemoveLicense";
 import { GetLicensesWorker } from "./actions/GetLicensesWorker/GetLicensesWorker";
 import { GetExpirationByDentistryAction } from "./actions/GetExpirationByDentistry/GetExpirationByDentistry";
@@ -87,7 +86,7 @@ export class LicensesEntity extends BaseEntity {
 
     yield call(
       this.xRead.bind(this),
-      `/license/expiring-licenses-worker?dentistryId=${workerId}&maxDays=${maxDays}`,
+      `/license/expiring-licenses-worker?workerId=${workerId}&maxDays=${maxDays}`,
       ActionReducer.Get,
     );
   }

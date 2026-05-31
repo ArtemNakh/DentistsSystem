@@ -104,7 +104,11 @@ export class AppointmentController {
   })
   @ApiResponse({ status: 500, description: 'Внутрішня помилка сервера' })
   @UseInterceptors(ClassSerializerInterceptor)
-  @Authorization(SpecialtyType.ADMIN, SpecialtyType.RECEPTION)
+  @Authorization(
+    SpecialtyType.ADMIN,
+    SpecialtyType.RECEPTION,
+    SpecialtyType.DOCTOR,
+  )
   async getNearest(
     @Query() query: GetNearestDto,
   ): Promise<GetNearestAppointmentsResponseDto[]> {

@@ -194,7 +194,11 @@ export class WorkerShiftsController {
       },
     },
   })
-  @Authorization(SpecialtyType.ADMIN, SpecialtyType.RECEPTION)
+  @Authorization(
+    SpecialtyType.ADMIN,
+    SpecialtyType.RECEPTION,
+    SpecialtyType.DOCTOR,
+  )
   @UseInterceptors(ClassSerializerInterceptor)
   async getWorkersWeekend(
     @Param() params: GetWorkersWeekendParamDto,

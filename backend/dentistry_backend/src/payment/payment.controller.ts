@@ -128,13 +128,20 @@ export class PaymentController {
     },
   })
   @UseInterceptors(ClassSerializerInterceptor)
-  @Authorization(SpecialtyType.ADMIN, SpecialtyType.RECEPTION)
+  @Authorization(
+    SpecialtyType.ADMIN,
+    SpecialtyType.RECEPTION,
+    SpecialtyType.DOCTOR,
+  )
   async getPaymentsByDentistry(
     @Query() query: GetPaymentsByDentistryDto,
   ): Promise<GetPaymentsByDentistryResponseDto[]> {
     const { dentistryId, take, skip } = query;
-    const payments =
-      await this.paymentService.getPaymentsByDentistry(dentistryId,take,skip);
+    const payments = await this.paymentService.getPaymentsByDentistry(
+      dentistryId,
+      take,
+      skip,
+    );
 
     return plainToInstance(GetPaymentsByDentistryResponseDto, payments, {
       excludeExtraneousValues: true,
