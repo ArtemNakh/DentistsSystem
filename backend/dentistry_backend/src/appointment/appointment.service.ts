@@ -132,7 +132,11 @@ export class AppointmentService {
     }
   }
 
-  async getHistoryByDentistry(dentistryId: number): Promise<IAppointment[]> {
+  async getHistoryByDentistry(
+    dentistryId: number,
+    take?: number,
+    skip?: number,
+  ): Promise<IAppointment[]> {
     if (!dentistryId || isNaN(dentistryId)) {
       throw new BadRequestException('Invalid dentistryId provided');
     }
@@ -154,6 +158,8 @@ export class AppointmentService {
           'appointment_actions.operation',
           'payment',
         ],
+        take: take,
+        skip: skip,
       });
 
       if (!appointments || (await appointments).length === 0) {
@@ -300,7 +306,6 @@ export class AppointmentService {
 
     const currentStatus = appointment.status;
 
-    
     if (
       (currentStatus === StatusAppointment.WAIT_PAID &&
         newStatus !== StatusAppointment.COMPLETED) ||

@@ -89,7 +89,7 @@ export default function PaymentsList({ filters }: PaymentsListProps) {
         >
           {t("reception.load_more")}
         </button>
-      </div>{" "}
+      </div>
     </>
   );
 }

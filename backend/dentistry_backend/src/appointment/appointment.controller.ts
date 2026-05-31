@@ -368,7 +368,7 @@ export class AppointmentController {
   async getHistoryByDentistry(
     @Query() query: GetHistoryDentistryDto,
   ): Promise<GetHistoryAppointmentsResponseDto[]> {
-    const { dentistryId } = query;
+    const { dentistryId, take, skip } = query;
     if (!dentistryId || isNaN(dentistryId)) {
       throw new BadRequestException(
         'Query parameter "dentistry" must be a valid number',
@@ -376,7 +376,11 @@ export class AppointmentController {
     }
 
     const historyAppointemnt =
-      await this.appointmentService.getHistoryByDentistry(dentistryId);
+      await this.appointmentService.getHistoryByDentistry(
+        dentistryId,
+        take,
+        skip,
+      );
     console.log('his', historyAppointemnt);
     return plainToInstance(
       GetHistoryAppointmentsResponseDto,

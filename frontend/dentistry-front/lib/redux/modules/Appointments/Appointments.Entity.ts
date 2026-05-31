@@ -16,6 +16,7 @@ import { GetAppointmentsByIdAction as GetAppointmentByIdAction } from "./actions
 import { GetAppointmentsToClientAction } from "./actions/GetAppointmentsByClient/GetAppointmentsByClient";
 import { GetAppointmentsByWorkerAction } from "./actions/GetAppointmentsByWorker/GetAppointmentsByWorker";
 
+
 export enum AppointmentActionSaga {
   CreateAppointment = "Appointment/AddNew",
   GetNearestTodayByDentistry = "Appointment/GetNearestToday",
@@ -82,10 +83,10 @@ export class AppointmentEntity extends BaseEntity {
   }
 
   *getHistoryByDentistrySaga(action: getHistoryAppointmentByDentistryAction) {
-    const { dentistryId } = action.payload;
+    const { dentistryId, take, skip } = action.payload;
     yield call(
       this.xRead.bind(this),
-      `/appointment/history?dentistryId=${dentistryId}`,
+      `/appointment/history?dentistryId=${dentistryId}&take=${take}&skip=${skip}`,
       ActionReducer.Get,
     );
   }

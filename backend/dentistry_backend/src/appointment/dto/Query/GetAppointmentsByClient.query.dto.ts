@@ -17,7 +17,7 @@ export class GetAppointmentsByClientQuery {
   take?: number;
 
   @ApiProperty({
-    description: 'Кількість записів для пропуску (skip)',
+    description: `Кількість об'єктів для пропуску (skip)`,
     example: 0,
     required: false,
   })
