@@ -202,6 +202,7 @@
     "server": "Server`s error,repeat later"
   },
   "admins": {
+    "load_more": "Download more",
     "header_side": {
       "pages": {
         "calendar": "Calendar",

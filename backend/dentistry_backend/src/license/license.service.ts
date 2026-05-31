@@ -122,16 +122,23 @@ export class LicenseService {
    * @throws NotFoundException якщо стоматологію не знайдено
    * @returns Масив ліцензій з інформацією про працівників
    */
-  async getLicensesByDentistry(dentistryId: number): Promise<ILicense[]> {
+  async getLicensesByDentistry(
+    dentistryId: number,
+    take?: number,
+    skip?: number,
+  ): Promise<ILicense[]> {
     await this.dentistryService.getDentistryById(dentistryId);
-    return this.licenseRepo.find({
-      relations: ['worker', 'worker.dentistry', 'worker.specialty'],
-      where: {
-        worker: {
-          dentistry: { id: dentistryId },
-        },
-      },
-    });
+
+    return this.licenseRepo
+      .createQueryBuilder('license')
+      .leftJoinAndSelect('license.worker', 'worker')
+      .leftJoinAndSelect('worker.dentistry', 'dentistry')
+      .leftJoinAndSelect('worker.specialty', 'specialty')
+      .where('dentistry.id = :dentistryId', { dentistryId })
+      .orderBy('license.created_at', 'DESC')
+      .take(take ?? undefined)
+      .skip(skip ?? undefined)
+      .getMany();
   }
 
   /**

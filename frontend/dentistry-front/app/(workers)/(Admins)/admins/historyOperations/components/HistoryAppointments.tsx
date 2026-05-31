@@ -1,11 +1,19 @@
 import { HistoryFilters } from "./FilterPanel";
-import { UseDenormalizeSelector } from "@/lib/redux/hooks";
+import {
+  useAppDispatch,
+  useAppSelector,
+  UseDenormalizeSelector,
+} from "@/lib/redux/hooks";
 import { format } from "date-fns";
 import TableHistoryAppointments from "./TableHistoryAppointments/TableHistoryAppointments";
 import { useTranslation } from "react-i18next";
 import { IAppointment } from "@/lib/redux/modules/Appointments/Appointment.interface";
 import { RootState } from "@/lib/redux/store";
 import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
+import { IWorker } from "@/lib/redux/modules/Workers/Workers.interface";
+import { useEffect, useState } from "react";
+import { getAuthWorker } from "@/lib/redux/modules/AuthUser/actions/GetAuthWorker/GetAuthWorker";
+import { getHistoryAppointmentByDentistry } from "@/lib/redux/modules/Appointments/actions/GetHistoryAppointmentDentistry/GetHistoryAppointmentDentistry";
 
 interface HistoryAppointmentsWorkerProps {
   filters: HistoryFilters;
@@ -15,17 +23,43 @@ export default function HistoryAppointmentsWorker({
   filters,
 }: HistoryAppointmentsWorkerProps) {
   const { t } = useTranslation();
-  const authUser = UseDenormalizeSelector<AuthState>(
-    (state: { auth: AuthState }) => state.auth,
-  );
+  const dispatch = useAppDispatch();
+  const authUser: IWorker = useAppSelector(
+    (state: { auth: AuthState }) => state.auth.user,
+  ) as IWorker;
+
   const appointments: IAppointment[] = Object.values(
     UseDenormalizeSelector<IAppointment[]>(
       (state: RootState) => state.appointments,
     ),
   ).filter(
     (appointment) =>
-      appointment.dentist?.dentistry.id === authUser.user?.dentistry.id,
+      appointment.dentist?.dentistry.id === authUser?.dentistry.id,
   );
+
+  const [skipAppointments, setSkipAppointments] = useState(0);
+  const takeAppointments = 100;
+
+  useEffect(() => {
+    if (authUser) {
+      console.log("Un authorized worker");
+      return;
+    }
+    dispatch(getAuthWorker({}));
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (!authUser) return;
+
+    //отримання усі  appointment які були плоть до сьогодні
+    dispatch(
+      getHistoryAppointmentByDentistry({
+        dentistryId: authUser.dentistry.id,
+        take: takeAppointments,
+        skip: skipAppointments,
+      }),
+    );
+  }, [authUser, skipAppointments]);
 
   const filteredAppointments = appointments.filter((ap) => {
     const fioClientMatch =
@@ -66,6 +100,16 @@ export default function HistoryAppointmentsWorker({
       <div className="w-full  ">
         <div className="mx-4 overflow-x-scroll text-base">
           <TableHistoryAppointments appointments={filteredAppointments} />
+        </div>
+        <div className="flex justify-center">
+          <button
+            onClick={() =>
+              setSkipAppointments((prev) => prev + takeAppointments)
+            }
+            className="px-4 py-2 my-2 mb-5 border  border-gray-700 bg-[#6f3aaf] text-white rounded scale-100  hover:scale-105 hover:bg-[#7946b7] transition"
+          >
+            {t("admins.load_more")}
+          </button>
         </div>
       </div>
     </>

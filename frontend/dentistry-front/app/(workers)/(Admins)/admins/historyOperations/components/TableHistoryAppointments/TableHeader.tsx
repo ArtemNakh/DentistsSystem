@@ -7,7 +7,6 @@ export default function TableHeaderHistoryAppointment() {
       <thead className="">
         <tr>
           <th className="border border-gray-400 px-2 py-1 text-base">
-            {" "}
             {t("admins.history_operation.table.header.client")}
           </th>
           <th className="border border-gray-400 px-1 py-1 text-base">
@@ -24,9 +23,6 @@ export default function TableHeaderHistoryAppointment() {
           </th>
           <th className="border border-gray-400 px-2 py-1 text-base">
             {t("admins.history_operation.table.header.payment")}
-          </th>
-          <th className="border border-gray-400 px-2 py-1 text-base">
-            {t("admins.history_operation.table.header.actions")}
           </th>
         </tr>
       </thead>

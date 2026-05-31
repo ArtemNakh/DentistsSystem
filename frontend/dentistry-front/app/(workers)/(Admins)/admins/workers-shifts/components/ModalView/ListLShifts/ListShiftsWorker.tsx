@@ -9,9 +9,12 @@ import { useTranslation } from "react-i18next";
 interface Props {
   workerId: number;
   shifts: IWorkerShifts[];
-}
+ }
 
-export default function ListShiftsWorker({ workerId, shifts }: Props) {
+export default function ListShiftsWorker({
+  workerId,
+  shifts
+}: Props) {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const workerShifts = shifts.filter(
@@ -129,12 +132,15 @@ export default function ListShiftsWorker({ workerId, shifts }: Props) {
               ))}
           </ul>
         )}
-        <button
-          className="mt-2 px-3 py-1 bg-[#7963AC] border border-gray-600 hover:bg-[#685594] text-white rounded"
-          onClick={() => setShowCreateShift(true)}
-        >
-          {t("admins.workers_shifts.list_shifts.add_shift")}
-        </button>
+        <div className="flex">
+          <button
+            className="mt-2 px-3 py-1 bg-[#6f3aaf] border border-gray-600 hover:bg-[#7946b7] text-white rounded"
+            onClick={() => setShowCreateShift(true)}
+          >
+            {t("admins.workers_shifts.list_shifts.add_shift")}
+          </button>
+
+        </div>
       </div>
       {showCreateShift && (
         <CreateWorkerShiftModal

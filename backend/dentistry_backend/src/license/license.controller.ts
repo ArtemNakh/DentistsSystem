@@ -39,6 +39,7 @@ import { GetLicensesByDentistryResponseDto } from './dto/Response/GetLicensesByD
 import { GetLicensesByWorkerResponseDto } from './dto/Response/GetLicensesByWorker.response.dto';
 import { GetExpirationLicensesToWorkerResponseDto } from './dto/Response/GetExpirationLicensesToWorker.response.dto';
 import { GetExpirationLicensesToDentistryResponseDto } from './dto/Response/GetExpirationLicensesToDentistry.response.dto';
+import { GetLicensesByDentistryQueryDto } from './dto/Query/GetLicensesByDentistry.query.dto';
 
 @ApiTags('License')
 @Controller('license')
@@ -350,10 +351,12 @@ export class LicenseController {
   @Authorization()
   async getLicensesByDentistry(
     @Param() params: GetLicensesByDentistryParamDto,
+    @Query() query:GetLicensesByDentistryQueryDto
   ): Promise<GetLicensesByDentistryResponseDto[]> {
     const { dentistryId } = params;
+    const {take,skip}=query
     const licenses =
-      await this.licenseService.getLicensesByDentistry(dentistryId);
+      await this.licenseService.getLicensesByDentistry(dentistryId,take,skip);
 
     return plainToInstance(GetLicensesByDentistryResponseDto, licenses, {
       excludeExtraneousValues: true,

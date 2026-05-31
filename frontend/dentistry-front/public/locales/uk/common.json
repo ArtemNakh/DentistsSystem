@@ -202,6 +202,7 @@
     "server": "Помилка сервера, спробуйте пізніше"
   },
   "reception": {
+    "load_more": "Завантажити ще",
     "workers": {
       "filters": {
         "fio": "ФІО",
@@ -220,7 +221,7 @@
     },
 
     "payments": {
-      "load_more":"Завантажити ще",
+      "load_more": "Завантажити ще",
       "filters": {
         "amount": "Сума",
         "status_paid": {
@@ -257,7 +258,7 @@
         "amount": "Сума",
         "status": "Статус оплати",
         "method": "Метод оплати",
-        "date_appointment":"День запису",
+        "date_appointment": "День запису",
         "status_appointment": "Статус запису",
         "payment_date": "Дата оплати",
         "actions": "Діїі"
@@ -428,6 +429,7 @@
     }
   },
   "admins": {
+    "load_more": "Завантажити ще",
     "header_side": {
       "pages": {
         "calendar": "Календар",

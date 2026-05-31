@@ -22,9 +22,9 @@ export class WorkerShiftsEntity extends BaseEntity {
       worker: new schema.Entity(EntitiesRedux.Workers),
     });
   }
- // Статичне поля для отримання схеми
+  // Статичне поля для отримання схеми
   static schema = new WorkerShiftsEntity(null).getSchema();
-  
+
   *getShiftsToWorkerSaga(action: ShiftsWorkerAction) {
     const { idWorker } = action.payload;
     yield call(
@@ -57,13 +57,15 @@ export class WorkerShiftsEntity extends BaseEntity {
 
   // Сага для отримання всіх змін по стоматології
   *getAllShiftsWorkersSaga(action: GetAllShiftsWorkersAction) {
-    const { idDentisty } = action.payload;
-
-    yield call(
-      this.xRead.bind(this),
-      `/worker-shifts/clinic/${idDentisty}`,
-      ActionReducer.Get,
-    );
+    const { idDentisty, take,skip } = action.payload;
+    let url = `/worker-shifts/clinic/${idDentisty}?`;
+    if (typeof take !== "undefined") {
+      url += `&take=${take}`;
+    }
+     if (typeof skip !== "undefined") {
+      url += `&skip=${skip}`;
+    }
+    yield call(this.xRead.bind(this), url, ActionReducer.Get);
   }
 
   *watch() {

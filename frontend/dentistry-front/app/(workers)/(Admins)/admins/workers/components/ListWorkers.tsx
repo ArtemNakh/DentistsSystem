@@ -14,19 +14,27 @@ import { getWorkersDentistry } from "@/lib/redux/modules/Workers/actions/GetWork
 import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
 import { getAuthWorker } from "@/lib/redux/modules/AuthUser/actions/GetAuthWorker/GetAuthWorker";
 import UpdateWorkerModal from "../ModalView/UpdateWorkerView/UpdateWorkerModal";
+import { useTranslation } from "react-i18next";
 
 interface ListWorkersWorkerProps {
   filters: WorkerFilters;
 }
 
 export default function ListWorkersWorker({ filters }: ListWorkersWorkerProps) {
-  const authUser = useAppSelector((state: { auth: AuthState }) => state.auth);
+  const { t } = useTranslation();
+  const authUser: IWorker = useAppSelector(
+    (state: { auth: AuthState }) => state.auth.user,
+  ) as IWorker;
 
   const dispatch = useAppDispatch();
 
+  const [skip, setSkip] = useState(0);
+  const takeWorkers = 50;
+
   const [selectedWorker, setSelectedWorker] = useState<IWorker | null>(null);
+
   useEffect(() => {
-    if (authUser.user) {
+    if (authUser) {
       console.log("work");
       return;
     }
@@ -34,13 +42,19 @@ export default function ListWorkersWorker({ filters }: ListWorkersWorkerProps) {
   }, [dispatch]);
 
   useEffect(() => {
-    if (!authUser.user) return;
-    dispatch(getWorkersDentistry({ idDentistry: authUser.user?.dentistry.id }));
-  }, [authUser]);
+    if (!authUser) return;
+    dispatch(
+      getWorkersDentistry({
+        idDentistry: authUser?.dentistry.id,
+        take: takeWorkers,
+        skip: skip,
+      }),
+    );
+  }, [authUser, skip]);
 
   const workers = Object.values(
     UseDenormalizeSelector<IWorker[]>((state: RootState) => state.workers),
-  ).filter((worker) => worker?.dentistry?.id === authUser.user?.dentistry?.id);
+  ).filter((worker) => worker?.dentistry?.id === authUser?.dentistry?.id);
 
   const filteredWorkers = workers.filter((w) => {
     const fioMatch =
@@ -72,6 +86,14 @@ export default function ListWorkersWorker({ filters }: ListWorkersWorkerProps) {
               onClose={() => setSelectedWorker(null)}
             />
           )}
+        </div>
+        <div className="flex justify-center mt-4">
+          <button
+            onClick={() => setSkip((prev) => prev + takeWorkers)}
+            className="px-4 py-2 mb-5 border border-gray-700 bg-[#6f3aaf] text-white rounded scale-100  hover:scale-105 hover:bg-[#7946b7] transition"
+          >
+            {t("reception.load_more")}
+          </button>
         </div>
       </div>
     </>

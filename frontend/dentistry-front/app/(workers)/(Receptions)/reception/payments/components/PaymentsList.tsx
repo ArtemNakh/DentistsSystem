@@ -60,8 +60,10 @@ export default function PaymentsList({ filters }: PaymentsListProps) {
     (state: { auth: AuthState }) => state.auth.user,
   ) as IWorker;
 
-  const [skip, setSkip] = useState(0);
-  const take = 100;
+  const [skipPayments, setSkipPayments] = useState(0);
+  const takePayments = 100;
+
+  const filteredPayments:IPayment[] = getFilteredPayments(payments, filters);
 
   useEffect(() => {
     if (!authUser) return;
@@ -69,13 +71,11 @@ export default function PaymentsList({ filters }: PaymentsListProps) {
     dispatch(
       getPaymentsDentistry({
         dentistryId: authUser.dentistry.id,
-        take: take,
-        skip: skip,
+        take: takePayments,
+        skip: skipPayments,
       }),
     );
-  }, [authUser?.dentistry?.id, skip, dispatch]);
-
-  const filteredPayments = getFilteredPayments(payments, filters);
+  }, [authUser?.dentistry?.id, skipPayments, dispatch]);
 
   return (
     <>
@@ -84,7 +84,7 @@ export default function PaymentsList({ filters }: PaymentsListProps) {
       </div>
       <div className="flex justify-center mt-4">
         <button
-          onClick={() => setSkip((prev) => prev + take)}
+          onClick={() => setSkipPayments((prev) => prev + takePayments)}
           className="px-4 py-2 mb-5 border border-gray-700 bg-[#6f3aaf] text-white rounded scale-100  hover:scale-105 hover:bg-[#7946b7] transition"
         >
           {t("reception.load_more")}

@@ -25,17 +25,23 @@ export default function WorkersShiftsTable() {
       (state: RootState) => state.workerShifts,
     ),
   );
-  const auth = useAppSelector((state: { auth: AuthState }) => state.auth);
+  const auth: IWorker = useAppSelector(
+    (state: { auth: AuthState }) => state.auth.user,
+  ) as IWorker;
 
   const [expandedWorkerId, setExpandedWorkerId] = useState<number | null>(null);
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (auth.user?.dentistry?.id) {
-      dispatch(getAllShiftsWorkers({ idDentisty: auth.user.dentistry.id }));
+    if (auth?.dentistry?.id) {
+      dispatch(
+        getAllShiftsWorkers({
+          idDentisty: auth.dentistry.id
+        }),
+      );
     }
-  }, [dispatch, auth.user]);
+  }, [dispatch, auth]);
 
   return (
     <div className="p-4 overflow-x-auto">
@@ -97,12 +103,17 @@ export default function WorkersShiftsTable() {
 
                 <td className="border p-2">{worker.phone}</td>
                 <td className="border p-2">
-                  {worker.active ? t("admins.workers_shifts.status_type.active") : t("admins.workers_shifts.status_type.no_active")}
+                  {worker.active
+                    ? t("admins.workers_shifts.status_type.active")
+                    : t("admins.workers_shifts.status_type.no_active")}
                 </td>
               </tr>
               {expandedWorkerId === worker.id && (
                 <tr>
-                  <ListShiftsWorker workerId={worker.id} shifts={shifts} />
+                  <ListShiftsWorker
+                    workerId={worker.id}
+                    shifts={shifts}
+                  />
                 </tr>
               )}
             </React.Fragment>

@@ -16,9 +16,14 @@ import { useTranslation } from "react-i18next";
 
 export default function WorkersTable() {
   const { t } = useTranslation();
-  const workersObj = UseDenormalizeSelector((state) => state.workers);
-  const workers: IWorker[] = Object.values(workersObj ?? {});
-  const auth = useAppSelector((state: { auth: AuthState }) => state.auth);
+
+  const workers: IWorker[] = Object.values(
+    UseDenormalizeSelector((state) => state.workers),
+  );
+
+  const auth: IWorker = useAppSelector(
+    (state: { auth: AuthState }) => state.auth.user,
+  ) as IWorker;
 
   const [expandedWorkerId, setExpandedWorkerId] = useState<number | null>(null);
   const licensesObj = UseDenormalizeSelector((state) => state.licenses);
@@ -27,10 +32,14 @@ export default function WorkersTable() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (auth.user?.dentistry?.id) {
-      dispatch(GetLicensesWorkers({ dentistryId: auth.user.dentistry.id }));
+    if (auth?.dentistry?.id) {
+      dispatch(
+        GetLicensesWorkers({
+          dentistryId: auth.dentistry.id,
+        }),
+      );
     }
-  }, [dispatch, auth.user]);
+  }, [dispatch, auth]);
 
   return (
     <div className="p-4">
@@ -43,7 +52,9 @@ export default function WorkersTable() {
         <table className="min-w-full border-collapse border border-gray-300">
           <thead>
             <tr className="bg-linear-to-l from-[#874FD1] to-[#6F6697]">
-              <th className="border p-2">{t("admins.license.table_head.name")}</th>
+              <th className="border p-2">
+                {t("admins.license.table_head.name")}
+              </th>
               <th className="border p-2">
                 {t("admins.license.table_head.middle_name")}
               </th>
@@ -105,7 +116,7 @@ export default function WorkersTable() {
               </React.Fragment>
             ))}
           </tbody>
-        </table>
+        </table>{" "}
       </div>
     </div>
   );
