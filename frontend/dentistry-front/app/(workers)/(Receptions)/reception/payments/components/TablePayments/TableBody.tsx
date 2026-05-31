@@ -41,6 +41,14 @@ export default function TableBodyPayments({
                   {p.method_pay}
                 </td>
                 <td className="border border-gray-600 px-4 py-2 text-center">
+                  {new Date(
+                    p.appointment.appointment_date,
+                  ).toLocaleDateString()}
+                </td>
+                <td className="border border-gray-600 px-4 py-2 text-center">
+                  {p.appointment.status}
+                </td>
+                <td className="border border-gray-600 px-4 py-2 text-center">
                   {new Date(p.payment_date).toLocaleDateString()}
                 </td>
                 <td className="border border-gray-600 px-4 py-2 text-center">
@@ -60,7 +68,7 @@ export default function TableBodyPayments({
           </tr>
         )}
       </tbody>
-      
+
       <FullInfoAppointment
         appointment={fullInfo}
         setAppointment={setFullInfo}

@@ -11,9 +11,6 @@ export enum PaymentActionSaga {
   GetPaymentsDentistry = "Payment/GetByDentistry",
 }
 
-
-
-
 @EntityReducer(EntitiesRedux.Payments)
 export class PaymentEntity extends BaseEntity {
   constructor(ctx: any) {
@@ -44,10 +41,10 @@ export class PaymentEntity extends BaseEntity {
   }
 
   *getPaymentsDentistrySaga(action: PaymentsDentistryAction) {
-    const { dentistryId } = action.payload;
+    const { dentistryId, take, skip } = action.payload;
     yield call(
       this.xRead.bind(this),
-      `/payment/allByDentistry?dentistryId=${dentistryId}`,
+      `/payment/allByDentistry?dentistryId=${dentistryId}&take=${take}&skip=${skip}`,
       ActionReducer.Get,
     );
   }

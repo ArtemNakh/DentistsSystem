@@ -62,7 +62,11 @@ export class PaymentService {
     return payments;
   }
 
-  async getPaymentsByDentistry(dentistryId: number): Promise<Payment[]> {
+  async getPaymentsByDentistry(
+    dentistryId: number,
+    take?: number,
+    skip?: number,
+  ): Promise<Payment[]> {
     // 1. Перевірка: чи передано ID
     if (!dentistryId || isNaN(dentistryId)) {
       throw new BadRequestException('Invalid dentistry ID');
@@ -87,6 +91,8 @@ export class PaymentService {
         'appointment.appointment_actions.operation',
       ],
       order: { created_at: 'DESC' },
+      take: take,
+      skip: skip,
     });
 
     // 4. Перевірка: чи є платежі
