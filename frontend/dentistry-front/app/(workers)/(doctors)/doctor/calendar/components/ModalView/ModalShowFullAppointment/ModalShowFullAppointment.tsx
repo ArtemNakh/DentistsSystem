@@ -4,7 +4,6 @@ import { useAppDispatch } from "@/lib/redux/hooks";
 import { UpdateAppointmentStatus } from "@/lib/redux/modules/Appointments/actions/UpdateAppointmentStatus/UpdateAppointmentStatus";
 import {
   IAppointment,
-  StatusAppointment,
 } from "@/lib/redux/modules/Appointments/Appointment.interface";
 import { t } from "i18next";
 
@@ -17,19 +16,8 @@ export default function AppointmentModal({
   appointment,
   onClose,
 }: AppointmentModalProps) {
-  const dispatch = useAppDispatch();
   if (!appointment) return null;
 
-  const handleCancel = () => {
-    dispatch(
-      UpdateAppointmentStatus({
-        appointmentId: appointment.id,
-        status: StatusAppointment.CANCELLED,
-      }),
-    );
-
-    onClose();
-  };
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
       <div className="bg-linear-to-r from-[#874FD1] to-[#7562A5] p-4 rounded shadow-lg w-[90%] max-w-md border border-gray-300 text-base">
@@ -65,12 +53,7 @@ export default function AppointmentModal({
         >
           {t("doctor.calendar.appointment.close")}
         </button>
-        <button
-          onClick={handleCancel}
-          className="ml-3 px-4 py-2 bg-[#7D5BB9] text-white rounded hover:bg-red-600 border border-gray-400"
-        >
-          {t("cancelled")}
-        </button>
+       
       </div>
     </div>
   );

@@ -9,18 +9,16 @@ import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
 import { IWorker } from "@/lib/redux/modules/Workers/Workers.interface";
 import { useEffect, useState } from "react";
 import ListShiftsWorker from "./components/ModalView/ListLShifts/ListShiftsWorker";
-import React from "react";
-import { getAllShiftsWorkers } from "@/lib/redux/modules/WorkerShifts/actions/GetShiftsToWorkers/GetShiftsToWorkers";
 import { IWorkerShifts } from "@/lib/redux/modules/WorkerShifts/WorkerShifts.interface";
 import { useTranslation } from "react-i18next";
 import { getShiftsWorker } from "@/lib/redux/modules/WorkerShifts/actions/GetShiftsToWorker/GetShiftsToWorker";
 
 export default function WorkersShiftsTable() {
   const { t } = useTranslation();
-  const auth = useAppSelector((state: { auth: AuthState }) => state.auth);
+  const auth:IWorker = useAppSelector((state: { auth: AuthState }) => state.auth.user) as IWorker;
   const worker: IWorker = UseDenormalizeSelector<IWorker[]>(
     (state) => state.workers,
-  ).find((w) => w.id === auth.user?.id)!;
+  ).find((w) => w.id === auth?.id)!;
 
   const shiftsObj = UseDenormalizeSelector((state) => state.workerShifts);
   const shifts: IWorkerShifts[] = Object.values(shiftsObj ?? {});
@@ -30,10 +28,10 @@ export default function WorkersShiftsTable() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (auth.user?.dentistry?.id) {
-      dispatch(getShiftsWorker({ idWorker: auth.user.id }));
+    if (auth?.dentistry?.id) {
+      dispatch(getShiftsWorker({ idWorker: auth.id }));
     }
-  }, [dispatch, auth.user]);
+  }, [dispatch, auth]);
 
   return (
     <div className="p-4 overflow-x-auto">

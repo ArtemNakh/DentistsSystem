@@ -32,12 +32,19 @@ export class PaymentEntity extends BaseEntity {
   static schema = new PaymentEntity(null).getSchema();
 
   *getAllPaymentsDentistSaga(action: AllPaymentsDentistAction) {
-    const { dentistId } = action.payload;
-    yield call(
-      this.xRead.bind(this),
-      `/payment/allByWorker?dentistId=${dentistId}`,
-      ActionReducer.Get,
-    );
+    const { dentistId, take, skip } = action.payload;
+
+    // базовий URL
+    let url = `/payment/allByWorker?dentistId=${dentistId}`;
+
+    // додаємо параметри тільки якщо вони є
+    if (typeof take !== "undefined") {
+      url += `&take=${take}`;
+    }
+    if (typeof skip !== "undefined") {
+      url += `&skip=${skip}`;
+    }
+    yield call(this.xRead.bind(this), url, ActionReducer.Get);
   }
 
   *getPaymentsDentistrySaga(action: PaymentsDentistryAction) {

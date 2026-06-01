@@ -822,6 +822,7 @@
     }
   },
   "doctor": {
+    "load_more": "Завантажити ще","close":"Закрити",
     "header_side": {
       "pages": {
         "menu": "Меню",

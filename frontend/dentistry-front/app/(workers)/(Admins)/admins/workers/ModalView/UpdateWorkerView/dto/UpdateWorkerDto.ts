@@ -3,7 +3,7 @@ export interface UpdateWorkerPayload {
   name: string;
   surname: string;
   middle_name: string;
-  birthday: string; // ← рядок у форматі YYYY-MM-DD
+  birthday: string; 
   phone: string;
   specialtyId: number;
   dentistryId: number;

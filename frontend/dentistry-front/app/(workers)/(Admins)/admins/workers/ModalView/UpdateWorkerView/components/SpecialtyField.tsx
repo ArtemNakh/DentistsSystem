@@ -1,4 +1,4 @@
-// SpecialtyField.tsx
+
 import { useAppSelector, useAppDispatch } from "@/lib/redux/hooks";
 import { GetSpecialtiesByName } from "@/lib/redux/modules/Specialties/Entities/FindedSpecialties/actions/GetSpecialtiesByFIO/GetSpecialtiesByFIO";
 

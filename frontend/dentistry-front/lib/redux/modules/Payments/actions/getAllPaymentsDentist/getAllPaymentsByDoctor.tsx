@@ -2,6 +2,8 @@ import { PaymentActionSaga } from "../../Payments.Entity";
 
 interface GetAllPaymentsDentistPayload {
   dentistId: number;
+  take?: number;
+  skip?: number;
 }
 
 export const getAllPaymentsDentist = (

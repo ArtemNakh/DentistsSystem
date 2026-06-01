@@ -22,9 +22,7 @@ export default function AllDayRecords({
   );
   const [selectedAppointment, setSelectedAppointment] =
     useState<IAppointment | null>(null);
-  const [showModal, setShowModal] = useState(false);
 
-  const [showModalRegistrClient, setShowModalRegistrClient] = useState(false);
 
   const [showNoAppointmentModal, setShowNoAppointmentModal] = useState(false);
   const now = new Date();
@@ -70,7 +68,7 @@ export default function AllDayRecords({
                     onClick={() => setShowNoAppointmentModal(false)}
                     className="px-4 py-2 bg-[#7A5EB2] text-white rounded hover:bg-[#674F96]"
                   >
-                    Закрити
+                    {t("doctor.close")}
                   </button>
                 </div>
               </div>

@@ -24,7 +24,11 @@ export class PaymentService {
     return this.paymentRepo.find({ relations: ['appointment'] });
   }
 
-  async getPaymentsByDentist(workerId: number): Promise<Payment[]> {
+  async getPaymentsByDentist(
+    workerId: number,
+    take?: number,
+    skip?: number,
+  ): Promise<Payment[]> {
     // 1. Перевірка: чи передано workerId
     if (!workerId || isNaN(workerId)) {
       throw new BadRequestException('Invalid dentist (worker) ID');
@@ -50,6 +54,8 @@ export class PaymentService {
         'appointment.appointment_actions.operation',
       ],
       order: { created_at: 'DESC' },
+      take: take,
+      skip: skip,
     });
 
     // 4. Перевірка: чи є платежі

@@ -824,6 +824,8 @@
     }
   },
   "doctor": {
+    "load_more": "Download more",
+    "close":"Close",
     "header_side": {
       "pages": {
         "menu": "Menu",

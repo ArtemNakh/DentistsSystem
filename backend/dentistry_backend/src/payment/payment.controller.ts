@@ -64,8 +64,12 @@ export class PaymentController {
   async getPaymentsByDentist(
     @Query() query: GetPaymentsByDentistDto,
   ): Promise<GetPaymentsByWorkerResponseDto[]> {
-    const { dentistId } = query;
-    const payments = await this.paymentService.getPaymentsByDentist(dentistId);
+    const { dentistId, take, skip } = query;
+    const payments = await this.paymentService.getPaymentsByDentist(
+      dentistId,
+      take,
+      skip,
+    );
 
     return plainToInstance(GetPaymentsByWorkerResponseDto, payments, {
       excludeExtraneousValues: true,

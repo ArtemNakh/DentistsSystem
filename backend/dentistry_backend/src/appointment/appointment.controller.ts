@@ -40,6 +40,7 @@ import { GetWorkersStatsResponseDto } from './dto/Response/GetWorkersStats.respo
 import { GetAppointmentResponseDto } from './dto/Response/GetAppointment.response.dto';
 import { GetAppointmentsByClientResponseDto } from './dto/Response/GetAppointmentsByClient.response.dto';
 import { GetAppointmentsByClientQuery } from './dto/Query/GetAppointmentsByClient.query.dto';
+import { GetAppointmentsByWorkerQuery } from './dto/Query/GetAppointmentsByWorker.query.dto';
 
 @ApiTags('Appointment')
 @Controller('appointment')
@@ -644,10 +645,12 @@ export class AppointmentController {
   @Authorization()
   async getAppointmentsByWorker(
     @Param() params: GetWorkerAppointmentsDto,
+    @Query() query: GetAppointmentsByWorkerQuery,
   ): Promise<GetAppointmentsByWorkerResponseDto[]> {
     const { workerId } = params;
+    const { take, skip } = query;
     const appointments =
-      await this.appointmentService.findAppointmentsForWorker(workerId);
+      await this.appointmentService.findAppointmentsForWorker(workerId,take,skip);
 
     return plainToInstance(GetAppointmentsByWorkerResponseDto, appointments, {
       excludeExtraneousValues: true,

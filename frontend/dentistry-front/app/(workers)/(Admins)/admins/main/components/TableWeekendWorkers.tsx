@@ -14,7 +14,7 @@ export interface IWorkerWeekendWithWorker extends Omit<
   IWorkerWeekend,
   "worker"
 > {
-  worker: IWorker | null; // після селектора ми підтягуємо повний об’єкт
+  worker: IWorker | null; 
 }
 
 export default function TableWorkersWeekend() {

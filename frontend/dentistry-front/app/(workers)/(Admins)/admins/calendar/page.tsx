@@ -16,11 +16,12 @@ import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
 import { getAuthWorker } from "@/lib/redux/modules/AuthUser/actions/GetAuthWorker/GetAuthWorker";
 import i18n from "@/i18next.config";
 import { useTranslation } from "react-i18next";
+import { IWorker } from "@/lib/redux/modules/Workers/Workers.interface";
 
 export default function CalendarAdmin() {
   const{t}=useTranslation()
   const dispatch = useAppDispatch();
-  const authUser = useAppSelector((state: { auth: AuthState }) => state.auth);
+  const authUser:IWorker = useAppSelector((state: { auth: AuthState }) => state.auth.user) as IWorker;
 
   const appointments = Object.values(
     UseDenormalizeSelector<IAppointment[]>(
@@ -29,19 +30,19 @@ export default function CalendarAdmin() {
   );
 
   useEffect(() => {
-    console.log("Auth effect triggered", authUser.user);
-    if (!authUser.user) {
+    console.log("Auth effect triggered", authUser);
+    if (!authUser) {
       dispatch(getAuthWorker({}));
     }
-  }, [dispatch, authUser.user]);
+  }, [dispatch, authUser]);
 
   useEffect(() => {
-    const dentistryId = authUser.user?.dentistry?.id;
+    const dentistryId = authUser?.dentistry?.id;
     console.log("Appointments effect triggered", dentistryId);
     if (dentistryId) {
       dispatch(getAppointmentDentistry({ dentistryId }));
     }
-  }, [dispatch, authUser.user?.dentistry?.id]);
+  }, [dispatch, authUser?.dentistry?.id]);
 
   const [value, setValue] = useState<Date>(new Date());
 

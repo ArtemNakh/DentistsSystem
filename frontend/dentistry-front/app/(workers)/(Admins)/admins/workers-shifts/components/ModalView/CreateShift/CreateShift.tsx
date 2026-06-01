@@ -11,7 +11,7 @@ import ModalWrapper from "./components/ModalWrapper";
 import FormField from "./components/FormField";
 import ActionButtons from "./components/ActionButtons";
 import { useTranslation } from "react-i18next";
-import i18n from "@/i18next.config";
+
 
 export default function CreateWorkerShiftModal({
   workerId,

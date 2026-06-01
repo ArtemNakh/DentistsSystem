@@ -7,9 +7,11 @@ import {
 import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
 import { IPayment } from "@/lib/redux/modules/Payments/Payments.interface";
 import { RootState } from "@/lib/redux/store";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { PaymentFilters } from "./FilterPanel";
 import { getAllPaymentsDentist } from "@/lib/redux/modules/Payments/actions/getAllPaymentsDentist/getAllPaymentsByDoctor";
+import { IWorker } from "@/lib/redux/modules/Workers/Workers.interface";
+import { useTranslation } from "react-i18next";
 
 function getFilteredPayments(payments: IPayment[], filters: PaymentFilters) {
   return payments.filter((p) => {
@@ -49,26 +51,45 @@ interface PaymentsListProps {
 }
 
 export default function PaymentsList({ filters }: PaymentsListProps) {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  
-  const authUser = useAppSelector((state: { auth: AuthState }) => state.auth);
+
+  const authUser: IWorker = useAppSelector(
+    (state: { auth: AuthState }) => state.auth.user,
+  ) as IWorker;
   const payments: IPayment[] = Object.values(
     UseDenormalizeSelector<IPayment[]>((state: RootState) => state.payments),
-  ).filter(
-    (payments) => payments.appointment.dentist?.id === authUser.user?.id,
-  );
+  ).filter((payments) => payments.appointment.dentist?.id === authUser?.id);
+
+  const [skipPayments, setSkipPayments] = useState(0);
+  const takePayments = 100;
+
   const filteredPayments = getFilteredPayments(payments, filters);
 
   useEffect(() => {
-    if (!authUser.user) return;
+    if (!authUser) return;
 
-    dispatch(getAllPaymentsDentist({ dentistId: authUser.user.id }));
-  }, [authUser.user?.dentistry?.id, dispatch]);
+    dispatch(
+      getAllPaymentsDentist({
+        dentistId: authUser.id,
+        take: takePayments,
+        skip: skipPayments,
+      }),
+    );
+  }, [authUser?.dentistry?.id, skipPayments, dispatch]);
 
   return (
     <>
       <div>
         <TablePayments payments={filteredPayments} />
+      </div>
+      <div className="flex justify-center mt-4">
+        <button
+          onClick={() => setSkipPayments((prev) => prev + takePayments)}
+          className="px-4 py-2 mb-5 border border-gray-700 bg-[#6f3aaf] text-white rounded scale-100  hover:scale-105 hover:bg-[#7946b7] transition"
+        >
+          {t("doctor.load_more")}
+        </button>
       </div>
     </>
   );

@@ -1,10 +1,7 @@
 "use client";
 
-import { useAppDispatch } from "@/lib/redux/hooks";
-import { UpdateAppointmentStatus } from "@/lib/redux/modules/Appointments/actions/UpdateAppointmentStatus/UpdateAppointmentStatus";
 import {
   IAppointment,
-  StatusAppointment,
 } from "@/lib/redux/modules/Appointments/Appointment.interface";
 import { t } from "i18next";
 
@@ -17,7 +14,6 @@ export default function AppointmentModal({
   appointment,
   onClose,
 }: AppointmentModalProps) {
-  const dispatch = useAppDispatch();
   if (!appointment) return null;
 
   return (

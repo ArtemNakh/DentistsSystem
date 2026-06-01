@@ -16,7 +16,6 @@ import { GetAppointmentsByIdAction as GetAppointmentByIdAction } from "./actions
 import { GetAppointmentsToClientAction } from "./actions/GetAppointmentsByClient/GetAppointmentsByClient";
 import { GetAppointmentsByWorkerAction } from "./actions/GetAppointmentsByWorker/GetAppointmentsByWorker";
 
-
 export enum AppointmentActionSaga {
   CreateAppointment = "Appointment/AddNew",
   GetNearestTodayByDentistry = "Appointment/GetNearestToday",
@@ -112,13 +111,22 @@ export class AppointmentEntity extends BaseEntity {
   }
 
   *getAppointmentsToWorkerSaga(action: GetAppointmentsByWorkerAction) {
-    const { workerId } = action.payload;
-    yield call(
-      this.xRead.bind(this),
-      `/appointment/${workerId}/appointments`,
-      ActionReducer.Get,
-    );
+    const { workerId, take, skip } = action.payload;
+
+    // базовий URL
+    let url = `/appointment/${workerId}/appointments?`;
+
+    // додаємо параметри тільки якщо вони є
+    if (typeof take !== "undefined") {
+      url += `&take=${take}`;
+    }
+    if (typeof skip !== "undefined") {
+      url += `&skip=${skip}`;
+    }
+
+    yield call(this.xRead.bind(this), url, ActionReducer.Get);
   }
+  
   *getAppointmentsToClientSaga(action: GetAppointmentsToClientAction) {
     const { clientId, take, skip } = action.payload;
     yield call(

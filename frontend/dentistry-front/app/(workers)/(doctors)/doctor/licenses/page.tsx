@@ -101,16 +101,7 @@ export default function WorkersTable() {
             </p>
             <p className="text-lg">{currentWorker.phone}</p>
           </div>
-          <div>
-            <p className="text-xl  font-bold text-gray-500">
-              {t("doctor.licenses.profile.status.title")}
-            </p>
-            <p className="text-lg">
-              {currentWorker.active
-                ? t("doctor.licenses.profile.statuc.active")
-                : t("doctor.licenses.profile.statuc.no_active")}
-            </p>
-          </div>
+        
         </div>
       </div>
 

@@ -283,7 +283,11 @@ export class AppointmentService {
   }
 
   // Отримати всі appointment для працівника
-  async findAppointmentsForWorker(workerId: number): Promise<IAppointment[]> {
+  async findAppointmentsForWorker(
+    workerId: number,
+    take?: number,
+    skip?: number,
+  ): Promise<IAppointment[]> {
     await this.workerService.findById(workerId);
 
     return this.appointmentRepo.find({
@@ -291,6 +295,8 @@ export class AppointmentService {
         dentist: { id: workerId },
       },
       relations: ['dentist', 'client', 'appointment_actions', 'payment'],
+      take: take,
+      skip: skip,
     });
   }
 

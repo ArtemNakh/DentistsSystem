@@ -1,11 +1,12 @@
 import { HistoryFilters } from "./FilterPanel";
-import { UseDenormalizeSelector } from "@/lib/redux/hooks";
+import { useAppDispatch, UseDenormalizeSelector } from "@/lib/redux/hooks";
 import { format } from "date-fns";
 import TableHistoryAppointments from "./TableHistoryAppointments/TableHistoryAppointments";
 import { useTranslation } from "react-i18next";
 import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
 import { IAppointment } from "@/lib/redux/modules/Appointments/Appointment.interface";
-import { RootState } from "@/lib/redux/store";
+import { GetAppointmentsByWorker } from "@/lib/redux/modules/Appointments/actions/GetAppointmentsByWorker/GetAppointmentsByWorker";
+import { useEffect, useState } from "react";
 
 interface HistoryAppointmentsWorkerProps {
   filters: HistoryFilters;
@@ -15,14 +16,31 @@ export default function HistoryAppointmentsWorker({
   filters,
 }: HistoryAppointmentsWorkerProps) {
   const { t } = useTranslation();
+  const dispatch = useAppDispatch();
   const authUser: AuthState = UseDenormalizeSelector(
-    (state:{ auth: AuthState}) => state.auth,
+    (state: { auth: AuthState }) => state.auth,
   );
+
   const appointments: IAppointment[] = Object.values(
     UseDenormalizeSelector<IAppointment[]>(
       (state: { appointments: AuthState }) => state.appointments,
     ).filter((appointment) => appointment.dentist?.id === authUser.user?.id),
   );
+
+  const [skip, setSkip] = useState(0);
+  const take = 100;
+
+  // отримання історії усіх прийомів для авторизованого працівника
+  useEffect(() => {
+    if (!authUser.user) return;
+    dispatch(
+      GetAppointmentsByWorker({
+        workerId: authUser.user.id,
+        skip: skip,
+        take: take,
+      }),
+    );
+  }, [authUser, skip]);
 
   const filteredAppointments = appointments.filter((ap) => {
     // фільтрування по ФІО клієнта
@@ -104,6 +122,15 @@ export default function HistoryAppointmentsWorker({
       <div className="w-full  ">
         <div className="mx-4 text-base">
           <TableHistoryAppointments appointments={filteredAppointments} />
+        </div>
+
+        <div className="flex justify-center">
+          <button
+            onClick={() => setSkip((prev) => prev + take)}
+            className="px-4 py-2 my-2 mb-5 border  border-gray-700 bg-[#6f3aaf] text-white rounded scale-100  hover:scale-105 hover:bg-[#7946b7] transition"
+          >
+            {t("doctor.load_more")}
+          </button>
         </div>
       </div>
     </>
