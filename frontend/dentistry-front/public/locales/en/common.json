@@ -211,7 +211,8 @@
         "history_operation": "Operation History",
         "menu": "Menu",
         "licences": "Licenses",
-        "worker_shifts": "Work Schedule"
+        "worker_shifts": "Work Schedule",
+        "operation-list": "Operations list"
       }
     },
     "main": {
@@ -591,6 +592,59 @@
         "hide_block": "Hide",
         "show_block": "Show"
       }
+    },
+    "operation_list": {
+      "add_operation": "Add Operation",
+      "list_title": "Operation List",
+      "created_at": "Created At",
+      "updated_at": "Updated At",
+      "name": "Name",
+      "description": "Description",
+      "price": "Price",
+      "clinic": "Clinic",
+      "actions": "Actions",
+      "update_status": "Change status",
+      "edit": "Update",
+      "no_data": "No operations available",
+      "load_more": "Load more",
+      "loading": "Loading",
+      "status": "Status",
+      "schema": {
+        "createOperation": {
+          "name_must": "Operation name is required",
+          "description_must": "Operation description is required",
+          "price_number": "Price must be a number",
+          "price_positive": "Price must be greater than 0",
+          "price_must": "Price is required"
+        },
+        "updateOperation": {
+          "name_must": "Operation name is required",
+          "description_must": "Operation description is required",
+          "price_number": "Price must be a number",
+          "price_positive": "Price must be greater than 0",
+          "price_must": "Price is required"
+        }
+      },
+      "modal": {
+        "update": {
+          "edit_operation": "Update Operation",
+          "name": "Name",
+          "description": "Description",
+          "price": "Price",
+          "status": "Status",
+          "cancel": "Cancel",
+          "save": "Save"
+        },
+        "create": {
+          "add_operation": "Add Operation",
+          "name": "Name",
+          "description": "Description",
+          "price": "Price",
+          "status": "Status",
+          "cancel": "Cancel",
+          "save": "Save"
+        }
+      }
     }
   },
   "reception": {
@@ -825,7 +879,7 @@
   },
   "doctor": {
     "load_more": "Download more",
-    "close":"Close",
+    "close": "Close",
     "header_side": {
       "pages": {
         "menu": "Menu",

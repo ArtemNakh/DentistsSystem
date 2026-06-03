@@ -438,7 +438,8 @@
         "history_operation": "Історія операцій",
         "menu": "Меню",
         "licences": "Ліцензії",
-        "worker_shifts": "Графік роботи"
+        "worker_shifts": "Графік роботи",
+        "operation-list": "Список операцій"
       }
     },
     "main": {
@@ -819,10 +820,64 @@
         "hide_block": "Спрятати",
         "show_block": "Показати"
       }
+    },
+
+    "operation_list": {"update_status":"Змінити статус",
+    "edit":"Редагування",
+      "add_operation":"Додати оперцію",
+      "list_title": "Список операцій",
+      "created_at": "Створено",
+      "updated_at": "Оновлено",
+      "name": "Назва",
+      "description": "Опис",
+      "price": "Ціна",
+      "clinic": "Клініка",
+      "actions": "Дії",
+      "no_data": "Немає доступних операцій",
+      "load_more": "Завантажити ще",
+      "loading": "Завантаження",
+  "status":"Статус",
+      "schema": {
+        "createOperation": {
+          "name_must": "Назва операції є обовʼязковою",
+          "description_must": "Опис операції є обовʼязковим",
+          "price_number": "Ціна повинна бути числом",
+          "price_positive": "Ціна повинна бути більшою за 0",
+          "price_must": "Ціна є обовʼязковою"
+        },
+        "updateOperation": {
+          "name_must": "Назва операції є обовʼязковою",
+          "description_must": "Опис операції є обовʼязковим",
+          "price_number": "Ціна повинна бути числом",
+          "price_positive": "Ціна повинна бути більшою за 0",
+          "price_must": "Ціна є обовʼязковою"
+        }
+      },
+      "modal": {
+        "update": {
+          "edit_operation": "Оновлення операції",
+          "name": "Назва",
+          "description": "Опис",
+          "price": "Ціна",
+          "status": "Статус",
+          "cancel": "Відмінити",
+          "save": "Зберегти"
+        },
+        "create": {
+          "add_operation": "Додавання операції",
+          "name": "Назва",
+          "desrciption": "Опис",
+          "price": "Ціна",
+          "status": "Статус",
+          "cancel": "Відмінити",
+          "save": "Зберегти"
+        }
+      }
     }
   },
   "doctor": {
-    "load_more": "Завантажити ще","close":"Закрити",
+    "load_more": "Завантажити ще",
+    "close": "Закрити",
     "header_side": {
       "pages": {
         "menu": "Меню",

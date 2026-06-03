@@ -1,7 +1,4 @@
 "use client";
-
-import { useAppDispatch } from "@/lib/redux/hooks";
-import { UpdateAppointmentStatus } from "@/lib/redux/modules/Appointments/actions/UpdateAppointmentStatus/UpdateAppointmentStatus";
 import {
   IAppointment,
 } from "@/lib/redux/modules/Appointments/Appointment.interface";

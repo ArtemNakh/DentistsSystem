@@ -27,6 +27,9 @@ import { UpdateOperationDto } from './dto/Update-Operation-list.dto';
 import { UpdateOperationListResponseDto } from './dto/Response/UpdateOperationList.response.dto';
 import { Authorized } from '@/auth/decorators/authorized.decorator';
 import { SearchOperationListByDentistryResponseDto } from './dto/Response/SearchByDentistryOperationList.response.dto';
+import { GetOperationsByDentistryParamDto } from './dto/Params/GetOperationsByDentistry.params.dto';
+import { GetOperationsByDentistryResponseDto } from './dto/Response/GetOperationsByDentistry.response.dto';
+import { GetOperationsByDentistryQueryDto } from './dto/Query/GetOperationsByDentistry.query.dto';
 @ApiTags('Operation List')
 @Controller('operation-list')
 export class OperationListController {
@@ -408,5 +411,93 @@ export class OperationListController {
         excludeExtraneousValues: true,
       },
     );
+  }
+
+  @Get('/:dentistryId')
+  @ApiOperation({
+    summary: 'Отриманя операдцій для стоматології',
+    description: 'Повертає список операцій для вибраної стоматології за її ID',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Операції отримано успішно',
+    type: GetOperationsByDentistryResponseDto,
+    isArray: true,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Некоректні дані у запиті',
+    schema: {
+      type: 'object',
+      properties: {
+        message: {
+          type: 'array',
+          items: { type: 'string' },
+          example: ['name must be a string'],
+        },
+        error: { type: 'string', example: 'Bad Request' },
+        statusCode: { type: 'number', example: 400 },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Неавторизований працівник',
+    schema: {
+      type: 'object',
+      properties: {
+        statusCode: { type: 'number', example: 401 },
+        message: { type: 'string', example: 'Unauthorized worker' },
+        error: { type: 'string', example: 'Unauthorized' },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'Недостатньо прав ',
+    schema: {
+      type: 'object',
+      properties: {
+        message: {
+          type: 'string',
+          example:
+            'Недостатньо прав. Ваша професія (Global Operations Administrator) типу (doctor) не має доступу',
+        },
+        error: { type: 'string', example: 'Forbidden' },
+        statusCode: { type: 'number', example: 403 },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'dentistry не знайдена',
+    schema: {
+      type: 'object',
+      properties: {
+        message: {
+          type: 'string',
+          example: 'Worker with id 12323 not found',
+        },
+        error: { type: 'string', example: 'Not Found' },
+        statusCode: { type: 'number', example: 404 },
+      },
+    },
+  })
+  @UseInterceptors(ClassSerializerInterceptor)
+  @Authorization(SpecialtyType.ADMIN)
+  async OperationsByDentistry(
+    @Param() params: GetOperationsByDentistryParamDto,
+    @Query() query: GetOperationsByDentistryQueryDto,
+  ): Promise<GetOperationsByDentistryResponseDto[]> {
+    const { dentistryId } = params;
+    const { skip, take } = query;
+    const operations = await this.operationListService.findAllByDentistry(
+      dentistryId,
+      take,
+      skip,
+    );
+    return plainToInstance(GetOperationsByDentistryResponseDto, operations, {
+      excludeExtraneousValues: true,
+    });
   }
 }

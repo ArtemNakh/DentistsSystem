@@ -42,6 +42,9 @@ export default function HeaderAdmin() {
     {
       label: t("admins.header_side.pages.workers"),
       path: "/admins/workers",
+    },  {
+      label: t("admins.header_side.pages.operation-list"),
+      path: "/admins/operation-list",
     },
     {
       label: t("admins.header_side.pages.history_operation"),

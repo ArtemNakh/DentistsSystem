@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   NotFoundException,
@@ -89,6 +90,7 @@ export class OperationListService {
     if (!operation) throw new NotFoundException('Operation not found');
 
     Object.assign(operation, dto);
+    console.log('newOP', operation);
     return this.operationListRepo.save(operation);
   }
 
@@ -149,5 +151,39 @@ export class OperationListService {
     }
 
     return qb.getMany();
+  }
+
+  async findAllByDentistry(
+    dentistryId: number,
+    take?: number,
+    skip?: number,
+  ): Promise<IOperationList[]> {
+    if (!dentistryId) {
+      throw new BadRequestException('dentistryId має бути вказаний і більше 0');
+    }
+
+    const existingDentistry =
+      await this.dentistryService.getDentistryById(dentistryId);
+
+    if (!existingDentistry) {
+      throw new NotFoundException(
+        `Стоматологія з id ${dentistryId} не знайдена`,
+      );
+    }
+
+    const operations = await this.operationListRepo.find({
+      where: { dental_clinic: { id: existingDentistry.id } },
+      relations: ['dental_clinic'],
+      order: { created_at: 'DESC' },
+      take: take,
+      skip: skip,
+    });
+
+    if (!operations || operations.length === 0) {
+      throw new NotFoundException(
+        `Для стоматології з id ${dentistryId} не знайдено жодної операції`,
+      );
+    }
+    return operations;
   }
 }

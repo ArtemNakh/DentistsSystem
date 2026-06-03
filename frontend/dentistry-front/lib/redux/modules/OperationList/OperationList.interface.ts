@@ -1,4 +1,3 @@
-
 import { IAppointmentActions } from "../AppointmentsActions/AppointmentActions.interface";
 import { IDentistry } from "../Dentistries/Dentistry.interface";
 
@@ -10,6 +9,7 @@ export interface IOperationList {
   description: string;
   price: number;
   dental_clinic: IDentistry;
+  active: boolean;
   //foreign connection
   appointment_action?: IAppointmentActions[];
 }
