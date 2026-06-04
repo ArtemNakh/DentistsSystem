@@ -9,14 +9,17 @@ import { EmailModule } from '@/libs/email/email.module';
 import { DentistryModule } from '@/dentistry/dentistry.module';
 import { WorkersModule } from '@/workers/workers.module';
 import { ClientsModule } from '@/clients/clients.module';
+import { WorkerShifts } from '@/worker-shifts/entities/worker-shifts.entity';
+import { WorkerShiftsModule } from '@/worker-shifts/worker-shifts.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Appointment, Worker]),
+    TypeOrmModule.forFeature([Appointment, Worker, WorkerShifts]),
     NotificationModule,
     WorkersModule,
     DentistryModule,
     ClientsModule,
+    WorkerShiftsModule,
   ],
   controllers: [AppointmentController],
   providers: [AppointmentService],

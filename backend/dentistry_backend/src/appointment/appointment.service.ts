@@ -29,6 +29,8 @@ import { NotificationService } from '@/notification/notification.service';
 import { DentistryService } from '@/dentistry/dentistry.service';
 import { ClientService } from '@/clients/clients.service';
 import { WorkersService } from '@/workers/workers.service';
+import { WorkerShiftsService } from '@/worker-shifts/worker-shifts.service';
+import { WorkerShifts } from '@/worker-shifts/entities/worker-shifts.entity';
 
 @Injectable()
 export class AppointmentService {
@@ -44,6 +46,8 @@ export class AppointmentService {
     private readonly clientService: ClientService,
     private readonly workerService: WorkersService,
     private readonly dentistryService: DentistryService,
+    @InjectRepository(WorkerShifts)
+    private readonly shiftRepo: Repository<WorkerShifts>,
   ) {}
 
   findAll(): Promise<IAppointment[]> {
@@ -191,8 +195,45 @@ export class AppointmentService {
 
       // Перевірка існування клієнта та лікаря
       await this.clientService.findById(createAppointmentDto.clientId);
-      await this.workerService.findById(createAppointmentDto.dentistId);
+      const dentist = await this.workerService.findById(
+        createAppointmentDto.dentistId,
+      );
 
+      const d = new Date(createAppointmentDto.appointment_date);
+      d.setHours(0, 0, 0, 0);
+      const shift = await this.shiftRepo.findOne({
+        where: {
+          worker: { id: dentist.id },
+          shift_date: d,
+        },
+      });
+
+      console.log(
+        'shift',
+        shift,
+        'shiftdate',
+        createAppointmentDto.appointment_date,
+      );
+      if (!shift) {
+        throw new ConflictException(
+          `Dentist with id=${dentist.id} has no shift on ${createAppointmentDto.appointment_date}`,
+        );
+      } // 🔍 Перевірка, що час прийому знаходиться в межах робочої зміни
+      const appointmentTime = new Date(
+        createAppointmentDto.appointment_date,
+      ).getTime();
+      const shiftStart = new Date(
+        `${shift.shift_date}T${shift.start_time}`,
+      ).getTime();
+      const shiftEnd = new Date(
+        `${shift.shift_date}T${shift.end_time}`,
+      ).getTime();
+
+      if (appointmentTime < shiftStart || appointmentTime >= shiftEnd) {
+        throw new ConflictException(
+          `Appointment time ${createAppointmentDto.appointment_date} is outside of dentist's working hours (${shift.start_time} - ${shift.end_time})`,
+        );
+      }
       // 🔍 Перевірка на дублювання: чи вже є прийом у цього лікаря на той самий час
       const existingAppointment = await this.appointmentRepo.findOne({
         where: {
@@ -259,7 +300,7 @@ export class AppointmentService {
       return savedAppointment;
     } catch (err) {
       throw new InternalServerErrorException(
-        'Unexpected error while fetching appointments',
+        'Unexpected error while fetching appointments' + err,
       );
     }
   }
