@@ -111,16 +111,17 @@ export class NotificationService {
 
       try {
         // Повідомлення про додавання запису до стоматолога на телефон (twilio)
+        console.log("sms for phone",appointment.client.phone, " /text:",messageAboutPlannedAppointment)
         // await this.smsService.sendSmsForClient(
         //   appointment.client.phone,
         //   messageAboutPlannedAppointment,
         // );
 
-        // //Відправка повідомлення на пошту
-        // await this.emailService.sendInformPlannedAppointment({
-        //   email: appointment.client.email,
-        //   textMessage: messageAboutPlannedAppointment,
-        // });
+        //Відправка повідомлення на пошту
+        await this.emailService.sendInformPlannedAppointment({
+          email: appointment.client.email,
+          textMessage: messageAboutPlannedAppointment,
+        });
 
         // Якщо відправка успішна — оновлюємо статус
         savedNotification.is_send = true;
@@ -203,20 +204,21 @@ export class NotificationService {
       //   appointment.client.phone,
       //   messageRemindAboutAppointment,
       // );
-
-      // // Надсилання email
-      // await this.emailService.sendRemaindAboutAppointment({
-      //   email: appointment.client.email,
-      //   doctorName:
-      //     appointment.dentist.surname +
-      //     ' ' +
-      //     appointment.dentist.name +
-      //     ' ' +
-      //     appointment.dentist.middle_name,
-      //   appointmentDate: new Date(appointment.appointment_date).toLocaleString(
-      //     'uk-UA',
-      //   ),
-      // });
+  console.log("sms reminder about appointmet for phone",appointment.client.phone, " /text:",messageRemindAboutAppointment)
+      
+      // Надсилання email
+      await this.emailService.sendRemaindAboutAppointment({
+        email: appointment.client.email,
+        doctorName:
+          appointment.dentist.surname +
+          ' ' +
+          appointment.dentist.name +
+          ' ' +
+          appointment.dentist.middle_name,
+        appointmentDate: new Date(appointment.appointment_date).toLocaleString(
+          'uk-UA',
+        ),
+      });
 
       console.log('notification service sms and email');
       // Оновлення notification після успішних відправок
@@ -302,17 +304,20 @@ export class NotificationService {
         //   messagePaymentReminder,
         // );
 
+          console.log("sms  reminder about pay for phone",appointment.client.phone, " /text:",messagePaymentReminder)
+      
+
         // Надсилання email
-        // await this.emailService.sendRemindAboutPay({
-        //   email: appointment.client.email,
-        //   doctorName:
-        //     appointment.dentist.surname +
-        //     ' ' +
-        //     appointment.dentist.name +
-        //     ' ' +
-        //     appointment.dentist.middle_name,
-        //   appointmentDate: appointmentDate.toLocaleString('uk-UA'),
-        // });
+        await this.emailService.sendRemindAboutPay({
+          email: appointment.client.email,
+          doctorName:
+            appointment.dentist.surname +
+            ' ' +
+            appointment.dentist.name +
+            ' ' +
+            appointment.dentist.middle_name,
+          appointmentDate: appointmentDate.toLocaleString('uk-UA'),
+        });
 
         // Оновлення notification та appointment після успішних відправок
         newNotification.is_send = true;
