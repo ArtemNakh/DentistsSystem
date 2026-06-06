@@ -21,6 +21,13 @@ export class SmsService {
       //   to: phoneNumber,
       // });
       // return { sid: message.sid, status: message.status };
+      console.log(
+        'sms reminder about appointmet for phone',
+        phoneNumber,
+        ' /text:',
+        textNotification,
+      );
+
       return {};
     } catch (error: any) {
       throw new InternalServerErrorException(

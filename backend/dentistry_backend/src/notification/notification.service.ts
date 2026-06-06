@@ -112,10 +112,10 @@ export class NotificationService {
       try {
         // Повідомлення про додавання запису до стоматолога на телефон (twilio)
         console.log("sms for phone",appointment.client.phone, " /text:",messageAboutPlannedAppointment)
-        // await this.smsService.sendSmsForClient(
-        //   appointment.client.phone,
-        //   messageAboutPlannedAppointment,
-        // );
+        await this.smsService.sendSmsForClient(
+          appointment.client.phone,
+          messageAboutPlannedAppointment,
+        );
 
         //Відправка повідомлення на пошту
         await this.emailService.sendInformPlannedAppointment({
@@ -198,14 +198,13 @@ export class NotificationService {
 
       await this.notificationRepo.save(newNotification);
 
-      // // Надсилання повідомлень
-      // // Надсилання sms
-      // await this.smsService.sendSmsForClient(
-      //   appointment.client.phone,
-      //   messageRemindAboutAppointment,
-      // );
-  console.log("sms reminder about appointmet for phone",appointment.client.phone, " /text:",messageRemindAboutAppointment)
-      
+      // Надсилання повідомлень
+      // Надсилання sms
+      await this.smsService.sendSmsForClient(
+        appointment.client.phone,
+        messageRemindAboutAppointment,
+      );
+
       // Надсилання email
       await this.emailService.sendRemaindAboutAppointment({
         email: appointment.client.email,
@@ -299,13 +298,12 @@ export class NotificationService {
         await this.notificationRepo.save(newNotification);
         console.log('appointet', newNotification);
         // Надсилання sms
-        // await this.smsService.sendSmsForClient(
-        //   appointment.client.phone,
-        //   messagePaymentReminder,
-        // );
+        await this.smsService.sendSmsForClient(
+          appointment.client.phone,
+          messagePaymentReminder,
+        );
 
-          console.log("sms  reminder about pay for phone",appointment.client.phone, " /text:",messagePaymentReminder)
-      
+          
 
         // Надсилання email
         await this.emailService.sendRemindAboutPay({
