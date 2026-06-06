@@ -203,6 +203,10 @@
   },
   "admins": {
     "load_more": "Download more",
+    "header": {
+      "registry": "Administrator",
+      "exit": "Exit"
+    },
     "header_side": {
       "pages": {
         "calendar": "Calendar",
@@ -488,7 +492,23 @@
         "fio_client": "Client full name",
         "fio_worker": "Worker full name",
         "specialty": "Specialty",
-        "status_paid": "Payment status",
+        "status_paid": {
+          "name": "Payment Status",
+          "status": {
+            "paid": "Paid",
+            "not_paid": "Not Paid"
+          }
+        },
+
+        "status_appointment": {
+          "name": "Appointment Status",
+          "status": {
+            "schedule": "Scheduled",
+            "complete": "Completed",
+            "wait_paid": "Awaiting Payment",
+            "cancelled": "Cancelled"
+          }
+        },
         "appointment_date": "Appointment date"
       },
       "table": {
@@ -880,6 +900,10 @@
   "doctor": {
     "load_more": "Download more",
     "close": "Close",
+    "header": {
+      "registry": "Doctor",
+      "exit": "Exit"
+    },
     "header_side": {
       "pages": {
         "menu": "Menu",

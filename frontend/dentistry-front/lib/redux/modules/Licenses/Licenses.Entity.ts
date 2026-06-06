@@ -27,6 +27,7 @@ export class LicensesEntity extends BaseEntity {
     super(ctx, EntitiesRedux.Licenses, {
       worker: new schema.Entity(EntitiesRedux.Workers, {
         specialty: new schema.Entity(EntitiesRedux.Specialties),
+        dentistry: new schema.Entity(EntitiesRedux.Dentistries),
       }),
     });
   }

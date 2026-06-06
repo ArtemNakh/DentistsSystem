@@ -16,10 +16,11 @@ import { useTranslation } from "react-i18next";
 function getFilteredPayments(payments: IPayment[], filters: PaymentFilters) {
   return payments.filter((p) => {
     const fioMatch =
-      !filters.fio_worker ||
-      `${p.appointment.dentist?.surname ?? ""} ${p.appointment.dentist?.name ?? ""} ${p.appointment.dentist?.middle_name ?? ""}`
-        .toLowerCase()
-        .includes(filters.fio_worker.toLowerCase());
+  !filters.fio_worker ||
+  `${p.appointment?.dentist?.surname ?? ""} ${p.appointment?.dentist?.name ?? ""} ${p.appointment?.dentist?.middle_name ?? ""}`
+    .toLowerCase()
+    .includes(filters.fio_worker.toLowerCase());
+
     const amountMatch = !filters.amount || p.amount === filters.amount;
     const statusPaidMatch =
       !filters.status_paid || p.status_paid === filters.status_paid;
@@ -61,7 +62,7 @@ export default function PaymentsList({ filters }: PaymentsListProps) {
     UseDenormalizeSelector<IPayment[]>((state: RootState) => state.payments),
   ).filter(
     (payments) =>
-      payments.appointment.dentist?.dentistry.id === authUser?.dentistry.id,
+      payments.appointment?.dentist?.dentistry?.id === authUser?.dentistry?.id,
   );
 
   const [skipPayments, setSkipPayments] = useState(0);

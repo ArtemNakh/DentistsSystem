@@ -60,9 +60,10 @@ export class AppointmentActionService {
         );
       }
 
+      const activeOperation: boolean = true;
       // 3. Отримуємо всі операції
       const operations = await operationRepo.find({
-        where: { id: In(dto.actions) },
+        where: { id: In(dto.actions), active: activeOperation },
         relations: ['dental_clinic'],
       });
       if (operations.length !== dto.actions.length) {

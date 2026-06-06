@@ -430,6 +430,10 @@
   },
   "admins": {
     "load_more": "Завантажити ще",
+    "header": {
+      "registry": "Адміністрація",
+      "exit": "Вийти"
+    },
     "header_side": {
       "pages": {
         "calendar": "Календар",
@@ -716,7 +720,23 @@
         "fio_client": " ФІО Клієнта",
         "fio_worker": "ФІО Працівника",
         "specialty": "Спеціалізація",
-        "status_paid": "Статус оплати",
+        "status_paid": {
+          "name": "Статус оплати",
+          "status": {
+            "paid": "Оплачено",
+            "not_paid": "Не оплачено"
+          }
+        },
+
+        "status_appointment": {
+          "name": "Статус записі ",
+          "status": {
+            "schedule": "Заплановано",
+            "complete": "Завершено",
+            "wait_paid": "Очікує оплати",
+            "cancelled": "Скасовано"
+          }
+        },
         "appointment_date": "Дата записи"
       },
       "table": {
@@ -822,9 +842,10 @@
       }
     },
 
-    "operation_list": {"update_status":"Змінити статус",
-    "edit":"Редагування",
-      "add_operation":"Додати оперцію",
+    "operation_list": {
+      "update_status": "Змінити статус",
+      "edit": "Редагування",
+      "add_operation": "Додати оперцію",
       "list_title": "Список операцій",
       "created_at": "Створено",
       "updated_at": "Оновлено",
@@ -836,7 +857,7 @@
       "no_data": "Немає доступних операцій",
       "load_more": "Завантажити ще",
       "loading": "Завантаження",
-  "status":"Статус",
+      "status": "Статус",
       "schema": {
         "createOperation": {
           "name_must": "Назва операції є обовʼязковою",
@@ -878,6 +899,10 @@
   "doctor": {
     "load_more": "Завантажити ще",
     "close": "Закрити",
+    "header": {
+      "registry": "Лікар",
+      "exit": "Вийти"
+    },
     "header_side": {
       "pages": {
         "menu": "Меню",

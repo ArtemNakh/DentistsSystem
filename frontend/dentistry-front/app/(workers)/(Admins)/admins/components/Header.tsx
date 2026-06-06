@@ -42,7 +42,8 @@ export default function HeaderAdmin() {
     {
       label: t("admins.header_side.pages.workers"),
       path: "/admins/workers",
-    },  {
+    },
+    {
       label: t("admins.header_side.pages.operation-list"),
       path: "/admins/operation-list",
     },
@@ -59,6 +60,22 @@ export default function HeaderAdmin() {
       path: "/admins/workers-shifts",
     },
   ];
+
+  const handleLogout = async () => {
+    await dispatch(logoutWorker({}));
+
+    // очищаємо cookies
+    document.cookie =
+      "auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    document.cookie = "role=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+
+    Cookies.remove("auth_token");
+    Cookies.remove("role");
+
+    // редірект на логін
+    router.push("/w-auth/login");
+  };
+
   return (
     <>
       <div className="bg-[#7E5BBA] border border-gray-600 ">
@@ -98,7 +115,7 @@ export default function HeaderAdmin() {
             )}
           </div>
 
-          <div>Адміністрація</div>
+          <div>{t("admins.header.registry")}</div>
 
           {/* right */}
           {/* button */}
@@ -152,22 +169,10 @@ export default function HeaderAdmin() {
                   />
 
                   <button
-                    onClick={async () => {
-                      await dispatch(logoutWorker({}));
-                      // очищаємо cookies, якщо вони є
-                      document.cookie =
-                        "auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-                      document.cookie =
-                        "role=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-                      // редірект на логін
-
-                      Cookies.remove("auth_token");
-                      Cookies.remove("role");
-                      router.push("/w-auth/login");
-                    }}
+                    onClick={handleLogout}
                     className="border border-gray-600 px-2 py-1 rounded hover:bg-gray-200 transition"
                   >
-                    Exit
+                    {t("admins.header.exit")}
                   </button>
                 </div>
               )}

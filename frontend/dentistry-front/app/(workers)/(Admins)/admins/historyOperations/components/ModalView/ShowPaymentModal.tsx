@@ -13,9 +13,14 @@ export default function ShowPaymentModal({ payment }: ShowPaymentModal) {
     <>
       {payment && (
         <div
-          className="absolute right-full top-1/2 -translate-y-1/2 mr-2 
-                    bg-white shadow-lg rounded-md p-4 border w-64"
+          className="fixed md:right-25 right-0   top-1/2 -translate-y-1/2 mr-2
+                     bg-white shadow-lg rounded-md p-4 border w-64
+                     z-50"   
         >
+          {/* <div
+  className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
+             bg-white shadow-lg rounded-md p-4 border w-64 z-50"
+></div> */}
           <p>
             {t("admins.history_operation.payment_modal.amount")}:{" "}
             {payment?.amount}

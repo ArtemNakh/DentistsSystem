@@ -9,6 +9,9 @@ import { getAuthWorker } from "@/lib/redux/modules/AuthUser/actions/GetAuthWorke
 import { useTranslation } from "react-i18next";
 import { logoutWorker } from "@/lib/redux/modules/AuthUser/actions/logoutAuthWorker/LogoutAuthWorker";
 import { NotificationPopup } from "./NotificationPopup";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
+
 
 export default function HeaderDoctor() {
   const { t } = useTranslation();
@@ -16,8 +19,8 @@ export default function HeaderDoctor() {
   const [showPopup, setShowPopup] = useState(false);
   const [profileModule, setProfileModule] = useState(false);
   const [leftSideBar, setLeftSideBar] = useState(false);
-  // const authUser = useSelector((state: RootState) => state.auth.user);
   const auth = useAppSelector((state: { auth: AuthState }) => state.auth);
+  const router = useRouter();
 
   useEffect(() => {
     if (auth.user) {
@@ -49,7 +52,20 @@ export default function HeaderDoctor() {
       path: "/doctor/workers-shifts",
     },
   ];
+  const handleLogout = async () => {
+    await dispatch(logoutWorker({}));
 
+    // очищаємо cookies
+    document.cookie =
+      "auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    document.cookie = "role=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+
+    Cookies.remove("auth_token");
+    Cookies.remove("role");
+
+    // редірект на логін
+    router.push("/w-auth/login");
+  };
   return (
     <>
       <div className="bg-[#7E5BBA] border border-gray-600 ">
@@ -89,7 +105,7 @@ export default function HeaderDoctor() {
             )}
           </div>
 
-          <div>Лікар</div>
+          <div>{t("doctor.header.registry")}</div>
 
           {/* right */}
           {/* button */}
@@ -143,10 +159,10 @@ export default function HeaderDoctor() {
                   />
 
                   <button
-                    onClick={() => dispatch(logoutWorker({}))}
+                    onClick={handleLogout}
                     className="border border-gray-600 px-2 py-1 rounded hover:bg-gray-200 transition"
                   >
-                    Exit
+                     {t("doctor.header.exit")}
                   </button>
                 </div>
               )}

@@ -73,15 +73,18 @@ export default function HistoryAppointmentsWorker({
         .toLowerCase()
         .includes(filters.fioWorker.toLowerCase());
     const statusPaidMatch =
-      !filters.statusPaid ||
+      !filters.status_paid ||
       `${ap.payment?.status_paid}`
         .toLowerCase()
-        .includes(filters.statusPaid.toLowerCase());
+        .includes(filters.status_paid.toLowerCase());
     const specialtyMatch =
       !filters.specialty ||
       ap.dentist?.specialty.name
         .toLowerCase()
         .includes(filters.specialty.toLowerCase());
+    const statusAppointmentMatch =
+      !filters.status_appointment ||
+      ap.status === filters.status_appointment;
     const appointmentDateMatch =
       !filters.appointment_date ||
       format(new Date(ap.appointment_date), "dd.MM.yyyy") ===
@@ -91,7 +94,7 @@ export default function HistoryAppointmentsWorker({
       fioWorkerMatch &&
       statusPaidMatch &&
       specialtyMatch &&
-      appointmentDateMatch
+      appointmentDateMatch&&statusAppointmentMatch
     );
   });
 

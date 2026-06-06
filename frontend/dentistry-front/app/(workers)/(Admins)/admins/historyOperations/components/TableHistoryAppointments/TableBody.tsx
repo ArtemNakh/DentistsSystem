@@ -30,7 +30,7 @@ export default function TableBodyHistoryAppointment({
             {appointments.map((appointment) => (
               <tr
                 key={appointment.id}
-                className="bg-gray-100 text-base  text-gray-700 hover:bg-gray-100"
+                className="bg-gray-100 text-base  text-gray-700 hover:bg-gray-100 "
               >
                 <td className="border border-gray-400 px-2 py-1">
                   <div className="flex h-full items-center">

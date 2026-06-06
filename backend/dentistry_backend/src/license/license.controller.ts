@@ -357,7 +357,7 @@ export class LicenseController {
     const {take,skip}=query
     const licenses =
       await this.licenseService.getLicensesByDentistry(dentistryId,take,skip);
-
+console.log("wor",licenses)
     return plainToInstance(GetLicensesByDentistryResponseDto, licenses, {
       excludeExtraneousValues: true,
     });
