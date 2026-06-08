@@ -19,10 +19,10 @@ export class GetAppointmentsByClientResponseDto extends AppointmentCommonDto {
 
   @ApiProperty({
     description: 'Працівник, у якого є розклад',
-    type: WorkerCommonDto,
+    type: WorkerWithSpecialtyAndDentistryDto,
   })
-  @ApiProperty({ type: () => WorkerCommonDto })
-  @Type(() => WorkerCommonDto)
+  @ApiProperty({ type: () => WorkerWithSpecialtyAndDentistryDto })
+  @Type(() => WorkerWithSpecialtyAndDentistryDto)
   @Expose()
   dentist: WorkerWithSpecialtyAndDentistryDto;
 

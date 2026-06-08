@@ -67,14 +67,17 @@ export default function HistoryAppointmentsClient({
       `${ap.dentist?.name} ${ap.dentist?.surname} ${ap.dentist?.middle_name}`
         .toLowerCase()
         .includes(filters.fioWorker.toLowerCase());
-    const statusPaidMatch =
-      !filters.statusPaid ||
-      `${ap.payment?.status_paid}`
-        .toLowerCase()
-        .includes(filters.statusPaid.toLowerCase());
+   const statusPaidMatch =
+  !filters.statusPaid || ap.payment?.status_paid === filters.statusPaid;
+
+        // const statusPaidMatch =
+    //   !filters.statusPaid ||
+    //   `${ap.payment?.status_paid}`
+    //     .toLowerCase()
+    //     .includes(filters.statusPaid.toLowerCase());
     const specialtyMatch =
       !filters.specialty ||
-      ap.dentist?.specialty.name
+      ap.dentist?.specialty?.name
         .toLowerCase()
         .includes(filters.specialty.toLowerCase());
     const appointmentDateMatch =

@@ -1,10 +1,11 @@
+import { StatusPayment } from "@/lib/redux/modules/Payments/Payments.interface";
 import { useTranslation } from "react-i18next";
 
 export interface HistoryFilters {
   fioClient: string;
   fioWorker: string;
   specialty: string;
-  statusPaid: string;
+  statusPaid: StatusPayment | null;
   appointment_date: string;
 }
 
@@ -55,13 +56,29 @@ export default function FilterPanelHistory({
           <label className="text-yellow-600 font-semibold mb-2 block">
             {t("client.history_operation.filters.status_paid")}
           </label>
-          <input
-            value={filters.statusPaid}
+          <select
+            value={filters.statusPaid ?? ""}
             onChange={(e) =>
-              setFilters({ ...filters, statusPaid: e.target.value })
+              setFilters({
+                ...filters,
+                statusPaid:
+                  e.target.value === ""
+                    ? null
+                    : (e.target.value as StatusPayment),
+              })
             }
             className="h-10 w-full border border-gray-300 rounded px-3 focus:outline-none focus:ring-2 focus:ring-yellow-400 text-gray-700"
-          />
+          >
+            <option value="">—</option>
+            <option value={StatusPayment.PAID}>
+              {t("doctor.history_operation.filters.status_paid.status.paid")}
+            </option>
+            <option value={StatusPayment.NOT_PAID}>
+              {t(
+                "doctor.history_operation.filters.status_paid.status.not_paid",
+              )}
+            </option>
+          </select>
         </div>
 
         {/* appointment_date */}
