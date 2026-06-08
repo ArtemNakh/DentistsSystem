@@ -2,6 +2,7 @@ import {
   ClassSerializerInterceptor,
   Controller,
   Get,
+  Param,
   Query,
   UseInterceptors,
 } from '@nestjs/common';
@@ -14,6 +15,8 @@ import { GetPaymentsByDentistryDto } from './dto/Query/GetPaymentsByDentistry.dt
 import { GetPaymentsByWorkerResponseDto } from './dto/Response/GetPaymentsByWorker.response.dto';
 import { plainToInstance } from 'class-transformer';
 import { GetPaymentsByDentistryResponseDto } from './dto/Response/GetPaymentsByDentistry.response.dto';
+import { CompletePaymentParams } from './dto/Params/CompletePayment.param.dto';
+import { CompletePaymentResponseDto } from './dto/Response/CompletePayment.response.dto';
 
 @ApiTags('Payments')
 @Controller('payment')
@@ -148,6 +151,71 @@ export class PaymentController {
     );
 
     return plainToInstance(GetPaymentsByDentistryResponseDto, payments, {
+      excludeExtraneousValues: true,
+    });
+  }
+
+  @Get('complete_payment/:appointmentId')
+  @ApiOperation({
+    summary: 'Виконання платежу по запису',
+    description: 'Виконує зміни статусів по оплаті.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Платіж запису',
+    type: CompletePaymentResponseDto,
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Неавторизований працівник',
+    schema: {
+      type: 'object',
+      properties: {
+        statusCode: { type: 'number', example: 401 },
+        message: { type: 'string', example: 'Unauthorized worker' },
+        error: { type: 'string', example: 'Unauthorized' },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'Недостатньо прав ',
+    schema: {
+      type: 'object',
+      properties: {
+        message: {
+          type: 'string',
+          example:
+            'Недостатньо прав. Ваша професія (Global Operations Administrator) типу (doctor) не має доступу',
+        },
+        error: { type: 'string', example: 'Forbidden' },
+        statusCode: { type: 'number', example: 403 },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Стоматологію не знайдено',
+    schema: {
+      type: 'object',
+      properties: {
+        statusCode: { type: 'number', example: 404 },
+        message: {
+          type: 'string',
+          example: 'Dentistry with ID 4 not found',
+        },
+        error: { type: 'string', example: 'Not Found' },
+      },
+    },
+  })
+  @UseInterceptors(ClassSerializerInterceptor)
+  @Authorization(SpecialtyType.RECEPTION)
+  async completePayment(
+    @Param() params: CompletePaymentParams,
+  ): Promise<CompletePaymentResponseDto> {
+    const { appointmentId } = params;
+    const payment = await this.paymentService.CompletePayment(appointmentId);
+    return plainToInstance(GetPaymentsByDentistryResponseDto, payment, {
       excludeExtraneousValues: true,
     });
   }

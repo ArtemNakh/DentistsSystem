@@ -946,4 +946,5 @@ export class AppointmentController {
       excludeExtraneousValues: true,
     });
   }
+
 }

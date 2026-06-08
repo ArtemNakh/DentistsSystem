@@ -17,9 +17,10 @@ export default function TableUpcomingEntries() {
     ),
   )
     .filter((appt) => {
-      const now = new Date();
+      const today = new Date();
       const apptDate = new Date(appt.appointment_date);
-      return apptDate >= now;
+
+      return apptDate.toDateString() === today.toDateString();
     })
     .sort(
       (a, b) =>

@@ -6,9 +6,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { WorkersModule } from '@/workers/workers.module';
 import { DentistryModule } from '@/dentistry/dentistry.module';
 import { ClientsModule } from '@/clients/clients.module';
+import { AppointmentModule } from '@/appointment/appointment.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Payment]),WorkersModule,DentistryModule,ClientsModule],
+  imports: [TypeOrmModule.forFeature([Payment]),WorkersModule,DentistryModule,ClientsModule,AppointmentModule],
   controllers: [PaymentController],
   providers: [PaymentService],
   exports: [PaymentService],

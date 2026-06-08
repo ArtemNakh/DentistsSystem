@@ -1,9 +1,14 @@
 import { IAppointment } from "@/lib/redux/modules/Appointments/Appointment.interface";
-import { IPayment } from "@/lib/redux/modules/Payments/Payments.interface";
+import {
+  IPayment,
+  StatusPayment,
+} from "@/lib/redux/modules/Payments/Payments.interface";
 import { format } from "date-fns";
 import { useState } from "react";
 import ShowPaymentModal from "../ModalView/ShowPaymentModal";
 import { useTranslation } from "react-i18next";
+import { useAppDispatch } from "@/lib/redux/hooks";
+import { completePaymentByAppointmentID } from "@/lib/redux/modules/Payments/actions/completePaymentByAppointmentId/completePaymentByAppointmentId";
 
 interface TableBodyHistoryAppointmentProps {
   appointments: IAppointment[];
@@ -17,7 +22,7 @@ export default function TableBodyHistoryAppointment({
   const { t } = useTranslation();
   // {t("reception.history_operation.table.header.client")}
   const [selectedPayment, setSelectedPayment] = useState<IPayment | null>(null);
-
+  const dispatch = useAppDispatch();
   return (
     <>
       <tbody>
@@ -85,25 +90,37 @@ export default function TableBodyHistoryAppointment({
                     />
                   )}
                 </td>
-
                 <td className="border border-gray-600 px-2 py-2 text-center">
-                  <button className=" text-gray-900 px-3 py-2 rounded hover:bg-[#795FAE] transition flex items-center justify-center">
-                    {/* SVG іконка календаря */}
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={2}
+                  {appointment.payment?.status_paid ===
+                    StatusPayment.NOT_PAID && (
+                    <button
+                      onClick={() => {
+                        dispatch(
+                          completePaymentByAppointmentID({
+                            appointmentId: appointment.id,
+                          }),
+                        );
+                        console.log("values", appointment.id);
+                      }}
+                      className=" group text-gray-900 px-3 py-2 rounded hover:bg-[#795FAE]  transition flex items-center justify-center"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M8 7V3m8 4V3m-9 8h10m-12 8h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                      />
-                    </svg>
-                  </button>
+                      {/* SVG іконка успішної оплати */}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5 text-[#795FAE] group-hover:text-gray-200 transition" // фіолетовий акцент
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}

@@ -6,9 +6,11 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Payment } from './entity/payment.entity';
 import { Repository } from 'typeorm';
-import { IPayment } from './entity/payment.interface';
+import { IPayment, StatusPayment } from './entity/payment.interface';
 import { WorkersService } from '@/workers/workers.service';
 import { DentistryService } from '@/dentistry/dentistry.service';
+import { AppointmentService } from '@/appointment/appointment.service';
+import { StatusAppointment } from '@/appointment/entity/appointment.interface';
 
 @Injectable()
 export class PaymentService {
@@ -18,6 +20,7 @@ export class PaymentService {
 
     private workersService: WorkersService,
     private dentistryService: DentistryService,
+    private appointmentService: AppointmentService,
   ) {}
 
   findAll(): Promise<IPayment[]> {
@@ -109,5 +112,36 @@ export class PaymentService {
     }
 
     return payments;
+  }
+
+  async CompletePayment(appointmentId: number) {
+    if (!appointmentId || isNaN(appointmentId)) {
+      throw new BadRequestException('Invalid appointment ID');
+    }
+    const appointment =
+      await this.appointmentService.getAppointmentById(appointmentId);
+
+    if (!appointment) {
+      throw new BadRequestException(
+        'Not found appointment by id ' + appointmentId,
+      );
+    }
+
+    const payment = await this.paymentRepo.findOne({
+      where: { appointment: { id: appointmentId } },
+      relations: ['appointment'],
+    });
+
+    if (!payment) {
+      throw new BadRequestException(
+        'Not found payment by id ' + appointmentId + 'Please finish operation',
+      );
+    }
+
+    payment.status_paid = StatusPayment.PAID;
+    payment.appointment.status = StatusAppointment.COMPLETED;
+
+    const newPayment = await this.paymentRepo.save(payment);
+    return newPayment;
   }
 }

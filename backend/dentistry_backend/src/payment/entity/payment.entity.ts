@@ -17,6 +17,7 @@ export class Payment implements IPayment {
 
   @OneToOne(() => Appointment, (appointment) => appointment.payment, {
     nullable: false,
+    cascade: true,
   })
   @JoinColumn({ name: 'appointment_id' })
   appointment: Appointment;

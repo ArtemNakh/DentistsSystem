@@ -9,10 +9,36 @@ import { denormalize } from "normalizr";
 import { getEntitySchemas } from "./modules/EntityReducer";
 import React from "react";
 
+
+/**
+ * Хук для отримання dispatch з типом any.
+ * Використовується для відправки Redux-екшенів.
+ *
+ * @returns {any} Redux dispatch
+ */
 export const useAppDispatch = () => useDispatch<any>();
 
+
+/**
+ * Типізований useSelector для роботи з Redux state.
+ * Використовується для вибірки даних зі стору.
+ */
 export const useAppSelector: TypedUseSelectorHook<any> = useSelector;
 
+
+/**
+ * Кастомний хук для вибірки та денормалізації даних зі стору Redux.
+ *
+ * @template T Тип даних, які повертаються після денормалізації.
+ * @param selector Функція-селектор, яка отримує RootState і повертає slice.
+ * @returns {T} Денормалізовані дані або slice як є.
+ *
+ * @example
+ * // Використання для отримання масиву Appointment
+ * const appointments = UseDenormalizeSelector<IAppointment[]>(
+ *   (state: RootState) => state.appointments
+ * );
+ */
 export function UseDenormalizeSelector<T>(
   selector: (state: RootState) => any,
 ): T {

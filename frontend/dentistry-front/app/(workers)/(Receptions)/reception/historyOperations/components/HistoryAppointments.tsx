@@ -33,7 +33,11 @@ export default function HistoryAppointmentsWorker({
     UseDenormalizeSelector<IAppointment[]>(
       (state: RootState) => state.appointments,
     ),
-  );
+  ).sort(
+  (a, b) =>
+    new Date(b.appointment_date).getTime() -
+    new Date(a.appointment_date).getTime(),
+);
 
   const [skip, setSkip] = useState(0);
   const take = 100;

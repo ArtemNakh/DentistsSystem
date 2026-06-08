@@ -5,10 +5,12 @@ import { EntityReducer } from "../EntityReducer";
 import { schema } from "normalizr";
 import { AllPaymentsDentistAction } from "./actions/getAllPaymentsDentist/getAllPaymentsByDoctor";
 import { PaymentsDentistryAction } from "./actions/getAllPaymentsByDentisty/getAllPaymentsByDentistry";
+import { CompletePaymentAction } from "./actions/completePaymentByAppointmentId/completePaymentByAppointmentId";
 
 export enum PaymentActionSaga {
   GetAllPaimentsDentist = "Payment/Get",
   GetPaymentsDentistry = "Payment/GetByDentistry",
+  CompletePaymentByAppointmentId= "Payment/Complete",
 }
 
 @EntityReducer(EntitiesRedux.Payments)
@@ -64,10 +66,23 @@ export class PaymentEntity extends BaseEntity {
     yield call(this.xRead.bind(this), url, ActionReducer.Get);
   }
 
+  
+  *completePaymentByAppointmentIdSaga(action: CompletePaymentAction) {
+    const { appointmentId } = action.payload;
+
+    // базовий URL
+    let url = `/payment/complete_payment/${appointmentId}`;
+
+    yield call(this.xRead.bind(this), url, ActionReducer.Get);
+  }
   *watch() {
     yield takeLatest(
       PaymentActionSaga.GetAllPaimentsDentist,
       this.getAllPaymentsDentistSaga.bind(this),
+    ); 
+    yield takeLatest(
+      PaymentActionSaga.CompletePaymentByAppointmentId,
+      this.completePaymentByAppointmentIdSaga.bind(this),
     );
     yield takeLatest(
       PaymentActionSaga.GetPaymentsDentistry,

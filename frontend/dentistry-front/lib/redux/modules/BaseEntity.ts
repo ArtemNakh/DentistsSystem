@@ -6,10 +6,9 @@
 // Диспатчить у Redux (ActionRedux).
 // Має готові методи для CRUD (xRead, xSave).
 import { HTTPMethod } from "http-method-enum";
-import i18n from "i18next";
 import { call, put } from "redux-saga/effects";
 import ClientContextDI from "@/lib/di/ContextDi";
-import { denormalize, normalize, schema } from "normalizr";
+import {  normalize, schema } from "normalizr";
 
 import { ClientEntity } from "./Clients/ClientEntity";
 
@@ -21,7 +20,6 @@ import { AuthEntity } from "./AuthUser/AuthUser.Entity";
 import { AppointmentActionsActionSaga } from "./AppointmentsActions/AppointmentActions.Entity";
 import { OperationListEntity } from "./OperationList/OperationList.Entity";
 import { FindingWorkerEntity } from "./FindingWorkers/FindingWorkerEntity";
-import { ShiftsWorkerAction } from "./WorkerShifts/actions/GetShiftsToWorker/GetShiftsToWorker";
 import { WorkerShiftsEntity } from "./WorkerShifts/WorkerShifts.Entity";
 import { WorkerStatsEntity } from "./ADMINS/Stats/WorkerStats/WorkerStats.entity";
 import { WorkerWeekendEntity } from "./ADMINS/Stats/WeekendStats/actions/WeekendStats.entity";
@@ -97,6 +95,7 @@ export default class BaseEntity extends ClientContextDI {
   public getSchema() {
     return this.schema;
   }
+  
   // Викликає super(ctx) для DI.
   // Створює normalizr‑схему для цієї ентіті.
   // Зберігає її у this.schema.
