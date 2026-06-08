@@ -96,8 +96,7 @@ export default function AppointmentDateField() {
     <>
       <div className="mx-5 text-gray-500 overflow-y-auto">
         <label className="block mb-1 text-lg text-gray-600">
-          
-            {t("client.create_appointment.date.date_operation")}
+          {t("client.create_appointment.date.date_operation")}
         </label>
 
         <DatePicker
@@ -114,8 +113,7 @@ export default function AppointmentDateField() {
               ? "bg-yellow-200 text-gray-900 rounded-full"
               : "text-gray-400"
           }
-          placeholderText=
-            {t("client.create_appointment.date.choose_date")}
+          placeholderText={t("client.create_appointment.date.choose_date")}
         />
         <ErrorMessage
           name="appointment_date"
@@ -138,10 +136,13 @@ export default function AppointmentDateField() {
               const [hours, minutes] = selectedTime.split(":");
               const dateObj = new Date(selectedDate);
               dateObj.setHours(Number(hours), Number(minutes), 0, 0);
-              setFieldValue("appointment_date", new Date(selectedDate));
+              setFieldValue("appointment_date", dateObj);
             }}
           >
-            <option value=""> {t("client.create_appointment.date.choose_time")}</option>
+            <option value="">
+              {" "}
+              {t("client.create_appointment.date.choose_time")}
+            </option>
             {availableTimes.map((time) => (
               <option key={time} value={time}>
                 {time}

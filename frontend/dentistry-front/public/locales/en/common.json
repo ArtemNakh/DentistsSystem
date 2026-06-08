@@ -1184,6 +1184,7 @@
         "main": "Home"
       },
       "main": "Home",
+      "login":"Login",
       "about_us": "About Us",
       "doctors": "Doctors",
       "contacts": "Contacts",
@@ -1395,14 +1396,14 @@
       "submit": { "default": "Update profile", "loading": "Wait..." }
     },
     "doctors": {
-      "title": "Лікарі стоматології",
-      "choose_dentistry": "Оберіть стоматологію, щоб переглянути список лікарів",
-      "specialty": "Спеціалізація",
-      "phone": "Телефон",
-      "show_licenses": "Показати ліцензії",
-      "hide_licenses": "Приховати ліцензії",
-      "license_name": "Назва ліцензії",
-      "expiration": "Дата закінчення",
+      "title": "Dentistry Doctors",
+      "choose_dentistry": "Select a dentistry to view the list of doctors",
+      "specialty": "Specialty",
+      "issue_date": "Issue Date",
+      "expiration": "Expiration Date",
+      "show_licenses": "Show Licenses",
+      "hide_licenses": "Hide Licenses",
+      "license_name": "License Name",
       "dentistry_field": {
         "label": "Dentistry",
         "placeholder_selected_city": "Selected city",

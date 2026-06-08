@@ -19,7 +19,7 @@ export function UseDenormalizeSelector<T>(
   // беремо slice через селектор (підписка тільки на нього)
   const slice = useSelector(selector);
 
-  // доступ до всього RootState без підписки
+  // доступ до всього RootState
   const store = useStore<RootState>();
   const fullState = store.getState();
 

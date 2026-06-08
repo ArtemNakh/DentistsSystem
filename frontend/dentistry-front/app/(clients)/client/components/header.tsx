@@ -41,42 +41,43 @@ export default function HeaderClient() {
     }
     dispatch(getAuthClient({}));
   }, [dispatch]);
-
+  const buttonClasses = authUser.user
+    ? "md:block" // якщо авторизований → показуємо на md+
+    : " md:hidden"; // якщо не авторизований → ховаємо на md+
   return (
     <div className="bg-gray-400 border border-gray-600 z-30">
       <div className="flex items-center justify-between h-16 px-6 shadow-md">
         {/* Ліва кнопка */}
-        {(authUser.user || !authUser.user) && (
-          <div className="md:hidden">
-            <button
-              onClick={() => setLeftSideBar(true)}
-              className="px-4 py-2 text-white rounded"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-            </button>
 
-            {leftSideBar && (
-              <SideBarAdmins
-                items={authUser.user ? sidebarItems : []} // якщо авторизований → свої пункти
-                headerLinks={!authUser.user ? headerLinks : []} // якщо НЕ авторизований → головні сторінки
-                onClose={() => setLeftSideBar(false)}
+        <div className={buttonClasses}>
+          <button
+            onClick={() => setLeftSideBar(true)}
+            className="px-4 py-2 text-white rounded"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16M4 18h16"
               />
-            )}
-          </div>
-        )}
+            </svg>
+          </button>
+
+          {leftSideBar && (
+            <SideBarAdmins
+              items={authUser.user ? sidebarItems : []}
+              headerLinks={authUser.user ? headerLinks : headerLinks}
+              onClose={() => setLeftSideBar(false)}
+            />
+          )}
+        </div>
 
         {/* Навігація справа */}
         <nav className="flex items-center space-x-6">
@@ -92,7 +93,6 @@ export default function HeaderClient() {
               </Link>
             ))}
           </div>
-
           {authUser.user && (
             <div className="relative">
               <div
@@ -117,6 +117,15 @@ export default function HeaderClient() {
               dropdownClassName="absolute bg-gray-300 border-2 border-gray-200 rounded shadow-md"
               activeItemClassName="bg-yellow-200"
             />
+          )}
+
+          {!authUser.user && (
+            <Link
+              href="/c-auth/login"
+              className="border border-gray-500 rounded px-2 py-1 text-gray-700 hover:text-yellow-500 transition"
+            >
+              {t("client.header.login")} {/* або просто "Login" */}
+            </Link>
           )}
         </nav>
       </div>

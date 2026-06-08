@@ -1,6 +1,7 @@
 import { UseDenormalizeSelector } from "@/lib/redux/hooks";
 import { GetAppointmentsByWorkerNext3Month } from "@/lib/redux/modules/Appointments/actions/GetAppointmentsByWorkerNext3Month/GetAppointmentsByWorkerNext3Month";
 import { GetWorkersByFullName } from "@/lib/redux/modules/FindingWorkers/actions/GetWorkersByFIO/GetWorkersByFIO";
+import { SpecialtyType } from "@/lib/redux/modules/Specialties/Entities/Specialties/Specialties.interface";
 
 import { IWorker } from "@/lib/redux/modules/Workers/Workers.interface";
 import { getShiftsWorker } from "@/lib/redux/modules/WorkerShifts/actions/GetShiftsToWorker/GetShiftsToWorker";
@@ -14,12 +15,11 @@ export default function WorkerField() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  let workers = //useAppSelector(DenormalizeWorkers); //useSelector((state: RootState) => state.findingWorkers);
-    Object.values(
-      UseDenormalizeSelector<IWorker[]>(
-        (state: RootState) => state.findingWorkers,
-      ),
-    );
+  let workers = Object.values(
+    UseDenormalizeSelector<IWorker[]>(
+      (state: RootState) => state.findingWorkers,
+    ),
+  ).filter((worker) => worker.specialty?.type == SpecialtyType.DOCTOR);
   const [showWorkerModal, setShowWorkerModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredWorkers, setFilteredWorkers] = useState<IWorker[]>([]);

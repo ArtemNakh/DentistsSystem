@@ -23,6 +23,8 @@ export default function SideBarAdmins({
     <>
       {/* Сайдбар */}
       <div className="fixed top-0 left-0 w-72 h-full bg-white text-gray-900 shadow-2xl z-10 rounded-r-3xl border-r-4 border-yellow-500">
+       
+       
         {/* Верхній блок */}
         <div className="p-4 flex justify-between items-center border-b-2 border-yellow-500">
           <div className="w-full h-full mr-5">
@@ -74,6 +76,7 @@ export default function SideBarAdmins({
             </li>
           ))}
         </ul>
+        
       </div>
 
       {/* Напівпрозорий фон */}

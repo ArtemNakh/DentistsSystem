@@ -14,7 +14,6 @@ export async function LoginClient(values: ILoginClient) {
     const errData = await response.json();
     // errData.message може бути "Invalid email or password", "User not found" тощо
     const translatedError =
-      i18n.t(`error.loginClient.login.${errData.message}`) ||
       i18n.t("error.loginClient.login.default");
     throw new Error(translatedError);
   }

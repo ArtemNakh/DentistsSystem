@@ -12,4 +12,12 @@ export class GetCurrentClientResponseDto extends ClientCommonDto {
   @Type(() => AppointmentCommonDto)
   @Expose()
   appointments: AppointmentCommonDto[];
+
+  
+  @ApiProperty({
+    example: 'ivan.petrenko@example.com',
+    description: 'Пошта від облікового запису клієнта',
+  })
+  @Expose()
+  email: string;
 }

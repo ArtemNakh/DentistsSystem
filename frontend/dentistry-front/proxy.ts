@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 //Список публічних маршрутів для клієнта, які не потребують авторизації
-const publicClientRoutes = ["/client/main", "/client/about_us","/client/contacts"];
+const publicClientRoutes = ["/client/main", "/client/about_us","/client/contacts","/client/doctors"];
 
 /**
  * Перевірка доступу для працівників (адмін, лікар, рецепція).
