@@ -1138,7 +1138,9 @@
       "find_actions": {
         "FindOperation": "Пошук операції",
         "name_placeholder": "Введіть назву",
-        "close": "Закрити"
+        "close": "Закрити",
+        "search_results":"Знайдені операції",
+        "all_operations":"Усі операції"
       },
       "method_pay": {
         "name": "Спосіб оплати",

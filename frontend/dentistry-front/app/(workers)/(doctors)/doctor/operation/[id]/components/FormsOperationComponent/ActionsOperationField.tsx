@@ -10,6 +10,8 @@ import {
 } from "@/lib/redux/hooks";
 import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
 import { RootState } from "@/lib/redux/store";
+import { IWorker } from "@/lib/redux/modules/Workers/Workers.interface";
+import { GetActiveOperationListByDentistry } from "@/lib/redux/modules/OperationList/actions/GetActiveOperationListByDentistry/GetActiveOperationListByDentistry";
 
 interface Props {}
 
@@ -19,10 +21,20 @@ export function ActionsOperationField({}: Props) {
   const [showOperationListModal, setShowOperationListModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const dispatch = useAppDispatch();
-  const authUser = UseDenormalizeSelector<AuthState>((state) => state.auth);
+  const authUser: IWorker = UseDenormalizeSelector<IWorker>(
+    (state: { auth: AuthState }) => state.auth.user,
+  ) as IWorker;
+
+  const existOperationList = Object.values(
+    UseDenormalizeSelector<IOperationList[]>(
+      (state: RootState) => state.operationList,
+    ),
+  );
+
   let operationList = useAppSelector(
     (state: RootState) => state.findingOperationList,
   );
+
   const [filteredOperationList, setFilteredOperationList] = useState<
     IOperationList[]
   >([]);
@@ -30,11 +42,11 @@ export function ActionsOperationField({}: Props) {
   //   Отримання стоматологічних операцій по назві
   useEffect(() => {
     if (searchQuery.length > 2) {
-      if (authUser.user?.dentistry?.id) {
+      if (authUser.dentistry?.id) {
         dispatch(
           GetActionsByTitle({
             title: searchQuery,
-            dentistryId: authUser.user.dentistry.id,
+            dentistryId: authUser.dentistry.id,
           }),
         );
       }
@@ -51,6 +63,17 @@ export function ActionsOperationField({}: Props) {
     }
   }, [searchQuery, operationList]);
 
+  // отримання усіх операцій для стоматології
+  useEffect(() => {
+    if (authUser.dentistry?.id) {
+      console.log("test");
+      dispatch(
+        GetActiveOperationListByDentistry({
+          dentistryId: authUser.dentistry.id,
+        }),
+      );
+    }
+  }, [authUser.dentistry?.id, dispatch]);
   return (
     <>
       <label className="block mb-2">
@@ -60,9 +83,11 @@ export function ActionsOperationField({}: Props) {
         {({ remove, push }) => (
           <div>
             {values.actions.map((actionId: string, index: number) => {
-              const operation = filteredOperationList.find(
-                (op) => op.id === Number(actionId),
-              );
+              const operation =
+                filteredOperationList.find(
+                  (op) => op.id === Number(actionId),
+                ) ||
+                existOperationList.find((op) => op.id === Number(actionId));
 
               return (
                 <div key={index} className="flex mb-2">
@@ -115,7 +140,11 @@ export function ActionsOperationField({}: Props) {
                     )}
                   />
 
-                  <ul className="max-h-40 overflow-y-auto border border-gray-300 rounded">
+                  {/* 🔍 блок знайдених операцій по назві */}
+                  <h4 className="text-md font-semibold mb-2 text-white">
+                    {t("doctor.operation.find_actions.search_results")}
+                  </h4>
+                  <ul className="max-h-40 overflow-y-auto border border-gray-300 rounded mb-4">
                     {filteredOperationList.map((operation) => (
                       <li
                         key={operation.id}
@@ -125,8 +154,26 @@ export function ActionsOperationField({}: Props) {
                         }}
                         className="p-2 hover:bg-[#7551B0] cursor-pointer"
                       >
-                        {operation.name} — {operation.description} (Ціна:{" "}
-                        {operation.price})
+                        {operation.name} — {operation.description}
+                      </li>
+                    ))}
+                  </ul>
+
+                  {/* 📋 блок усіх операцій для стоматології */}
+                  <h4 className="text-md font-semibold mb-2 text-white">
+                    {t("doctor.operation.find_actions.all_operations")}
+                  </h4>
+                  <ul className="max-h-40 overflow-y-auto border border-gray-300 rounded">
+                    {existOperationList.map((operation) => (
+                      <li
+                        key={operation.id}
+                        onClick={() => {
+                          push(operation.id);
+                          setShowOperationListModal(false);
+                        }}
+                        className="p-2 hover:bg-[#7551B0] cursor-pointer"
+                      >
+                        {operation.name} — {operation.description}
                       </li>
                     ))}
                   </ul>

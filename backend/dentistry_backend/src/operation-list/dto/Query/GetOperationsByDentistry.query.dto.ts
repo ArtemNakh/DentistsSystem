@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsInt, IsOptional, Min } from 'class-validator';
+import { IsBoolean, IsInt, IsOptional, Min } from 'class-validator';
 
 export class GetOperationsByDentistryQueryDto {
   @ApiProperty({
@@ -24,4 +24,14 @@ export class GetOperationsByDentistryQueryDto {
   @IsInt({ message: 'skip має бути цілим числом' })
   @Min(0, { message: 'skip має бути більше або дорівнювати 0' })
   skip?: number;
+
+   @ApiProperty({
+    description: 'Фільтр по активності операцій',
+    example: true,
+    required: false,
+  })
+  @IsOptional()
+  @Type(() => Boolean)
+  @IsBoolean({ message: 'active має бути булевим значенням' })
+  active?: boolean;
 }

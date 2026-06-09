@@ -12,7 +12,6 @@ export default function PaymentReception({}: PaymentReceptionProps) {
     status_paid: null,
     method_pay: null,
     status_appointment: null,
-    fio_worker: "",
     date_begin: "",
     date_end: "",
   });

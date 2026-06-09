@@ -7,11 +7,13 @@ import { GetOperationListByDentistryAction } from "./actions/GetOperationListByD
 import HTTPMethod from "http-method-enum";
 import { addNOperationAction as addOperationAction } from "./actions/AddOperation/AddOperation";
 import { UpdateOperationAction } from "./actions/UpdateOperation/UpdateOperation";
+import { GetActiveOperationListByDentistryAction } from "./actions/GetActiveOperationListByDentistry/GetActiveOperationListByDentistry";
 
 export enum OperationListActionSaga {
   GetAllOperationsByDentistry = "operation-list/GetAllByDentistry",
   AddOperation = "operation-list/AddNewOperation",
   UpdateOperation = "operation-list/UpdateOperation",
+  GetAllActiveOperationsByDentistry="operation-list/GetAllActiveByDentistry",
 }
 
 @EntityReducer(EntitiesRedux.OperationList)
@@ -30,6 +32,22 @@ export class OperationListEntity extends BaseEntity {
 
     // базовий URL
     let url = `/operation-list/${dentistryId}?`;
+
+    // додаємо параметри тільки якщо вони є
+    if (typeof take !== "undefined") {
+      url += `&take=${take}`;
+    }
+    if (typeof skip !== "undefined") {
+      url += `&skip=${skip}`;
+    }
+
+    yield call(this.xRead.bind(this), url, ActionReducer.Get);
+  }
+  *getActiveOperationsListByDentistrySaga(action: GetActiveOperationListByDentistryAction) {
+    const { dentistryId, take, skip } = action.payload;
+
+    // базовий URL
+    let url = `/operation-list/${dentistryId}?active=true`;
 
     // додаємо параметри тільки якщо вони є
     if (typeof take !== "undefined") {
@@ -68,7 +86,10 @@ export class OperationListEntity extends BaseEntity {
       OperationListActionSaga.GetAllOperationsByDentistry,
       this.getOperationsListByDentistrySaga.bind(this),
     );
-
+  yield takeLatest(
+      OperationListActionSaga.GetAllActiveOperationsByDentistry,
+      this.getActiveOperationsListByDentistrySaga.bind(this),
+    );
     yield takeLatest(
       OperationListActionSaga.AddOperation,
       this.addNewOperationSaga.bind(this),

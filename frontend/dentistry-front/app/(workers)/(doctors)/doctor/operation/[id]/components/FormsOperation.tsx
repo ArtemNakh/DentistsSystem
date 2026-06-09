@@ -10,6 +10,7 @@ import { useAppDispatch } from "@/lib/redux/hooks";
 import { useTranslation } from "react-i18next";
 import MethodPayField from "./FormsOperationComponent/MethodPayField";
 import { ActionsOperationField } from "./FormsOperationComponent/ActionsOperationField";
+import { useRouter } from "next/navigation";
 
 interface FormValues {
   appointmentId: number;
@@ -24,6 +25,7 @@ export default function FormOperation({ appointmentId }: FormOperationProps) {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
 
+  const router = useRouter();
   const [error, setError] = useState<string | null>(null);
 
   const onSubmit = useCallback(
@@ -45,6 +47,7 @@ export default function FormOperation({ appointmentId }: FormOperationProps) {
         setError("Помилка при додаванні операцій: " + err);
       } finally {
         setSubmitting(false);
+        router.push("/doctor/calendar");
       }
     },
     [dispatch],

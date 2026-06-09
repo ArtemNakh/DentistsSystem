@@ -27,10 +27,6 @@ export default function TableBodyPayments({
                   {p.appointment.client?.middle_name}
                 </td>
                 <td className="border border-gray-600 px-4 py-2 text-center">
-                  {p.appointment.dentist?.surname} {p.appointment.dentist?.name}{" "}
-                  {p.appointment.dentist?.middle_name}
-                </td>
-                <td className="border border-gray-600 px-4 py-2 text-center">
                   {p.amount}
                 </td>
 

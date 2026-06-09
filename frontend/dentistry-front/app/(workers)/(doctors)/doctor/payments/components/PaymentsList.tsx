@@ -15,12 +15,7 @@ import { useTranslation } from "react-i18next";
 
 function getFilteredPayments(payments: IPayment[], filters: PaymentFilters) {
   return payments.filter((p) => {
-    const fioMatch =
-      !filters.fio_worker ||
-      `${p.appointment.dentist?.surname ?? ""} ${p.appointment.dentist?.name ?? ""} ${p.appointment.dentist?.middle_name ?? ""}`
-        .toLowerCase()
-        .includes(filters.fio_worker.toLowerCase());
-    const amountMatch = !filters.amount || p.amount === filters.amount;
+     const amountMatch = !filters.amount || p.amount === filters.amount;
     const statusPaidMatch =
       !filters.status_paid || p.status_paid === filters.status_paid;
     const methodPayMatch =
@@ -35,7 +30,6 @@ function getFilteredPayments(payments: IPayment[], filters: PaymentFilters) {
       !filters.date_end ||
       new Date(p.payment_date) <= new Date(filters.date_end);
     return (
-      fioMatch &&
       amountMatch &&
       statusPaidMatch &&
       methodPayMatch &&
@@ -59,7 +53,7 @@ export default function PaymentsList({ filters }: PaymentsListProps) {
   ) as IWorker;
   const payments: IPayment[] = Object.values(
     UseDenormalizeSelector<IPayment[]>((state: RootState) => state.payments),
-  ).filter((payments) => payments.appointment.dentist?.id === authUser?.id);
+  ).filter((payments) => payments.appointment?.dentist?.id === authUser?.dentistry?.id);
 
   const [skipPayments, setSkipPayments] = useState(0);
   const takePayments = 100;

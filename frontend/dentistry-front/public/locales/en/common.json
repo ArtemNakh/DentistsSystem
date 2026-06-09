@@ -1141,7 +1141,9 @@
       "find_actions": {
         "FindOperation": "Find operation",
         "name_placeholder": "Enter name",
-        "close": "Close"
+        "close": "Close",
+        "search_results":"Search results",
+        "all_operations":"All operations"
       },
       "method_pay": {
         "name": "Payment method",

@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsBoolean, IsOptional, IsString } from 'class-validator';
 
 export class SearchOperationByDentistryQuery {
   @ApiProperty({
@@ -9,4 +10,14 @@ export class SearchOperationByDentistryQuery {
   })
   @IsString({ message: 'search має бути рядком' })
   search: string;
+
+    @ApiProperty({
+      description: 'Фільтр по активності операцій',
+      example: true,
+      required: false,
+    })
+    @IsOptional()
+    @Type(() => Boolean)
+    @IsBoolean({ message: 'active має бути булевим значенням' })
+    active?: boolean;
 }

@@ -25,7 +25,13 @@ export default function CalendarAdmin() {
     UseDenormalizeSelector<IAppointment[]>(
       (state: RootState) => state.appointments,
     ),
-  ).filter((appointment) => appointment.dentist?.id === authUser.user?.id);
+  )
+    .filter((appointment) => appointment.dentist?.id === authUser.user?.id)
+    .sort(
+      (a, b) =>
+        new Date(a.appointment_date).getTime() -
+        new Date(b.appointment_date).getTime(),
+    );
 
   //отримання авторизованого користувача
   useEffect(() => {

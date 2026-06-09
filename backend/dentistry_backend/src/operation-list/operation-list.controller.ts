@@ -393,16 +393,16 @@ export class OperationListController {
     },
   })
   @UseInterceptors(ClassSerializerInterceptor)
-  @Authorization(SpecialtyType.ADMIN)
+  @Authorization(SpecialtyType.ADMIN, SpecialtyType.DOCTOR)
   async searchOperations(
     @Query() query: SearchOperationByDentistryQuery,
     @Authorized() worker: IWorker,
   ): Promise<SearchOperationListByDentistryResponseDto[]> {
-    const { search } = query;
+    const { search,active } = query;
     const dentistryId = worker.dentistry.id;
     const operationList = await this.operationListService.findByName(
       search,
-      dentistryId,
+      dentistryId,active
     );
     return plainToInstance(
       SearchOperationListByDentistryResponseDto,
@@ -484,18 +484,21 @@ export class OperationListController {
     },
   })
   @UseInterceptors(ClassSerializerInterceptor)
-  @Authorization(SpecialtyType.ADMIN)
+  @Authorization(SpecialtyType.ADMIN, SpecialtyType.DOCTOR)
   async OperationsByDentistry(
     @Param() params: GetOperationsByDentistryParamDto,
     @Query() query: GetOperationsByDentistryQueryDto,
   ): Promise<GetOperationsByDentistryResponseDto[]> {
     const { dentistryId } = params;
-    const { skip, take } = query;
+    const { skip, take, active } = query;
+    console.log("active",active)
     const operations = await this.operationListService.findAllByDentistry(
       dentistryId,
       take,
       skip,
+      active,
     );
+    console.log('operations', operations);
     return plainToInstance(GetOperationsByDentistryResponseDto, operations, {
       excludeExtraneousValues: true,
     });

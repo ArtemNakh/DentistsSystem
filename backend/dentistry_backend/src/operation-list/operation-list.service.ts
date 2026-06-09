@@ -127,6 +127,7 @@ export class OperationListService {
   async findByName(
     search: string,
     dentistryId: number,
+    active?: boolean,
   ): Promise<IOperationList[]> {
     await this.dentistryService.getDentistryById(dentistryId);
 
@@ -149,7 +150,10 @@ export class OperationListService {
     if (dentistryId) {
       qb = qb.andWhere('dental_clinic.id = :dentistryId', { dentistryId });
     }
-
+    // фільтр по active
+    if (typeof active !== 'undefined') {
+      qb = qb.andWhere('operation.active = :active', { active });
+    }
     return qb.getMany();
   }
 
@@ -157,6 +161,7 @@ export class OperationListService {
     dentistryId: number,
     take?: number,
     skip?: number,
+    active?: boolean,
   ): Promise<IOperationList[]> {
     if (!dentistryId) {
       throw new BadRequestException('dentistryId має бути вказаний і більше 0');
@@ -170,9 +175,16 @@ export class OperationListService {
         `Стоматологія з id ${dentistryId} не знайдена`,
       );
     }
+    // базова умова
+    const whereCondition: any = { dental_clinic: { id: existingDentistry.id } };
 
+    // якщо передано active=true/false — додаємо фільтр
+    if (typeof active !== 'undefined') {
+      whereCondition.active = true;
+    }
+    console.log('whree', whereCondition, 'active', active);
     const operations = await this.operationListRepo.find({
-      where: { dental_clinic: { id: existingDentistry.id } },
+      where: whereCondition,
       relations: ['dental_clinic'],
       order: { created_at: 'DESC' },
       take: take,

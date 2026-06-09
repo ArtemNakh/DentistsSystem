@@ -7,11 +7,7 @@ export default function TableHeaderHistoryAppointment() {
       <thead className="">
         <tr>
           <th className="border border-gray-400 px-2 py-1 text-base">
-            {" "}
             {t("doctor.history_operation.table.header.client")}
-          </th>
-          <th className="border border-gray-400 px-1 py-1 text-base">
-            {t("doctor.history_operation.table.header.worker")}
           </th>
           <th className="border border-gray-400 px-2 py-1 text-base">
             {t("doctor.history_operation.table.header.operation_date")}
@@ -25,9 +21,7 @@ export default function TableHeaderHistoryAppointment() {
           <th className="border border-gray-400 px-2 py-1 text-base">
             {t("doctor.history_operation.table.header.payment")}
           </th>
-          <th className="border border-gray-400 px-2 py-1 text-base">
-            {t("doctor.history_operation.table.header.actions")}
-          </th>
+         
         </tr>
       </thead>
     </>

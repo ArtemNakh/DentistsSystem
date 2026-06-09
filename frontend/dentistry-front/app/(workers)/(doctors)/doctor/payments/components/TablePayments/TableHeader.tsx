@@ -11,9 +11,6 @@ export default function TableHeaderPayments({}: TableHeaderPaymentsProps) {
             {t("doctor.payments.table_header.client")}
           </th>
           <th className="border  px-4 py-2 text-center">
-            {t("doctor.payments.table_header.worker")}
-          </th>
-          <th className="border  px-4 py-2 text-center">
             {t("doctor.payments.table_header.amount")}
           </th>
           <th className="border  px-4 py-2 text-center">

@@ -8,7 +8,7 @@ import { ActionReducer } from "@/lib/redux/rootReducer";
 
 export enum OperationListActionSaga {
   GettingActionsByTitle = "appointmentAction/getByTitle",
-}
+ }
 
 @EntityReducer(EntitiesRedux.FindingOperationList)
 export class FindingOperationListEntity extends BaseEntity {
@@ -23,11 +23,12 @@ static schema = new FindingOperationListEntity(null).getSchema();
   *GetOperationListByTitleSaga(action: GetActionsByTitle) {
     yield call(
       this.xRead.bind(this), // для GET краще xRead
-      `/operation-list/search?search=${action.payload.title}`,
+      `/operation-list/search?search=${action.payload.title}&active=true`,
       ActionReducer.Get,
     );
   }
 
+  
   *watch() {
     yield takeLatest(
       OperationListActionSaga.GettingActionsByTitle,

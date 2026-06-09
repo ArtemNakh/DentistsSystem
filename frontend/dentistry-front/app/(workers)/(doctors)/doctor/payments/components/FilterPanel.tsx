@@ -10,7 +10,6 @@ export interface PaymentFilters {
   status_paid: StatusPayment | null;
   method_pay: MethodPayment | null;
   status_appointment: StatusAppointment | null;
-  fio_worker: string;
   date_begin: string;
   date_end: string;
 }
@@ -29,20 +28,7 @@ export default function FilterPanelPayments({
     <>
       <div className=" w-full">
         <div className="mx-4 text-base   border border-gray-600  flex flex-wrap items-center gap-4 p-2  ">
-          {/* ФІО */}
-          <div className="flex flex-col">
-            <label className="text-gray-200">
-              {t("doctor.payments.filters.fio_worker")}
-            </label>
-            <input
-              value={filters.fio_worker}
-              onChange={(e) =>
-                setFilters({ ...filters, fio_worker: e.target.value })
-              }
-              className="h-10 border border-gray-600 rounded px-2 focus:outline-none"
-            />
-          </div>
-
+        
           {/* Сума */}
           <div className="flex flex-col">
             <label className="text-gray-200">
@@ -136,11 +122,6 @@ export default function FilterPanelPayments({
               className="h-10 border border-gray-600 bg-[#7660A8]  rounded px-2 focus:outline-none"
             >
               <option value="">—</option>
-              <option value={StatusAppointment.SCHEDULE}>
-                {t(
-                  "doctor.payments.filters.status_appointment.status.schedule",
-                )}
-              </option>
               <option value={StatusAppointment.COMPLETED}>
                 {t(
                   "doctor.payments.filters.status_appointment.status.complete",
@@ -149,11 +130,6 @@ export default function FilterPanelPayments({
               <option value={StatusAppointment.WAIT_PAID}>
                 {t(
                   "doctor.payments.filters.status_appointment.status.wait_paid",
-                )}
-              </option>
-              <option value={StatusAppointment.CANCELLED}>
-                {t(
-                  "doctor.payments.filters.status_appointment.status.cancelled",
                 )}
               </option>
             </select>
