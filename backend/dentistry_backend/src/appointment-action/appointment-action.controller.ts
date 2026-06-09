@@ -2,7 +2,6 @@ import {
   Body,
   ClassSerializerInterceptor,
   Controller,
-  Get,
   Post,
   UseInterceptors,
 } from '@nestjs/common';
@@ -14,6 +13,8 @@ import { SpecialtyType } from '@/specialty/entities/specialty.interface';
 
 import { plainToInstance } from 'class-transformer';
 import { CompleteOperationResponseDto } from './dto/Response/CompleteOperation.response.dto';
+import { Authorized } from '@/auth/decorators/authorized.decorator';
+import { Worker } from '@/workers/entities/workers.entity';
 
 @Controller('appointment-action')
 export class AppointmentActionController {
@@ -148,10 +149,10 @@ export class AppointmentActionController {
   @UseInterceptors(ClassSerializerInterceptor)
   @Authorization(SpecialtyType.DOCTOR)
   async addActionsAndPayment(
-    @Body() dto: CreateAppointmentActionsDto,
+    @Body() dto: CreateAppointmentActionsDto, @Authorized() worker: Worker,
   ): Promise<CompleteOperationResponseDto> {
     const completeAppointment =
-      await this.appointmentActionService.addActionsAndPayment(dto);
+      await this.appointmentActionService.addActionsAndPayment(dto,worker.id);
 
     return plainToInstance(CompleteOperationResponseDto, completeAppointment, {
       excludeExtraneousValues: true,

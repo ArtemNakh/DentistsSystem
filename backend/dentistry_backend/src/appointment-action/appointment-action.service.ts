@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -34,7 +35,7 @@ export class AppointmentActionService {
     });
   }
 
-  async addActionsAndPayment(dto: CreateAppointmentActionsDto) {
+  async addActionsAndPayment(dto: CreateAppointmentActionsDto,workerId:number) {
     return await this.dataSource.transaction(async (manager) => {
       const appointmentRepo = manager.getRepository(Appointment);
       const operationRepo = manager.getRepository(OperationList);
@@ -47,7 +48,11 @@ export class AppointmentActionService {
         relations: ['dentist', 'dentist.dentistry'],
       });
       if (!appointment) throw new NotFoundException('Appointment not found');
-
+      if (appointment.dentist.id !== workerId) {
+        throw new ForbiddenException(
+          'Only the doctor assigned to this appointment can add actions',
+        );
+      }
       // 2. Перевірка: чи вже існують appointment_actions для цього appointment
       const existingActions = await appointmentActionRepo.find({
         where: { appointment: { id: appointment.id } },

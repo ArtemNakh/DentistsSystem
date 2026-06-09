@@ -19,14 +19,20 @@ import { useTranslation } from "react-i18next";
 import { IWorker } from "@/lib/redux/modules/Workers/Workers.interface";
 
 export default function CalendarAdmin() {
-  const{t}=useTranslation()
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const authUser:IWorker = useAppSelector((state: { auth: AuthState }) => state.auth.user) as IWorker;
+  const authUser: IWorker = useAppSelector(
+    (state: { auth: AuthState }) => state.auth.user,
+  ) as IWorker;
 
   const appointments = Object.values(
     UseDenormalizeSelector<IAppointment[]>(
       (state: RootState) => state.appointments,
     ),
+  ).sort(
+    (a, b) =>
+      new Date(a.appointment_date).getTime() -
+      new Date(b.appointment_date).getTime(),
   );
 
   useEffect(() => {
@@ -111,7 +117,6 @@ export default function CalendarAdmin() {
         >
           {t("admins.calendar.appointments_adaptive_view")}
         </button>
-       
       </div>
     </>
   );
