@@ -1,10 +1,11 @@
+import { MethodPayment, StatusPayment } from "@/lib/redux/modules/Payments/Payments.interface";
 import { useTranslation } from "react-i18next";
 
 export interface HistoryFilters {
   fioClient: string;
   fioWorker: string;
   specialty: string;
-  statusPaid: string;
+  statusPaid:  StatusPayment | null;
   appointment_date: string;
 }
 
@@ -20,7 +21,6 @@ export default function FilterPanelHistory({
   const { t } = useTranslation();
   return (
     <>
-    
       <div className="w-full">
         <div className="mx-4 text-base border border-gray-600 flex flex-wrap gap-4 p-2">
           {/* Client */}
@@ -65,18 +65,32 @@ export default function FilterPanelHistory({
             />
           </div>
 
-          {/* Status Paid */}
-          <div className="flex flex-col flex-1 min-w-30">
+          {/* Статус оплати */}
+          <div className="flex flex-col flex-1 min-w-40">
             <label className="text-gray-200">
-              {t("reception.history_operation.filters.status_paid")}
+              {t("reception.history_operation.filters.status_paid.name")}
             </label>
-            <input
-              value={filters.statusPaid}
+            <select
+              value={filters.statusPaid ?? ""}
               onChange={(e) =>
-                setFilters({ ...filters, statusPaid: e.target.value })
+                setFilters({
+                  ...filters,
+                  statusPaid:
+                    e.target.value === ""
+                      ? null
+                      : (e.target.value as StatusPayment),
+                })
               }
-              className="h-10 border border-gray-600 rounded px-2 focus:outline-none w-full"
-            />
+              className="h-10 border border-gray-600 bg-[#7660A8] rounded px-2 focus:outline-none w-full"
+            >
+              <option value="">—</option>
+              <option value={StatusPayment.PAID}>
+                {t("reception.history_operation.filters.status_paid.status.paid")}
+              </option>
+              <option value={StatusPayment.NOT_PAID}>
+                {t("reception.history_operation.filters.status_paid.status.not_paid")}
+              </option>
+            </select>
           </div>
 
           {/* Appointment Date */}
@@ -97,7 +111,6 @@ export default function FilterPanelHistory({
           </div>
         </div>
       </div>
-      
     </>
   );
 }

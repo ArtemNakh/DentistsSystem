@@ -775,8 +775,14 @@
         "fio_client": "Client Full Name",
         "fio_worker": "Worker Full Name",
         "specialty": "Specialty",
-        "status_paid": "Payment Status",
-        "appointment_date": "Appointment Date"
+        "appointment_date": "Appointment Date",
+        "status_paid": {
+          "name": "Payment Status",
+          "status": {
+            "paid": "Paid",
+            "not_paid": "Not Paid"
+          }
+        }
       },
       "table": {
         "header": {
@@ -1142,8 +1148,8 @@
         "FindOperation": "Find operation",
         "name_placeholder": "Enter name",
         "close": "Close",
-        "search_results":"Search results",
-        "all_operations":"All operations"
+        "search_results": "Search results",
+        "all_operations": "All operations"
       },
       "method_pay": {
         "name": "Payment method",
@@ -1186,7 +1192,7 @@
         "main": "Home"
       },
       "main": "Home",
-      "login":"Login",
+      "login": "Login",
       "about_us": "About Us",
       "doctors": "Doctors",
       "contacts": "Contacts",

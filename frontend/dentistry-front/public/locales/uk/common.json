@@ -309,7 +309,13 @@
         "fio_client": " ФІО Клієнта",
         "fio_worker": "ФІО Працівника",
         "specialty": "Спеціалізація",
-        "status_paid": "Статус оплати",
+        "status_paid": {
+          "name": "Статус оплати",
+          "status": {
+            "paid": "Оплачено",
+            "not_paid": "Не оплачено"
+          }
+        },
         "appointment_date": "Дата записи"
       },
       "table": {
@@ -1139,8 +1145,8 @@
         "FindOperation": "Пошук операції",
         "name_placeholder": "Введіть назву",
         "close": "Закрити",
-        "search_results":"Знайдені операції",
-        "all_operations":"Усі операції"
+        "search_results": "Знайдені операції",
+        "all_operations": "Усі операції"
       },
       "method_pay": {
         "name": "Спосіб оплати",
@@ -1185,7 +1191,7 @@
       "main": "Головна",
       "about_us": "Про нас",
       "doctors": "Лікарі",
-      "login":"Вхід",
+      "login": "Вхід",
       "contacts": "Контакти",
       "settings": {
         "setting_profile": "Налаштуваня профілю",

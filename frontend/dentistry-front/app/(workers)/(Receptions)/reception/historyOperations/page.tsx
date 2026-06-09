@@ -1,14 +1,14 @@
 "use client";
 import { useState } from "react";
-import FilterPanelHistory from "./components/FilterPanel";
+import FilterPanelHistory, { HistoryFilters } from "./components/FilterPanel";
 import HistoryAppointmentsWorker from "./components/HistoryAppointments";
 
 export default function HistoryOperationReception() {
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<HistoryFilters>({
     fioClient: "",
     fioWorker: "",
     specialty: "",
-    statusPaid: "",
+    statusPaid: null,
     appointment_date: "",
   });
 

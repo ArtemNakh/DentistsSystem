@@ -136,17 +136,11 @@ export default function FilterPanelPayments({
             className="h-10 border border-gray-600 bg-[#7660A8] rounded px-2 focus:outline-none w-full"
           >
             <option value="">—</option>
-            <option value={StatusAppointment.SCHEDULE}>
-              {t("reception.payments.filters.status_appointment.status.schedule")}
-            </option>
             <option value={StatusAppointment.COMPLETED}>
               {t("reception.payments.filters.status_appointment.status.complete")}
             </option>
             <option value={StatusAppointment.WAIT_PAID}>
               {t("reception.payments.filters.status_appointment.status.wait_paid")}
-            </option>
-            <option value={StatusAppointment.CANCELLED}>
-              {t("reception.payments.filters.status_appointment.status.cancelled")}
             </option>
           </select>
         </div>

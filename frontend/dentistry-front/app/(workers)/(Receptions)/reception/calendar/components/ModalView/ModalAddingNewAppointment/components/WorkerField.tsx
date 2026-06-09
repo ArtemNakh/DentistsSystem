@@ -21,7 +21,7 @@ export default function WorkerField() {
       (state: RootState) => state.findingWorkers,
     ),
   );
- 
+
   const authUser: IWorker = useAppSelector(
     (state: { auth: AuthState }) => state.auth.user,
   ) as IWorker;
@@ -32,19 +32,28 @@ export default function WorkerField() {
   const [selectedWorkerName, setSelectedWorkerName] = useState("");
 
   useEffect(() => {
-    if (searchQuery.length > 1 && authUser?.dentistry?.id) {
+    if (authUser?.dentistry?.id) {
+      console.log("req1");
       dispatch(
         GetWorkersByFullName({
-          fullName: searchQuery,
+          fullName: "",
           dentistryId: authUser.dentistry.id,
         }),
       );
     }
-  }, [searchQuery, dispatch, authUser]);
+  }, [dispatch, authUser]);
 
   useEffect(() => {
-    if (searchQuery.length > 1) {
-      setFilteredWorkers(workers);
+    if (searchQuery.length > 0) {
+      console.log("req1");
+
+      setFilteredWorkers(
+        workers.filter((w) =>
+          `${w.surname} ${w.name} ${w.middle_name ?? ""}`
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase()),
+        ),
+      );
     } else {
       setFilteredWorkers([]);
     }
@@ -52,7 +61,7 @@ export default function WorkerField() {
 
   // Фільтрація працівників щоб введене значення співпадало із ФІО
   useEffect(() => {
-    if (searchQuery.length > 1) {
+    if (searchQuery.length > 0) {
       const arr = Array.isArray(workers)
         ? workers
         : (Object.values(workers || {}) as IWorker[]);
@@ -139,27 +148,21 @@ export default function WorkerField() {
             />
 
             <ul className="max-h-40 overflow-y-auto border border-gray-300 rounded">
-              {(Array.isArray(filteredWorkers) ? filteredWorkers : []).map(
+              {(searchQuery.trim() === "" ? workers : filteredWorkers).map(
                 (worker) => (
                   <li
                     key={worker.id}
                     onClick={() => {
-                      // зберігаємо ID у Formik
                       setFieldValue("dentistId", worker.id);
-
-                      // показуємо ім’я у полі
                       setSelectedWorkerName(
                         `${worker.surname} ${worker.name} ${worker.middle_name ?? ""} — ${worker.specialty?.name ?? ""} (${new Date(worker.birthday).getFullYear()})`,
                       );
-
-                      // робимо запити до БД через Redux Saga
                       dispatch(getShiftsWorker({ idWorker: worker.id }));
                       dispatch(
                         GetAppointmentsByWorkerNext3Month({
                           workerId: worker.id,
                         }),
                       );
-
                       setShowWorkerModal(false);
                     }}
                     className="p-2 hover:bg-[#7551B0] cursor-pointer"

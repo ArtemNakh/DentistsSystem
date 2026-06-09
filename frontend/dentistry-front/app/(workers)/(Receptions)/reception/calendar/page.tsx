@@ -33,6 +33,10 @@ export default function CalendarAdmin() {
     UseDenormalizeSelector<IAppointment[]>(
       (state: RootState) => state.appointments,
     ),
+  ).sort(
+    (a, b) =>
+      new Date(a.appointment_date).getTime() -
+      new Date(b.appointment_date).getTime(),
   );
 
   // Отримуємо авторізованого користувача якщо немає
@@ -64,7 +68,6 @@ export default function CalendarAdmin() {
     return () => mediaQuery.removeEventListener("change", handler);
   }, []);
 
-
   // Контент сайдбару (список записів на день)
   const sidebarContent = (
     <AllDayRecords appointments={appointments} selectedDate={value} />
@@ -87,7 +90,7 @@ export default function CalendarAdmin() {
             )}
             tileClassName={({ date }) => {
               const isToday = date.toDateString() === new Date().toDateString();
-              return `relative h-30 border ${isToday ?  "border-2 border-yellow-500": "border-gray-300"} bg-linear-to-r from-[#7F59BD] to-[#795EAF] text-base`;
+              return `relative h-30 border ${isToday ? "border-2 border-yellow-500" : "border-gray-300"} bg-linear-to-r from-[#7F59BD] to-[#795EAF] text-base`;
             }}
             className="calendar-admin bg-linear-to-l from-[#874FD1] to-[#6F6697] w-full h-full text-base  "
             minDetail="month"
@@ -100,7 +103,7 @@ export default function CalendarAdmin() {
         <div className="hidden md:block  border-l border-gray-300">
           {sidebarContent}
         </div>
-        
+
         {/* Overlay sidebar для мобільних */}
         {showSidebar && (
           <div

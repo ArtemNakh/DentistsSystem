@@ -34,10 +34,10 @@ export default function HistoryAppointmentsWorker({
       (state: RootState) => state.appointments,
     ),
   ).sort(
-  (a, b) =>
-    new Date(b.appointment_date).getTime() -
-    new Date(a.appointment_date).getTime(),
-);
+    (a, b) =>
+      new Date(b.appointment_date).getTime() -
+      new Date(a.appointment_date).getTime(),
+  );
 
   const [skip, setSkip] = useState(0);
   const take = 100;
@@ -75,10 +75,8 @@ export default function HistoryAppointmentsWorker({
         .toLowerCase()
         .includes(filters.fioWorker.toLowerCase());
     const statusPaidMatch =
-      !filters.statusPaid ||
-      `${ap.payment?.status_paid}`
-        .toLowerCase()
-        .includes(filters.statusPaid.toLowerCase());
+      !filters.statusPaid || ap.payment?.status_paid === filters.statusPaid;
+
     const specialtyMatch =
       !filters.specialty ||
       ap.dentist?.specialty.name
