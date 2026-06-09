@@ -550,4 +550,19 @@ export class AppointmentService {
       );
     }
   }
+
+  async findActiveOperations(): Promise<IAppointment[]> {
+    const now = new Date();
+
+    return this.appointmentRepo.find({
+      where: [
+        {
+          status: StatusAppointment.SCHEDULE,
+          appointment_date: LessThanOrEqual(now),
+        },
+      ],
+      relations: ['dentist', 'client'],
+      order: { appointment_date: 'ASC' },
+    });
+  }
 }
