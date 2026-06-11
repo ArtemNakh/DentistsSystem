@@ -1468,7 +1468,8 @@
         },
         "appointment_date": {
           "required": "Appointment date is required",
-          "min": "Appointment date cannot be in the past"
+          "min": "Appointment date cannot be in the past",
+          "time_required":"Time for appointment must be"
         },
         "notes": {
           "max": "Notes cannot exceed 500 characters"

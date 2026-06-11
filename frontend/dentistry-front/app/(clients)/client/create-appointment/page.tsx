@@ -16,6 +16,7 @@ import SubmitAddingAppointment from "./components/SubmitAddingAppointmentButton"
 
 import { CreateAppointmentSchema } from "./schemes/CreateNewAppointment.schema";
 import DentistryField from "./components/DentistriesField";
+import { useRouter } from "next/navigation";
 
 interface AddingNewAppointmentProps {}
 
@@ -29,7 +30,7 @@ const initialValues = {
 
 export default function ModalAddingNewAppointment({}: AddingNewAppointmentProps) {
   const { t } = useTranslation();
-
+const route= useRouter()
   const dispatch = useAppDispatch();
   const [error, setError] = useState<string | null>(null);
 
@@ -37,16 +38,18 @@ export default function ModalAddingNewAppointment({}: AddingNewAppointmentProps)
     async (values: AddNewAppointmentPayload, { setSubmitting }: any) => {
       try {
         console.log("test",values)
-        await dispatch(
+        const result = await dispatch(
           AddNewAppointment({
             ...values,
             appointment_date: new Date(values.appointment_date).toISOString(),
           }),
         );
+        console.log("res",result)
       } catch (err) {
         setError(t("client.create_appointment.error") + err);
       } finally {
         setSubmitting(false);
+        route.push("/client/main")
       }
     },
     [dispatch],
