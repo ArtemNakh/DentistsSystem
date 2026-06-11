@@ -1,4 +1,3 @@
-import HeaderClient from "../client/components/header";
 
 export default function AuthClientLayout({
   children,

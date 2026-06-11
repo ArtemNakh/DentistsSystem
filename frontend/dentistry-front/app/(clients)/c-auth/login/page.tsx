@@ -26,7 +26,7 @@ export default function ClientLogin() {
       const data = await LoginClient(values);
       localStorage.setItem("authToken", data.authToken);
 
-      Cookies.set("auth_token", data.authToken, { path: "/" });
+      Cookies.set("authToken", data.authToken, { path: "/" });
       router.push("/client/main");
     } catch (e: any) {
       console.log("err");
