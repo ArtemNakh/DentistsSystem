@@ -10,6 +10,7 @@ import { Worker } from '@/workers/entities/workers.entity';
 import { CreateWorkerShiftDto } from './dto/CreateWorker-shift.dto';
 import { IWorkerShifts } from './entities/worker-shifts.interface';
 import { WorkersService } from '@/workers/workers.service';
+import { Appointment } from '@/appointment/entity/appointment.entity';
 @Injectable()
 export class WorkerShiftsService {
   constructor(
@@ -18,6 +19,8 @@ export class WorkerShiftsService {
     @InjectRepository(Worker)
     private readonly workerRepo: Repository<Worker>,
 
+    @InjectRepository(Appointment)
+    private readonly appointmentRepo: Repository<Appointment>,
     private readonly workerService: WorkersService,
   ) {}
   /**
@@ -208,6 +211,24 @@ export class WorkerShiftsService {
     });
     if (!shift) throw new NotFoundException('Shift not found');
 
+    // Перевірка чи є прийоми на цю зміну
+
+    // знайти прийоми для цього працівника у межах зміни
+    const existingAppointments = await this.appointmentRepo.find({
+      where: {
+        dentist: { id: shift.worker.id }, // або worker_id: shift.worker_id
+        appointment_date: Between(
+          new Date(`${shift.shift_date}T${shift.start_time}`),
+          new Date(`${shift.shift_date}T${shift.end_time}`),
+        ),
+      },
+    });
+
+    if (existingAppointments.length > 0) {
+      throw new ConflictException(
+        `Cannot delete shift with id ${shiftId} because it has ${existingAppointments.length} appointment(s) assigned`,
+      );
+    }
     await this.workerShiftsRepo.remove(shift);
     return {
       success: true,

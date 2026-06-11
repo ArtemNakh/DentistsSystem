@@ -12,7 +12,6 @@ import { NotificationPopup } from "./NotificationPopup";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 
-
 export default function HeaderDoctor() {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
@@ -59,6 +58,7 @@ export default function HeaderDoctor() {
     document.cookie =
       "auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
     document.cookie = "role=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    localStorage.removeItem("authToken");
 
     Cookies.remove("auth_token");
     Cookies.remove("role");
@@ -162,7 +162,7 @@ export default function HeaderDoctor() {
                     onClick={handleLogout}
                     className="border border-gray-600 px-2 py-1 rounded hover:bg-gray-200 transition"
                   >
-                     {t("doctor.header.exit")}
+                    {t("doctor.header.exit")}
                   </button>
                 </div>
               )}

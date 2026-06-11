@@ -14,6 +14,9 @@ import React from "react";
 import { getAllShiftsWorkers } from "@/lib/redux/modules/WorkerShifts/actions/GetShiftsToWorkers/GetShiftsToWorkers";
 import { IWorkerShifts } from "@/lib/redux/modules/WorkerShifts/WorkerShifts.interface";
 import { useTranslation } from "react-i18next";
+import { getShiftsWorker } from "@/lib/redux/modules/WorkerShifts/actions/GetShiftsToWorker/GetShiftsToWorker";
+import { getWorkersDentistry } from "@/lib/redux/modules/Workers/actions/GetWorkersDentistry/GetWorkersDentistry";
+import { getAuthWorker } from "@/lib/redux/modules/AuthUser/actions/GetAuthWorker/GetAuthWorker";
 
 export default function WorkersShiftsTable() {
   const { t } = useTranslation();
@@ -34,14 +37,16 @@ export default function WorkersShiftsTable() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (auth?.dentistry?.id) {
-      dispatch(
-        getAllShiftsWorkers({
-          idDentisty: auth.dentistry.id
-        }),
-      );
+    if (auth) {
+      console.log("work");
+      return;
     }
-  }, [dispatch, auth]);
+    dispatch(getAuthWorker({}));
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(getWorkersDentistry({ idDentistry: auth?.dentistry?.id, }));
+  }, [dispatch, auth?.dentistry?.id]);
 
   return (
     <div className="p-4 overflow-x-auto">
@@ -80,11 +85,15 @@ export default function WorkersShiftsTable() {
               <tr
                 key={worker.id}
                 className="cursor-pointer transition hover:bg-black/20"
-                onClick={() =>
-                  setExpandedWorkerId(
-                    expandedWorkerId === worker.id ? null : worker.id,
-                  )
-                }
+                onClick={() => {
+                  const newExpandedId =
+                    expandedWorkerId === worker.id ? null : worker.id;
+                  setExpandedWorkerId(newExpandedId);
+
+                  if (newExpandedId) {
+                    dispatch(getShiftsWorker({ idWorker: worker.id }));
+                  }
+                }}
               >
                 <td className="border p-2">{worker.name}</td>
                 <td className="border p-2">{worker.middle_name}</td>
@@ -110,10 +119,7 @@ export default function WorkersShiftsTable() {
               </tr>
               {expandedWorkerId === worker.id && (
                 <tr>
-                  <ListShiftsWorker
-                    workerId={worker.id}
-                    shifts={shifts}
-                  />
+                  <ListShiftsWorker workerId={worker.id} shifts={shifts} />
                 </tr>
               )}
             </React.Fragment>

@@ -60,14 +60,14 @@ export default function HeaderAdmin() {
       path: "/admins/workers-shifts",
     },
   ];
-
-  const handleLogout = async () => {
+ const handleLogout = async () => {
     await dispatch(logoutWorker({}));
 
     // очищаємо cookies
     document.cookie =
       "auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
     document.cookie = "role=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+localStorage.removeItem("authToken");
 
     Cookies.remove("auth_token");
     Cookies.remove("role");
@@ -75,7 +75,6 @@ export default function HeaderAdmin() {
     // редірект на логін
     router.push("/w-auth/login");
   };
-
   return (
     <>
       <div className="bg-[#7E5BBA] border border-gray-600 ">

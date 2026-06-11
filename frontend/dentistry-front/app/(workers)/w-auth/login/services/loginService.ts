@@ -11,7 +11,7 @@ export async function loginWorker(values: { login: string; password: string }) {
   if (!response.ok) {
     const errData = await response.json();
     const translatedError =
-      i18n.t(`error.login.${errData.message}`) || i18n.t("error.login.default");
+      i18n.t(`${errData.message}`) || i18n.t("error.login.default");
     throw new Error(translatedError);
   }
   return response.json();

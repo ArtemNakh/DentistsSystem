@@ -34,11 +34,19 @@ export class WorkerEntity extends BaseEntity {
 
   *getWorkersDentistrySaga(action: WorkersDentistryAction) {
     const { idDentistry, take, skip } = action.payload;
-    yield call(
-      this.xRead.bind(this),
-      `/workers/all?dentistryId=${idDentistry}&take=${take}&skip=${skip}`,
-      ActionReducer.Get,
-    );
+
+    // базовий URL
+    let url = `/workers/all?dentistryId=${idDentistry}`;
+
+    // додаємо параметри тільки якщо вони є
+    if (typeof take !== "undefined") {
+      url += `&take=${take}`;
+    }
+    if (typeof skip !== "undefined") {
+      url += `&skip=${skip}`;
+    }
+
+    yield call(this.xRead.bind(this), url, ActionReducer.Get);
   }
 
   *getInfoWorkersByDentistrySaga(action: GetInfoWorkersByDentistryAction) {

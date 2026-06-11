@@ -54,6 +54,10 @@ export default function PaymentsList({ filters }: PaymentsListProps) {
   const { t } = useTranslation();
   const payments = Object.values(
     UseDenormalizeSelector<IPayment[]>((state: RootState) => state.payments),
+  ).sort(
+    (a, b) =>
+      new Date(b.appointment.appointment_date).getTime() -
+      new Date(a.appointment.appointment_date).getTime(),
   );
   const dispatch = useAppDispatch();
   const authUser: IWorker = useAppSelector(
@@ -63,7 +67,7 @@ export default function PaymentsList({ filters }: PaymentsListProps) {
   const [skipPayments, setSkipPayments] = useState(0);
   const takePayments = 100;
 
-  const filteredPayments:IPayment[] = getFilteredPayments(payments, filters);
+  const filteredPayments: IPayment[] = getFilteredPayments(payments, filters);
 
   useEffect(() => {
     if (!authUser) return;

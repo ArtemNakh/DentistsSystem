@@ -6,10 +6,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Worker } from '@/workers/entities/workers.entity';
 import { WorkersModule } from '@/workers/workers.module';
 import { ClientsModule } from '@/clients/clients.module';
+import { AppointmentModule } from '@/appointment/appointment.module';
+import { Appointment } from '@/appointment/entity/appointment.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([WorkerShifts, Worker]),
+    TypeOrmModule.forFeature([WorkerShifts, Worker,Appointment]),
     WorkersModule,
     ClientsModule,
   ],

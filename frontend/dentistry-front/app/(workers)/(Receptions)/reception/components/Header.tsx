@@ -57,8 +57,9 @@ export default function HeaderAdmin() {
     document.cookie =
       "authToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
     document.cookie = "role=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    localStorage.removeItem("authToken");
 
-    Cookies.remove("authToken");
+    Cookies.remove("auth_token");
     Cookies.remove("role");
 
     // редірект на логін

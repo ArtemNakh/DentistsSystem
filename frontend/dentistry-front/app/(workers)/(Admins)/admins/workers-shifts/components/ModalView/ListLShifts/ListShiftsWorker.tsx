@@ -5,16 +5,14 @@ import { DeleteShiftsWorker } from "@/lib/redux/modules/WorkerShifts/actions/Del
 import CreateWorkerShiftModal from "../CreateShift/CreateShift";
 import i18n from "@/i18next.config";
 import { useTranslation } from "react-i18next";
+import { getShiftsWorker } from "@/lib/redux/modules/WorkerShifts/actions/GetShiftsToWorker/GetShiftsToWorker";
 
 interface Props {
   workerId: number;
   shifts: IWorkerShifts[];
- }
+}
 
-export default function ListShiftsWorker({
-  workerId,
-  shifts
-}: Props) {
+export default function ListShiftsWorker({ workerId, shifts }: Props) {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const workerShifts = shifts.filter(
@@ -121,9 +119,15 @@ export default function ListShiftsWorker({
                   <div className="flex gap-2">
                     <button
                       className="px-2 py-1 bg-[#7B4DBC] hover:bg-[#6C4DA1] border border-gray-700 text-white rounded"
-                      onClick={() =>
-                        dispatch(DeleteShiftsWorker({ id: lic.id }))
-                      }
+                      onClick={async () => {
+                        const res = await dispatch(
+                          DeleteShiftsWorker({ id: lic.id }),
+                        );
+                        if (res)
+                          await dispatch(
+                            getShiftsWorker({ idWorker: workerId }),
+                          );
+                      }}
                     >
                       {t("admins.workers_shifts.list_shifts.delete_shift")}
                     </button>
@@ -139,7 +143,6 @@ export default function ListShiftsWorker({
           >
             {t("admins.workers_shifts.list_shifts.add_shift")}
           </button>
-
         </div>
       </div>
       {showCreateShift && (
