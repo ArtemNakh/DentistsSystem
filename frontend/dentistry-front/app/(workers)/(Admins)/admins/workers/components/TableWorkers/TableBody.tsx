@@ -47,16 +47,16 @@ export default function TableBodyWorker({
                   {worker.phone}
                 </td>
                 <td className="border border-gray-600 px-2 py-2 text-center">
-                  <button
+                  {/* <button
                     onClick={() =>
                       alert(
                         `Перехід на календар для працівника: ${worker.surname}`,
                       )
                     }
                     className=" text-gray-900 px-3 py-2 rounded hover:bg-[#795FAE] transition flex items-center justify-center"
-                  >
+                  > */}
                     {/* SVG іконка календаря */}
-                    <svg
+                    {/* <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-5 w-5"
                       fill="none"
@@ -69,8 +69,8 @@ export default function TableBodyWorker({
                         strokeLinejoin="round"
                         d="M8 7V3m8 4V3m-9 8h10m-12 8h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                       />
-                    </svg>
-                  </button>
+                    </svg> */}
+                  {/* </button> */}
                   {/* Нова кнопка dispatch */}
                   <button
                     onClick={() => {

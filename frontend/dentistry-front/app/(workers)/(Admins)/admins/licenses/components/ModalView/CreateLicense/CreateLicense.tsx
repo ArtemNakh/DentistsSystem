@@ -57,7 +57,7 @@ export default function CreateLicenseModal({
               {/* Дата видачі ліцензії */}
               <label className="text-sm font-medium">
                 {" "}
-                {t("admins.license.create_license.issued_date")}
+                {t("admins.license.create_license.issue_date")}
               </label>
               <Field
                 type="date"
