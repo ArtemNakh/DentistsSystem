@@ -1,6 +1,8 @@
-import { useAppSelector, useAppDispatch } from "@/lib/redux/hooks";
+import { useAppSelector, useAppDispatch, UseDenormalizeSelector } from "@/lib/redux/hooks";
+import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
 import { GetSpecialtiesByName } from "@/lib/redux/modules/Specialties/Entities/FindedSpecialties/actions/GetSpecialtiesByFIO/GetSpecialtiesByFIO";
 import { ISpecialty } from "@/lib/redux/modules/Specialties/Entities/Specialties/Specialties.interface";
+import { IWorker } from "@/lib/redux/modules/Workers/Workers.interface";
 import { RootState } from "@/lib/redux/store";
 import { Field, useFormikContext } from "formik";
 import { useState, useEffect } from "react";
@@ -10,7 +12,9 @@ export default function SpecialtyField() {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { setFieldValue } = useFormikContext<any>();
-
+  const auth: IWorker = UseDenormalizeSelector(
+    (state: { auth: AuthState }) => state.auth.user,
+  ) as IWorker;
   const specialties = useAppSelector(
     (state: RootState) => state.findingSpecialties,
   );
@@ -24,7 +28,9 @@ export default function SpecialtyField() {
 
   useEffect(() => {
     if (searchQuery.length > 2) {
-      dispatch(GetSpecialtiesByName({ name: searchQuery }));
+      dispatch(
+        GetSpecialtiesByName({ name: searchQuery, dentistryId: auth.dentistry?.id }),
+      );
     }
   }, [searchQuery, dispatch]);
 
@@ -50,7 +56,9 @@ export default function SpecialtyField() {
           readOnly
           type="text"
           className="flex-1 p-2 border border-gray-400 rounded"
-          placeholder={t("admins.workers.create_worker.enter_name_specialization")}
+          placeholder={t(
+            "admins.workers.create_worker.enter_name_specialization",
+          )}
         />
         {/* приховане поле для ID */}
         <Field type="hidden" name="specialtyId" />

@@ -2,6 +2,7 @@ import { FindingSpecialtyActionSaga } from "../../FindedSpecialties.Entity";
 
 export interface GetSpecialtiesByNamePayload {
   name: string;
+  dentistryId:number;
 }
 
 export const GetSpecialtiesByName = (payload: GetSpecialtiesByNamePayload) => ({

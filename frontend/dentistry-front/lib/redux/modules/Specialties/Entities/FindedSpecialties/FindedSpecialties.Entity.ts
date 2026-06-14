@@ -19,7 +19,7 @@ static schema = new FindingSpecialtyEntity(null).getSchema();
   *GetByNameSaga(action: GetSpecialtiesByName) {
     yield call(
       this.xRead.bind(this), // для GET краще xRead
-      `/specialties/search?search=${action.payload.name}`,
+      `/specialties/search?search=${action.payload.name}&dentistryId=${action.payload.dentistryId}`,
       ActionReducer.Get,
     );
   }
