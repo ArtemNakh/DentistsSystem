@@ -20,7 +20,7 @@ interface ModalAddingNewAppointmentProps {
 const initialValues: AddNewAppointmentPayload = {
   clientId: 0,
   dentistId: 0,
-  appointment_date: new Date().toISOString(),
+  appointment_date: "",
   notes: "",
 };
 
@@ -31,40 +31,42 @@ export default function ModalAddingNewAppointment({
 
   const dispatch = useAppDispatch();
   const [error, setError] = useState<string | null>(null);
- 
- const onSubmit = useCallback(
-  async (values: AddNewAppointmentPayload, { setSubmitting }: any) => {
-    try {
-      // перевірка на час
-      const dateObj = new Date(values.appointment_date);
-      if (
-        !dateObj ||
-        (dateObj.getHours() === 0 && dateObj.getMinutes() === 0)
-      ) {
-        setError(
-          t("reception.calendar.modal.adding_appointment.appointment_date.choose_time")
+
+  const onSubmit = useCallback(
+    async (values: AddNewAppointmentPayload, { setSubmitting }: any) => {
+      try {
+        // перевірка на час
+        const dateObj = new Date(values.appointment_date);
+        if (
+          !dateObj ||
+          (dateObj.getHours() === 0 && dateObj.getMinutes() === 0)
+        ) {
+          setError(
+            t(
+              "reception.calendar.modal.adding_appointment.appointment_date.choose_time",
+            ),
+          );
+          setSubmitting(false);
+          return; // блокуємо сабміт
+        }
+
+        console.log("send");
+        await dispatch(
+          AddNewAppointment({
+            ...values,
+            appointment_date: dateObj.toISOString(),
+          }),
         );
+
+        onClose();
+      } catch (err) {
+        setError("Помилка при додаванні appointment: " + err);
+      } finally {
         setSubmitting(false);
-        return; // блокуємо сабміт
       }
-
-      console.log("send");
-      await dispatch(
-        AddNewAppointment({
-          ...values,
-          appointment_date: dateObj.toISOString(),
-        }),
-      );
-
-      onClose();
-    } catch (err) {
-      setError("Помилка при додаванні appointment: " + err);
-    } finally {
-      setSubmitting(false);
-    }
-  },
-  [dispatch, onClose, t],
-);
+    },
+    [dispatch, onClose, t],
+  );
 
   return (
     <>
@@ -77,6 +79,7 @@ export default function ModalAddingNewAppointment({
           </h2>
 
           <Formik
+            enableReinitialize
             initialValues={initialValues}
             validationSchema={CreateAppointmentSchema}
             onSubmit={(values) => {

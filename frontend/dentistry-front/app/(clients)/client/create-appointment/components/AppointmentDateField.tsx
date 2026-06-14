@@ -45,14 +45,17 @@ export default function AppointmentDateField() {
     ? appointmentsObj
     : Object.values(appointmentsObj ?? {});
 
-  const { setFieldValue } = useFormikContext<any>();
+  const { setFieldValue, values } = useFormikContext<any>();
 
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedTime, setSelectedTime] = useState<string>("");
+  const [timeError, setTimeError] = useState<string | null>(null);
+
   // Масив робочих днів
-  const workingDays = useMemo(
-    () => workerShifts.map((s: IWorkerShifts) => new Date(s.shift_date)),
-    [workerShifts],
-  );
+  const workingDays = useMemo(() => {
+    if (!values.dentistId) return [];
+    return workerShifts.map((s: IWorkerShifts) => new Date(s.shift_date));
+  }, [workerShifts, values.dentistId]);
 
   const availableTimes = useMemo(() => {
     if (!selectedDate) return [];
@@ -92,6 +95,29 @@ export default function AppointmentDateField() {
     return times;
   }, [selectedDate, workerShifts, appointments]);
 
+  const handleTimeChange = (time: string) => {
+    setSelectedTime(time);
+
+    if (!time) {
+      // якщо користувач вибрав "невизначено"
+      setTimeError(
+        t(
+          "reception.calendar.modal.adding_appointment.appointment_date.choose_time",
+        ),
+      );
+      // очищаємо значення у Formik
+      setFieldValue("appointment_date", "");
+      return;
+    }
+
+    setTimeError(null);
+
+    const [hours, minutes] = time.split(":");
+    const dateObj = new Date(selectedDate!);
+    dateObj.setHours(Number(hours), Number(minutes), 0, 0);
+
+    setFieldValue("appointment_date", dateObj);
+  };
   return (
     <>
       <div className="mx-5 text-gray-500 overflow-y-auto">
@@ -129,15 +155,8 @@ export default function AppointmentDateField() {
           </label>
           <select
             className="w-full p-2 border border-gray-400 rounded text-gray-600 "
-            onChange={(e) => {
-              const selectedTime = e.target.value;
-              if (!selectedTime) return;
-
-              const [hours, minutes] = selectedTime.split(":");
-              const dateObj = new Date(selectedDate);
-              dateObj.setHours(Number(hours), Number(minutes), 0, 0);
-              setFieldValue("appointment_date", dateObj);
-            }}
+            value={selectedTime}
+            onChange={(e) => handleTimeChange(e.target.value)}
           >
             <option value="">
               {" "}
@@ -149,6 +168,9 @@ export default function AppointmentDateField() {
               </option>
             ))}
           </select>
+          {timeError && (
+            <div className="mt-2 text-red-500 text-lg">{timeError}</div>
+          )}
         </div>
       )}
     </>

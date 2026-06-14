@@ -18,8 +18,8 @@ export const metadata: Metadata = {
   title: "Dentistry System",
   description: "Dental clinic management system",
   other: {
-    "Content-Security-Policy":
-      "script-src 'self'; style-src 'self' 'unsafe-inline'",
+  "Content-Security-Policy":
+  "script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'"
   },
 };
 

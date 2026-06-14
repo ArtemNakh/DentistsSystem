@@ -4,8 +4,8 @@ import { IWorkerShifts } from "@/lib/redux/modules/WorkerShifts/WorkerShifts.int
 import { RootState } from "@/lib/redux/store";
 import { Locale } from "date-fns";
 import { enUS, uk } from "date-fns/locale";
-import { ErrorMessage, Field, useFormikContext } from "formik";
-import { useMemo, useState } from "react";
+import { ErrorMessage, useFormikContext } from "formik";
+import { useEffect, useMemo, useState } from "react";
 import DatePicker from "react-datepicker";
 import { useTranslation } from "react-i18next";
 
@@ -30,13 +30,13 @@ function generateHourlySlots(start: string, end: string) {
 
 export default function AppointmentDateField() {
   const { t } = useTranslation();
-  const { setFieldValue, validateForm } = useFormikContext<any>();
+  const { setFieldValue, values } = useFormikContext<any>();
   const workerShiftsObj = useAppSelector(
     (state: RootState) => state.workerShifts,
   );
 
   const workerShifts = Array.isArray(workerShiftsObj)
-    ? workerShiftsObj
+    ? workerShiftsObj.filter((shift) => shift.worker.id === values.dentistId)
     : Object.values(workerShiftsObj ?? {});
 
   const appointmentsObj = useAppSelector(
@@ -51,10 +51,12 @@ export default function AppointmentDateField() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
   // Масив робочих днів
-  const workingDays = useMemo(
-    () => workerShifts.map((s: IWorkerShifts) => new Date(s.shift_date)),
-    [workerShifts],
-  );
+  const workingDays = useMemo(() => {
+    if (!values.dentistId) return [];
+    return workerShifts.map((s: IWorkerShifts) => new Date(s.shift_date));
+  }, [workerShifts,values.dentistId]);
+
+  
 
   // Доступні години для вибраної дати
   const availableTimes = useMemo(() => {
@@ -90,11 +92,14 @@ export default function AppointmentDateField() {
     setSelectedTime(time);
 
     if (!time) {
+      // якщо користувач вибрав "невизначено"
       setTimeError(
         t(
           "reception.calendar.modal.adding_appointment.appointment_date.choose_time",
         ),
       );
+      // очищаємо значення у Formik
+      setFieldValue("appointment_date", "");
       return;
     }
 
@@ -106,6 +111,14 @@ export default function AppointmentDateField() {
 
     setFieldValue("appointment_date", dateObj);
   };
+
+  useEffect(() => {
+    if (!values.appointment_date) {
+      setSelectedDate(null);
+      setSelectedTime("");
+      setTimeError(null);
+    }
+  }, [values.appointment_date]);
 
   return (
     <>
@@ -133,7 +146,7 @@ export default function AppointmentDateField() {
               (d) => d.toDateString() === date.toDateString(),
             );
 
-             if (isSelected) {
+            if (isSelected) {
               return `!bg-purple-500 !text-gray-100 rounded-full  hover:!rounded-full 
               hover:!bg-purple-200 hover:!text-gray-600 transition-colors !important`;
             }

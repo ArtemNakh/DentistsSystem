@@ -25,20 +25,28 @@ export const NotificationPopup: React.FC = () => {
 
   const licenses: ILicense[] = Object.values(
     UseDenormalizeSelector<ILicense[]>((state: RootState) => state.licenses),
-  ).filter((license) => {
-    // умова по стоматології
-    const dentistryMatch =
-      license.worker?.dentistry?.id === authUser?.dentistry.id;
+  )
+    .filter((license) => {
+      // умова по стоматології
+      const dentistryMatch =
+        license.worker?.dentistry?.id === authUser?.dentistry.id;
 
-    // умова по даті (наприклад, закінчується протягом maxDays)
-    const today = new Date();
-    const maxDate = new Date();
-    maxDate.setDate(today.getDate() + maxDays);
+      // умова по даті (наприклад, закінчується протягом maxDays)
+      const today = new Date();
+      const maxDate = new Date();
+      maxDate.setDate(today.getDate() + maxDays);
 
-    const expirationMatch = new Date(license.expiration_date) <= maxDate;
+      const expirationMatch = new Date(license.expiration_date) <= maxDate;
 
-    return dentistryMatch && expirationMatch;
-  });
+      return dentistryMatch && expirationMatch;
+    })
+    .sort((a, b) => {
+      // сортування по найближчому строку закінчення
+      return (
+        new Date(a.expiration_date).getTime() -
+        new Date(b.expiration_date).getTime()
+      );
+    });
 
   // денормалізація масиву сповіщень
   const notifications: INotification[] = Object.values(
@@ -87,7 +95,7 @@ export const NotificationPopup: React.FC = () => {
         maxDays: maxDays,
       }),
     );
-  },[]);
+  }, []);
 
   return (
     <div className="absolute top-0 -right-10 mt-10 mr-10 w-96 bg-white border border-gray-300 rounded shadow-lg p-4 z-50">

@@ -23,33 +23,49 @@ interface AddingNewAppointmentProps {}
 const initialValues = {
   clientId: 0,
   dentistId: 0,
-  appointment_date: new Date().toISOString(),
+  appointment_date: "",
   notes: "",
   dentistryId: 0,
 };
 
 export default function ModalAddingNewAppointment({}: AddingNewAppointmentProps) {
   const { t } = useTranslation();
-const route= useRouter()
+  const route = useRouter();
   const dispatch = useAppDispatch();
   const [error, setError] = useState<string | null>(null);
 
   const onSubmit = useCallback(
     async (values: AddNewAppointmentPayload, { setSubmitting }: any) => {
       try {
-        console.log("test",values)
+        const dateObj = new Date(values.appointment_date);
+        if (
+          !dateObj ||
+          (dateObj.getHours() === 0 && dateObj.getMinutes() === 0)
+        ) {
+          setError(
+            t(
+              "reception.calendar.modal.adding_appointment.appointment_date.choose_time",
+            ),
+          );
+          setSubmitting(false);
+          return; // блокуємо сабміт
+        }
+
+        console.log("send");
+
+        console.log("test", values);
         const result = await dispatch(
           AddNewAppointment({
             ...values,
             appointment_date: new Date(values.appointment_date).toISOString(),
           }),
         );
-        console.log("res",result)
+        console.log("res", result);
       } catch (err) {
         setError(t("client.create_appointment.error") + err);
       } finally {
         setSubmitting(false);
-        route.push("/client/main")
+        route.push("/client/main");
       }
     },
     [dispatch],
