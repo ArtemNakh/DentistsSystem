@@ -16,39 +16,40 @@ import TableWorkersWeekend from "./components/TableWeekendWorkers";
 import { GetNumbersWorkersWeekend } from "@/lib/redux/modules/ADMINS/Stats/WeekendStats/actions/WeekendStats.entity";
 import { getAppointmentNearestTodayDentistry } from "@/lib/redux/modules/Appointments/actions/GetNearestTodayByDentistry/GetNearestTodayByDentistry";
 import { getAppointmentTodayDentistry } from "@/lib/redux/modules/Appointments/actions/GetTodayOperationByDentistry/GetTodayOperationByDentistry";
+import { IWorker } from "@/lib/redux/modules/Workers/Workers.interface";
 
 export function AdminsMain() {
-  const authUser = UseDenormalizeSelector<AuthState>((state) => state.auth);
+  const authUser:IWorker = UseDenormalizeSelector((state:{auth:AuthState}) => state.auth.user) as IWorker;
 
   const dispatch = useAppDispatch();
   useEffect(() => {
-    if (!authUser.user) return;
+    if (!authUser) return;
     (dispatch(
       GetWorkersAppointmentStats({
-        dentistryId: authUser.user.dentistry.id,
+        dentistryId: authUser.dentistry?.id,
       }),
     ),
       dispatch(
-        GetNumbersWorkersWeekend({ dentistryId: authUser.user.dentistry.id }),
+        GetNumbersWorkersWeekend({ dentistryId: authUser.dentistry?.id }),
       ));
     dispatch(
       getAppointmentNearestTodayDentistry({
-        dentistryId: authUser.user.dentistry.id,
+        dentistryId: authUser.dentistry?.id,
       }),
     );
 
-    if (authUser.user.dentistry?.id) {
+    if (authUser.dentistry?.id) {
       dispatch(
-        getPaymentsDentistry({ dentistryId: authUser.user.dentistry.id }),
+        getPaymentsDentistry({ dentistryId: authUser.dentistry?.id }),
       );
     }
 
     dispatch(
       getAppointmentTodayDentistry({
-        dentistryId: authUser.user.dentistry.id,
+        dentistryId: authUser.dentistry?.id,
       }),
     );
-  }, [authUser.user, dispatch]);
+  }, [authUser, dispatch]);
 
   return (
     <>

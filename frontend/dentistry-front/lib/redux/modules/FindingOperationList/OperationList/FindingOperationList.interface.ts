@@ -1,6 +1,6 @@
+import { IAppointmentActions } from "../../AppointmentsActions/AppointmentActions.interface";
+import { IDentistry } from "../../Dentistries/Dentistry.interface";
 
-import { IAppointmentActions } from "../AppointmentsActions/AppointmentActions.interface";
-import { IDentistry } from "../Dentistries/Dentistry.interface";
 
 export interface IOperationList {
   id: number;

@@ -9,6 +9,7 @@ import {
 } from "@/lib/redux/modules/Workers/actions/CreateWorker/CreateWorker";
 import { CreateWorkerSchema } from "./schema/CreateWorkerSchema";
 import { useTranslation } from "react-i18next";
+import { IWorker } from "@/lib/redux/modules/Workers/Workers.interface";
 
 export default function CreateWorkerModal({
   onClose,
@@ -16,7 +17,7 @@ export default function CreateWorkerModal({
   onClose: () => void;
 }) {
   const { t, i18n } = useTranslation();
-  const authUser = useAppSelector((state: { auth: AuthState }) => state.auth);
+  const authUser:IWorker = useAppSelector((state: { auth: AuthState }) => state.auth.user) as IWorker;
   const dispatch = useAppDispatch();
 
   const onSubmit = useCallback(
@@ -49,7 +50,7 @@ export default function CreateWorkerModal({
         birthday: "",
         phone: "",
         specialtyId: 0,
-        dentistryId: authUser?.user?.dentistry.id ?? 0,
+        dentistryId: authUser?.dentistry?.id ?? 0,
         login: "",
         password: "",
       }}

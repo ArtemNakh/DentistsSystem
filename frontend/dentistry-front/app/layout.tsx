@@ -17,11 +17,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Dentistry System",
   description: "Dental clinic management system",
-  other: {
-  "Content-Security-Policy":
-  "script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'"
-  },
+  
 };
+ 
 
 export default function RootLayout({
   children,
@@ -30,6 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <meta httpEquiv="Content-Security-Policy" content="script-src 'self'  'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline' "/>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

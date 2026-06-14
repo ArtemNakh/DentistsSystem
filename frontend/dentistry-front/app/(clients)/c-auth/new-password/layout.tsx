@@ -2,8 +2,8 @@ import { Metadata } from "next";
 import { Suspense } from "react";
 
 export const metadata: Metadata = {
-  title: "Confirm Email",
-  description: "Підтвердження електронної пошти користувача",
+  title: "New password",
+  description: "Введення нового паролю",
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {
