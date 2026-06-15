@@ -24,6 +24,7 @@ import SubmitClientRegistrationButton from "./components/SubmitRegistrationClien
 import dynamic from "next/dynamic";
 import { useTranslation } from "react-i18next";
 import LanguageSwitch from "@/app/components/LanguageSwitch";
+import { setSessionExpiry } from "@/lib/auth/session";
 
 // динамічний імпорт модального вікна (не вантажиться одразу)
 const ModalInfoRegistrationClientField = dynamic(
@@ -46,6 +47,7 @@ export default function ClientRegistration() {
       setError(null);
       const data = await RegistrationClient(values);
       localStorage.setItem("authToken", data.authToken);
+      setSessionExpiry();
       // відкриваємо модальне вікно після успішної реєстрації
       setIsModalOpen(true);
     } catch (e: any) {

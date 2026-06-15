@@ -15,6 +15,7 @@ import { AuthState } from "@/lib/redux/modules/AuthUser/AuthUser.interface";
 import { getAuthWorker } from "@/lib/redux/modules/AuthUser/actions/GetAuthWorker/GetAuthWorker";
 import Cookies from "js-cookie";
 import { IWorker } from "@/lib/redux/modules/Workers/Workers.interface";
+import { setSessionExpiry } from "@/lib/auth/session";
 
 export default function WorkerLogin() {
   const { t } = useTranslation();
@@ -34,19 +35,19 @@ export default function WorkerLogin() {
         await dispatch(getAuthWorker({}));
       }
       if (worker) {
-        switch (worker.specialty.type ) {
-          case SpecialtyType.ADMIN:
-            router.push("/admins/main");
-            break;
-          case SpecialtyType.DOCTOR:
-            router.push("/doctor/main");
-            break;
-          case SpecialtyType.RECEPTION:
-            router.push("/reception/main");
-            break;
-          default:
-            router.push("/403");
-        }
+        // switch (worker.specialty.type ) {
+        //   case SpecialtyType.ADMIN:
+        //     router.push("/admins/main");
+        //     break;
+        //   case SpecialtyType.DOCTOR:
+        //     router.push("/doctor/main");
+        //     break;
+        //   case SpecialtyType.RECEPTION:
+        //     router.push("/reception/main");
+        //     break;
+        //   default:
+        //     router.push("/403");
+        // }
       }
     };
     checkAuth();
@@ -58,7 +59,9 @@ export default function WorkerLogin() {
         setError(null);
         const data = await loginWorker(values);
         localStorage.setItem("authToken", data.authToken);
+        setSessionExpiry();
 
+        console.log("date",data)
         Cookies.set("auth_token", data.authToken, { path: "/" });
         Cookies.set("role", data.worker.specialty.type, { path: "/" });
         // );

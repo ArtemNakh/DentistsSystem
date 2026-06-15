@@ -12,6 +12,7 @@ import { useTranslation } from "react-i18next";
 import LanguageSwitch from "@/app/components/LanguageSwitch";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
+import { setSessionExpiry } from "@/lib/auth/session";
 import ResetPasswordLink from "./components/ResetPassword";
 
 export default function ClientLogin() {
@@ -25,6 +26,7 @@ export default function ClientLogin() {
       setError(null);
       const data = await LoginClient(values);
       localStorage.setItem("authToken", data.authToken);
+      setSessionExpiry();
 
       Cookies.set("authToken", data.authToken, { path: "/" });
       router.push("/client/main");
