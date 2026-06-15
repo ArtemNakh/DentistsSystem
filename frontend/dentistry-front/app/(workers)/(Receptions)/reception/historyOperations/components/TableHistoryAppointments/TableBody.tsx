@@ -9,6 +9,9 @@ import ShowPaymentModal from "../ModalView/ShowPaymentModal";
 import { useTranslation } from "react-i18next";
 import { useAppDispatch } from "@/lib/redux/hooks";
 import { completePaymentByAppointmentID } from "@/lib/redux/modules/Payments/actions/completePaymentByAppointmentId/completePaymentByAppointmentId";
+import { IClient } from "@/lib/redux/modules/Clients/clients.interface";
+import ShowClientModal from "../ModalView/ShowClientModal";
+import ReactDOM from "react-dom";
 
 interface TableBodyHistoryAppointmentProps {
   appointments: IAppointment[];
@@ -22,6 +25,8 @@ export default function TableBodyHistoryAppointment({
   const { t } = useTranslation();
   // {t("reception.history_operation.table.header.client")}
   const [selectedPayment, setSelectedPayment] = useState<IPayment | null>(null);
+  const [selectedClient, setSelectedClient] = useState<IClient | null>(null);
+
   const dispatch = useAppDispatch();
   return (
     <>
@@ -37,7 +42,10 @@ export default function TableBodyHistoryAppointment({
                 key={appointment.id}
                 className="bg-gray-100 text-base  text-gray-700 hover:bg-gray-100"
               >
-                <td className="border border-gray-400 px-2 py-1">
+                <td
+                  className="border border-gray-400 px-2 py-1"
+                  onClick={() => setSelectedClient(appointment.client || null)}
+                >
                   <div className="flex h-full items-center">
                     <div className="mx-1">
                       {appointment.client?.surname} {appointment.client?.name}
@@ -132,6 +140,15 @@ export default function TableBodyHistoryAppointment({
           </tr>
         )}
       </tbody>
+
+      {selectedClient &&
+        ReactDOM.createPortal(
+          <ShowClientModal
+            client={selectedClient}
+            setClient={setSelectedClient}
+          />,
+          document.body,
+        )}
     </>
   );
 }

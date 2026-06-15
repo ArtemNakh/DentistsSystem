@@ -335,6 +335,22 @@
             "method_pay": "",
             "payment_day": "",
             "status_pay": ""
+          },
+
+          "client": {
+            "modal": {
+              "title": "Інформація про клієнта",
+              "id": "ID",
+              "name": "Ім’я",
+              "surname": "Прізвище",
+              "middle_name": "По-батькові",
+              "birthdate": "Дата народження",
+              "blood_group": "Група крові",
+              "rh_factor": "Rh фактор",
+              "phone": "Телефон",
+              "allergies": "Алергії",
+              "close": "Закрити"
+            }
           }
         }
       }
