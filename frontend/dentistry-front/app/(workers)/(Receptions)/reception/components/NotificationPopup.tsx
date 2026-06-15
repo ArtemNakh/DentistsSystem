@@ -80,17 +80,9 @@ export const NotificationPopup: React.FC = () => {
               onClick={() => setExpandedId(expandedId === n.id ? null : n.id)}
             >
               <p className="font-semibold text-gray-700">{getTitle(n)}</p>
-              <p className="text-sm text-gray-500">
-                {new Date(n.created_at).toLocaleString("uk-UA", {
-                  year: "numeric",
-                  month: "2-digit",
-                  day: "2-digit",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </p>
+              
               <p className="text-sm text-gray-600 mt-1">
-                {`${t("admins.notification.text_notif")}: ${
+                {`${t("reception.notification.text_notif")}: ${
                   expandedId === n.id
                     ? n.message
                     : n.message.slice(0, 50) + "..."

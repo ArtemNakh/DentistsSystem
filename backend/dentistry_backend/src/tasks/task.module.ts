@@ -4,12 +4,14 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { NotificationModule } from '../notification/notification.module';
 import { TasksService } from './task.service';
 import { AppointmentModule } from '@/appointment/appointment.module';
+import { DentistryModule } from '@/dentistry/dentistry.module';
 
 @Module({
   imports: [
-    ScheduleModule.forRoot(), 
+    ScheduleModule.forRoot(),
     NotificationModule,
-    AppointmentModule, 
+    AppointmentModule,
+    DentistryModule,
   ],
   providers: [TasksService],
 })

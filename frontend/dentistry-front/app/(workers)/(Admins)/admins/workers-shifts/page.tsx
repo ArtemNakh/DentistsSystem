@@ -44,7 +44,7 @@ export default function WorkersShiftsTable() {
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(getWorkersDentistry({ idDentistry: auth?.dentistry?.id, }));
+    dispatch(getWorkersDentistry({ idDentistry: auth?.dentistry?.id }));
   }, [dispatch, auth?.dentistry?.id]);
 
   return (
@@ -72,9 +72,6 @@ export default function WorkersShiftsTable() {
             </th>
             <th className="border p-2">
               {t("admins.workers_shifts.table_head.phone")}
-            </th>
-            <th className="border">
-              {t("admins.workers_shifts.table_head.status_acc")}
             </th>
           </tr>
         </thead>
@@ -110,11 +107,6 @@ export default function WorkersShiftsTable() {
                 </td>
 
                 <td className="border p-2">{worker.phone}</td>
-                <td className="border p-2">
-                  {worker.active
-                    ? t("admins.workers_shifts.status_type.active")
-                    : t("admins.workers_shifts.status_type.no_active")}
-                </td>
               </tr>
               {expandedWorkerId === worker.id && (
                 <tr>

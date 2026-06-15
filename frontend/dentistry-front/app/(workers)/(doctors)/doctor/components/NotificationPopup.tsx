@@ -53,15 +53,15 @@ export const NotificationPopup: React.FC = () => {
       <div className="mt-4 p-2 border-2 border-gray-300">
         <div className="flex justify-between items-center mb-3">
           <h3 className="font-bold text-gray-800">
-            {t("admins.notification.licenses.licenses")}
+            {t("doctor.notification.licenses.licenses")}
           </h3>
           <button
             onClick={() => setExpandedLicenses(!expandedLicenses)}
             className="text-blue-600 text-sm hover:underline"
           >
             {expandedLicenses
-              ? t("admins.notification.licenses.hide_block")
-              : t("admins.notification.licenses.show_block")}
+              ? t("doctor.notification.licenses.hide_block")
+              : t("doctor.notification.licenses.show_block")}
           </button>
         </div>
 
@@ -69,7 +69,7 @@ export const NotificationPopup: React.FC = () => {
           <ul className="space-y-3 max-h-80 overflow-y-auto">
             {licenses.length === 0 ? (
               <li className="text-center text-gray-500">
-                {t("admins.notification.licenses.no_licenses")}
+                {t("doctor.notification.licenses.no_licenses")}
               </li>
             ) : (
               licenses.map((l) => (
@@ -78,15 +78,15 @@ export const NotificationPopup: React.FC = () => {
                   className="border border-gray-200 rounded p-3 hover:bg-gray-50"
                 >
                   <p className="font-semibold text-red-600">
-                    {t("admins.notification.licenses.license_number")}{" "}
+                    {t("doctor.notification.licenses.license_number")}{" "}
                     {l.number_license}
                   </p>
                   <p className="text-sm text-gray-500">
-                    {t("admins.notification.licenses.expiration_date")}:{" "}
+                    {t("doctor.notification.licenses.expiration_date")}:{" "}
                     {new Date(l.expiration_date).toLocaleDateString("uk-UA")}
                   </p>
                   <p className="text-sm text-gray-600">
-                    {t("admins.notification.licenses.issued_by")}:{l.issued_by}
+                    {t("doctor.notification.licenses.issued_by")}:{l.issued_by}
                   </p>
                 </li>
               ))

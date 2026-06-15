@@ -97,7 +97,11 @@ export const NotificationPopup: React.FC = () => {
   }, []);
 
   return (
-    <div className="absolute top-0 -right-10 mt-10 mr-10 w-96 bg-white border border-gray-300 rounded shadow-lg p-4 z-50">
+    <div
+      className="absolute top-0 right-0 mt-10 mr-10 w-96 
+                 max-h-[calc(100vh-100px)] overflow-y-auto 
+                  bg-white border border-gray-300 rounded shadow-lg p-4 z-50"
+    >
       {/* Сповіщення */}
       <div className="p-2 border-2 border-gray-300">
         <div className="flex justify-between items-center mb-3">
@@ -131,13 +135,13 @@ export const NotificationPopup: React.FC = () => {
                 >
                   <p className="font-semibold text-gray-700">{getTitle(n)}</p>
                   <p className="text-sm text-gray-500">
-                    {new Date(n.created_at).toLocaleString("uk-UA", {
+                    {/* {new Date(n.created_at).toLocaleString("uk-UA", {
                       year: "numeric",
                       month: "2-digit",
                       day: "2-digit",
                       hour: "2-digit",
                       minute: "2-digit",
-                    })}
+                    })} */}
                   </p>
                   <p className="text-sm text-gray-600 mt-1">
                     {`${t("admins.notification.notifications.text_notif")}: ${

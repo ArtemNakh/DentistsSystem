@@ -3,12 +3,14 @@ import { Cron } from '@nestjs/schedule';
 import { NotificationService } from '../notification/notification.service';
 import { AppointmentService } from '@/appointment/appointment.service';
 import { StatusAppointment } from '@/appointment/entity/appointment.interface';
+import { DentistryService } from '@/dentistry/dentistry.service';
 
 @Injectable()
 export class TasksService {
   constructor(
     private readonly notificationService: NotificationService,
     private readonly appointmentService: AppointmentService,
+    private readonly dentistryService: DentistryService,
   ) {}
 
   // CRON: щохвилини '0 * * * * *' / для щоденного о 9:00  '0 9 * * *'
@@ -32,9 +34,9 @@ export class TasksService {
   //   кожна хвилина
   // @Cron('0 * * * * *')
   //   об 9 годині
-  @Cron('0 9 * * *')
+  // @Cron('0 9 * * *')
   async handleDailyReminder() {
-    const dentistries = [{ id: 1 }];
+    const dentistries = await this.dentistryService.findAll();
     for (const dentistry of dentistries) {
       // Відправка повідомлень про скору запись до стоматолога
       await this.notificationService.remindAboutAppointment({
@@ -45,6 +47,7 @@ export class TasksService {
       await this.notificationService.remindAboutPay({
         dentistryId: dentistry.id,
       });
+      console.log('action');
     }
   }
 
