@@ -36,7 +36,6 @@ export default function CalendarAdmin() {
   );
 
   useEffect(() => {
-    console.log("Auth effect triggered", authUser);
     if (!authUser) {
       dispatch(getAuthWorker({}));
     }
@@ -44,7 +43,6 @@ export default function CalendarAdmin() {
 
   useEffect(() => {
     const dentistryId = authUser?.dentistry?.id;
-    console.log("Appointments effect triggered", dentistryId);
     if (dentistryId) {
       dispatch(getAppointmentDentistry({ dentistryId }));
     }

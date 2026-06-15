@@ -50,7 +50,6 @@ export default function ModalAddingNewAppointment({
           return; // блокуємо сабміт
         }
 
-        console.log("send");
         await dispatch(
           AddNewAppointment({
             ...values,
@@ -83,7 +82,6 @@ export default function ModalAddingNewAppointment({
             initialValues={initialValues}
             validationSchema={CreateAppointmentSchema}
             onSubmit={(values) => {
-              console.log("Formik submit values:", values);
               onSubmit(values, { setSubmitting: () => {} });
             }}
           >

@@ -62,7 +62,7 @@ export class OperationListEntity extends BaseEntity {
 
   *updateOperationSaga(action: UpdateOperationAction) {
     const { operationId, name, description, price, active } = action.payload;
-    console.log("action", action.payload);
+    
     yield call(
       this.xSave.bind(this),
       `/operation-list/${operationId}`,

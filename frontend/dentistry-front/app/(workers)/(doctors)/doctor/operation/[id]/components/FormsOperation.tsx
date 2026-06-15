@@ -35,7 +35,6 @@ export default function FormOperation({ appointmentId }: FormOperationProps) {
           ...values,
           actions: values.actions.map((id) => Number(id)),
         };
-        console.log("payload", payload);
         await dispatch(
           CompleteAppointmentActions({
             appointmentId: payload.appointmentId,

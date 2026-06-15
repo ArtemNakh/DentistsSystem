@@ -21,7 +21,6 @@ export function AdminsMain() {
 
   useEffect(() => {
     if (authUser) {
-      console.log("work");
       return;
     }
     dispatch(getAuthWorker({}));

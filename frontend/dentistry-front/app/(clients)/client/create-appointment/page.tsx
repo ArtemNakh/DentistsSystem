@@ -51,16 +51,12 @@ export default function ModalAddingNewAppointment({}: AddingNewAppointmentProps)
           return; // блокуємо сабміт
         }
 
-        console.log("send");
-
-        console.log("test", values);
         const result = await dispatch(
           AddNewAppointment({
             ...values,
             appointment_date: new Date(values.appointment_date).toISOString(),
           }),
         );
-        console.log("res", result);
       } catch (err) {
         setError(t("client.create_appointment.error") + err);
       } finally {

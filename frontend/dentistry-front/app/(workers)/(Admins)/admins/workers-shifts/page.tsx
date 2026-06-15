@@ -38,7 +38,6 @@ export default function WorkersShiftsTable() {
 
   useEffect(() => {
     if (auth) {
-      console.log("work");
       return;
     }
     dispatch(getAuthWorker({}));

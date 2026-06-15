@@ -491,14 +491,12 @@ export class OperationListController {
   ): Promise<GetOperationsByDentistryResponseDto[]> {
     const { dentistryId } = params;
     const { skip, take, active } = query;
-    console.log("active",active)
     const operations = await this.operationListService.findAllByDentistry(
       dentistryId,
       take,
       skip,
       active,
     );
-    console.log('operations', operations);
     return plainToInstance(GetOperationsByDentistryResponseDto, operations, {
       excludeExtraneousValues: true,
     });

@@ -44,7 +44,6 @@ export default function HistoryAppointmentsWorker({
 
   useEffect(() => {
     if (authUser) {
-      console.log("Un authorized worker");
       return;
     }
     dispatch(getAuthWorker({}));

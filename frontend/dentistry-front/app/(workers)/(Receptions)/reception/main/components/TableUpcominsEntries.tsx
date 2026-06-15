@@ -67,11 +67,9 @@ export default function TableUpcomingEntries() {
                   }}
                   className="odd:bg-gray-50 even:bg-gray-100 hover:bg-purple-200 transition-colors cursor-pointer relative"
                   onClick={() => {
-                    console.log("task", task);
                     selectedTask?.index === index
                       ? setSelectedTask(null)
                       : setSelectedTask({ action: task.notes, index });
-                    console.log("task2", selectedTask);
                   }}
                 >
                   <td className="px-4 py-2 text-gray-800 font-semibold ">

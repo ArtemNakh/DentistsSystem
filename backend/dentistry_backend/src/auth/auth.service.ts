@@ -160,8 +160,7 @@ export class AuthService {
    * @throws InternalServerErrorException якщо сесію не вдалося завершити
    */
   public async logoutWorker(req: Request, res: Response): Promise<void> {
-    console.log('a', req.session);
-    console.log('b', req.sessionID);
+    
     return new Promise((resolve, reject) => {
       req.session.destroy((err) => {
         if (err) {
@@ -213,7 +212,6 @@ export class AuthService {
         'Registration failed. A worker with the same login already exists.',
       );
     }
-    console.log('2' + dto);
     const newWorker = await this.workerService.createWorkerTemporary(dto);
     return { message: 'Worker successfully registered.' };
   }

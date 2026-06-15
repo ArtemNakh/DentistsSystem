@@ -36,7 +36,6 @@ export default function TableBodyWorker({
                   </div>
                 </td>
                 <td className="border border-gray-400 w-auto px-2 py-1">
-                  {/* {console.log("testqwe",worker.specialty.name)} */}
                   {worker.specialty?.name}
                 </td>
                 <td className="border border-gray-400 w-32 px-2 py-1">
@@ -74,7 +73,6 @@ export default function TableBodyWorker({
                   {/* Нова кнопка dispatch */}
                   <button
                     onClick={() => {
-                      console.log("deletedWorker", worker.id);
                       dispatch(deActiveWorker({ idWorker: worker.id }));
                     }}
                     className="text-gray-700 border  px-3 py-2 rounded hover:bg-[#795FAE] transition"

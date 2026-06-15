@@ -386,7 +386,7 @@ export class AppointmentController {
         take,
         skip,
       );
-    console.log('his', historyAppointemnt);
+
     return plainToInstance(
       GetHistoryAppointmentsResponseDto,
       historyAppointemnt,
@@ -650,7 +650,11 @@ export class AppointmentController {
     const { workerId } = params;
     const { take, skip } = query;
     const appointments =
-      await this.appointmentService.findAppointmentsForWorker(workerId,take,skip);
+      await this.appointmentService.findAppointmentsForWorker(
+        workerId,
+        take,
+        skip,
+      );
 
     return plainToInstance(GetAppointmentsByWorkerResponseDto, appointments, {
       excludeExtraneousValues: true,
@@ -946,5 +950,4 @@ export class AppointmentController {
       excludeExtraneousValues: true,
     });
   }
-
 }

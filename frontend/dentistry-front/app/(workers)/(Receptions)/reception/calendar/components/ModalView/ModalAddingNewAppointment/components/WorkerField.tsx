@@ -33,7 +33,6 @@ export default function WorkerField() {
 
   useEffect(() => {
     if (authUser?.dentistry?.id) {
-      console.log("req1");
       dispatch(
         GetWorkersByFullName({
           fullName: "",
@@ -45,7 +44,6 @@ export default function WorkerField() {
 
   useEffect(() => {
     if (searchQuery.length > 0) {
-      console.log("req1");
 
       setFilteredWorkers(
         workers.filter((w) =>

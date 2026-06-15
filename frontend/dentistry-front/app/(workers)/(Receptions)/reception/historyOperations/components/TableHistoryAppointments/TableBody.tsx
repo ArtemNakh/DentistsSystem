@@ -100,7 +100,6 @@ export default function TableBodyHistoryAppointment({
                             appointmentId: appointment.id,
                           }),
                         );
-                        console.log("values", appointment.id);
                       }}
                       className=" group text-gray-900 px-3 py-2 rounded hover:bg-[#795FAE]  transition flex items-center justify-center"
                     >

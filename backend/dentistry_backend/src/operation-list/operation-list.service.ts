@@ -90,7 +90,6 @@ export class OperationListService {
     if (!operation) throw new NotFoundException('Operation not found');
 
     Object.assign(operation, dto);
-    console.log('newOP', operation);
     return this.operationListRepo.save(operation);
   }
 
@@ -182,7 +181,6 @@ export class OperationListService {
     if (typeof active !== 'undefined') {
       whereCondition.active = true;
     }
-    console.log('whree', whereCondition, 'active', active);
     const operations = await this.operationListRepo.find({
       where: whereCondition,
       relations: ['dental_clinic'],

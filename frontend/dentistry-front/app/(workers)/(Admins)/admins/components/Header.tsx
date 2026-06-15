@@ -23,7 +23,6 @@ export default function HeaderAdmin() {
 
   useEffect(() => {
     if (auth.user) {
-      console.log("work");
       return;
     }
     dispatch(getAuthWorker({}));

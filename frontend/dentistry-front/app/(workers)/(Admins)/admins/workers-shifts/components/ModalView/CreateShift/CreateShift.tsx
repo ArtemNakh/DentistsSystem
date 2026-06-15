@@ -29,7 +29,6 @@ export default function CreateWorkerShiftModal({
   ) => {
     try {
       await dispatch(CreateShiftsWorker(values));
-      console.log("send create new shift", values);
       onClose();
     } catch (err) {
       console.error("Error during adding new shift: " + err);

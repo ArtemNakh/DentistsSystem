@@ -66,7 +66,6 @@ export function ActionsOperationField({}: Props) {
   // отримання усіх операцій для стоматології
   useEffect(() => {
     if (authUser.dentistry?.id) {
-      console.log("test");
       dispatch(
         GetActiveOperationListByDentistry({
           dentistryId: authUser.dentistry.id,

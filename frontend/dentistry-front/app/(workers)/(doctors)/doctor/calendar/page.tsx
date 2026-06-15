@@ -35,7 +35,6 @@ export default function CalendarAdmin() {
 
   //отримання авторизованого користувача
   useEffect(() => {
-    console.log("Auth effect triggered", authUser.user);
     if (!authUser.user) {
       dispatch(getAuthWorker({}));
     }
@@ -44,7 +43,6 @@ export default function CalendarAdmin() {
   //отримання appointments для доктора
   useEffect(() => {
     const workerId = authUser.user?.id;
-    console.log("Appointments effect triggered", workerId);
     if (workerId) {
       dispatch(GetAppointmentsByWorker({ workerId: workerId }));
     }

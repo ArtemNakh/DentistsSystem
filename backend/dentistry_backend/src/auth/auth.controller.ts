@@ -538,7 +538,7 @@ export class AuthController {
     @Req() req: Request,
     @Body() dto: RegisterWorkerDto,
   ) {
-    console.log(dto);
+    
     return this.authService.registerWorker(req, dto);
   }
 }

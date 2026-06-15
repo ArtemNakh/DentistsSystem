@@ -25,7 +25,6 @@ export default function CreateLicenseModal({
   ) => {
     try {
       await dispatch(CreateLicense(values));
-      console.log("send create new license", values);
       onClose();
     } catch (err) {
       console.error("Error during adding new license: " + err);

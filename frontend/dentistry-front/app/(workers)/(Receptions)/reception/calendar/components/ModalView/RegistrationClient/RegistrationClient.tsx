@@ -52,7 +52,6 @@ export default function RegistrationClientView({
       { setSubmitting }: FormikHelpers<AddClientPayload>,
     ) => {
       try {
-        console.log("Adding client", values);
         await dispatch(AddClient(values));
 
         onClose();

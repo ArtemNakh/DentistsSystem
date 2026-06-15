@@ -39,7 +39,6 @@ export default function OperationList() {
 
   useEffect(() => {
     if (authUser) {
-      console.log("work");
       return;
     }
     dispatch(getAuthWorker({}));
@@ -167,7 +166,6 @@ export default function OperationList() {
                 }}
                 validationSchema={updateOperationSchema(t)}
                 onSubmit={(values) => {
-                  console.log("Update operation:", values);
                   dispatch(
                     UpdateOperation({
                       operationId: selectedOperation.id,
@@ -255,7 +253,6 @@ export default function OperationList() {
                 }}
                 validationSchema={CreateOperationSchema(t)}
                 onSubmit={(values) => {
-                  console.log("Create operation:", values);
                   dispatch(AddOperation(values));
                   setIsCreateModalOpen(false);
                 }}

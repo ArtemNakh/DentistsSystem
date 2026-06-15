@@ -36,7 +36,6 @@ export default function HeaderClient() {
 
   useEffect(() => {
     if (authUser.user) {
-      console.log("work");
       return;
     }
     dispatch(getAuthClient({}));

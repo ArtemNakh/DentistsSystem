@@ -15,7 +15,6 @@ const authUser = UseDenormalizeSelector<AuthState>((state) => state.auth);
 
 
 
-  // console.log("appointm",payments)
   // фільтруємо лише ті, що не оплачені
   // const unpaidPayments = payments.filter(
   //   (payment) => payment.status_paid !== StatusPayment.PAID,

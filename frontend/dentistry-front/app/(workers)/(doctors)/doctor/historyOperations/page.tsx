@@ -19,7 +19,6 @@ export default function HistoryOperationReception() {
   // отримання данихз авторизованого користувача
   useEffect(() => {
     if (authUser.user) {
-      console.log("Un authorized worker");
       return;
     }
     dispatch(getAuthWorker({}));

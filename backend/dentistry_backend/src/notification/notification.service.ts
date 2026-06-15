@@ -60,7 +60,6 @@ export class NotificationService {
       };
     }
 
-    console.log('whrere', where);
     const notifications = this.notificationRepo.find({
       where: Object.keys(where).length > 0 ? where : undefined,
       relations: [
@@ -296,7 +295,6 @@ export class NotificationService {
           type_remaind: TypeRemaind.PAYMENT_REMINDER,
         });
         await this.notificationRepo.save(newNotification);
-        console.log('appointet', newNotification);
         // Надсилання sms
         await this.smsService.sendSmsForClient(
           appointment.client.phone,

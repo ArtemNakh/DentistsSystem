@@ -83,7 +83,6 @@ export const NotificationPopup: React.FC = () => {
   // отримання усі сповіщення для стоматології у текущий день
   useEffect(() => {
     if (!authUser || !authUser?.dentistry?.id) {
-      console.log("unauthorization user");
       return;
     }
 

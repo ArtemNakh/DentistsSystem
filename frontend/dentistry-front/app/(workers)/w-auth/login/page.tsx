@@ -31,7 +31,6 @@ export default function WorkerLogin() {
     const checkAuth = async () => {
       const worker = authUser.user as IWorker;
       if (!worker) {
-        console.log("get worker");
         await dispatch(getAuthWorker({}));
       }
       if (worker) {
@@ -58,7 +57,6 @@ export default function WorkerLogin() {
       try {
         setError(null);
         const data = await loginWorker(values);
-        console.log("auth user ", data);
         localStorage.setItem("authToken", data.authToken);
 
         Cookies.set("auth_token", data.authToken, { path: "/" });

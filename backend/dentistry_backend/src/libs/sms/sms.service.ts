@@ -26,6 +26,8 @@ export class SmsService {
         phoneNumber,
         ' /text:',
         textNotification,
+        ' /to:',
+        phoneNumber,
       );
 
       return {};

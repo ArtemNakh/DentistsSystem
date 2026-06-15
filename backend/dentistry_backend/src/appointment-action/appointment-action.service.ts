@@ -79,7 +79,6 @@ export class AppointmentActionService {
       const invalidOperations = operations.filter(
         (op) => op.dental_clinic?.id !== appointment.dentist.dentistry.id,
       );
-      console.log('invalidOperations', invalidOperations);
       if (invalidOperations.length > 0) {
         throw new BadRequestException(
           `Some operations do not belong to this dentistry: ${invalidOperations

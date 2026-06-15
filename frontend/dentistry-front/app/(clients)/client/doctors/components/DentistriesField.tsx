@@ -33,9 +33,6 @@ export default function DentistryField({
 
   const [selectedDentistryName, setSelectedDentistryName] = useState("");
 
-  {
-    console.log("dentis", dentistries, searchQuery, filteredDentistries);
-  }
 
   useEffect(() => {
     if (searchQuery.length > 2) {

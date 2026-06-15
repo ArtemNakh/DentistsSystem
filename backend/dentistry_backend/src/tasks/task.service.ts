@@ -66,7 +66,6 @@ export class TasksService {
 
       if (diffHours > 2) {
         // оновити статус на cancelled
-        console.log('oper', operation.id);
         await this.appointmentService.updateStatus(
           operation.id,
           StatusAppointment.CANCELLED,

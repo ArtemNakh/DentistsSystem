@@ -35,7 +35,6 @@ export default function ListWorkersWorker({ filters }: ListWorkersWorkerProps) {
 
   useEffect(() => {
     if (authUser) {
-      console.log("work");
       return;
     }
     dispatch(getAuthWorker({}));

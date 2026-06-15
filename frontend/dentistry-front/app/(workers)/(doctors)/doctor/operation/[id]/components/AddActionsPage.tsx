@@ -34,7 +34,6 @@ export default function AddActionsPage({ onClose }: AddActionsPageProps) {
           ...values,
           actions: values.actions.map((id) => Number(id)),
         };
-console.log("payload",payload)
         // await dispatch(addActionsAndPayment(payload));
         onClose();
       } catch (err) {

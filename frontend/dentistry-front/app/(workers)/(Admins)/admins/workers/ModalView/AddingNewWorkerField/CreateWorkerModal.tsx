@@ -30,7 +30,6 @@ export default function CreateWorkerModal({
           }),
         );
 
-        console.log("send create new worker", values);
         onClose();
       } catch (err) {
         console.log("Error during adding new worker: " + err);

@@ -24,7 +24,6 @@ export default function HeaderAdmin() {
   const router = useRouter();
   useEffect(() => {
     if (auth.user) {
-      console.log("work");
       return;
     }
     dispatch(getAuthWorker({}));

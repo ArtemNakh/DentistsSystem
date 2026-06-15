@@ -208,12 +208,6 @@ export class AppointmentService {
         },
       });
 
-      console.log(
-        'shift',
-        shift,
-        'shiftdate',
-        createAppointmentDto.appointment_date,
-      );
       if (!shift) {
         throw new ConflictException(
           `Dentist with id=${dentist.id} has no shift on ${createAppointmentDto.appointment_date}`,

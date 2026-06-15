@@ -160,7 +160,6 @@ export default class BaseEntity extends ClientContextDI {
       result,
     );
     if (!res.ok) {
-      console.log("Error request");
       throw Object.assign(new Error(result.message), {
         code: result.code,
       });

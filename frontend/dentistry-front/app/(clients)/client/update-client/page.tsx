@@ -41,7 +41,6 @@ export default function ClientUpdate() {
     if (!authUser) {
       dispatch(getAuthClient({}));
     }
-    console.log("auth", authUser);
   }, [dispatch, authUser]);
 
   const [error, setError] = useState<string | null>(null);
@@ -50,15 +49,12 @@ export default function ClientUpdate() {
     async (values: IUpdateClient) => {
       try {
         setError(null);
-        console.log("peabef", authUser);
         if (!authUser) {
           throw new Error("User not loaded");
         }
         // Створюємо об'єкт для збереження змін
         const payload: Partial<UpdateClientPayload> = { id: authUser.id };
-        {
-          console.log("pay", payload);
-        }
+        
         (Object.keys(values) as (keyof IUpdateClient)[]).forEach((key) => {
           const newValue = values[key];
 
@@ -75,8 +71,7 @@ export default function ClientUpdate() {
             payload[key] = newValue as any;
           }
         });
-
-        console.log("payload", payload);
+        
         await dispatch(UpdateClient(payload as UpdateClientPayload));
       } catch (e: any) {
         setError(e.message);

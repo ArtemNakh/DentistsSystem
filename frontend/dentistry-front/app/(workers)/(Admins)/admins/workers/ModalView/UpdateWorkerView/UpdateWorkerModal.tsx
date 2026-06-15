@@ -21,7 +21,6 @@ export default function UpdateWorkerModal({
   const dispatch = useAppDispatch();
   const onSubmit = useCallback(
     async (values: UpdateWorkerPayload, { setSubmitting }: any) => {
-      console.log("Formik values:", values);
       try {
         dispatch(UpdateWorker(values));
         onClose();

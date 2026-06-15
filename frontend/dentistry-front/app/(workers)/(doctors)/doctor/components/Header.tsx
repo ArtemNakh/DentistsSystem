@@ -23,7 +23,6 @@ export default function HeaderDoctor() {
 
   useEffect(() => {
     if (auth.user) {
-      console.log("work");
       return;
     }
     dispatch(getAuthWorker({}));

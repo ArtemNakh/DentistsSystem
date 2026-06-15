@@ -28,7 +28,6 @@ export default function TableBodyWorker({ workers }: TableBodyWorkerProps) {
                   </div>
                 </td>
                 <td className="border border-gray-400 w-auto px-2 py-1">
-                  {/* {console.log("testqwe",worker.specialty.name)} */}
                   {worker.specialty?.name}
                 </td>
                 <td className="border border-gray-400 w-32 px-2 py-1">
