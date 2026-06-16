@@ -32,13 +32,15 @@ export function Providers({ children }: { children: React.ReactNode }) {
   const router = useRouter();
 
   const logoutAndRedirect = useCallback(() => {
-    console.log("remove")
+    console.log("remove");
     store.dispatch(logoutWorker({}));
     clearSessionExpiry();
 
     localStorage.removeItem("authToken");
-    document.cookie = "authToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-    document.cookie = "auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    document.cookie =
+      "authToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    document.cookie =
+      "auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
     document.cookie = "role=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
     Cookies.remove("authToken");
     Cookies.remove("auth_token");
@@ -53,10 +55,10 @@ export function Providers({ children }: { children: React.ReactNode }) {
     if (!expiry) {
       return;
     }
-console.log("expire",expiry)
+    console.log("expire", expiry);
     const now = Date.now();
     if (expiry <= now) {
-      console.log("exit")
+      console.log("exit");
       logoutAndRedirect();
       return;
     }

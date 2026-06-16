@@ -167,7 +167,7 @@ export default class BaseEntity extends ClientContextDI {
     return result;
   }
 
-  /**обробка та показ(toast) результатів запиту */
+  /**обробка та показ результатів запиту */
   //   Використовує Redux‑Saga call для асинхронного запиту.
   // Повертає result.data.
   // Логіку з toast ти закоментував.

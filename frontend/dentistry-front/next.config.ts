@@ -5,7 +5,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   onDemandEntries: {
-    maxInactiveAge: 60 * 60 * 1000,
+    maxInactiveAge: 400 * 60 * 1000,
   },
   env: {
     ENVIRONMENT: process.env.ENVIRONMENT || "dev",

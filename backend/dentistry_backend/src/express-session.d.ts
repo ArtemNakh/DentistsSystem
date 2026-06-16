@@ -1,9 +1,8 @@
-import 'express-session'
+import 'express-session';
 
-declare module 'express-session'
-{
-    interface SessionData{
-        clientId?:string
-        workerId?:string
-    }
+declare module 'express-session' {
+  interface SessionData {
+    clientId?: string;
+    workerId?: string;
+  }
 }

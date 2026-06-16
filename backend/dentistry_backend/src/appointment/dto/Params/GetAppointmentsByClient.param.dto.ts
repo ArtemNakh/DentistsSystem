@@ -13,8 +13,6 @@ export class GetAppointmentsByClientParams {
   @Min(1, { message: 'clientId має бути більше 0' })
   clientId: number;
 
-  ;
-
   @ApiProperty({
     description: 'Кількість записів для отримання (take)',
     example: 10,
